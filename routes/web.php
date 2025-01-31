@@ -14,16 +14,17 @@ Route::group(['middleware' => 'login.check'], function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 
+// Logged In Route Middleware
+Route::group(['middleware' => 'loggedin'], function () {
+    Route::get('/', function () {
+        return redirect()->route('home');
+    })->name('/');
+
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 
 
-
-
-
-
-Route::get('/', function () {
-    return redirect()->route('home');
-})->name('/');
 
 
 
@@ -31,17 +32,17 @@ Route::get('/', function () {
 
 // Route::group(['middleware' => 'login.check'], function () {
 //     // Dashboard
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
 
-    Route::prefix('dashboard')->group(function () {
-        Route::view('index', 'dashboard.index')->name('index');
-        Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
-        Route::view('dashboard-03', 'dashboard.dashboard-03')->name('dashboard-03');
-        Route::view('dashboard-04', 'dashboard.dashboard-04')->name('dashboard-04');
-        Route::view('dashboard-05', 'dashboard.dashboard-05')->name('dashboard-05');
-    });
+
+Route::prefix('dashboard')->group(function () {
+    Route::view('index', 'dashboard.index')->name('index');
+    Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
+    Route::view('dashboard-03', 'dashboard.dashboard-03')->name('dashboard-03');
+    Route::view('dashboard-04', 'dashboard.dashboard-04')->name('dashboard-04');
+    Route::view('dashboard-05', 'dashboard.dashboard-05')->name('dashboard-05');
+});
 
 //     // Users
 // });
@@ -286,22 +287,22 @@ Route::prefix('others')->group(function () {
     Route::view('503', 'errors.503')->name('error-503');
 });
 
-Route::prefix('authentication')->group(function () {
-    Route::view('login', 'authentication.login')->name('login');
-    Route::view('login-one', 'authentication.login-one')->name('login-one');
-    Route::view('login-two', 'authentication.login-two')->name('login-two');
-    Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
-    Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
-    Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
-    Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
-    Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
-    Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
-    Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
-    Route::view('unlock', 'authentication.unlock')->name('unlock');
-    Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
-    Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
-    Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
-});
+// Route::prefix('authentication')->group(function () {
+//     Route::view('login', 'authentication.login')->name('login');
+//     Route::view('login-one', 'authentication.login-one')->name('login-one');
+//     Route::view('login-two', 'authentication.login-two')->name('login-two');
+//     Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
+//     Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
+//     Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
+//     Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
+//     Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
+//     Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
+//     Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
+//     Route::view('unlock', 'authentication.unlock')->name('unlock');
+//     Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
+//     Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
+//     Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
+// });
 
 Route::view('comingsoon', 'comingsoon.comingsoon')->name('comingsoon');
 Route::view('comingsoon-bg-video', 'comingsoon.comingsoon-bg-video')->name('comingsoon-bg-video');

@@ -79,6 +79,7 @@
                                                                     window.location.href =
                                                                         "{{ route('home') }}";
                                                                 } else {
+                                                                    console.warn(res, status, xhr);
                                                                     swal({
                                                                         icon: 'warning',
                                                                         title: 'Warning',
@@ -87,8 +88,6 @@
                                                                 }
                                                             },
                                                             error: function(xhr, status, error) {
-                                                                console.warn(xhr.status);
-
                                                                 if (xhr.status == 400) {
                                                                     var errors = xhr.responseJSON.errors;
                                                                     swal({
@@ -110,54 +109,6 @@
                                                 });
                                             })
                                         })
-                                        // 'use strict';
-                                        // window.addEventListener('load', function() {
-                                        //     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                                        //     var forms = document.getElementsByClassName('needs-validation');
-                                        //     // Loop over them and prevent submission
-                                        //     var validation = Array.prototype.filter.call(forms, function(form) {
-                                        //         form.addEventListener('submit', function(event) {
-                                        //             if (!form.checkValidity()) {
-                                        //                 form.querySelector(".form-control:invalid").focus();
-                                        //                 event.preventDefault()
-                                        //                 event.stopPropagation()
-                                        //             } else {
-                                        //                 console.warn('Valid form', form.attr('action'));
-                                        //                 $.ajax({
-                                        //                     type: "POST",
-                                        //                     url: form.attr('action'),
-                                        //                     datatype: "json",
-                                        //                     data: form.serialize(),
-                                        //                     success: function(response) {
-                                        //                         if (response.success) {
-
-                                        //                             Swal.fire({
-                                        //                                 type: 'success',
-                                        //                                 title: 'Register Berhasil!',
-                                        //                                 text: 'silahkan login!'
-                                        //                             });
-
-                                        //                             $("#nama_lengkap").val('');
-                                        //                             $("#email").val('');
-                                        //                             $("#password").val('');
-
-                                        //                         } else {
-
-                                        //                             Swal.fire({
-                                        //                                 type: 'error',
-                                        //                                 title: 'Register Gagal!',
-                                        //                                 text: 'silahkan coba lagi!'
-                                        //                             });
-
-                                        //                         }
-                                        //                     }
-                                        //                 });
-
-                                        //             }
-                                        //             form.classList.add('was-validated');
-                                        //         }, false);
-                                        //     });
-                                        // }, false);
                                     })();
                                 </script>
                             </form>
