@@ -7,9 +7,9 @@
     <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <title>Cuba - Premium Admin Template</title>
+    <link rel="icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon">
+    <title>SIMRSOJ</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
@@ -38,7 +38,7 @@
       <div class="landing-home">
         <div class="container-fluid">
           <div class="sticky-header">
-            <header>                       
+            <header>
               <nav class="navbar navbar-b navbar-dark navbar-trans navbar-expand-xl fixed-top nav-padding" id="sidebar-menu"><a class="navbar-brand p-0" href="#"><img class="img-fluid" src="{{ asset('assets/images/landing/landing_logo.png') }}" alt=""></a>
                 <button class="navbar-toggler navabr_btn-set custom_nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
                 <div class="navbar-collapse justify-content-center collapse hidenav" id="navbarDefault">
@@ -71,7 +71,7 @@
         </div>
       </div>
       <section class="section-space premium-wrap">
-        <div class="container"> 
+        <div class="container">
           <ul class="decoration">
             <li class="flower-gif">
               <div class="mesh-loader">
@@ -92,7 +92,7 @@
             </li>
           </ul>
           <div class="row justify-content-center">
-            <div class="col-sm-12"> 
+            <div class="col-sm-12">
               <div class="landing-title">
                 <h5 class="sub-title">Faster, Lighter & Dev. Friendly</h5>
                 <h2> <span class="gradient-1">Benefits </span>of cuba</h2>
@@ -168,7 +168,7 @@
           <div class="row demo-imgs g-xl-5 g-sm-3">
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -198,7 +198,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -228,7 +228,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -258,7 +258,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -288,7 +288,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -318,7 +318,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -348,7 +348,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -378,7 +378,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -408,7 +408,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -438,7 +438,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -468,7 +468,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -498,7 +498,7 @@
             </div>
             <div class="col-xl-4 col-md-6 demo-content">
               <div class="cuba-demo-img">
-                <ul class="dot-group"> 
+                <ul class="dot-group">
                   <li></li>
                   <li></li>
                   <li></li>
@@ -529,13 +529,13 @@
           </div>
         </div>
       </section>
-      <section class="section-space customer-support"> 
-        <div class="container"> 
+      <section class="section-space customer-support">
+        <div class="container">
           <ul class="decoration d-sm-block d-none">
             <li class="round-gif"><img src="{{ asset('assets/images/landing/gifs/5.gif') }}" alt=""></li>
           </ul>
-          <div class="row justify-content-center"> 
-            <div class="col-sm-12"> 
+          <div class="row justify-content-center">
+            <div class="col-sm-12">
               <div class="landing-title text-center">
                 <div class="rating-title gap-2"><img class="decore-1" src="{{ asset('assets/images/landing/decore/arrow-3.svg') }}" alt="">
                   <ul class="d-flex ratings gap-1">
@@ -586,16 +586,16 @@
           </div>
         </div>
       </section>
-      <section class="customization-wrap"> 
-        <div class="container"> 
-          <div class="row"> 
-            <div class="col-lg-6"> 
+      <section class="customization-wrap">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
               <div class="landing-title text-start">
                 <h5 class="sub-title">Theme Customization</h5>
                 <h2> <span class="gradient-3">Real-time </span>customization & preview</h2>
                 <p class="m-0">The live customizer offers everything you need to customize.there is no coding required.</p>
               </div>
-              <div class="customization-accordion"> 
+              <div class="customization-accordion">
                 <div class="accordion" id="accordionExample">
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
@@ -625,7 +625,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-lg-6"> 
+            <div class="col-lg-6">
               <div class="customization-img"> <img class="img-fluid" src="{{ asset('assets/images/landing/customiztion.svg') }}" alt=""></div>
             </div>
           </div>
@@ -651,8 +651,8 @@
             </div>
           </div>
           <div class="row g-4">
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-1"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-1">
                 <h6><span class="app-title">Social App</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -664,8 +664,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-2"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-2">
                 <h6><span class="app-title">knowledgebase</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -677,8 +677,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-3"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-3">
                 <h6><span class="app-title">kanban</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -690,8 +690,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-4"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-4">
                 <h6><span class="app-title">Ecommerce</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -703,8 +703,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-5"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-5">
                 <h6><span class="app-title">Chat</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -716,8 +716,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-xl-4 col-md-6"> 
-              <div class="app-box app-bg-6"> 
+            <div class="col-xl-4 col-md-6">
+              <div class="app-box app-bg-6">
                 <h6><span class="app-title">File manager</span><span class="line"></span></h6>
                 <div class="app-image">
                   <ul class="dot-group">
@@ -731,16 +731,16 @@
             </div>
           </div>
         </div>
-        <marquee class="text-marqee" direction="left"> 
+        <marquee class="text-marqee" direction="left">
           <h2 class="big-title">Faster, Lighter & Friendly </h2>
         </marquee>
       </section>
-      <section class="section-space feature-section pt-0"> 
+      <section class="section-space feature-section pt-0">
         <ul class="decoration">
           <li class="round-gif"><img src="{{ asset('assets/images/landing/gifs/5.gif') }}" alt=""></li>
         </ul>
         <div class="container">
-          <div class="row"> 
+          <div class="row">
             <div class="col-sm-12 wow pulse">
               <div class="landing-title">
                 <h5 class="sub-title">Why you choose Cuba</h5>
@@ -751,57 +751,57 @@
               <div class="vector-image"> <img src="{{ asset('assets/images/landing/vectors/2.svg') }}" alt="vector women"></div>
             </div>
           </div>
-          <div class="row g-4"> 
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+          <div class="row g-4">
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-1">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/1.svg') }}" alt=""></div>
                 <h5>Quality & Clean Code</h5>
                 <p class="mb-0 f-light">All you need to know of using clean code as a manager to make your team and your software awesome. </p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-2">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/2.svg') }}" alt=""></div>
                 <h5>Bootstrap v5.0</h5>
                 <p class="mb-0 f-light">Bootstrap is a complete CSS framework.Bootstrap is built on responsive 12-column grids, layouts, and components</p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-3">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/3.svg') }}" alt=""></div>
                 <h5>Handmade Icons</h5>
                 <p class="mb-0 f-light">Let's learn how to use our own SVG icons in cuba admin template.Icon System with SVG Sprites</p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-4">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/4.svg') }}" alt=""></div>
                 <h5>Limitless Components</h5>
                 <p class="mb-0 f-light">The limitless layout collection and UI kit library is the biggest collection of layouts for web design</p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-5">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/5.svg') }}" alt=""></div>
                 <h5>Easy Customizable</h5>
                 <p class="mb-0 f-light">Easy Step-By-Step Guide for Beginners.customize your layout, settings and content</p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-6">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/6.svg') }}" alt=""></div>
                 <h5>Responsive & User-Friendly</h5>
                 <p class="mb-0 f-light">Use Responsive Design to Connect with all Device Users </p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-7">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/7.svg') }}" alt=""></div>
                 <h5>Premium Support</h5>
                 <p class="mb-0 f-light">We are always be their for your support and you are facing some issues you can create ticket.</p>
               </div>
             </div>
-            <div class="col-xxl-3 col-lg-4 col-sm-6"> 
+            <div class="col-xxl-3 col-lg-4 col-sm-6">
               <div class="feature-box common-card bg-feature-8">
                 <div class="feature-icon"> <img src="{{ asset('assets/images/landing/feature-icon/8.svg') }}" alt=""></div>
                 <h5>Colors Options</h5>
@@ -811,25 +811,25 @@
           </div>
         </div>
       </section>
-      <section class="build-section"> 
+      <section class="build-section">
         <div class="container">
           <ul class="decoration">
             <li class="loader-gif"><span class="loader-1"> </span></li>
           </ul>
-          <div class="row"> 
-            <div class="col-sm-12 wow pulse"> 
+          <div class="row">
+            <div class="col-sm-12 wow pulse">
               <div class="landing-title text-start">
                 <h2>Build stunning and powerful landing page with <span class="gradient-6">customizable and easy </span>to understand.</h2><img class="title-img d-sm-block d-none" src="{{ asset('assets/images/landing/decore/arrow-4.svg') }}" alt="">
                 <h4 class="d-sm-block d-none sub-title rotate-title mb-0">The Biggest template Collection Ever Build.</h4>
               </div>
             </div>
           </div>
-          <div class="row g-4"> 
-            <div class="col-md-6"> 
+          <div class="row g-4">
+            <div class="col-md-6">
               <div class="build-image"> <img src="{{ asset('assets/images/landing/sale.png') }}" alt=""></div>
             </div>
-            <div class="col-md-6"> 
-              <div class="build-content text-end"> 
+            <div class="col-md-6">
+              <div class="build-content text-end">
                 <p class="f-light mb-0">Create unique combinations using a variety of section blocks from the ultimate collection of design created by world-class designers.import a pre-built section block with a single click or save your own custom block to reuse on other pages.</p>
               </div>
             </div>
@@ -846,15 +846,15 @@
               </svg>
             </li>
           </ul>
-          <div class="row"> 
-            <div class="col-sm-12"> 
+          <div class="row">
+            <div class="col-sm-12">
               <div class="landing-title">
                 <h5 class="sub-title">10+ frameworks available</h5>
                 <h2>Latest Updates in <span class="gradient-7">All Frameworks</span></h2>
                 <p>Html, Vue, Angular, React, Django, Laravel , Nodejs , Codeigniter , Flask, PHP all this versions available in cuba admin template</p>
               </div>
             </div>
-            <div class="col-sm-12"> 
+            <div class="col-sm-12">
               <ul class="nav nav-tabs frame-tab" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                   <button class="nav-link active" id="html-tab" data-bs-toggle="tab" data-bs-target="#html" type="button" role="tab" aria-controls="html" aria-selected="true"><img src="{{ asset('assets/images/landing/icon/html/html.png') }}" alt=""><span>HTML</span></button>
@@ -890,19 +890,19 @@
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="html" role="tabpanel" aria-labelledby="html-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/sass.png') }}" alt=""></div>
                         <div class="frame-details">
                           <h5>SCSS</h5>
                           <p class="f-light">
-                            The superset CSS makes it simple to develop and usefulness 
+                            The superset CSS makes it simple to develop and usefulness
                             with variables, selectors, and nesting.
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/bootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -912,7 +912,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/pug.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -922,7 +922,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/npm.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -931,7 +931,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/gulp.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -940,19 +940,19 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/forms.png') }}" alt=""></div>
                         <div class="frame-details">
                           <h5>Form</h5>
                           <p class="f-light">
-                            To facilitate form access and modification, the fields and field labels are 
+                            To facilitate form access and modification, the fields and field labels are
                             logically arranged.
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/6.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -962,7 +962,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/7.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -972,7 +972,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/8.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -982,7 +982,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -992,7 +992,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/10.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1001,7 +1001,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/iconset.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1010,7 +1010,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/layout.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1019,7 +1019,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/uikits.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1032,7 +1032,7 @@
                 </div>
                 <div class="tab-pane fade" id="react" role="tabpanel" aria-labelledby="react-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/hook.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1041,7 +1041,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/reactstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1050,7 +1050,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/noquery.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1059,7 +1059,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/redux.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1068,7 +1068,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/firebase.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1077,7 +1077,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/crud.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1086,7 +1086,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/chat.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1095,7 +1095,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/animation.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1104,7 +1104,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/props_state.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1113,7 +1113,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/reactrouter.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1122,7 +1122,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/chart.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1131,7 +1131,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/map.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1140,7 +1140,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/gallery.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1149,7 +1149,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/application.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1162,7 +1162,7 @@
                 </div>
                 <div class="tab-pane fade" id="angular" role="tabpanel" aria-labelledby="angular-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/sass.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1171,7 +1171,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/2.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1180,7 +1180,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/4.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1189,7 +1189,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/5.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1198,7 +1198,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/6.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1207,7 +1207,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/7.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1216,7 +1216,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/8.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1225,7 +1225,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/9.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1234,7 +1234,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/10.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1243,7 +1243,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/11.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1252,7 +1252,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/12.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1261,7 +1261,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/13.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1270,7 +1270,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/14.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1283,7 +1283,7 @@
                 </div>
                 <div class="tab-pane fade" id="vue" role="tabpanel" aria-labelledby="vue-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/firebase.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1292,7 +1292,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/nojquery.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1301,7 +1301,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vuebootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1310,7 +1310,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vuex.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1319,7 +1319,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/chart.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1328,7 +1328,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vueswiper.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1337,7 +1337,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vuerouter.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1346,7 +1346,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vuemasonary.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1355,7 +1355,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/vuecli.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1364,7 +1364,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/animation.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1373,7 +1373,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/rangeslider.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1382,7 +1382,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/rtlsupport.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1395,7 +1395,7 @@
                 </div>
                 <div class="tab-pane fade" id="laravel" role="tabpanel" aria-labelledby="laravel-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/laravel/laravel.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1404,7 +1404,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/bootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1414,7 +1414,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/laravel/blade.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1423,19 +1423,19 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/forms.png') }}" alt=""></div>
                         <div class="frame-details">
                           <h5>Form</h5>
                           <p class="f-light">
-                            To facilitate form access and modification, the fields and field labels are 
+                            To facilitate form access and modification, the fields and field labels are
                             logically arranged.
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/6.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1445,7 +1445,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/7.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1455,7 +1455,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/8.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1465,7 +1465,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1475,7 +1475,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/10.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1484,7 +1484,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/iconset.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1493,7 +1493,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/layout.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1502,7 +1502,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/uikits.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1515,7 +1515,7 @@
                 </div>
                 <div class="tab-pane fade" id="django" role="tabpanel" aria-labelledby="django-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/django.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1524,7 +1524,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/bootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1533,7 +1533,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/css.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1542,7 +1542,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/sass.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1551,7 +1551,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/kit.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1560,7 +1560,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/uikits.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1569,7 +1569,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/layout.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1578,7 +1578,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/builders.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1587,7 +1587,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/iconset.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1596,7 +1596,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/forms.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1605,7 +1605,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/table.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1614,7 +1614,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1627,7 +1627,7 @@
                 </div>
                 <div class="tab-pane fade" id="flask" role="tabpanel" aria-labelledby="flask-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/flask/flask.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1636,7 +1636,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/bootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1645,7 +1645,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/css.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1654,7 +1654,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/sass.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1663,7 +1663,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/uikits.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1672,7 +1672,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/kit.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1681,7 +1681,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/layout.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1690,7 +1690,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/builders.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1699,7 +1699,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/iconset.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1708,7 +1708,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/forms.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1717,7 +1717,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/table.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1726,7 +1726,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1739,7 +1739,7 @@
                 </div>
                 <div class="tab-pane fade" id="nodejs" role="tabpanel" aria-labelledby="nodejs-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/stroke-icon/10.svg') }}" alt=""></div>
                         <div class="frame-details">
@@ -1748,7 +1748,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/node/1.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1757,7 +1757,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/nojquery.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1766,7 +1766,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/14.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1775,7 +1775,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/chart.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1784,7 +1784,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/map.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1793,7 +1793,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/gallery.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1802,7 +1802,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/react/application.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1811,7 +1811,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/node/2.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1820,7 +1820,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/node/2.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1829,7 +1829,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/4.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1842,7 +1842,7 @@
                 </div>
                 <div class="tab-pane fade" id="svelte" role="tabpanel" aria-labelledby="svelte-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/kit.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1851,7 +1851,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/forms.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1860,7 +1860,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/table.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1869,7 +1869,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/vue/chart.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1878,7 +1878,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/4.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1887,7 +1887,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/table.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1896,7 +1896,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/svelte/1.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1905,7 +1905,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/svelte/2.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1914,7 +1914,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1923,7 +1923,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/django/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1936,7 +1936,7 @@
                 </div>
                 <div class="tab-pane fade" id="php" role="tabpanel" aria-labelledby="php-tab">
                   <div class="row g-xxl-5 g-4">
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/stroke-icon/8.svg') }}" alt=""></div>
                         <div class="frame-details">
@@ -1945,7 +1945,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/bootstrap.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1955,19 +1955,19 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/forms.png') }}" alt=""></div>
                         <div class="frame-details">
                           <h5>Form</h5>
                           <p class="f-light">
-                            To facilitate form access and modification, the fields and field labels are 
+                            To facilitate form access and modification, the fields and field labels are
                             logically arranged.
                           </p>
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/6.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1977,7 +1977,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/7.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1987,7 +1987,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/8.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -1997,7 +1997,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/apps.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -2007,7 +2007,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/angular/10.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -2016,7 +2016,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/iconset.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -2025,7 +2025,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/layout.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -2034,7 +2034,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="col-xxl-4 col-md-6"> 
+                    <div class="col-xxl-4 col-md-6">
                       <div class="framework-box">
                         <div class="frame-icon"> <img src="{{ asset('assets/images/landing/icon/html/uikits.png') }}" alt=""></div>
                         <div class="frame-details">
@@ -2076,7 +2076,7 @@
                   <h5 class="sub-title">Usable Components</h5>
                   <h2><span class="gradient-8">UI components </span>is first class</h2>
                   <p>
-                    The UI components will facilitate you in developing the most user-friendly, 
+                    The UI components will facilitate you in developing the most user-friendly,
                     interactive websites and applications with cutting-edge design features.
                   </p>
                 </div>
@@ -2256,7 +2256,7 @@
                 <h5 class="sub-title">Our cards</h5>
                 <h2>Introducing Our <span class="gradient-9">Cards collections</span></h2>
                 <p>
-                  Utilise the adaptable and practical templates to make your web application 
+                  Utilise the adaptable and practical templates to make your web application
                   outstanding and more creative that provides you a competitive advantage.
                 </p>
               </div>
@@ -2275,9 +2275,9 @@
         </div>
       </section>
       <section class="section-space document-section feature-section pt-0" id="documentation">
-        <div class="container"> 
-          <div class="row"> 
-            <div class="col-sm-12 wow pulse"> 
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 wow pulse">
               <div class="landing-title">
                 <h5 class="sub-title">Our Documentation</h5>
                 <h2><span class="gradient-5">Well </span>Documented</h2>
@@ -2320,9 +2320,9 @@
         </div>
       </section>
       <div class="bottom-section-grad">
-        <section class="section-space about-section pb-0"> 
+        <section class="section-space about-section pb-0">
           <div class="container-fluid fluid-space">
-            <div class="row"> 
+            <div class="row">
               <div class="col-sm-12">
                 <div class="landing-title text-center">
                   <h5 class="sub-title">Best Customer Feedback</h5>
@@ -2330,10 +2330,10 @@
                   <p>we are always be there for your issues and support.if any query you can ask us on our theme supports</p>
                 </div>
               </div>
-              <div class="col-sm-12"> 
-                <div class="testimonial-slider"> 
-                  <div class="testimonial-box common-card"> 
-                    <div class="rating-content"> 
+              <div class="col-sm-12">
+                <div class="testimonial-slider">
+                  <div class="testimonial-box common-card">
+                    <div class="rating-content">
                       <ul class="d-flex ratings gap-1">
                         <li><i class="fa fa-star"></i></li>
                         <li><i class="fa fa-star"></i></li>
@@ -2345,13 +2345,13 @@
                     </div>
                     <p class="f-light">Great Template, bought two in less than a week. For this price it is ridiculous not to purchase it. Beautiful design all across. Prebuilt integration with firebase auth, light and dark theme.</p>
                     <p class="f-light">A very very good template.</p>
-                    <div class="text-end mt-2"> 
+                    <div class="text-end mt-2">
                       <h5>flucadetena</h5><span class="font-primary">CUSTOMER</span>
                     </div>
                     <div class="customer-img"><img src="{{ asset('assets/images/landing/testimonial/1.svg') }}" alt="vector men"></div>
                   </div>
-                  <div class="testimonial-box common-card"> 
-                    <div class="rating-content"> 
+                  <div class="testimonial-box common-card">
+                    <div class="rating-content">
                       <ul class="d-flex ratings gap-1">
                         <li><i class="fa fa-star"></i></li>
                         <li><i class="fa fa-star"></i></li>
@@ -2364,13 +2364,13 @@
                     <p class="f-light">I really love the Design.</p>
                     <p class="f-light"> I am using the React Option btw.</p>
                     <p class="f-light"> The Documentation is great and for 5$ you can't do anything wrong here.Its pretty easy to swap out the default design or implement a dark mode. I wish there was a tsx version(React Typescript) out of the box. But even wighout its great to work with.</p>
-                    <div class="text-end mt-2"> 
+                    <div class="text-end mt-2">
                       <h5>MenschenToaster</h5><span class="font-primary">CUSTOMER</span>
                     </div>
                     <div class="customer-img"><img src="{{ asset('assets/images/landing/testimonial/2.svg') }}" alt="vector men"></div>
                   </div>
-                  <div class="testimonial-box common-card"> 
-                    <div class="rating-content"> 
+                  <div class="testimonial-box common-card">
+                    <div class="rating-content">
                       <ul class="d-flex ratings gap-1">
                         <li><i class="fa fa-star"></i></li>
                         <li><i class="fa fa-star"></i></li>
@@ -2381,13 +2381,13 @@
                       <h6 class="mb-0">Code Quality</h6>
                     </div>
                     <p class="f-light">Design, code quality, documentation, features, and best part is easy to integrate in project. This is a great product with great support. I loved the code quality which reduced my project time.</p>
-                    <div class="text-end mt-2"> 
+                    <div class="text-end mt-2">
                       <h5>manthandesai999 </h5><span class="font-primary">CUSTOMER</span>
                     </div>
                     <div class="customer-img"><img src="{{ asset('assets/images/landing/testimonial/3.svg') }}" alt="vector women"></div>
                   </div>
-                  <div class="testimonial-box common-card"> 
-                    <div class="rating-content"> 
+                  <div class="testimonial-box common-card">
+                    <div class="rating-content">
                       <ul class="d-flex ratings gap-1">
                         <li><i class="fa fa-star"></i></li>
                         <li><i class="fa fa-star"></i></li>
@@ -2398,13 +2398,13 @@
                       <h6 class="mb-0">Code Quality</h6>
                     </div>
                     <p class="f-light">This is amazing! Seriously great job right here. Please increase price because you are simply offering this nearly for free.</p>
-                    <div class="text-end mt-2"> 
+                    <div class="text-end mt-2">
                       <h5>maidot</h5><span class="font-primary">CUSTOMER</span>
                     </div>
                     <div class="customer-img"><img src="{{ asset('assets/images/landing/testimonial/1.svg') }}" alt="vector men"></div>
                   </div>
-                  <div class="testimonial-box common-card"> 
-                    <div class="rating-content"> 
+                  <div class="testimonial-box common-card">
+                    <div class="rating-content">
                       <ul class="d-flex ratings gap-1">
                         <li><i class="fa fa-star"></i></li>
                         <li><i class="fa fa-star"></i></li>
@@ -2415,7 +2415,7 @@
                       <h6 class="mb-0">Customer Support</h6>
                     </div>
                     <p class="f-light">Customer support is excelent. whenever have problem and not uderstand their support section always helps me. and Admin panel is very nice. Thanks</p>
-                    <div class="text-end mt-2"> 
+                    <div class="text-end mt-2">
                       <h5>mahbuburriad</h5><span class="font-primary">CUSTOMER</span>
                     </div>
                     <div class="customer-img"><img src="{{ asset('assets/images/landing/testimonial/2.svg') }}" alt="vector men"></div>
@@ -2427,7 +2427,7 @@
         </section>
         <section class="faq-section section-space" id="faq">
           <div class="container">
-            <div class="row"> 
+            <div class="row">
               <div class="col-sm-12">
                 <div class="landing-title text-center">
                   <h5 class="sub-title">Frequently Ask Question</h5>
@@ -2436,7 +2436,7 @@
                 </div>
                 <div class="vector-image"> <img src="{{ asset('assets/images/landing/vectors/4.svg') }}" alt="vector women"></div>
               </div>
-              <div class="col-sm-12"> 
+              <div class="col-sm-12">
                 <div class="accordion" id="faqaccordion">
                   <div class="accordion-item">
                     <h2 class="accordion-header" id="faq1">
@@ -2444,10 +2444,10 @@
                     </h2>
                     <div class="accordion-collapse collapse show" id="faqOne" aria-labelledby="faq1" data-bs-parent="#faqaccordion">
                       <div class="accordion-body f-light">
-                        Our team will assess the industry and undertake in-depth user 
-                        research. We'll design templates and different website 
-                        demonstrations, drive engagement, and do A/B tests to determine 
-                        whether they are operating at their peak capacity. 
+                        Our team will assess the industry and undertake in-depth user
+                        research. We'll design templates and different website
+                        demonstrations, drive engagement, and do A/B tests to determine
+                        whether they are operating at their peak capacity.
                       </div>
                     </div>
                   </div>
@@ -2457,9 +2457,9 @@
                     </h2>
                     <div class="accordion-collapse collapse" id="faqTwo" aria-labelledby="faq2" data-bs-parent="#faqaccordion">
                       <div class="accordion-body f-light">
-                        Well, it certainly depends on what the clients want, therefore we 
-                        really pay close attention to what the "X Factor" is that the 
-                        customer or company needs to distinguish itself from the  
+                        Well, it certainly depends on what the clients want, therefore we
+                        really pay close attention to what the "X Factor" is that the
+                        customer or company needs to distinguish itself from the
                         competition.
                       </div>
                     </div>
@@ -2470,9 +2470,9 @@
                     </h2>
                     <div class="accordion-collapse collapse" id="faqThree" aria-labelledby="faq3" data-bs-parent="#faqaccordion">
                       <div class="accordion-body f-light">
-                        The pricing is the entire sum that you will have to pay. There are 
-                        no setup fees, cancellation fees, or other extra or hidden costs. 
-                        Everything you need to pay for, including all taxes, is included in 
+                        The pricing is the entire sum that you will have to pay. There are
+                        no setup fees, cancellation fees, or other extra or hidden costs.
+                        Everything you need to pay for, including all taxes, is included in
                         the package.
                       </div>
                     </div>
@@ -2510,19 +2510,19 @@
                   <h5 class="sub-title">Our license</h5>
                   <h2>Take a Look at Our <span class="gradient-12">Engagement Models</span></h2>
                   <p class="mx-0">
-                    We've made it simple for customers to get in touch with us and get their 
-                    solutions woven. We definitely make sure to present ourselves in the best light 
+                    We've made it simple for customers to get in touch with us and get their
+                    solutions woven. We definitely make sure to present ourselves in the best light
                     and provide the most value for the money.
                   </p>
                 </div>
               </div>
-              <div class="col-lg-7"> 
+              <div class="col-lg-7">
                 <div class="row g-3">
-                  <div class="col-sm-6"> 
-                    <div class="pricing-box"> 
+                  <div class="col-sm-6">
+                    <div class="pricing-box">
                       <h4>Regular License</h4>
                       <p>Use by you in a single product where user <span class="font-primary">are not charged.</span></p>
-                      <ul class="license-list"> 
+                      <ul class="license-list">
                         <li> <img src="{{ asset('assets/images/landing/icon/right.svg') }}" alt="Right icon">
                           <h6 class="f-light">Support for 6 months</h6>
                         </li>
@@ -2538,8 +2538,8 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-6"> 
-                    <div class="pricing-box"> 
+                  <div class="col-sm-6">
+                    <div class="pricing-box">
                       <h4>Extended License</h4>
                       <p>Use by you in a single product where user <span class="font-primary">are charged.</span></p>
                       <ul class="license-list">
@@ -2568,14 +2568,14 @@
         <div class="container">
           <div class="landing-center ptb50">
             <div class="feature-content">
-              <ul> 
-                <li> 
+              <ul>
+                <li>
                   <h4>Trending Template</h4><img src="{{ asset('assets/images/landing/feature-img.png') }}" alt="leaf golden">
                 </li>
-                <li> 
+                <li>
                   <h4>Overall Best rated Template</h4><img src="{{ asset('assets/images/landing/feature-img.png') }}" alt="leaf golden">
                 </li>
-                <li> 
+                <li>
                   <h4>Weekly Best Seller</h4><img src="{{ asset('assets/images/landing/feature-img.png') }}" alt="leaf golden">
                 </li>
               </ul>
@@ -2599,12 +2599,12 @@
             </div>
           </div>
           <div class="sub-footer row g-2">
-            <div class="col-md-6"> 
+            <div class="col-md-6">
               <h6 class="mb-0">Copyright © 2022 Cuba, All rights reserved.</h6>
             </div>
-            <div class="col-md-6"> 
-              <ul> 
-                <li> 
+            <div class="col-md-6">
+              <ul>
+                <li>
                   <h6 class="mb-0">Find us on</h6>
                 </li>
                 <li> <a href="https://www.facebook.com/"><i class="fa fa-facebook-square"></i></a></li>

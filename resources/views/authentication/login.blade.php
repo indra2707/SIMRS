@@ -15,10 +15,14 @@
             <div class="col-xl-7 p-0">
                 <div class="login-card">
                     <div>
-                        <div><a class="logo text-start" href="{{ route('admin.login') }}"><img class="img-fluid for-light"
-                                    src="{{ asset('assets/images/logo/logo.png') }}" alt="looginpage"><img
-                                    class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}"
-                                    alt="looginpage"></a></div>
+                        <div>
+                            <a class="logo text-start" href="{{ route('admin.login') }}">
+                                <img class="img-fluid for-light" src="{{ asset('assets/images/logo/logo.png') }}"
+                                    alt="looginpage">
+                                <img class="img-fluid for-dark" src="{{ asset('assets/images/logo/logo_dark.png') }}"
+                                    alt="looginpage">
+                            </a>
+                        </div>
                         <div class="login-main">
                             <form class="theme-form needs-validation" novalidate="" autocomplete="off">
                                 @csrf
@@ -79,7 +83,6 @@
                                                                     window.location.href =
                                                                         "{{ route('home') }}";
                                                                 } else {
-                                                                    console.warn(res, status, xhr);
                                                                     swal({
                                                                         icon: 'warning',
                                                                         title: 'Warning',
@@ -95,7 +98,7 @@
                                                                         title: error,
                                                                         text: xhr.responseJSON.message,
                                                                     });
-                                                                }else if (xhr.status == 500) {
+                                                                } else if (xhr.status == 500) {
                                                                     swal({
                                                                         icon: 'error',
                                                                         title: error,

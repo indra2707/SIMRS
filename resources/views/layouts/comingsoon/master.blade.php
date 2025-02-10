@@ -7,11 +7,11 @@
     <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
-    <title>Cuba - Premium Admin Template @yield('title')</title>
+    <link rel="icon" href="{{asset('assets/images/ihc/app-100-logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('assets/images/ihc/app-100-logo.png')}}" type="image/x-icon">
+    <title>SIMRSOJ @yield('title')</title>
 	@include('layouts.comingsoon.css')
-	@yield('style')    
+	@yield('style')
   </head>
   <body>
     <!-- Loader starts-->
@@ -27,8 +27,8 @@
     </div>
     <!-- Loader ends-->
     <!-- page-wrapper Start-->
-    @yield('content')    
+    @yield('content')
     <!-- latest jquery-->
-    @include('layouts.comingsoon.script') 
+    @include('layouts.comingsoon.script')
   </body>
 </html>

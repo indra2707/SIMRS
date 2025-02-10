@@ -10,9 +10,9 @@
     <meta name="keywords"
         content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon') }}">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon') }}">
-    <title>Cuba - Premium Admin Template</title>
+    <link rel="icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon') }}">
+    <title>SIMRSOJ</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap"
         rel="stylesheet">

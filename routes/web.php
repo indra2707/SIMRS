@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
@@ -21,6 +23,18 @@ Route::group(['middleware' => 'loggedin'], function () {
     })->name('/');
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/user', [UserController::class, 'index'])->name('admin.user');
+
+    Route::prefix('master-data')->group(function () {
+        // ICD-9
+        Route::get('/icd-9', [Icd9Controller::class, 'index'])->name('master-data.icd-9');
+        Route::get('/icd-9/view', [Icd9Controller::class, 'views'])->name('master-data.icd-9.view');
+        Route::post('/icd-9/store', [Icd9Controller::class, 'store'])->name('master-data.icd-9.create');
+        Route::post('/icd-9/update-status/{id}', [Icd9Controller::class, 'updateStatus'])->name('master-data.icd-9.update-status');
+        Route::put('/icd-9/update/{id}', [Icd9Controller::class, 'update'])->name('master-data.icd-9.update');
+        Route::delete('/icd-9/delete/{id}', [Icd9Controller::class, 'destroy'])->name('master-data.icd-9.delete');
+        // ICD-10
+    });
 });
 
 

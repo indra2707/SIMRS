@@ -7,9 +7,9 @@
     <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" type="image/x-icon">
-    <title>Cuba - Premium Admin Template</title>
+    <link rel="icon" href="{{asset('assets/images/ihc/app-100-logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('assets/images/ihc/app-100-logo.png')}}" type="image/x-icon">
+    <title>SIMRSOJ</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
@@ -371,7 +371,7 @@
             </ul>
           </div>
           <script class="result-template" type="text/x-handlebars-template">
-            <div class="ProfileCard u-cf">                        
+            <div class="ProfileCard u-cf">
             <div class="ProfileCard-avatar"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-airplay m-0"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"></path><polygon points="12 15 17 21 7 21 12 15"></polygon></svg></div>
             <div class="ProfileCard-details">
             <div class="ProfileCard-realName">@{{name}}</div>
@@ -461,7 +461,7 @@
                       <i data-feather="git-pull-request"> </i><span>{{ trans('lang.File manager') }}</span>
                     </a>
                   </li>
-                  <li class="sidebar-list">  
+                  <li class="sidebar-list">
                     <label class="badge badge-info">{{ trans('lang.Latest') }}</label>
                     <a class="sidebar-link sidebar-title link-nav {{ Route::currentRouteName()=='kanban' ? 'active' : '' }}" href="{{route('kanban')}}">
                       <i data-feather="monitor"> </i><span>{{ trans('lang.Kanban Board') }}</span>
@@ -649,7 +649,7 @@
                       <li><a href="{{route('popover')}}" class="{{ Route::currentRouteName()=='popover' ? 'active' : '' }}">Popover</a></li>
                       <li><a href="{{route('tooltip')}}" class="{{ Route::currentRouteName()=='tooltip' ? 'active' : '' }}">Tooltip</a></li>
                       <li><a href="{{route('loader')}}" class="{{ Route::currentRouteName()=='loader' ? 'active' : '' }}">Spinners</a></li>
-                      <li><a href="{{route('dropdown')}}" class="{{ Route::currentRouteName()=='dropdown' ? 'active' : '' }}">Dropdown</a></li>  
+                      <li><a href="{{route('dropdown')}}" class="{{ Route::currentRouteName()=='dropdown' ? 'active' : '' }}">Dropdown</a></li>
                       <li><a href="{{route('accordion')}}" class="{{ Route::currentRouteName()=='accordion' ? 'active' : '' }}">Accordion</a></li>
                       <li>
                         <a class="submenu-title {{ in_array(Route::currentRouteName(), ['tab-bootstrap','tab-material']) ? 'active' : '' }}" href="#">Tabs
@@ -754,7 +754,7 @@
                     <a class="sidebar-link sidebar-title {{request()->route()->getPrefix() == '/charts' ? 'active' : '' }}" href="#"><i data-feather="bar-chart"></i><span>{{ trans('lang.Charts') }}</span>
                       <div class="according-menu"><i class="fa fa-angle-{{request()->route()->getPrefix() == '/charts' ? 'down' : 'right' }}"></i></div>
                     </a>
-                    <ul class="sidebar-submenu" style="display: {{ request()->route()->getPrefix() == '/charts' ? 'block;' : 'none;' }}"> 
+                    <ul class="sidebar-submenu" style="display: {{ request()->route()->getPrefix() == '/charts' ? 'block;' : 'none;' }}">
                       <li><a href="{{route('echarts')}}" class="{{ Route::currentRouteName()=='echarts' ? 'active' : '' }}">Echarts</a></li>
                       <li><a href="{{route('chart-apex')}}" class="{{ Route::currentRouteName()=='chart-apex' ? 'active' : '' }}">Apex Chart</a></li>
                                 <li><a href="{{route('chart-google')}}" class="{{ Route::currentRouteName()=='chart-google' ? 'active' : '' }}">Google Chart</a></li>
@@ -804,7 +804,7 @@
                             <div class="link-section">
                               <div class="submenu-title">
                                 <h5> Authentication</h5>
-                                <div class="according-menu"><i class="fa fa-angle-{{ in_array(Route::currentRouteName(), ['login', 'login-one', 'login-two', 'login-bs-validation', 'login-bs-tt-validation', 'login-sa-validation', 'sign-up', 'sign-up-one', 'sign-up-two', 'sign-up-wizard', 'unlock', 'forget-password', 'reset-password', 'maintenance']) ? 'down' : 'right' }}"></i></div>     
+                                <div class="according-menu"><i class="fa fa-angle-{{ in_array(Route::currentRouteName(), ['login', 'login-one', 'login-two', 'login-bs-validation', 'login-bs-tt-validation', 'login-sa-validation', 'sign-up', 'sign-up-one', 'sign-up-two', 'sign-up-wizard', 'unlock', 'forget-password', 'reset-password', 'maintenance']) ? 'down' : 'right' }}"></i></div>
                               </div>
                               <ul class="submenu-content opensubmegamenu" style="display: {{ in_array(Route::currentRouteName(), ['login', 'login-one', 'login-two', 'login-bs-validation', 'login-bs-tt-validation', 'login-sa-validation', 'sign-up', 'sign-up-one', 'sign-up-two', 'sign-up-wizard', 'unlock', 'forget-password', 'reset-password', 'maintenance']) ? 'block;' : 'none;' }}">
                                 <li><a href="{{route('login')}}" target="_blank">Login Simple</a></li>
@@ -982,7 +982,7 @@
                       <pre><code class="language-html" id="example-head">&lt;!-- Cod Box Copy begin --&gt;
 &lt;div class=&quot;card-body&quot;&gt;
 &lt;span&gt;Start Here&lt;/span&gt;
-&lt;/div&gt;    
+&lt;/div&gt;
 &lt;!-- Cod Box Copy end --&gt;</code></pre>
                     </div>
                   </div>
@@ -1030,7 +1030,7 @@
     <script src="{{asset('assets/js/script.js')}}"></script>
     <script src="{{asset('assets/js/theme-customizer/customizer.js')}}"></script>
     <!-- Plugin used-->
-    <script type="text/javascript"> 
+    <script type="text/javascript">
         localStorage.clear();
         $(".page-wrapper").attr("class", "page-wrapper compact-wrapper");
         localStorage.setItem('page-wrapper', 'compact-wrapper');

@@ -7,9 +7,9 @@
     <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <title>Cuba - Premium Admin Template</title>
+    <link rel="icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/ihc/app-100-logo.png') }}" type="image/x-icon">
+    <title>SIMRSOJ</title>
     <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -57,7 +57,7 @@
                     <table style="width: 650px; margin: 0 auto; background-color: #fff; border-radius: 8px">
                       <tbody>
                         <tr>
-                          <td style="padding: 30px"> 
+                          <td style="padding: 30px">
                             <p>Hi There,</p>
                             <p>Sometimes you just want to send a simple HTML email with a simple design and clear call to action.</p>
                             <div class="text-center"><a href="#" style="padding: 10px; background-color: #7366ff; color: #fff; display: inline-block; border-radius: 4px; margin-bottom: 18px">Call To Action </a></div>
@@ -68,9 +68,9 @@
                       </tbody>
                     </table>
                     <table style="width: 650px; margin: 0 auto; margin-top: 30px">
-                      <tbody>       
+                      <tbody>
                         <tr style="text-align: center">
-                          <td> 
+                          <td>
                             <p style="color: #999; margin-bottom: 0">333 Woodland Rd. Baldwinsville, NY 13027</p>
                             <p style="color: #999; margin-bottom: 0">Don't Like These Emails?<a href="#" style="color: #7366ff">Unsubscribe</a></p>
                             <p style="color: #999; margin-bottom: 0">Powered By Cuba Admin</p>
