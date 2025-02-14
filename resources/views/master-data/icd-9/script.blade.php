@@ -46,7 +46,7 @@
                     },
                     success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            swal({
+                            Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
                                 text: res.message,
@@ -56,7 +56,7 @@
                             $('#form-modal').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
-                            swal({
+                            Swal.fire({
                                 icon: 'warning',
                                 title: 'Warning',
                                 text: res.message,
@@ -67,13 +67,13 @@
                     error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             var errors = xhr.responseJSON.errors;
-                            swal({
+                            Swal.fire({
                                 icon: 'error',
                                 title: error,
                                 text: xhr.responseJSON.message,
                             });
                         } else if (xhr.status == 500) {
-                            swal({
+                            Swal.fire({
                                 icon: 'error',
                                 title: error,
                                 text: "Silahkan hubungi administrator!",
@@ -152,7 +152,7 @@
                         return [
                             '<div class="media-body text-end">',
                             '<label class="switch">',
-                            '<input type="checkbox" class="update-status" ' + (row.status == 1 ? 'checked' : '') + '>',
+                            '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
                             '<span class="switch-state"></span>',
                             '</label>',
                             '</div>'
@@ -174,13 +174,13 @@
             error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
-                    swal({
+                    Swal.fire({
                         icon: 'error',
                         title: error,
                         text: xhr.responseJSON.message,
                     });
                 } else if (xhr.status == 500) {
-                    swal({
+                    Swal.fire({
                         icon: 'error',
                         title: error,
                         text: "Silahkan hubungi administrator!",
@@ -281,7 +281,7 @@
                 },
                 success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        swal({
+                        Swal.fire({
                             icon: 'success',
                             title: 'Success',
                             text: res.message,
@@ -289,7 +289,7 @@
                             timer: 2000
                         });
                     } else {
-                        swal({
+                        Swal.fire({
                             icon: 'warning',
                             title: 'Warning',
                             text: res.message,
@@ -300,13 +300,13 @@
                 error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
-                        swal({
+                        Swal.fire({
                             icon: 'error',
                             title: error,
                             text: xhr.responseJSON.message,
                         });
                     } else if (xhr.status == 500) {
-                        swal({
+                        Swal.fire({
                             icon: 'error',
                             title: error,
                             text: "Silahkan hubungi administrator!",
