@@ -4,6 +4,7 @@
 
     // Open Modal
     $(document).on('click', '.add-btn', function () {
+        $('.form-icd9').remove('was-validated');
         $('#form-modal').modal('show');
         $('.modal-title').text('Form Tambah ICD-9');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
