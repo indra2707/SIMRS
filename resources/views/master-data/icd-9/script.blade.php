@@ -102,8 +102,6 @@
             showColumns: true,
             showPaginationSwitch: true,
             showToggle: true,
-            showExport: true,
-            showPaginationSwitch: true,
             pagination: true,
             pageSize: 10,
             pageList: [10, 20, 35, 50, 100, 'all'],
