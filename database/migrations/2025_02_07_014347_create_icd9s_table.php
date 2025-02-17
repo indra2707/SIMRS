@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->char('kode', 50)->unique();
             $table->string('nama', 100);
-            $table->string('kelas', 20);
             $table->enum('status', ['0', '1'])->default('1');
             $table->timestamps();
         });

@@ -4,6 +4,13 @@
 <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <!-- Bootstrap Table js-->
 <script src="{{ asset('assets/bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
+{{-- <script src="{{ asset('assets/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap-table/dist/extensions/fixed-header/bootstrap-table-fixed-header.min.js') }}"></script>
+<script src="{{ asset('assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js') }}"></script> --}}
+<script src="{{ asset('assets/tableExport.jquery.plugin/tableExport.min.js') }}"></script>
+<script src="{{ asset('assets/tableExport.jquery.plugin/libs/jsPDF/jspdf.umd.min.js') }}"></script>
 
 <!-- feather icon js-->
 <script src="{{ asset('assets/js/icons/feather-icon/feather.min.js') }}"></script>
