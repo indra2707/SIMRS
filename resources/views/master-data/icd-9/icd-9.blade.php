@@ -35,7 +35,7 @@
                                 <table id="table_icd9" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary f-w-600 text-bold text-uppercase text-center">
                                         <tr>
-                                            <th scope="col">No</th>
+                                            {{-- <th scope="col">No</th> --}}
                                             <th scope="col">Kode</th>
                                             <th scope="col">Nama</th>
                                             <th scope="col">Status</th>

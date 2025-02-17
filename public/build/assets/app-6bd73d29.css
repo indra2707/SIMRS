@@ -33908,7 +33908,7 @@ fieldset .input-group-lg .touchspin {
 .alert [data-notify=icon] {
     margin-right: 10px;
     line-height: 20px;
-    position: absolute;
+    position: unset;
 }
 
 .alert [data-notify=message] {
