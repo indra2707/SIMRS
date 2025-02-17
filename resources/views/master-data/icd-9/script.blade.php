@@ -34,14 +34,12 @@
 
     // Open Modal
     $(document).on('click', '.add-btn', function () {
-        $('.form-icd9').remove('was-validated');
         $('#form-modal').modal('show');
         $('.modal-title').text('Form Tambah ICD-9');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="kode"]').val('');
         $('input[name="nama"]').val('');
-        $('input[name="kelas"]').val('');
         $('input[name="status"]').prop('checked', true);
     });
 
@@ -63,7 +61,6 @@
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                form.classList.remove('was-validated');
                 $.ajax({
                     type: type,
                     url: url,
@@ -112,6 +109,7 @@
                             //     timer: 1500
                             // });
                             $('#form-modal').modal('hide');
+                            form.classList.remove('was-validated');
                             $table.bootstrapTable('refresh');
                         } else {
                             Swal.fire({
@@ -153,17 +151,17 @@
     // init table
     function initTable() {
         $table.bootstrapTable('destroy').bootstrapTable({
-            height: 495,
+            height: 500,
             locale: 'en-US',
             search: true,
             showColumns: true,
             showPaginationSwitch: true,
             showToggle: true,
+            showExport: true,
             pagination: true,
-            pageSize: 10,
+            pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
-            showExport: true,
             stickyHeader: false,
             fixedColumns: false,
             fullscreen: true,
@@ -171,9 +169,6 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            // exportOptions: {
-            //     fileName: 'ICD-9 (<?= date('d-m-Y') ?>)',
-            // },
             url: "{{ route('master-data.icd-9.view') }}",
             columns: [
                 [{
@@ -187,26 +182,25 @@
                     }
                 },
                 {
-                    title: 'Kode',
+                    width: '10%',
+                    title: 'KODE ICD 9',
                     field: 'kode',
                     sortable: true,
                 },
                 {
-                    title: 'Nama',
-                    field: 'nama'
+                    title: 'NAMA ICD 9',
+                    field: 'nama',
+                    sortable: true,
                 },
                 {
-                    title: 'Kelas',
-                    field: 'kelas'
-                },
-                {
-                    title: 'Status',
+                    width: '5%',
+                    title: 'STATUS',
                     field: 'status',
-                    align: 'center',
+                    sortable: true,
                     events: window.operateChange,
                     formatter: function (value, row, index) {
                         return [
-                            '<div class="media-body text-end">',
+                            '<div class="media-body text-center switch-sm">',
                             '<label class="switch">',
                             '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
                             '<span class="switch-state"></span>',
@@ -221,6 +215,7 @@
                     field: 'action',
                     align: 'center',
                     valign: 'middle',
+                    sortable: true,
                     clickToSelect: false,
                     events: window.operateEvents,
                     formatter: actionsFunction
@@ -274,7 +269,6 @@
             $('input[name="kode"]').val(row.kode);
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
-            $('input[name="kelas"]').val(row.kelas);
         },
         'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('master-data.icd-9.delete', ':id') }}";

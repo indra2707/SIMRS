@@ -29,7 +29,6 @@ class Icd9Controller extends Controller
                 'id' => $value->id,
                 'kode' => $value->kode,
                 'nama' => $value->nama,
-                'kelas' => $value->kelas,
                 'status' => $value->status,
             ];
         }
@@ -41,13 +40,11 @@ class Icd9Controller extends Controller
         $request->validate([
             'kode' => 'required',
             'nama' => 'required',
-            'kelas' => 'required',
             'status' => 'required',
         ]);
         $query = Icd9s::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kelas' => $request->kelas,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -92,12 +89,10 @@ class Icd9Controller extends Controller
         $request->validate([
             'kode' => 'required',
             'nama' => 'required',
-            'kelas' => 'required',
         ]);
         $query = Icd9s::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kelas' => $request->kelas,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {

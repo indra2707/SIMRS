@@ -12,7 +12,6 @@ class Icd9s extends Model
     protected $fillable = [
         'kode',
         'nama',
-        'kelas',
         'status'
     ];
 }
