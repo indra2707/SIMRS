@@ -89,7 +89,7 @@
                           <td> <span class="badge badge-light-primary">Vue</span></td>
                           <td>IRN</td>
                         </tr>
-                        <tr class="border-bottom-light"> 
+                        <tr class="border-bottom-light">
                           <th scope="row">6</th>
                           <td> <img class="img-30 me-2" src="{{ asset('assets/images/user/3.png') }}" alt="">Eliana Jons</td>
                           <td>Jons</td>
@@ -389,7 +389,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-6"> 
+              <div class="col-sm-6">
                 <div class="card">
                   <div class="card-header">
                     <h3>Table head options</h3><span>Similar to tables , use the modifier classes<code>.table-[color]</code>  to make <code>thead</code>appear in any color.</span>

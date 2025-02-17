@@ -2895,6 +2895,7 @@ fieldset .input-group-lg .touchspin {
   margin-right: 10px;
   line-height: 20px;
   position: absolute;
+  /* position: unset; */
 }
 .alert [data-notify=message] {
   display: inline-block;

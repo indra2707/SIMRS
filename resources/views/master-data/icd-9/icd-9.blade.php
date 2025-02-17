@@ -29,11 +29,21 @@
                             <span class="fa fa-plus"></span>
                             <span> Tambah</span>
                         </button>
-
                         {{-- Table View --}}
-                        <div class="dt-ext table-responsive table-striped">
-                            <table id="table_icd9" class="table table-light" data-toggle="table">
-                            </table>
+                        <div class="col-sm-12 col-lg-12 col-xl-12">
+                            <div class="table-responsive signal-table">
+                                <table id="table_icd9" class="table table-hover" data-toggle="table">
+                                    <thead class="bg-secondary f-w-600 text-bold text-uppercase text-center">
+                                        <tr>
+                                            <th scope="col">No</th>
+                                            <th scope="col">Kode</th>
+                                            <th scope="col">Nama</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,16 +71,14 @@
                         <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..."
-                                    required>
+                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..." required>
                             </div>
                         </div>
                         {{-- Nama --}}
                         <div class="mb-3 row mb-3-sm">
                             <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..."
-                                    required>
+                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..." required>
                             </div>
                         </div>
                         {{-- Satus --}}
