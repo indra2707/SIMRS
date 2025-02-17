@@ -34,6 +34,7 @@
 
     // Open Modal
     $(document).on('click', '.add-btn', function () {
+        $('.form-icd9').removeClass('was-validated');
         $('#form-modal').modal('show');
         $('.modal-title').text('Form Tambah ICD-9');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -109,7 +110,6 @@
                             //     timer: 1500
                             // });
                             $('#form-modal').modal('hide');
-                            form.classList.remove('was-validated');
                             $table.bootstrapTable('refresh');
                         } else {
                             Swal.fire({
@@ -119,6 +119,7 @@
                             });
                             $('#form-modal').modal('hide');
                         }
+                        form.classList.remove('was-validated');
                     },
                     error: function (xhr, status, error) {
                         if (xhr.status == 400) {
@@ -135,6 +136,7 @@
                                 text: "Silahkan hubungi administrator!",
                             });
                         }
+                        form.classList.remove('was-validated');
                     }
                 });
             }

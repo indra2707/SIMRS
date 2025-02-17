@@ -32,7 +32,7 @@
 
                         {{-- Table View --}}
                         <div class="dt-ext table-responsive table-striped">
-                            <table id="table_icd9" class="display" data-toggle="table">
+                            <table id="table_icd9" class="table table-light" data-toggle="table">
                             </table>
                         </div>
                     </div>
