@@ -1,6 +1,36 @@
 <script type="text/javascript">
     // Variable Name
     var $table = $('#table_icd9');
+    $.notify({
+        // options
+        icon: 'fa fa-bell-o',
+        title: 'Bootstrap notify',
+        message: 'Turning standard Bootstrap alerts into "notify" like notifications',
+    }, {
+        type: 'warning',
+        allow_dismiss: true,
+        delay: 100000000000000,
+        showProgressbar: true,
+        timer: 10000000000000,
+        animate: {
+            enter: 'animated fadeInDown',
+            exit: 'animated fadeOutUp'
+        },
+        // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+        //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        //     '<span data-notify="icon" class="fa fa-bell d-none"></span> ' +
+        //     '<span data-notify="title">{1}</span> ' +
+        //     '<span data-notify="message">{2}</span>' +
+        //     '<div class="progress" data-notify="progressbar">' +
+        //     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+        //     '</div>' +
+        //     '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        //     '</div>'
+    });
+
+    // setTimeout(function () {
+    //     notify.update('message', '<i class="fa fa-bell-o"></i><strong>Loading</strong> Inner Data.');
+    // }, 1000);
 
     // Open Modal
     $(document).on('click', '.add-btn', function () {
@@ -47,13 +77,40 @@
                     },
                     success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            Swal.fire({
-                                icon: 'success',
+                            $.notify({
+                                // options
+                                icon: 'fa fa-check',
                                 title: 'Success',
-                                text: res.message,
-                                showConfirmButton: false,
-                                timer: 1500
+                                message: res.message
+                            }, {
+                                type: 'theme',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                }
                             });
+                            // $.notify('<i class="fa fa-check"></i><strong>Success</strong> ' + res.message, {
+                            //     type: 'theme',
+                            //     allow_dismiss: true,
+                            //     delay: 2000,
+                            //     showProgressbar: true,
+                            //     timer: 300,
+                            //     animate: {
+                            //         enter: 'animated fadeInDown',
+                            //         exit: 'animated fadeOutUp'
+                            //     }
+                            // });
+                            // Swal.fire({
+                            //     icon: 'success',
+                            //     title: 'Success',
+                            //     text: res.message,
+                            //     showConfirmButton: false,
+                            //     timer: 1500
+                            // });
                             $('#form-modal').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {

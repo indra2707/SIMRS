@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
-            <div class="notification-slider">
+            <div class="notification-slider slick-initialized slick-slider slick-vertical" >
                 <h5 class="mb-0 f-w-400">
                     <span>SIMRS - OTAK & JANTUNG PERTAMINA</span>
                     {{-- <span class="font-primary">SIMRS - OTAK & JANTUNG PERTAMINA</span> --}}
