@@ -173,16 +173,17 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.icd-9.view') }}",
             columns: [
-                [{
-                    title: 'No.',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    width: '5%',
-                    formatter: function (value, row, index) {
-                        return index + 1
-                    }
-                },
+                [
+                //     {
+                //     title: 'No.',
+                //     align: 'center',
+                //     valign: 'middle',
+                //     sortable: true,
+                //     width: '5%',
+                //     formatter: function (value, row, index) {
+                //         return index + 1
+                //     }
+                // },
                 {
                     width: '10%',
                     title: 'KODE ICD 9',

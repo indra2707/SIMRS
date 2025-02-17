@@ -31,7 +31,7 @@
                         </button>
 
                         {{-- Table View --}}
-                        <div class="dt-ext table-responsive table-striped">
+                        <div class="dt-ext table-responsive">
                             <table id="table_icd9" class="table table-light" data-toggle="table">
                             </table>
                         </div>
