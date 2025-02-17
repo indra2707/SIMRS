@@ -192,70 +192,92 @@
             url: "{{ route('master-data.icd-9.view') }}",
             columns: [
                 [
-                //     {
-                //     title: 'No.',
-                //     align: 'center',
-                //     valign: 'middle',
-                //     sortable: true,
-                //     width: '5%',
-                //     formatter: function (value, row, index) {
-                //         return index + 1
-                //     }
-                // },
-                {
-                    width: '10%',
-                    // title: 'KODE ICD 9',
-                    field: 'kode',
-                    sortable: true,
-                },
-                {
-                    // title: 'NAMA ICD 9',
-                    field: 'nama',
-                    sortable: true,
-                },
-                {
-                    width: '5%',
-                    // title: 'STATUS',
-                    field: 'status',
-                    sortable: true,
-                    events: window.operateChange,
-                    formatter: function (value, row, index) {
-                        return [
-                            '<div class="media-body text-center switch-sm">',
-                            '<label class="switch">',
-                            '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
-                            '<span class="switch-state"></span>',
-                            '</label>',
-                            '</div>'
-                        ].join("");
+                    //     {
+                    //     title: 'No.',
+                    //     align: 'center',
+                    //     valign: 'middle',
+                    //     sortable: true,
+                    //     width: '5%',
+                    //     formatter: function (value, row, index) {
+                    //         return index + 1
+                    //     }
+                    // },
+                    {
+                        width: '10%',
+                        // title: 'KODE ICD 9',
+                        field: 'kode',
+                        sortable: true,
+                    },
+                    {
+                        // title: 'NAMA ICD 9',
+                        field: 'nama',
+                        sortable: true,
+                    },
+                    {
+                        width: '5%',
+                        // title: 'STATUS',
+                        field: 'status',
+                        sortable: true,
+                        events: window.operateChange,
+                        formatter: function (value, row, index) {
+                            return [
+                                '<div class="media-body text-center switch-sm">',
+                                '<label class="switch">',
+                                '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
+                                '<span class="switch-state"></span>',
+                                '</label>',
+                                '</div>'
+                            ].join("");
+                        }
+                    },
+                    {
+                        width: '5%',
+                        // title: 'ACTIONS',
+                        field: 'action',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        clickToSelect: false,
+                        events: window.operateEvents,
+                        formatter: actionsFunction
                     }
-                },
-                {
-                    width: '5%',
-                    // title: 'ACTIONS',
-                    field: 'action',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    clickToSelect: false,
-                    events: window.operateEvents,
-                    formatter: actionsFunction
-                }
                 ]
             ],
             error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
-                    Swal.fire({
-                        icon: 'error',
+                    $.notify({
+                        icon: 'fa fa-check',
                         title: error,
-                        text: xhr.responseJSON.message,
+                        message: xhr.responseJSON.message
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
                     });
                 } else if (xhr.status == 500) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: error,
-                        text: "Silahkan hubungi administrator!",
+                    $.notify({
+                        icon: 'icon-info-alt',
+                        title: 'error',
+                        message: "Silahkan hubungi IT Rumah Sakit!"
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
                     });
                 }
             },
@@ -314,19 +336,39 @@
                         },
                         success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                Swal.fire({
-                                    icon: 'success',
+                                $.notify({
+                                    icon: 'fa fa-check',
                                     title: 'Success',
-                                    text: res.message,
-                                    showConfirmButton: false,
-                                    timer: 2000
+                                    message: res.message
+                                }, {
+                                    type: 'success',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
                                 });
                             } else {
-                                Swal.fire({
-                                    icon: 'warning',
+                                $.notify({
+                                    icon: 'fa fa-check',
                                     title: 'Warning',
-                                    text: res.message,
-                                })
+                                    message: res.message
+                                }, {
+                                    type: 'warning',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
                             }
                         }
                     }).done(function () {
@@ -352,35 +394,77 @@
                 },
                 success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        Swal.fire({
-                            icon: 'success',
+                        $.notify({
+                            icon: 'fa fa-check',
                             title: 'Success',
-                            text: res.message,
-                            showConfirmButton: true,
-                            timer: 2000
+                            message: res.message
+                        }, {
+                            type: 'success',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
                         });
                     } else {
-                        Swal.fire({
-                            icon: 'warning',
+                        $.notify({
+                            icon: 'fa fa-check',
                             title: 'Warning',
-                            text: res.message,
-                        })
+                            message: res.message
+                        }, {
+                            type: 'warning',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
                     }
                     $table.bootstrapTable('refresh');
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
-                        Swal.fire({
-                            icon: 'error',
+                        $.notify({
+                            icon: 'fa fa-check',
                             title: error,
-                            text: xhr.responseJSON.message,
+                            message: xhr.responseJSON.message
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
                         });
                     } else if (xhr.status == 500) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: error,
-                            text: "Silahkan hubungi administrator!",
+                        $.notify({
+                            icon: 'icon-info-alt',
+                            title: 'error',
+                            message: "Silahkan hubungi IT Rumah Sakit!"
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
                         });
                     }
                 }
