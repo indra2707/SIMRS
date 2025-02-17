@@ -1,32 +1,35 @@
 <script type="text/javascript">
     // Variable Name
     var $table = $('#table_icd9');
-    $.notify({
-        // options
-        icon: 'fa fa-bell-o',
-        title: 'Bootstrap notify',
-        message: 'Turning standard Bootstrap alerts into "notify" like notifications',
-    }, {
-        type: 'warning',
-        allow_dismiss: true,
-        delay: 100000000000000,
-        showProgressbar: true,
-        timer: 10000000000000,
-        animate: {
-            enter: 'animated fadeInDown',
-            exit: 'animated fadeOutUp'
-        },
-        // template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-        //     '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
-        //     '<span data-notify="icon" class="fa fa-bell d-none"></span> ' +
-        //     '<span data-notify="title">{1}</span> ' +
-        //     '<span data-notify="message">{2}</span>' +
-        //     '<div class="progress" data-notify="progressbar">' +
-        //     '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-        //     '</div>' +
-        //     '<a href="{3}" target="{4}" data-notify="url"></a>' +
-        //     '</div>'
-    });
+
+    // $.notify({
+    //     icon: 'fa fa-check',
+    //     title: 'Success',
+    //     message: 'Loading Data.'
+    // }, {
+    //     type: 'success',
+    //     allow_dismiss: true,
+    //     delay: 2000,
+    //     showProgressbar: true,
+    //     timer: 10000000,
+    //     z_index: 1127,
+    //     animate: {
+    //         enter: 'animated fadeInDown',
+    //         exit: 'animated fadeOutUp'
+    //     },
+    //     template: '<div class="alert alert-{0} d-flex align-items-center" role="alert">' +
+    //         '<div>' +
+    //         '<i class="stroke-warning" data-feather="alert-triangle"></i>' +
+    //         '</div>' +
+    //         '<span class="txt-light">Use' +
+    //         '<a class="alert-link text-white" href="#!">"alert-warning"</a>and' +
+    //         '<a class="alert-link text-white" href="#!">"stroke-warning"</a>classes for alerts like this one.' +
+    //         '</span>' +
+    //         '<div class="progress" data-notify="progressbar">' +
+    //         '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+    //         '</div>' +
+    //         '</div>',
+    // });
 
     // setTimeout(function () {
     //     notify.update('message', '<i class="fa fa-bell-o"></i><strong>Loading</strong> Inner Data.');
@@ -76,46 +79,39 @@
                     success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             $.notify({
-                                // options
                                 icon: 'fa fa-check',
                                 title: 'Success',
                                 message: res.message
                             }, {
-                                type: 'theme',
+                                type: 'success',
                                 allow_dismiss: true,
                                 delay: 2000,
                                 showProgressbar: true,
                                 timer: 300,
+                                z_index: 1127,
                                 animate: {
                                     enter: 'animated fadeInDown',
                                     exit: 'animated fadeOutUp'
-                                }
+                                },
                             });
-                            // $.notify('<i class="fa fa-check"></i><strong>Success</strong> ' + res.message, {
-                            //     type: 'theme',
-                            //     allow_dismiss: true,
-                            //     delay: 2000,
-                            //     showProgressbar: true,
-                            //     timer: 300,
-                            //     animate: {
-                            //         enter: 'animated fadeInDown',
-                            //         exit: 'animated fadeOutUp'
-                            //     }
-                            // });
-                            // Swal.fire({
-                            //     icon: 'success',
-                            //     title: 'Success',
-                            //     text: res.message,
-                            //     showConfirmButton: false,
-                            //     timer: 1500
-                            // });
                             $('#form-modal').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
-                            Swal.fire({
-                                icon: 'warning',
+                            $.notify({
+                                icon: 'fa fa-check',
                                 title: 'Warning',
-                                text: res.message,
+                                message: res.message
+                            }, {
+                                type: 'warning',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
                             });
                             $('#form-modal').modal('hide');
                         }
@@ -124,16 +120,38 @@
                     error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             var errors = xhr.responseJSON.errors;
-                            Swal.fire({
-                                icon: 'error',
+                            $.notify({
+                                icon: 'fa fa-check',
                                 title: error,
-                                text: xhr.responseJSON.message,
+                                message: xhr.responseJSON.message
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
                             });
                         } else if (xhr.status == 500) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: error,
-                                text: "Silahkan hubungi administrator!",
+                            $.notify({
+                                icon: 'icon-info-alt',
+                                title: 'error',
+                                message: "Silahkan hubungi IT Rumah Sakit!"
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
                             });
                         }
                         form.classList.remove('was-validated');
@@ -186,18 +204,18 @@
                 // },
                 {
                     width: '10%',
-                    title: 'KODE ICD 9',
+                    // title: 'KODE ICD 9',
                     field: 'kode',
                     sortable: true,
                 },
                 {
-                    title: 'NAMA ICD 9',
+                    // title: 'NAMA ICD 9',
                     field: 'nama',
                     sortable: true,
                 },
                 {
                     width: '5%',
-                    title: 'STATUS',
+                    // title: 'STATUS',
                     field: 'status',
                     sortable: true,
                     events: window.operateChange,
@@ -214,7 +232,7 @@
                 },
                 {
                     width: '5%',
-                    title: 'ACTIONS',
+                    // title: 'ACTIONS',
                     field: 'action',
                     align: 'center',
                     valign: 'middle',

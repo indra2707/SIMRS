@@ -23,7 +23,9 @@
 <!-- Plugins JS start-->
 <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
 <script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
-<script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>
+<script src="{{asset('assets/js/notify/bootstrap-notify.min.js')}}"></script>
+<script src="{{asset('assets/js/icons/icons-notify.js')}}"></script>
+<script src="{{asset('assets/js/icons/feather-icon/feather-icon-clipart.js')}}"></script>
 <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
 <script id="menu" src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
 <script src="{{ asset('assets/js/slick/slick.min.js') }}"></script>
