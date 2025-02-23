@@ -5,10 +5,6 @@
 <!-- Bootstrap Table js-->
 <script src="{{ asset('assets/bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
 <script src="{{ asset('assets/bootstrap-table/dist/extensions/export/bootstrap-table-export.min.js') }}"></script>
-{{-- <script src="{{ asset('assets/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.min.js') }}"></script>
-<script src="{{ asset('assets/bootstrap-table/dist/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js') }}"></script>
-<script src="{{ asset('assets/bootstrap-table/dist/extensions/fixed-header/bootstrap-table-fixed-header.min.js') }}"></script>
-<script src="{{ asset('assets/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js') }}"></script> --}}
 <script src="{{ asset('assets/tableExport.jquery.plugin/tableExport.min.js') }}"></script>
 <script src="{{ asset('assets/tableExport.jquery.plugin/libs/jsPDF/jspdf.umd.min.js') }}"></script>
 
@@ -21,19 +17,17 @@
 <!-- Sidebar jquery-->
 <script src="{{ asset('assets/js/config.js') }}"></script>
 <!-- Plugins JS start-->
-<script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
-<script src="{{ asset('assets/js/dashboard/default.js') }}"></script>
 <script src="{{asset('assets/js/notify/bootstrap-notify.min.js')}}"></script>
-<script src="{{asset('assets/js/icons/icons-notify.js')}}"></script>
 <script src="{{asset('assets/js/icons/feather-icon/feather-icon-clipart.js')}}"></script>
 <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
 <script id="menu" src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
-<script src="{{ asset('assets/js/slick/slick.min.js') }}"></script>
-<script src="{{ asset('assets/js/slick/slick.js') }}"></script>
-<script src="{{ asset('assets/js/header-slick.js') }}"></script>
 
 <!-- Sweetalert -->
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
+{{-- Select2 --}}
+<script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
+
+
 {{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -48,7 +42,7 @@
 
 
 @if (Route::current()->getName() == 'index')
-	<script src="{{asset('assets/js/layout-change.js')}}"></script>
+    <script src="{{asset('assets/js/layout-change.js')}}"></script>
 @endif
 
 @if (Route::currentRouteName() == 'index')
