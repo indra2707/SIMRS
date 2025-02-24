@@ -83,13 +83,10 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('master-data.icd-9') }}">ICD 9</a></li>
+                            <li><a href="{{ route('master-data.icd-10') }}">ICD 10</a></li>
+                            <li><a href="{{ route('master-data.coa') }}">COA</a></li>
                         </ul>
                     </li>
-
-
-
-
-
 
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
