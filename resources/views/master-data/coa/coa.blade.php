@@ -10,7 +10,7 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>ICD-9</h3>
+    <h3>COA</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -31,13 +31,13 @@
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
-                            <div class="table-responsive currency-table">
-                                <table id="table_icd9" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary f-w-600 text-bold text-white text-uppercase text-center">
+                            <div class="table-responsive signal-table">
+                                <table id="table_icd10" class="table table-hover" data-toggle="table">
+                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
                                             <th scope="col"><b>Kode</b></th>
-                                            <th scope="col"><b>Nama ICD 9</b></th>
+                                            <th scope="col"><b>Nama ICD 10</b></th>
                                             <th scope="col"><b>Status</b></th>
                                             <th scope="col"><b>Action</b></th>
                                         </tr>
@@ -52,7 +52,7 @@
     </div>
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="modal-coa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -61,24 +61,38 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-wizard form-icd9" novalidate="" autocomplete="off">
+                    <form class="form-wizard form-coa" novalidate="" autocomplete="off">
                         @csrf
                         {{-- Hidden Input --}}
-                        <div class="mb-3 row">
+                        <div class="mb-2 row">
                             <input type="hidden" name="id">
                         </div>
                         {{-- Kode --}}
-                        <div class="mb-3 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 9</b></label>
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode COA</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..." required>
+                                <input class="form-control form-control-sm" name="kode" type="text" placeholder="Kode COA..."
+                                    required>
                             </div>
                         </div>
                         {{-- Nama --}}
-                        <div class="mb-3 row mb-3-sm">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 9</b></label>
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama COA</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..." required>
+                                <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama COA..."
+                                    required>
+                            </div>
+                        </div>
+                        {{-- Kategori --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control select2" name="kategori" required>
+                                    <option></option>
+                                    <option value="Tindakan">Tindakan</option>
+                                    <option value="Penjamin">Penjamin</option>
+                                    <option value="Obat">Obat & BMHP</option>
+                                </select>
                             </div>
                         </div>
                         {{-- Satus --}}
@@ -107,5 +121,5 @@
 
 
 @section('script')
-    @include('master-data.icd-9.script')
+    @include('master-data.coa.script')
 @endsection
