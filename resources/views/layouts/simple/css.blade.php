@@ -16,6 +16,9 @@
     {{-- Select2 --}}
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/select2.css')}}">
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+
 
 
 

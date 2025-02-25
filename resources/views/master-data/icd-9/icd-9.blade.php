@@ -36,10 +36,10 @@
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
-                                            <th scope="col">Kode</th>
-                                            <th scope="col">Nama</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th scope="col"><b>Kode</b></th>
+                                            <th scope="col"><b>Nama ICD 9</b></th>
+                                            <th scope="col"><b>Status</b></th>
+                                            <th scope="col"><b>Action</b></th>
                                         </tr>
                                     </thead>
                                 </table>
