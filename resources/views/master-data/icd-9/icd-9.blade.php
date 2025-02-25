@@ -31,9 +31,9 @@
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
-                            <div class="table-responsive signal-table">
+                            <div class="table-responsive currency-table">
                                 <table id="table_icd9" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                    <thead class="bg-secondary f-w-600 text-bold text-white text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
                                             <th scope="col">Kode</th>
@@ -84,7 +84,7 @@
                         {{-- Satus --}}
                         <div class="media mb-2">
                             <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                            <div class="media-body text-end">
+                            <div class="media-body">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>
                                     <span class="switch-state"></span>

@@ -31100,6 +31100,7 @@ body.dark-only .select2-container--default .select2-results__option--highlighted
 
 body.dark-only .select2-dropdown {
     background-color: #1d1e26;
+    color: rgba(255, 255, 255, 0.6);
     border: 1px solid #1d1e26;
 }
 
@@ -33788,6 +33789,32 @@ button[data-toggle=dropdown]:hover~.dropdown-menu {
 
 .select2-container {
     width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    border-radius: 0 !important;
+    border-color: #f4f4f4 !important;
+    height: 40px !important;
+    padding: 5px;
+}
+
+.select2-container--bootstrap-5 .select2-selection{
+    background-color : #1d1e26 !important;
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered{
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field{
+    background-color : #1d1e26 !important;
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted){
+    background-color : rgba(255, 255, 255, 0.6) !important;
+    color : rgba(255, 255, 255, 0.6) !important;
 }
 
 .select2-drpdwn .select2-selection {

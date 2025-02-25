@@ -23,6 +23,71 @@ function iconsFunction() {
         none: "fa fa-square",
         noMatch: "fa fa-times-circle",
         paginationSwitch: "fa fa-sort",
-        export: "fa fa-download"
+        export: "fa fa-download",
     };
 }
+
+function Alert(type, message) {
+    switch (type) {
+        case "success":
+            $.notify('<i class="icofont icofont-verification-check"></i>' + message, {
+                type: 'success',
+                allow_dismiss: true,
+                delay: 2000,
+                showProgressbar: true,
+                timer: 300,
+                z_index:1127,
+                animate: {
+                    enter: "animated fadeInDown",
+                    exit: "animated fadeOutUp",
+                },
+            });
+            break;
+        case "error":
+            $.notify('<i class="icofont icofont-ui-close"></i>' + message, {
+                type: 'danger',
+                allow_dismiss: true,
+                delay: 2000,
+                showProgressbar: true,
+                timer: 300,
+                z_index:1127,
+                animate: {
+                    enter: "animated fadeInDown",
+                    exit: "animated fadeOutUp",
+                },
+            });
+            break;
+        case "warning":
+            $.notify('<i class="icofont icofont-warning"></i>' + message, {
+                type: 'warning',
+                allow_dismiss: true,
+                delay: 2000,
+                showProgressbar: true,
+                timer: 300,
+                z_index:1127,
+                animate: {
+                    enter: "animated fadeInDown",
+                    exit: "animated fadeOutUp",
+                },
+            });
+            break;
+        case "info":
+            $.notify('<i class="fa fa-bell-o"></i>' + message, {
+                type: 'theme',
+                allow_dismiss: true,
+                delay: 2000,
+                showProgressbar: true,
+                timer: 300,
+                z_index:1127,
+                animate: {
+                    enter: "animated fadeInDown",
+                    exit: "animated fadeOutUp",
+                },
+            });
+            break;
+    }
+}
+
+// Select2 Global
+$.fn.select2.defaults.set("theme", "bootstrap");
+$.fn.select2.defaults.set("width", "100%");

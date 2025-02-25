@@ -25,6 +25,8 @@
 <!-- Sweetalert -->
 <script src="{{asset('assets/js/sweet-alert/sweetalert.min.js')}}"></script>
 {{-- Select2 --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script> --}}
+{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
 
 

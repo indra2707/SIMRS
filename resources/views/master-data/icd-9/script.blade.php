@@ -2,41 +2,8 @@
     // Variable Name
     var $table = $('#table_icd9');
 
-    // $.notify({
-    //     icon: 'fa fa-check',
-    //     title: 'Success',
-    //     message: 'Loading Data.'
-    // }, {
-    //     type: 'success',
-    //     allow_dismiss: true,
-    //     delay: 2000,
-    //     showProgressbar: true,
-    //     timer: 10000000,
-    //     z_index: 1127,
-    //     animate: {
-    //         enter: 'animated fadeInDown',
-    //         exit: 'animated fadeOutUp'
-    //     },
-    //     template: '<div class="alert alert-{0} d-flex align-items-center" role="alert">' +
-    //         '<div>' +
-    //         '<i class="stroke-warning" data-feather="alert-triangle"></i>' +
-    //         '</div>' +
-    //         '<span class="txt-light">Use' +
-    //         '<a class="alert-link text-white" href="#!">"alert-warning"</a>and' +
-    //         '<a class="alert-link text-white" href="#!">"stroke-warning"</a>classes for alerts like this one.' +
-    //         '</span>' +
-    //         '<div class="progress" data-notify="progressbar">' +
-    //         '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-    //         '</div>' +
-    //         '</div>',
-    // });
-
-    // setTimeout(function () {
-    //     notify.update('message', '<i class="fa fa-bell-o"></i><strong>Loading</strong> Inner Data.');
-    // }, 1000);
-
     // Open Modal
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function() {
         $('.form-icd9').removeClass('was-validated');
         $('#form-modal').modal('show');
         $('.modal-title').text('Form Tambah ICD-9');
@@ -48,7 +15,7 @@
     });
 
     // Save
-    $(document).on('click', '.save-btn', function () {
+    $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('master-data.icd-9.update', ':id') }}";
@@ -59,7 +26,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-icd9');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -70,89 +37,30 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-icd9').serialize(),
-                    beforeSend: function () {
-                        $('.save-btn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>').attr('disabled', 'disabled');
+                    beforeSend: function() {
+                        $('.save-btn').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                        ).attr('disabled', 'disabled');
                     },
-                    complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+                    complete: function() {
+                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            $('#form-modal').modal('hide');
+                            Alert('success', res.message);
                             $table.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            $('#form-modal').modal('hide');
+                            Alert('warning', res.message);
                         }
+                        $('#form-modal').modal('hide');
                         form.classList.remove('was-validated');
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         if (xhr.status == 400) {
-                            var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info', "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!");
                         }
                         form.classList.remove('was-validated');
                     }
@@ -163,7 +71,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -203,7 +111,7 @@
                     //     }
                     // },
                     {
-                        width: '10%',
+                        width: 10,
                         // title: 'KODE ICD 9',
                         field: 'kode',
                         sortable: true,
@@ -219,11 +127,12 @@
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
-                        formatter: function (value, row, index) {
+                        formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center">',
-                                '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
+                                '<label class="table-label-switch">',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
                                 '<span class="switch-state"></span>',
                                 '</label>',
                                 '</div>'
@@ -243,7 +152,7 @@
                     }
                 ]
             ],
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
                     $.notify({
@@ -281,7 +190,7 @@
                     });
                 }
             },
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             }
         });
@@ -304,7 +213,7 @@
 
     // Handle events button actions
     window.operateEvents = {
-        'click .btn-edit': function (e, value, row, index) {
+        'click .btn-edit': function(e, value, row, index) {
             $('#form-modal').modal('show');
             $('.modal-title').text('Form Edit ICD-9');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -313,7 +222,7 @@
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
         },
-        'click .btn-delete': function (e, value, row, index) {
+        'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('master-data.icd-9.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -334,7 +243,7 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 $.notify({
                                     icon: 'fa fa-check',
@@ -371,7 +280,7 @@
                                 });
                             }
                         }
-                    }).done(function () {
+                    }).done(function() {
                         $table.bootstrapTable('refresh');
                     });
 
@@ -382,7 +291,7 @@
 
     // Window operateChange Status
     window.operateChange = {
-        'click .update-status': function (e, value, row, index) {
+        'click .update-status': function(e, value, row, index) {
             var url = "{{ route('master-data.icd-9.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -392,7 +301,7 @@
                     status: e.target.checked ? 1 : 0,
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
+                success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         $.notify({
                             icon: 'fa fa-check',
@@ -430,7 +339,7 @@
                     }
                     $table.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
                         $.notify({

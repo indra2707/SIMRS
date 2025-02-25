@@ -18613,7 +18613,7 @@ progress {
 }
 
 .table>:not(caption)>*>* {
-    padding: .5rem;
+    padding: .2rem;
     background-color: var(--bs-table-bg);
     border-bottom-width: 1px;
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg)
@@ -33908,18 +33908,18 @@ fieldset .input-group-lg .touchspin {
 .alert [data-notify=icon] {
     margin-right: 10px;
     line-height: 20px;
-    position: unset;
+    position: absolute;
 }
 
 .alert [data-notify=message] {
     display: inline-block;
     width: 100%;
-    margin-left: 28px;
+    /* margin-left: 28px; */
 }
-.alert [data-notify=title] {
+/* .alert [data-notify=title] {
     font-size: large;
     font-weight: bold;
-}
+} */
 
 .alert i {
     margin-right: 5px;
@@ -55452,16 +55452,22 @@ ul.dot-group li {
 
 .show-hide span {
     cursor: pointer;
-    font-size: 13px;
+    font-size: 20px;
     color: var(--theme-deafult)
 }
 
 .show-hide span.show:before {
-    content: "show"
+    content: "\f06e";
+    font-family: "FontAwesome";
+    font-weight: 900;
+    color: #999;
 }
 
 .show-hide span:before {
-    content: "hide"
+    content: "\f070";
+    font-family: "FontAwesome";
+    font-weight: 900;
+    color: #999;
 }
 
 .needs-validation .invalid-feedback {
@@ -71208,7 +71214,7 @@ body[class*=dark-] .for-light {
 }
 
 .login-card .login-main .theme-form .show-hide {
-    top: 50%
+    top: 72%
 }
 
 .faq-accordion .card .btn-link svg {
