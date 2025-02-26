@@ -83,8 +83,10 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a class="{{ Request::is('master-data.icd-9*') ? 'active' : '' }}" href="{{ route('master-data.icd-9') }}">ICD 9</a></li>
-                            {{-- <li><a href="{{ route('master-data.icd-10') }}">ICD 10</a></li> --}}
-                            {{-- <li><a href="{{ route('master-data.coa') }}">COA</a></li> --}}
+                            <li><a href="{{ route('master-data.icd-10') }}">ICD 10</a></li>
+                            <li><a href="{{ route('master-data.coa') }}">COA</a></li>
+                            <li><a href="{{ route('master-data.spesialis') }}">Spesialis</a></li>
+                            <li><a href="{{ route('master-data.poli') }}">Poliklinik</a></li>
                             <li><a class="{{ Request::is('master-data.tarif-tindakan') ? 'active' : '' }}" href="{{ route('master-data.tarif-tindakan') }}">Tarif Tindakan</a></li>
                         </ul>
                     </li>
