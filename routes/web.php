@@ -6,6 +6,7 @@ use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasterData\TarifTindakanController;
+use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -50,6 +51,11 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
+    });
+    // Tarif
+    Route::prefix('tarif')->group(function () {
+        // SK Tarif
+        Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
     });
 });
 

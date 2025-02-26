@@ -83,9 +83,24 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a class="{{ Request::is('master-data.icd-9*') ? 'active' : '' }}" href="{{ route('master-data.icd-9') }}">ICD 9</a></li>
-                            {{-- <li><a href="{{ route('master-data.icd-10') }}">ICD 10</a></li> --}}
-                            {{-- <li><a href="{{ route('master-data.coa') }}">COA</a></li> --}}
-                            <li><a class="{{ Request::is('master-data.tarif-tindakan') ? 'active' : '' }}" href="{{ route('master-data.tarif-tindakan') }}">Tarif Tindakan</a></li>
+                            <li><a href="{{ route('master-data.icd-10') }}">ICD 10</a></li>
+                            <li><a href="{{ route('master-data.coa') }}">COA</a></li>
+                        </ul>
+                    </li>
+                    {{-- Tarif --}}
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title {{ Request::is('tarif*') ? 'active' : '' }}" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#doller-return') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#doller-return') }}"></use>
+                            </svg>
+                            <span>Tarif</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('tarif.sk-tarif') }}">SK Tarif</a></li>
+                            <li><a href="#">Tarif Tindakan</a></li>
                         </ul>
                     </li>
 
