@@ -31205,7 +31205,7 @@ body.dark-only .theme-form .form-group select.form-control:not([size]):not([mult
 
 
 body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading{
-    background-color: var(--light-background) !important;
+    background: var(--light-background) !important;
 }
 
 
