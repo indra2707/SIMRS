@@ -4,6 +4,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Icd10Controller;
 use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\CoaController;
+use App\Http\Controllers\PoliController;
+use App\Http\Controllers\SpesialisController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MasterData\TarifTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
@@ -46,8 +48,25 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/icd-10/delete/{id}', [Icd10Controller::class, 'destroy'])->name('master-data.icd-10.delete');
         // COA
         Route::get('/coa', [CoaController::class, 'index'])->name('master-data.coa');
-
-
+        Route::get('/coa/view', [CoaController::class, 'views'])->name('master-data.coa.view');
+        Route::post('/coa/store', [CoaController::class, 'store'])->name('master-data.coa.create');
+        Route::post('/coa/update-status/{id}', [CoaController::class, 'updateStatus'])->name('master-data.coa.update-status');
+        Route::put('/coa/update/{id}', [CoaController::class, 'update'])->name('master-data.coa.update');
+        Route::delete('/coa/delete/{id}', [CoaController::class, 'destroy'])->name('master-data.coa.delete');
+        // SPESIALIS
+        Route::get('/spesialis', [SpesialisController::class, 'index'])->name('master-data.spesialis');
+        Route::get('/spesialis/view', [SpesialisController::class, 'views'])->name('master-data.spesialis.view');
+        Route::post('/spesialis/store', [SpesialisController::class, 'store'])->name('master-data.spesialis.create');
+        Route::post('/spesialis/update-status/{id}', [SpesialisController::class, 'updateStatus'])->name('master-data.spesialis.update-status');
+        Route::put('/spesialis/update/{id}', [SpesialisController::class, 'update'])->name('master-data.spesialis.update');
+        Route::delete('/spesialis/delete/{id}', [SpesialisController::class, 'destroy'])->name('master-data.spesialis.delete');
+        // POLIKLINIK
+        Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
+        Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
+        Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
+        Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
+        Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
+        Route::delete('/poli/delete/{id}', [PoliController::class, 'destroy'])->name('master-data.poli.delete');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
