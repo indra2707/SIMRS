@@ -31104,6 +31104,25 @@ body.dark-only .select2-dropdown {
     border: 1px solid #1d1e26;
 }
 
+body.dark-only .select2-container--bootstrap-5 .select2-selection{
+    background-color : #1d1e26 !important;
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+body.dark-only .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered{
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field{
+    background-color : #1d1e26 !important;
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
+body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted){
+    background-color : rgba(255, 255, 255, 0.6) !important;
+    color : rgba(255, 255, 255, 0.6) !important;
+}
+
 body.dark-only .select2-drpdwn .form-control-primary {
     border-color: var(--theme-deafult) !important;
     color: var(--theme-deafult) !important;
@@ -33796,25 +33815,6 @@ button[data-toggle=dropdown]:hover~.dropdown-menu {
     border-color: #f4f4f4 !important;
     height: 40px !important;
     padding: 5px;
-}
-
-.select2-container--bootstrap-5 .select2-selection{
-    background-color : #1d1e26 !important;
-    color : rgba(255, 255, 255, 0.6) !important;
-}
-
-.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered{
-    color : rgba(255, 255, 255, 0.6) !important;
-}
-
-.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field{
-    background-color : #1d1e26 !important;
-    color : rgba(255, 255, 255, 0.6) !important;
-}
-
-.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted){
-    background-color : rgba(255, 255, 255, 0.6) !important;
-    color : rgba(255, 255, 255, 0.6) !important;
 }
 
 .select2-drpdwn .select2-selection {
