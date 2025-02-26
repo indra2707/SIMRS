@@ -90,6 +90,22 @@
                             <li><a class="{{ Request::is('master-data.tarif-tindakan') ? 'active' : '' }}" href="{{ route('master-data.tarif-tindakan') }}">Tarif Tindakan</a></li>
                         </ul>
                     </li>
+                    {{-- Tarif --}}
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title {{ Request::is('tarif*') ? 'active' : '' }}" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#doller-return') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#doller-return') }}"></use>
+                            </svg>
+                            <span>Tarif</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('tarif.sk-tarif') }}">SK Tarif</a></li>
+                            <li><a href="#">Tarif Tindakan</a></li>
+                        </ul>
+                    </li>
 
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"

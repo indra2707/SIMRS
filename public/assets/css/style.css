@@ -31203,6 +31203,14 @@ body.dark-only .theme-form .form-group select.form-control:not([size]):not([mult
     border-color: #1d1e26;
 }
 
+
+body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading{
+    background-color: var(--light-background) !important;
+}
+
+
+
+
 body.dark-only .theme-form .form-group input[type=text],
 body.dark-only .theme-form .form-group input[type=email],
 body.dark-only .theme-form .form-group input[type=search],
