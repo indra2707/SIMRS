@@ -30,27 +30,30 @@ function iconsFunction() {
 function Alert(type, message) {
     switch (type) {
         case "success":
-            $.notify('<i class="icofont icofont-verification-check"></i>' + message, {
-                type: 'success',
-                allow_dismiss: true,
-                delay: 2000,
-                showProgressbar: true,
-                timer: 300,
-                z_index:1127,
-                animate: {
-                    enter: "animated fadeInDown",
-                    exit: "animated fadeOutUp",
-                },
-            });
+            $.notify(
+                '<i class="icofont icofont-verification-check"></i>' + message,
+                {
+                    type: "success",
+                    allow_dismiss: true,
+                    delay: 2000,
+                    showProgressbar: true,
+                    timer: 300,
+                    z_index: 1127,
+                    animate: {
+                        enter: "animated fadeInDown",
+                        exit: "animated fadeOutUp",
+                    },
+                }
+            );
             break;
         case "error":
             $.notify('<i class="icofont icofont-ui-close"></i>' + message, {
-                type: 'danger',
+                type: "danger",
                 allow_dismiss: true,
                 delay: 2000,
                 showProgressbar: true,
                 timer: 300,
-                z_index:1127,
+                z_index: 1127,
                 animate: {
                     enter: "animated fadeInDown",
                     exit: "animated fadeOutUp",
@@ -59,12 +62,12 @@ function Alert(type, message) {
             break;
         case "warning":
             $.notify('<i class="icofont icofont-warning"></i>' + message, {
-                type: 'warning',
+                type: "warning",
                 allow_dismiss: true,
                 delay: 2000,
                 showProgressbar: true,
                 timer: 300,
-                z_index:1127,
+                z_index: 1127,
                 animate: {
                     enter: "animated fadeInDown",
                     exit: "animated fadeOutUp",
@@ -73,12 +76,12 @@ function Alert(type, message) {
             break;
         case "info":
             $.notify('<i class="fa fa-bell-o"></i>' + message, {
-                type: 'theme',
+                type: "theme",
                 allow_dismiss: true,
                 delay: 2000,
                 showProgressbar: true,
                 timer: 300,
-                z_index:1127,
+                z_index: 1127,
                 animate: {
                     enter: "animated fadeInDown",
                     exit: "animated fadeOutUp",
@@ -92,37 +95,87 @@ function Alert(type, message) {
 $.fn.select2.defaults.set("theme", "bootstrap-5");
 $.fn.select2.defaults.set("width", "100%");
 
-$('.js-select-2').each(function (index, element) {
+$(".js-select-2").each(function (index, element) {
     var item = $(element);
-    if (item.data('url')) {
+    if (item.data("url")) {
         InitSelect2(item, {
-            url: item.data('url'),
-            placeholder:item.data('placeholder'),
-            dropdownParent : item.data('dropdownParent') ? $(item.data('dropdownParent')) : null,
-            initialValue: item.data('value') ? item.data('value') : null,
+            url: item.data("url"),
+            placeholder: item.data("placeholder"),
+            // dropdownParent: $('.modal'),
+            initialValue: item.data("value") ? item.data("value") : null,
         });
-    }
-    else {
-        item.select2();
+    } else {
+        item.select2(
+            {
+                placeholder: item.data("placeholder"),
+                allowClear: true,
+                // dropdownParent: $('.modal'),
+            },
+            function () {
+                if (item.data("value")) {
+                    item.val(item.data("value")).trigger("change");
+                }
+            }
+        );
     }
 });
 
 function InitSelect2(element, options) {
-    if (options.url) {
-        $.ajax({
-            type: 'GET',
-            url: options.url,
-            dataType: 'json'
-        }).then(function (result) {
-            $(element).select2({
+    $.ajax({
+        type: "GET",
+        url: options.url,
+        dataType: "json",
+        beforeSend: function () {
+            element.addClass("loading");
+        },
+        success: function (data) {
+            element.removeClass("loading");
+            element.empty();
+            element.select2({
                 placeholder: options.placeholder,
                 allowClear: true,
-                dropdownParent: options.dropdownParent,
-                data: result['data'],
+                dropdownParent: $(".modal"),
+                data: data.data,
             });
             if (options.initialValue) {
-                $(element).val(options.initialValue).trigger('change');
+                element.val(options.initialValue).trigger("change");
             }
-        });
-    }
+        },
+        complete: function () {
+            employee.removeClass("loading");
+        },
+    });
+    // if (options.url) {
+
+    //     // $.ajax({
+    //     //     type: 'GET',
+    //     //     url: options.url,
+    //     //     dataType: 'json'
+    //     // }).then(function (result) {
+    //     //     $(element).select2({
+    //     //         placeholder: options.placeholder,
+    //     //         allowClear: true,
+    //     //         dropdownParent: options.dropdownParent,
+    //     //         data: result['data'],
+    //     //     });
+    //     //     if (options.initialValue) {
+    //     //         $(element).val(options.initialValue).trigger('change');
+    //     //     }
+    //     // });
+    // }
 }
+
+$.fn.modal.Constructor.prototype.enforceFocus = function () {
+    var that = this;
+    $(document).on("focusin.modal", function (e) {
+        if ($(e.target).hasClass("select2-input")) {
+            return true;
+        }
+        if (
+            that.$element[0] !== e.target &&
+            !that.$element.has(e.target).length
+        ) {
+            that.$element.focus();
+        }
+    });
+};
