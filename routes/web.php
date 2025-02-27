@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Icd10Controller;
 use App\Http\Controllers\Icd9Controller;
@@ -54,19 +55,19 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/coa/update/{id}', [CoaController::class, 'update'])->name('master-data.coa.update');
         Route::delete('/coa/delete/{id}', [CoaController::class, 'destroy'])->name('master-data.coa.delete');
         // SPESIALIS
-        Route::get('/spesialis', [SpesialisController::class, 'index'])->name('master-data.spesialis');
-        Route::get('/spesialis/view', [SpesialisController::class, 'views'])->name('master-data.spesialis.view');
-        Route::post('/spesialis/store', [SpesialisController::class, 'store'])->name('master-data.spesialis.create');
-        Route::post('/spesialis/update-status/{id}', [SpesialisController::class, 'updateStatus'])->name('master-data.spesialis.update-status');
-        Route::put('/spesialis/update/{id}', [SpesialisController::class, 'update'])->name('master-data.spesialis.update');
-        Route::delete('/spesialis/delete/{id}', [SpesialisController::class, 'destroy'])->name('master-data.spesialis.delete');
+        // Route::get('/spesialis', [SpesialisController::class, 'index'])->name('master-data.spesialis');
+        // Route::get('/spesialis/view', [SpesialisController::class, 'views'])->name('master-data.spesialis.view');
+        // Route::post('/spesialis/store', [SpesialisController::class, 'store'])->name('master-data.spesialis.create');
+        // Route::post('/spesialis/update-status/{id}', [SpesialisController::class, 'updateStatus'])->name('master-data.spesialis.update-status');
+        // Route::put('/spesialis/update/{id}', [SpesialisController::class, 'update'])->name('master-data.spesialis.update');
+        // Route::delete('/spesialis/delete/{id}', [SpesialisController::class, 'destroy'])->name('master-data.spesialis.delete');
         // POLIKLINIK
-        Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
-        Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
-        Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
-        Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
-        Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
-        Route::delete('/poli/delete/{id}', [PoliController::class, 'destroy'])->name('master-data.poli.delete');
+        // Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
+        // Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
+        // Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
+        // Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
+        // Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
+        // Route::delete('/poli/delete/{id}', [PoliController::class, 'destroy'])->name('master-data.poli.delete');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
@@ -75,6 +76,12 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::prefix('tarif')->group(function () {
         // SK Tarif
         Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
+    });
+
+    // Router Controller Global
+    Route::prefix('global-controller')->group(function () {
+        // Tarif Tindakan
+        Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
     });
 });
 

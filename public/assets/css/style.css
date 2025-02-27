@@ -31104,23 +31104,24 @@ body.dark-only .select2-dropdown {
     border: 1px solid #1d1e26;
 }
 
-body.dark-only .select2-container--bootstrap-5 .select2-selection{
-    background-color : #1d1e26 !important;
-    color : rgba(255, 255, 255, 0.6) !important;
+body.dark-only .select2-container--bootstrap-5 .select2-selection {
+    background-color: #1d1e26 !important;
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
-body.dark-only .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered{
-    color : rgba(255, 255, 255, 0.6) !important;
+body.dark-only .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
-body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field{
-    background-color : #1d1e26 !important;
-    color : rgba(255, 255, 255, 0.6) !important;
+body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+    background-color: #1d1e26 !important;
+    color: rgba(255, 255, 255, 0.6) !important;
 }
 
-body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected, .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted){
-    background-color : rgba(255, 255, 255, 0.6) !important;
-    color : rgba(255, 255, 255, 0.6) !important;
+body.dark-only .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--selected,
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[aria-selected=true]:not(.select2-results__option--highlighted) {
+    background-color: #e9ecef !important;
+    color: #2c323f;
 }
 
 body.dark-only .select2-drpdwn .form-control-primary {
@@ -31204,8 +31205,26 @@ body.dark-only .theme-form .form-group select.form-control:not([size]):not([mult
 }
 
 
-body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading{
+body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading {
     background: var(--light-background) !important;
+}
+
+body.dark-only .bootstrap-table.fullscreen {
+    background: var(--light-background) !important;
+}
+
+body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading.table-dark .animation-dot,
+body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading.table-dark .animation-wrap::after,
+body.dark-only .bootstrap-table .fixed-table-container .fixed-table-body .fixed-table-loading.table-dark .animation-wrap::before {
+    background: var(--light-background) !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown{
+    top: 4px !important;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown.select2-dropdown--below{
+    border-top : 1px solid #86b7fe;
 }
 
 
