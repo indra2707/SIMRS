@@ -98,8 +98,8 @@ $('.js-select-2').each(function (index, element) {
         InitSelect2(item, {
             url: item.data('url'),
             placeholder:item.data('placeholder'),
-            dropdownParent : $(item.data('dropdownParent')),
-            initialValue: item.data('value'),
+            dropdownParent : item.data('dropdownParent') ? $(item.data('dropdownParent')) : null,
+            initialValue: item.data('value') ? item.data('value') : null,
         });
     }
     else {
