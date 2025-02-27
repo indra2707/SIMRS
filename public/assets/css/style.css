@@ -41513,6 +41513,14 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
     }
 }
 
+.js-select-2 {  
+    content: attr(data-attr);  
+    background-color: #ffffff;
+    background-image: url(../images/ajax-loader.gif);
+    background-size: 26px 24px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
 /**=====================
     63. Box-layout CSS ends
 ==========================**/

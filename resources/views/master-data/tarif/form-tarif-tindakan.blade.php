@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="col-form-label" for="kode">Kelompok Tindakan</label>
-                                <select class="form-select form-select-sm js-select-2" data-placeholder="---Pilih Tarif Tindakan---" id="kelompok_tindakan" data-url="{{ route('get-select-tarif-tindakan') }}" data-value="1" data-dropdownParent="" required></select>
+                                <select class="form-select form-select-sm js-select-2" data-placeholder="---Pilih Tarif Tindakan---" id="kelompok_tindakan" data-url="{{ route('get-select-tarif-tindakan') }}" required></select>
                             </div>
                             <div class="col-md-6">
                                 <label class="col-form-label" for="kode">Tipe</label>
