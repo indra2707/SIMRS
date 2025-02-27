@@ -18,16 +18,6 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
-    {{-- Loading --}}
-    <link rel="stylesheet" type="text/css" href="{{asset('assets/three-dots-loading/dist/three-dots.min.css')}}">
-
-
-
-
-
-
-
-
     {{-- Bootstrap Table --}}
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-table/dist/bootstrap-table.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-table/dist/extensions/sticky-header/bootstrap-table-sticky-header.css') }}">

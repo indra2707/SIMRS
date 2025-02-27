@@ -101,9 +101,7 @@ $(".js-select-2").each(function (index, element) {
         InitSelect2(item, {
             url: item.data("url"),
             placeholder: item.data("placeholder"),
-            dropdownParent: item.data("dropdownParent")
-                ? $(item.data("dropdownParent"))
-                : null,
+            // dropdownParent: $('.modal'),
             initialValue: item.data("value") ? item.data("value") : null,
         });
     } else {
@@ -111,9 +109,7 @@ $(".js-select-2").each(function (index, element) {
             {
                 placeholder: item.data("placeholder"),
                 allowClear: true,
-                dropdownParent: item.data("dropdownParent")
-                    ? $(item.data("dropdownParent"))
-                    : null,
+                // dropdownParent: $('.modal'),
             },
             function () {
                 if (item.data("value")) {
@@ -125,46 +121,61 @@ $(".js-select-2").each(function (index, element) {
 });
 
 function InitSelect2(element, options) {
-    if (options.url) {
-        $.ajax({
-            type: "GET",
-            url: options.url,
-            dataType: "json",
-            beforeSend: function () {
-                element.addClass("loading");
-            },
-            success: function (data) {
-                element.removeClass("loading");
-                element.empty();
-                element.select2({
-                    placeholder: options.placeholder,
-                    allowClear: true,
-                    dropdownParent: options.dropdownParent,
-                    data: data.data,
-                });
-                if (options.initialValue) {
-                    element.val(options.initialValue).trigger("change");
-                }
-            },
-            complete: function () {
-                // employee.removeClass("loading");
-            },
-        });
+    $.ajax({
+        type: "GET",
+        url: options.url,
+        dataType: "json",
+        beforeSend: function () {
+            element.addClass("loading");
+        },
+        success: function (data) {
+            element.removeClass("loading");
+            element.empty();
+            element.select2({
+                placeholder: options.placeholder,
+                allowClear: true,
+                dropdownParent: $(".modal"),
+                data: data.data,
+            });
+            if (options.initialValue) {
+                element.val(options.initialValue).trigger("change");
+            }
+        },
+        complete: function () {
+            employee.removeClass("loading");
+        },
+    });
+    // if (options.url) {
 
-        // $.ajax({
-        //     type: 'GET',
-        //     url: options.url,
-        //     dataType: 'json'
-        // }).then(function (result) {
-        //     $(element).select2({
-        //         placeholder: options.placeholder,
-        //         allowClear: true,
-        //         dropdownParent: options.dropdownParent,
-        //         data: result['data'],
-        //     });
-        //     if (options.initialValue) {
-        //         $(element).val(options.initialValue).trigger('change');
-        //     }
-        // });
-    }
+    //     // $.ajax({
+    //     //     type: 'GET',
+    //     //     url: options.url,
+    //     //     dataType: 'json'
+    //     // }).then(function (result) {
+    //     //     $(element).select2({
+    //     //         placeholder: options.placeholder,
+    //     //         allowClear: true,
+    //     //         dropdownParent: options.dropdownParent,
+    //     //         data: result['data'],
+    //     //     });
+    //     //     if (options.initialValue) {
+    //     //         $(element).val(options.initialValue).trigger('change');
+    //     //     }
+    //     // });
+    // }
 }
+
+$.fn.modal.Constructor.prototype.enforceFocus = function () {
+    var that = this;
+    $(document).on("focusin.modal", function (e) {
+        if ($(e.target).hasClass("select2-input")) {
+            return true;
+        }
+        if (
+            that.$element[0] !== e.target &&
+            !that.$element.has(e.target).length
+        ) {
+            that.$element.focus();
+        }
+    });
+};
