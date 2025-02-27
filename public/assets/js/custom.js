@@ -89,5 +89,40 @@ function Alert(type, message) {
 }
 
 // Select2 Global
-$.fn.select2.defaults.set("theme", "bootstrap");
+$.fn.select2.defaults.set("theme", "bootstrap-5");
 $.fn.select2.defaults.set("width", "100%");
+
+$('.js-select-2').each(function (index, element) {
+    var item = $(element);
+    if (item.data('url')) {
+        InitSelect2(item, {
+            url: item.data('url'),
+            placeholder:item.data('placeholder'),
+            dropdownParent : item.data('dropdownParent'),
+            initialValue: item.data('value'),
+        });
+    }
+    else {
+        item.select2();
+    }
+});
+
+function InitSelect2(element, options) {
+    if (options.url) {
+        $.ajax({
+            type: 'GET',
+            url: options.url,
+            dataType: 'json'
+        }).then(function (result) {
+            $(element).select2({
+                placeholder: options.placeholder,
+                allowClear: true,
+                dropdownParent: options.dropdownParent,
+                data: result['data'],
+            });
+            if (options.initialValue) {
+                $(element).val(options.initialValue).trigger('change');
+            }
+        });
+    }
+}

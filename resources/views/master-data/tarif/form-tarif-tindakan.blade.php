@@ -37,15 +37,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="col-form-label" for="kode">Kelompok Tindakan</label>
-                                <select class="form-select form-select-sm form-control-primary js-select-2" required>
-                                    <option></option>
-                                    <option value="AL">Smith</option>
-                                    <option value="WY">Peter</option>
-                                    <option value="WY">James</option>
-                                    <option value="WY">Hanry Die</option>
-                                    <option value="WY">John Doe</option>
-                                    <option value="WY">Harry Poter</option>
-                                </select>
+                                <select class="form-select form-select-sm js-select-2" data-placeholder="---Pilih Tarif Tindakan---" id="kelompok_tindakan" data-url="{{ route('get-select-tarif-tindakan') }}" data-value="1" data-dropdownParent="" required></select>
                             </div>
                             <div class="col-md-6">
                                 <label class="col-form-label" for="kode">Tipe</label>

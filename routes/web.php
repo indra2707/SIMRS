@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Icd10Controller;
 use App\Http\Controllers\Icd9Controller;
@@ -84,6 +85,12 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::prefix('tarif')->group(function () {
         // SK Tarif
         Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
+    });
+
+    // Router Controller Global
+    Route::prefix('global-controller')->group(function () {
+        // Tarif Tindakan
+        Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
     });
 });
 
