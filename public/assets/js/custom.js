@@ -96,10 +96,7 @@ $.fn.select2.defaults.set("theme", "bootstrap-5");
 $.fn.select2.defaults.set("width", "100%");
 
 $(".js-select-2").each(function (index, element) {
-
-
     var item = $(element);
-    console.log(item.data("value"));
     if (item.data("url")) {
         InitSelect2(item, {
             url: item.data("url"),
