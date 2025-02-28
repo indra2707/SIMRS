@@ -41,10 +41,10 @@ class SKTarifController extends Controller
     {
         $query = SKTarif::create([
             'no_sk' => $request->no_sk,
-            'tgl_mulai' => $request->tgl_efektif_mulai,
-            'tgl_akhir' => $request->tgl_efektif_akhir,
+            'tgl_efektif_mulai' => $request->tgl_mulai,
+            'tgl_efektif_akhir' => $request->tgl_akhir,
             'deskripsi' => $request->deskripsi,
-            'status' => $request->status == 'on' ? '1' : '0',
+            'status' => '1',
         ]);
         if ($query) {
             return response()->json([
@@ -87,8 +87,8 @@ class SKTarifController extends Controller
     {
         $query = SKTarif::where('id', $id)->update([
             'no_sk' => $request->no_sk,
-            'tgl_mulai' => $request->tgl_efektif_mulai,
-            'tgl_akhir' => $request->tgl_efektif_akhir,
+            'tgl_efektif_mulai' => $request->tgl_mulai,
+            'tgl_efektif_akhir' => $request->tgl_akhir,
             'deskripsi' => $request->deskripsi,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
