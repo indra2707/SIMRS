@@ -6,7 +6,6 @@
 @endsection
 
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
 @endsection
 
 @section('breadcrumb-title')
@@ -35,7 +34,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body pt-0 campaign-table">
+                    {{-- <div class="card-body pt-0 campaign-table">
                         <div class="recent-table table-responsive currency-table">
                             <table class="table">
                                 <thead>
@@ -153,7 +152,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -162,7 +161,4 @@
 @endsection
 
 @section('script')
-    <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
-    <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
-    <script src="{{ asset('assets/js/dashboard/dashboard_5.js') }}"></script>
 @endsection

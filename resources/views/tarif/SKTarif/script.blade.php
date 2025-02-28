@@ -4,28 +4,29 @@
 
     // Open Modal
     $(document).on('click', '.add-btn', function() {
-        $('.form-icd9').removeClass('was-validated');
+        $('.form-sk-tarif').removeClass('was-validated');
         $('#form-modal').modal('show');
-        $('.modal-title').text('Form Tambah ICD-9');
+        $('.modal-title').text('Form Tambah SK Tarif');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
-        $('input[name="kode"]').val('');
-        $('input[name="nama"]').val('');
-        $('input[name="status"]').prop('checked', true);
+        $('input[name="no_sk"]').val('');
+        $('input[name="tgl_mulai"]').val('');
+        $('input[name="tgl_akhir"]').val('');
+        $('textarea[name="deskripsi"]').val('');
     });
 
     // Save
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.icd-9.update', ':id') }}";
+            var url = "{{ route('tarif.sk-tarif.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('master-data.icd-9.create') }}";
+            var url = "{{ route('tarif.sk-tarif.create') }}";
             var type = "POST";
         }
-        var forms = document.getElementsByClassName('form-icd9');
+        var forms = document.getElementsByClassName('form-sk-tarif');
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
@@ -36,7 +37,7 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-icd9').serialize(),
+                    data: $('.form-sk-tarif').serialize(),
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -97,28 +98,34 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.icd-9.view') }}",
+            url: "{{ route('tarif.sk-tarif.view') }}",
             columns: [
                 [
-                    //     {
-                    //     title: 'No.',
-                    //     align: 'center',
-                    //     valign: 'middle',
-                    //     sortable: true,
-                    //     width: '5%',
-                    //     formatter: function (value, row, index) {
-                    //         return index + 1
-                    //     }
-                    // },
+                        {
+                        title: 'No.',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        width: '5%',
+                        formatter: function (value, row, index) {
+                            return index + 1
+                        }
+                    },
                     {
                         width: 10,
-                        // title: 'KODE ICD 9',
-                        field: 'kode',
+                        field: 'no_sk',
                         sortable: true,
                     },
                     {
-                        // title: 'NAMA ICD 9',
-                        field: 'nama',
+                        field: 'tgl_mulai',
+                        sortable: true,
+                    },
+                    {
+                        field: 'tgl_akhir',
+                        sortable: true,
+                    },
+                    {
+                        field: 'deskripsi',
                         sortable: true,
                     },
                     {
@@ -151,48 +158,7 @@
                         formatter: actionsFunction
                     }
                 ]
-            ],
-            error: function(xhr, status, error) {
-                if (xhr.status == 400) {
-                    var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                }
-            },
-            responseHandler: function(data) {
-                return data;
-            }
+            ]
         });
     }
 
@@ -215,15 +181,16 @@
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
             $('#form-modal').modal('show');
-            $('.modal-title').text('Form Edit ICD-9');
+            $('.modal-title').text('Form Edit SK Tarif');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
-            $('input[name="kode"]').val(row.kode);
-            $('input[name="nama"]').val(row.nama);
-            $('input[name="status"]').prop('checked', row.status === '1');
+            $('input[name="no_sk"]').val(row.no_sk);
+            $('input[name="tgl_mulai"]').val(row.tgl_mulai);
+            $('input[name="tgl_akhir"]').val(row.tgl_akhir);
+            $('textarea[name="deskripsi"]').val(row.deskripsi);
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('master-data.icd-9.delete', ':id') }}";
+            var url = "{{ route('tarif.sk-tarif.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -292,7 +259,7 @@
     // Window operateChange Status
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('master-data.icd-9.update-status', ':id') }}";
+            var url = "{{ route('tarif.sk-tarif.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,

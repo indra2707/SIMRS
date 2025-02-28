@@ -22,7 +22,6 @@ class Icd9Controller extends Controller
     public function views()
     {
         $query = Icd9s::all();
-
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
@@ -37,11 +36,6 @@ class Icd9Controller extends Controller
     // Store
     public function store(Request $request)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-            'status' => 'required',
-        ]);
         $query = Icd9s::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
@@ -86,10 +80,6 @@ class Icd9Controller extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-        ]);
         $query = Icd9s::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,

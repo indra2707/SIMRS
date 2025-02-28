@@ -34946,7 +34946,7 @@ button[data-toggle=dropdown]:hover~.dropdown-menu {
     text-decoration: none;
     text-transform: capitalize;
     padding: 5px 15px;
-    margin: 0 3px;
+    margin: 9px 3px;
     letter-spacing: 0.04em;
     position: relative;
     border-radius: 5px;
@@ -41513,8 +41513,8 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
     }
 }
 
-.js-select-2 {  
-    content: attr(data-attr);  
+.js-select-2 {
+    content: attr(data-attr);
     background-color: #ffffff;
     background-image: url(../images/ajax-loader.gif);
     background-size: 26px 24px;

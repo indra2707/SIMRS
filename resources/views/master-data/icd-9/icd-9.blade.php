@@ -6,11 +6,10 @@
 @endsection
 
 @section('style')
-
 @endsection
 
 @section('breadcrumb-title')
-    <h3>ICD-9</h3>
+    <h3>{{ $title }}</h3>
 @endsection
 
 @section('breadcrumb-items')
