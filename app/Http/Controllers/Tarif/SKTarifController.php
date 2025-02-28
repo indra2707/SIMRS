@@ -27,8 +27,8 @@ class SKTarifController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'no_sk' => $value->no_sk,
-                'tgl_mulai' => $value->tgl_efektif_mulai,
-                'tgl_akhir' => $value->tgl_efektif_akhir,
+                'tgl_mulai' => convertYmdToDmy($value->tgl_efektif_mulai),
+                'tgl_akhir' => convertYmdToDmy($value->tgl_efektif_akhir),
                 'deskripsi' => $value->deskripsi,
                 'status' => $value->status,
             ];
@@ -41,8 +41,8 @@ class SKTarifController extends Controller
     {
         $query = SKTarif::create([
             'no_sk' => $request->no_sk,
-            'tgl_efektif_mulai' => $request->tgl_mulai,
-            'tgl_efektif_akhir' => $request->tgl_akhir,
+            'tgl_efektif_mulai' => convertDmyToYmd($request->tgl_mulai),
+            'tgl_efektif_akhir' => convertDmyToYmd($request->tgl_akhir),
             'deskripsi' => $request->deskripsi,
             'status' => '1',
         ]);
@@ -87,10 +87,9 @@ class SKTarifController extends Controller
     {
         $query = SKTarif::where('id', $id)->update([
             'no_sk' => $request->no_sk,
-            'tgl_efektif_mulai' => $request->tgl_mulai,
-            'tgl_efektif_akhir' => $request->tgl_akhir,
+            'tgl_efektif_mulai' => convertDmyToYmd($request->tgl_mulai),
+            'tgl_efektif_akhir' => convertDmyToYmd($request->tgl_akhir),
             'deskripsi' => $request->deskripsi,
-            'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([

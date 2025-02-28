@@ -80,14 +80,14 @@
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="tgl_mulai">Tgl Mulai</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="tgl_mulai" type="date" placeholder="Tanggal Efektif Mulai..." required>
+                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_mulai" type="text" placeholder="Tanggal Efektif Mulai..." data-language="en" required>
                             </div>
                         </div>
                         {{-- Tanggal Efektif Berakhir --}}
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="tgl_akhir">Tgl Berakhir</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="tgl_akhir" type="date" placeholder="Tanggal Efektif Berakhir..." required>
+                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_akhir" type="text" placeholder="Tanggal Efektif Berakhir..." data-language="en" required>
                             </div>
                         </div>
                         {{-- Deskripsi --}}

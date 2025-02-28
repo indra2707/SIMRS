@@ -21,6 +21,9 @@
 <script src="{{ asset('assets/js/icons/feather-icon/feather-icon-clipart.js') }}"></script>
 <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
 <script id="menu" src="{{ asset('assets/js/sidebar-menu.js') }}"></script>
+{{-- Datepicker --}}
+<script src="{{asset('assets/js/datepicker/date-picker/datepicker.js')}}"></script>
+<script src="{{asset('assets/js/datepicker/date-picker/datepicker.en.js')}}"></script>
 
 <!-- Sweetalert -->
 <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
