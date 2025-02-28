@@ -325,12 +325,12 @@ if ($(window).width() <= 1199) {
     $(".left-header .link-section").children('ul').css('display', 'none');
     $(this).parent().children('ul').toggleClass("d-block").slideToggle();
 }
-// if ($(window).width() <= 991) {
-//     $('.sidebar-wrapper .back-btn').on('click', function (e) {
-//         $(".page-header").toggleClass("close_icon");
-//         $(".sidebar-wrapper").toggleClass("close_icon");
-//     });
-// }
+if ($(window).width() <= 991) {
+    $('.sidebar-wrapper .back-btn').on('click', function (e) {
+        $(".page-header").toggleClass("close_icon");
+        $(".sidebar-wrapper").toggleClass("close_icon");
+    });
+}
 
 // active link
 if($('.simplebar-wrapper .simplebar-content-wrapper') && $('#pageWrapper').hasClass('compact-wrapper')) {

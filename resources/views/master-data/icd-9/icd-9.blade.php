@@ -6,11 +6,10 @@
 @endsection
 
 @section('style')
-
 @endsection
 
 @section('breadcrumb-title')
-    <h3>ICD-9</h3>
+    <h3>{{ $title }}</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -71,14 +70,16 @@
                         <div class="mb-3 row">
                             <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..." required>
+                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..."
+                                    required>
                             </div>
                         </div>
                         {{-- Nama --}}
                         <div class="mb-3 row mb-3-sm">
                             <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..." required>
+                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..."
+                                    required>
                             </div>
                         </div>
                         {{-- Satus --}}

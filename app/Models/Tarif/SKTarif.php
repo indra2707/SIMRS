@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class SKTarif extends Model
 {
     use HasFactory;
-
+    protected $table = 'sk_tarifs';
     protected $fillable = [
         'no_sk',
         'tgl_efektif_mulai',

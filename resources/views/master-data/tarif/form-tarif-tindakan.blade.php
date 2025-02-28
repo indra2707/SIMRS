@@ -169,7 +169,7 @@
                     </div>
                 </div>
                 {{-- Button Simpan --}}
-                <div class="card-body pt-3 campaign-table row">
+                {{-- <div class="card-body pt-3 campaign-table row">
                     <div class="col-md-5">
                         <h6>Riwayat SK Tarif</h6>
                         <div class="recent-table table-responsive currency-table">
@@ -222,7 +222,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

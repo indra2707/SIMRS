@@ -85,6 +85,11 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::prefix('tarif')->group(function () {
         // SK Tarif
         Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
+        Route::get('/sk-tarif/view', [SKTarifController::class, 'views'])->name('tarif.sk-tarif.view');
+        Route::post('/sk-tarif/store', [SKTarifController::class, 'store'])->name('tarif.sk-tarif.create');
+        Route::post('/sk-tarif/update-status/{id}', [SKTarifController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
+        Route::put('/sk-tarif/update/{id}', [SKTarifController::class, 'update'])->name('tarif.sk-tarif.update');
+        Route::delete('/sk-tarif/delete/{id}', [SKTarifController::class, 'destroy'])->name('tarif.sk-tarif.delete');
     });
 
     // Router Controller Global

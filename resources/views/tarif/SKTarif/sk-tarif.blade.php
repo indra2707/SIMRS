@@ -35,10 +35,12 @@
                                 <table id="table_icd9" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary f-w-600 text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode</b></th>
-                                            <th scope="col"><b>Nama ICD 9</b></th>
-                                            <th scope="col"><b>Status</b></th>
+                                            <th scope="col">No</th>
+                                            <th scope="col"><b>No SK</b></th>
+                                            <th scope="col"><b>Tanggal Efektif Mulai</b></th>
+                                            <th scope="col"><b>Tanggal Efektif Berakhir</b></th>
+                                            <th scope="col"><b>Deskripsi</b></th>
+                                            <th scope="col"><b>status</b></th>
                                             <th scope="col"><b>Action</b></th>
                                         </tr>
                                     </thead>
@@ -61,34 +63,38 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-wizard form-icd9" novalidate="" autocomplete="off">
+                    <form class="form-wizard form-sk-tarif" novalidate="" autocomplete="off">
                         @csrf
                         {{-- Hidden Input --}}
-                        <div class="mb-3 row">
+                        <div class="mb-1 row">
                             <input type="hidden" name="id">
                         </div>
-                        {{-- Kode --}}
-                        <div class="mb-3 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 9</b></label>
+                        {{-- No SK --}}
+                        <div class="mb-1 row">
+                            <label class="col-sm-2 col-form-label" for="no_sk">No SK</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..." required>
+                                <input class="form-control form-control-sm" name="no_sk" type="text" placeholder="No SK..." required>
                             </div>
                         </div>
-                        {{-- Nama --}}
-                        <div class="mb-3 row mb-3-sm">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 9</b></label>
+                        {{-- Tanggal Efektif Mulai --}}
+                        <div class="mb-1 row">
+                            <label class="col-sm-2 col-form-label" for="tgl_mulai">Tgl Mulai</label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..." required>
+                                <input class="form-control form-control-sm" name="tgl_mulai" type="date" placeholder="Tanggal Efektif Mulai..." required>
                             </div>
                         </div>
-                        {{-- Satus --}}
-                        <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                            <div class="media-body">
-                                <label class="switch">
-                                    <input class="form-control" name="status" type="checkbox" checked>
-                                    <span class="switch-state"></span>
-                                </label>
+                        {{-- Tanggal Efektif Berakhir --}}
+                        <div class="mb-1 row">
+                            <label class="col-sm-2 col-form-label" for="tgl_akhir">Tgl Berakhir</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="tgl_akhir" type="date" placeholder="Tanggal Efektif Berakhir..." required>
+                            </div>
+                        </div>
+                        {{-- Deskripsi --}}
+                        <div class="mb-1 row">
+                            <label class="col-sm-2 col-form-label" for="deskripsi">Deskripsi</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm w-100" name="deskripsi" id="deskripsi" style="resize: none;" cols="3"></textarea>
                             </div>
                         </div>
                     </form>
