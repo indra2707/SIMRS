@@ -2,33 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coas;
+use App\Models\Spesialisses;
 use Illuminate\Http\Request;
 
-class CoaController extends Controller
+class SpesialisController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'COA',
+            'title' => 'Spesialis',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'COA',
+            'menuSubtitle' => 'Spesialis',
         ];
-        return view('master-data.coa.coa', $data);
+        return view('master-data.spesialis.spesialis', $data);
     }
 
     // Views Table
     public function views()
     {
-        $query = Coas::all();
+        $query = Spesialisses::all();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
                 'kode' => $value->kode,
-                'kategori' => $value->kategori,
                 'nama' => $value->nama,
                 'status' => $value->status,
             ];
@@ -41,13 +40,11 @@ class CoaController extends Controller
         $request->validate([
             'kode' => 'required',
             'nama' => 'required',
-            'kategori' => 'required',
             'status' => 'required',
         ]);
-        $query = Coas::create([
+        $query = Spesialisses::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -68,7 +65,7 @@ class CoaController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Coas::where('id', $id)->update([
+        $query = Spesialisses::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
@@ -90,14 +87,12 @@ class CoaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kode' => 'required',
+
             'nama' => 'required',
-            'kategori' => 'required',
         ]);
-        $query = Coas::where('id', $id)->update([
+        $query = Spesialisses::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -118,7 +113,7 @@ class CoaController extends Controller
     // Delete
     public function destroy($id)
     {
-        $query = Coas::where('id', $id)->delete();
+        $query = Spesialisses::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,

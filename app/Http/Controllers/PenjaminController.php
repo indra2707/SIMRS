@@ -2,61 +2,119 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coas;
+use App\Models\Diskon_penjamins;
+use App\Models\Penjamins;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class CoaController extends Controller
+class PenjaminController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'COA',
+            'title' => 'Penjamin',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'COA',
+            'menuSubtitle' => 'Penjamin',
         ];
-        return view('master-data.coa.coa', $data);
+        return view('master-data.penjamin.penjamin', $data);
     }
 
     // Views Table
     public function views()
     {
-        $query = Coas::all();
+        $query = Penjamins::all();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
                 'kode' => $value->kode,
-                'kategori' => $value->kategori,
                 'nama' => $value->nama,
+                'coa' => $value->coa,
+                'email' => $value->email,
+                'tarif' => $value->tarif,
                 'status' => $value->status,
+                'telpon' => $value->telpon,
+                'alamat' => $value->alamat,
+                'margin' => $value->margin,
             ];
         }
         return response()->json($data, 200);
     }
+
+    // Store
+    public function select()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'penjamin')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->kode . ' - ' . $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
     // Store
     public function store(Request $request)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-            'kategori' => 'required',
-            'status' => 'required',
-        ]);
-        $query = Coas::create([
+        // dd($request);
+        $query = Penjamins::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kategori' => $request->kategori,
+            'coa' => $request->coa,
+            'email' => $request->email,
+            'tarif' => $request->tarif,
+            'telpon' => $request->telpon,
+            'alamat' => $request->alamat,
+            'margin' => $request->margin,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
+
+        $query = Diskon_penjamins::insert(
+            [
+                // RJ
+                ['penjamin'=> $request->kode,
+                 'kategori'=> 'Rawat Jalan',
+                 'tindakan'=> $request-> rj_tindakan,
+                 'konsultasi'=> $request->rj_konsultasi,
+                 'ok'=> $request->rj_ok,
+                 'cathlab'=> $request->rj_cathlab,
+                 'radiologi'=> $request->rj_radiologi,
+                 'laboratorium'=> $request->rj_lab,
+                 'akomodasi'=> $request->rj_akomodasi,
+                 'paket'=> $request->rj_paket
+                ],
+
+                //RI
+                ['penjamin'=> $request->kode,
+                 'kategori'=> 'Rawat Inap',
+                 'tindakan'=> $request-> ri_tindakan,
+                 'konsultasi'=> $request->ri_konsultasi,
+                 'ok'=> $request->ri_ok,
+                 'cathlab'=> $request->ri_cathlab,
+                 'radiologi'=> $request->ri_radiologi,
+                 'laboratorium'=> $request->ri_lab,
+                 'akomodasi'=> $request->ri_akomodasi,
+                 'paket'=> $request->ri_paket
+                ],
+            ]
+        );
+
+
         if ($query) {
             return response()->json([
                 'success' => true,
                 'data' => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -68,16 +126,17 @@ class CoaController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Coas::where('id', $id)->update([
+        $query = Penjamins::where('id', $id)->update([
             'status' => $request->status,
         ]);
+
         if ($query) {
             return response()->json([
                 'success' => true,
                 'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
                 'data' => [],
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengubah status.',
@@ -89,12 +148,7 @@ class CoaController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-            'kategori' => 'required',
-        ]);
-        $query = Coas::where('id', $id)->update([
+        $query = Penjamins::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
@@ -106,7 +160,7 @@ class CoaController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -116,16 +170,17 @@ class CoaController extends Controller
     }
 
     // Delete
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $query = Coas::where('id', $id)->delete();
+        $query = Penjamins::where('id', $id)->delete();
+        $query = Diskon_penjamins::where('penjamin', $request->kode)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,
                 'data' => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],

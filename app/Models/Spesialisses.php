@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Coas extends Model
+class Spesialisses extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'kode',
         'nama',
-        'kategori',
         'status'
     ];
 }

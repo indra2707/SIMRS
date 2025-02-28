@@ -10,39 +10,6 @@
     });
     var $table = $('#table_coa');
 
-    // $.notify({
-    //     icon: 'fa fa-check',
-    //     title: 'Success',
-    //     message: 'Loading Data.'
-    // }, {
-    //     type: 'success',
-    //     allow_dismiss: true,
-    //     delay: 2000,
-    //     showProgressbar: true,
-    //     timer: 10000000,
-    //     z_index: 1127,
-    //     animate: {
-    //         enter: 'animated fadeInDown',
-    //         exit: 'animated fadeOutUp'
-    //     },
-    //     template: '<div class="alert alert-{0} d-flex align-items-center" role="alert">' +
-    //         '<div>' +
-    //         '<i class="stroke-warning" data-feather="alert-triangle"></i>' +
-    //         '</div>' +
-    //         '<span class="txt-light">Use' +
-    //         '<a class="alert-link text-white" href="#!">"alert-warning"</a>and' +
-    //         '<a class="alert-link text-white" href="#!">"stroke-warning"</a>classes for alerts like this one.' +
-    //         '</span>' +
-    //         '<div class="progress" data-notify="progressbar">' +
-    //         '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
-    //         '</div>' +
-    //         '</div>',
-    // });
-
-    // setTimeout(function () {
-    //     notify.update('message', '<i class="fa fa-bell-o"></i><strong>Loading</strong> Inner Data.');
-    // }, 1000);
-
     // Open Modal
     $(document).on('click', '.add-btn', function() {
         $('.form-coa').removeClass('was-validated');
@@ -52,7 +19,7 @@
         $('input[name="id"]').val('');
         $('input[name="kode"]').val('');
         $('input[name="nama"]').val('');
-        $('select2[name="kategori"]').val('');
+        $('select[name="kategori"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
     });
 
@@ -60,11 +27,11 @@
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.icd-10.update', ':id') }}";
+            var url = "{{ route('master-data.coa.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('master-data.icd-10.create') }}";
+            var url = "{{ route('master-data.coa.create') }}";
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-coa');
@@ -201,7 +168,7 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.icd-10.view') }}",
+            url: "{{ route('master-data.coa.view') }}",
             columns: [
                 [
                     //     {
@@ -215,7 +182,7 @@
                     //     }
                     // },
                     {
-                        width: '10%',
+                        width: '100%',
                         // title: 'KODE ICD 10',
                         field: 'kode',
                         sortable: true,
@@ -226,6 +193,11 @@
                         sortable: true,
                     },
                     {
+                        width: '50%',
+                        field: 'kategori',
+                        sortable: true,
+                    },
+                    {
                         width: '5%',
                         // title: 'STATUS',
                         field: 'status',
@@ -233,7 +205,7 @@
                         events: window.operateChange,
                         formatter: function(value, row, index) {
                             return [
-                                '<div class="media-body text-center switch-sm">',
+                                '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
                                 '<input type="checkbox" class="update-status" ' + (row.status ===
                                     '1' ? 'checked' : '') + '>',
@@ -319,7 +291,7 @@
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-coa').modal('show');
-            $('.modal-title').text('Form Edit ICD-10');
+            $('.modal-title').text('Form Edit coa');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
@@ -327,7 +299,7 @@
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('master-data.icd-10.delete', ':id') }}";
+            var url = "{{ route('master-data.coa.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -396,7 +368,7 @@
     // Window operateChange Status
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('master-data.icd-10.update-status', ':id') }}";
+            var url = "{{ route('master-data.coa.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,

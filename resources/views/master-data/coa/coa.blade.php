@@ -32,12 +32,13 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_icd10" class="table table-hover" data-toggle="table">
+                                <table id="table_coa" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode</b></th>
-                                            <th scope="col"><b>Nama ICD 10</b></th>
+                                            <th scope="col"><b>Kode COA</b></th>
+                                            <th scope="col"><b>Nama COA</b></th>
+                                            <th scope="col"><b>Kategori</b></th>
                                             <th scope="col"><b>Status</b></th>
                                             <th scope="col"><b>Action</b></th>
                                         </tr>
@@ -98,7 +99,7 @@
                         {{-- Satus --}}
                         <div class="media mb-2">
                             <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                            <div class="media-body">
+                            <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>
                                     <span class="switch-state"></span>

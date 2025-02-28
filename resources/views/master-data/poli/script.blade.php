@@ -1,57 +1,40 @@
 <script type="text/javascript">
+    // Variable Name
+      // With Placeholder
+      $(".select2").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme:"bootstrap-5",
+        dropdownParent:$("#modal-poli"),
+        allowClear:true
 
-    var $table = $('#table_penjamin');
+    });
+    var $table = $('#table_poli');
 
     // Open Modal
     $(document).on('click', '.add-btn', function() {
-        $('.form-penjamin').removeClass('was-validated');
-        $('#modal-penjamin').modal('show');
-        $('.modal-title').text('Form Tambah Penjamin');
+        $('.form-poli').removeClass('was-validated');
+        $('#modal-poli').modal('show');
+        $('.modal-title').text('Form Tambah Poliklinik');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="kode"]').val('');
         $('input[name="nama"]').val('');
-        $('input[name="email"]').val('');
-        $('input[name="tarif"]').val('');
-        $('input[name="telpon"]').val('');
-        $('input[name="margin"]').val('');
-        $('textarea[name="alamat"]').val('');
-        $('select[name="coa"]').val('').trigger('change');
+        $('select[name="kategori"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
-
-        $('input[name="rj_tindakan"]').val('');
-        $('input[name="rj_konsultasi"]').val('');
-        $('input[name="rj_alat"]').val('');
-        $('input[name="rj_ok"]').val('');
-        $('input[name="rj_cathlab"]').val('');
-        $('input[name="rj_radiologi"]').val('');
-        $('input[name="rj_lab"]').val('');
-        $('input[name="rj_akomodasi"]').val('');
-        $('input[name="rj_paket"]').val('');
-
-        $('input[name="ri_tindakan"]').val('');
-        $('input[name="ri_konsultasi"]').val('');
-        $('input[name="ri_alat"]').val('');
-        $('input[name="ri_ok"]').val('');
-        $('input[name="ri_cathlab"]').val('');
-        $('input[name="ri_radiologi"]').val('');
-        $('input[name="ri_lab"]').val('');
-        $('input[name="ri_akomodasi"]').val('');
-        $('input[name="ri_paket"]').val('');
     });
 
     // Save
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.penjamin.update', ':id') }}";
+            var url = "{{ route('master-data.poli.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('master-data.penjamin.create') }}";
+            var url = "{{ route('master-data.poli.create') }}";
             var type = "POST";
         }
-        var forms = document.getElementsByClassName('form-penjamin');
+        var forms = document.getElementsByClassName('form-poli');
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
@@ -62,11 +45,11 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-penjamin').serialize(),
+                    data: $('.form-poli').serialize(),
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                        ).attr('disabled', 'disabled');
+                            ).attr('disabled', 'disabled');
                     },
                     complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
@@ -90,7 +73,7 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                            $('#modal-penjamin').modal('hide');
+                            $('#modal-poli').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
                             $.notify({
@@ -109,7 +92,7 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                            $('#modal-penjamin').modal('hide');
+                            $('#modal-poli').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
@@ -170,10 +153,10 @@
             height: 500,
             locale: 'en-US',
             search: true,
-            showColumns: true,
-            showPaginationSwitch: true,
-            showToggle: true,
-            showExport: true,
+            // showColumns: true,
+            // showPaginationSwitch: true,
+            // showToggle: true,
+            // showExport: true,
             pagination: true,
             pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
@@ -184,27 +167,39 @@
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
-            exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.penjamin.view') }}",
+            // exportTypes: ['json', 'csv', 'txt', 'excel'],
+            url: "{{ route('master-data.poli.view') }}",
             columns: [
-                [{
+                [
+                    //     {
+                    //     title: 'No.',
+                    //     align: 'center',
+                    //     valign: 'middle',
+                    //     sortable: true,
+                    //     width: '5%',
+                    //     formatter: function (value, row, index) {
+                    //         return index + 1
+                    //     }
+                    // },
+                    {
                         width: '100%',
+                        // title: 'KODE ICD 10',
                         field: 'kode',
                         sortable: true,
                     },
                     {
-                        title: 'Kode COA',
-                        width: '150%',
-                        field: 'coa',
-                        sortable: true,
-                        visible: false,
-                    },
-                    {
+                        // title: 'NAMA ICD 10',
                         field: 'nama',
                         sortable: true,
                     },
                     {
+                        width: '50%',
+                        field: 'kategori',
+                        sortable: true,
+                    },
+                    {
                         width: '5%',
+                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
@@ -284,7 +279,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
+            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -295,22 +290,16 @@
     // Handle events button actions
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
-            $('#modal-penjamin').modal('show');
-            $('.modal-title').text('Form Edit Penjamin');
+            $('#modal-poli').modal('show');
+            $('.modal-title').text('Form Edit poli');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
             $('input[name="nama"]').val(row.nama);
-            $('input[name="email"]').val(row.email);
-            $('input[name="tarif"]').val(row.tarif);
-            $('input[name="telpon"]').val(row.telpon);
-            $('textarea[name="alamat"]').val(row.alamat);
-            $('input[name="margin"]').val(row.margin);
-            $('#coa').attr('data-value',row.coa);
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('master-data.penjamin.delete', ':id') }}";
+            var url = "{{ route('master-data.poli.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -328,7 +317,6 @@
                         url: url,
                         type: "DELETE",
                         data: {
-                            kode: row.kode,
                             _token: "{{ csrf_token() }}"
                         },
                         success: function(res, status, xhr) {
@@ -380,7 +368,7 @@
     // Window operateChange Status
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('master-data.penjamin.update-status', ':id') }}";
+            var url = "{{ route('master-data.poli.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,
@@ -468,4 +456,5 @@
             });
         }
     }
+
 </script>

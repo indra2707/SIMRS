@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coas;
+use App\Models\Polis;
 use Illuminate\Http\Request;
 
-class CoaController extends Controller
+class PoliController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'COA',
+            'title' => 'Poliklinik',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'COA',
+            'menuSubtitle' => 'Poliklinik',
         ];
-        return view('master-data.coa.coa', $data);
+        return view('master-data.poli.poli', $data);
     }
 
     // Views Table
     public function views()
     {
-        $query = Coas::all();
+        $query = Polis::all();
 
         $data = [];
         foreach ($query as $key => $value) {
@@ -39,14 +39,15 @@ class CoaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kode' => 'required',
+            // 'kode' => 'required',
             'nama' => 'required',
             'kategori' => 'required',
             'status' => 'required',
         ]);
-        $query = Coas::create([
+        $query = Polis::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
+            'created_by' => $request->get('username'),
             'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
@@ -68,7 +69,7 @@ class CoaController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Coas::where('id', $id)->update([
+        $query = Polis::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
@@ -90,11 +91,11 @@ class CoaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'kode' => 'required',
+            // 'kode' => 'required',
             'nama' => 'required',
             'kategori' => 'required',
         ]);
-        $query = Coas::where('id', $id)->update([
+        $query = Polis::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
@@ -118,7 +119,7 @@ class CoaController extends Controller
     // Delete
     public function destroy($id)
     {
-        $query = Coas::where('id', $id)->delete();
+        $query = Polis::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,
