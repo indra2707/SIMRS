@@ -65,6 +65,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // POLIKLINIK
         Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
         Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
+        Route::get('/poli/get-detail-diskon', [PoliController::class, 'get_detail_discont'])->name('master-data.poli.detail-diskon');
         Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
         Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
         Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');

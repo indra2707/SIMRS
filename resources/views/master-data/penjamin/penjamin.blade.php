@@ -124,9 +124,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama"><b>Tarif</b></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="tarif" type="text"
-                                            placeholder="Tarif Yang Berlaku..." required>
-                                    </div>
+                                        <select class="form-select form-control js-select-2" id="tarif" name="tarif" data-url="{{ route('master-data.penjamin.select_tarif') }}" data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                       </div>
                                 </div>
 
                                 {{-- Telpon --}}

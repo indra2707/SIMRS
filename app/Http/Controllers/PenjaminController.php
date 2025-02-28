@@ -43,6 +43,12 @@ class PenjaminController extends Controller
         return response()->json($data, 200);
     }
 
+    // public function get_detail_discont($id)
+    // {
+
+    //     return response()->json($data, 200);
+    // }
+
     // Store
     public function select()
     {
@@ -60,6 +66,25 @@ class PenjaminController extends Controller
             'data' => $data
         ], 200);
     }
+
+
+    // Store
+    public function select_tarif()
+    {
+        $query = DB::table('sk_tarifs')
+            ->where('status', '1')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->no_sk;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
 
     // Store
     public function store(Request $request)

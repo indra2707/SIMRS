@@ -193,7 +193,7 @@
                         sortable: true,
                     },
                     {
-                        width: '50%',
+                        width: '150%',
                         field: 'kategori',
                         sortable: true,
                     },
@@ -289,6 +289,16 @@
 
     // Handle events button actions
     window.operateEvents = {
+        'click .btn-info': function(e, value, row, index) {
+            $('#modal-kelompok').modal('show');
+            $('.modal-title').text('Form Mapping Data');
+            // $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+            $('input[name="id"]').val(row.id);
+            $('input[name="kode"]').val(row.kode);
+            $('input[name="nama"]').val(row.nama);
+            $('select[name="kategori"]').val(row.kategori).trigger('change');
+            $('input[name="status"]').prop('checked', row.status === '1');
+        },
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-poli').modal('show');
             $('.modal-title').text('Form Edit poli');
@@ -296,6 +306,7 @@
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
             $('input[name="nama"]').val(row.nama);
+            $('select[name="kategori"]').val(row.kategori).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {

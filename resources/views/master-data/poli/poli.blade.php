@@ -118,6 +118,91 @@
         </div>
     </div>
 
+
+    {{-- Modal Mapping Tindakan --}}
+    <div class="modal fade" id="modal-kelompok" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-wizard form-poli" novalidate="" autocomplete="off">
+                        @csrf
+                        {{-- Hidden Input --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="id">
+                        </div>
+                        {{-- Kode --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="kode" type="text" placeholder="Kode Poliklinik BPJS..." disabled>
+                            </div>
+                        </div>
+                        {{-- Nama --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama Poliklinik</b></label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama Poliklinik..."
+                                disabled>
+                            </div>
+                        </div>
+                        {{-- Kategori --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control select2" name="kategori" disabled>
+                                    <option></option>
+                                    <option value="Rawat Jalan">Rawat Jalan</option>
+                                    <option value="Rawat Inap">Rawat Inap</option>
+                                    <option value="Penunjang Medis">Penunjang Medis</option>
+                                    <option value="Farmasi">Farmasi</option>
+                                </select>
+                            </div>
+                        </div>
+                        {{-- Satus --}}
+                        <div class="media mb-2">
+                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <div class="media-body switch-sm icon-state">
+                                <label class="switch">
+                                    <input class="form-control" name="status" type="checkbox" checked disabled>
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="col-sm-12 col-xxl-12">
+                        <div class="card">
+                          <div class="card-body">
+                            <ul class="nav nav-tabs border-tab nav-primary" id="info-tab" role="tablist">
+                              <li class="nav-item"><a class="nav-link active" id="info-home-tab" data-bs-toggle="tab" href="#info-home" role="tab" aria-controls="info-home" aria-selected="true"><i class="icofont icofont-bed-patient"></i>Tindakan</a></li>
+                              <li class="nav-item"><a class="nav-link" id="profile-info-tab" data-bs-toggle="tab" href="#info-profile" role="tab" aria-controls="info-profile" aria-selected="false"><i class="icofont icofont-capsule"></i>Obat & BHMP</a></li>
+                            </ul>
+                            <div class="tab-content" id="info-tabContent">
+                              <div class="tab-pane fade show active" id="info-home" role="tabpanel" aria-labelledby="info-home-tab">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                              </div>
+                              <div class="tab-pane fade" id="info-profile" role="tabpanel" aria-labelledby="profile-info-tab">
+                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 
