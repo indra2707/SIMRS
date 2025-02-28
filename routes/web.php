@@ -65,6 +65,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // POLIKLINIK
         Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
         Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
+        Route::get('/poli/get-detail-diskon', [PoliController::class, 'get_detail_discont'])->name('master-data.poli.detail-diskon');
         Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
         Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
         Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
@@ -77,6 +78,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/penjamin/update/{id}', [PenjaminController::class, 'update'])->name('master-data.penjamin.update');
         Route::delete('/penjamin/delete/{id}', [PenjaminController::class, 'destroy'])->name('master-data.penjamin.delete');
         Route::get('/select-coa', [PenjaminController::class, 'select'])->name('master-data.penjamin.select');
+        Route::get('/select-tarif', [PenjaminController::class, 'select_tarif'])->name('master-data.penjamin.select_tarif');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');

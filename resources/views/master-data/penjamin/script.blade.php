@@ -307,6 +307,26 @@
             $('input[name="margin"]').val(row.margin);
             $('select[name="coa"]').val(row.coa).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
+
+
+            var url = "{{ route('master-data.poli.detail-diskon', ':id') }}";
+            url = url.replace(':id', row.kode);
+
+            $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: "json",
+                    success: function(res) {
+                        $('input[name="ri_diskon"]').val(res.ri_diskon);
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 400) {
+                            Alert('error', xhr.responseJSON.message);
+                        } else if (xhr.status == 500) {
+                            Alert('info', "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!");
+                        }
+                    }
+                });
         },
         'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('master-data.penjamin.delete', ':id') }}";
