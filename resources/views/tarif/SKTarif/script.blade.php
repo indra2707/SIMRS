@@ -100,7 +100,7 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             ajax: {
                 type: "GET",
-            url: "{{ route('tarif.sk-tarif.view') }}",
+                url: "{{ route('tarif.sk-tarif.view') }}",
                 dataType: "json",
                 beforeSend: function() {
                     $table.bootstrapTable('loading');
