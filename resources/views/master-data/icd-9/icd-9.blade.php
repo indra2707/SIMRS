@@ -64,27 +64,27 @@
                     <form class="form-wizard form-icd9" novalidate="" autocomplete="off">
                         @csrf
                         {{-- Hidden Input --}}
-                        <div class="mb-3 row">
+                        <div class="mb-2 row">
                             <input type="hidden" name="id">
                         </div>
                         {{-- Kode --}}
-                        <div class="mb-3 row">
+                        <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="kode" type="text" placeholder="Kode ICD 9..." required>
+                                <input class="form-control form-control-sm" name="kode" type="text" placeholder="Kode ICD 9..." required>
                             </div>
                         </div>
                         {{-- Nama --}}
-                        <div class="mb-3 row mb-3-sm">
+                        <div class="mb-2 row mb-3-sm">
                             <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 9</b></label>
                             <div class="col-sm-10">
-                                <input class="form-control" name="nama" type="text" placeholder="Nama ICD 9..." required>
+                                <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama ICD 9..." required>
                             </div>
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
                             <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                            <div class="media-body">
+                            <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>
                                     <span class="switch-state"></span>
