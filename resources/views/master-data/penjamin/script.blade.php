@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     var $table = $('#table_penjamin');
 
     // Open Modal
@@ -306,7 +305,7 @@
             $('input[name="telpon"]').val(row.telpon);
             $('textarea[name="alamat"]').val(row.alamat);
             $('input[name="margin"]').val(row.margin);
-            $('#coa').attr('data-value',row.coa);
+            $('select[name="coa"]').val(row.coa).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {
