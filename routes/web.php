@@ -77,6 +77,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/penjamin/update/{id}', [PenjaminController::class, 'update'])->name('master-data.penjamin.update');
         Route::delete('/penjamin/delete/{id}', [PenjaminController::class, 'destroy'])->name('master-data.penjamin.delete');
         Route::get('/select-coa', [PenjaminController::class, 'select'])->name('master-data.penjamin.select');
+        Route::get('/select-tarif', [PenjaminController::class, 'select_tarif'])->name('master-data.penjamin.select_tarif');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
