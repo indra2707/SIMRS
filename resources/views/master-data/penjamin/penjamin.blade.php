@@ -93,9 +93,7 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="coa"><b>COA</b></label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control js-select-2" id="coa" name="coa" data-url="{{ route('master-data.penjamin.select') }}" data-placeholder="---- Pilih Salah Satu ----"  data-dropdownParent="#modal-penjamin" required>
-                                            <option></option>
-                                        </select>
+                                        <select class="form-select form-control js-select-2" id="coa" name="coa" data-url="{{ route('master-data.penjamin.select') }}" data-placeholder="---- Pilih Salah Satu ----" required></select>
                                     </div>
                                 </div>
 

@@ -56,6 +56,6 @@
     </script>
 @endif
 @yield('script')
-
 {{-- Custom JS --}}
 <script src="{{ asset('assets/js/custom.js') }}"></script>
+

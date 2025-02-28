@@ -463,7 +463,6 @@ Route::get('layout-{light}', function ($light) {
         return redirect()->route('pages-vertical-layout');
     }
     return redirect()->route('home');
-    return 1;
 });
 Route::get('/clear-cache', function () {
     Artisan::call('config:cache');
