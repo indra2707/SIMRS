@@ -11,18 +11,18 @@ use function Psy\debug;
 
 class PenjaminController extends Controller
 {
-    // Index
+      // Index
     public function index()
     {
         $data = [
-            'title' => 'Penjamin',
-            'menuTitle' => 'Master Data',
+            'title'        => 'Penjamin',
+            'menuTitle'    => 'Master Data',
             'menuSubtitle' => 'Penjamin',
         ];
         return view('master-data.penjamin.penjamin', $data);
     }
 
-    // Views Table
+      // Views Table
     public function views()
     {
         // $query = Penjamins::all();
@@ -67,12 +67,12 @@ class PenjaminController extends Controller
 
 
 
-        // $row_disc_rajal = Diskon_penjamins::where('penjamin', $id)->where('kategori', 'Rawat Jalan')->first();
-        // $data = ;
-        // return response()->json($data, 200);
+          // $row_disc_rajal = Diskon_penjamins::where('penjamin', $id)->where('kategori', 'Rawat Jalan')->first();
+          // $data = ;
+          // return response()->json($data, 200);
     }
 
-    // Store
+      // Store
     public function select()
     {
         $query = DB::table('coas')
@@ -82,7 +82,7 @@ class PenjaminController extends Controller
 
         $data = [];
         foreach ($query as $key => $value) {
-            $data[$key]['id'] = $value->id;
+            $data[$key]['id']   = $value->id;
             $data[$key]['text'] = $value->kode . ' - ' . $value->nama;
         }
         return response()->json([
@@ -91,7 +91,7 @@ class PenjaminController extends Controller
     }
 
 
-    // Store
+      // Store
     public function select_tarif()
     {
         $query = DB::table('sk_tarifs')
@@ -100,7 +100,7 @@ class PenjaminController extends Controller
 
         $data = [];
         foreach ($query as $key => $value) {
-            $data[$key]['id'] = $value->id;
+            $data[$key]['id']   = $value->id;
             $data[$key]['text'] = $value->no_sk;
         }
         return response()->json([
@@ -109,16 +109,16 @@ class PenjaminController extends Controller
     }
 
 
-    // Store
+      // Store
     public function store(Request $request)
     {
-        // dd($request);
+          // dd($request);
         $query = Penjamins::create([
-            'kode' => $request->kode,
-            'nama' => $request->nama,
-            'coa' => $request->coa,
-            'email' => $request->email,
-            'tarif' => $request->tarif,
+            'kode'   => $request->kode,
+            'nama'   => $request->nama,
+            'coa'    => $request->coa,
+            'email'  => $request->email,
+            'tarif'  => $request->tarif,
             'telpon' => $request->telpon,
             'alamat' => $request->alamat,
             'margin' => $request->margin,
@@ -127,30 +127,30 @@ class PenjaminController extends Controller
 
         $query = Diskon_penjamins::insert(
             [
-                // RJ
+                  // RJ
                 [
-                    'penjamin' => $request->kode,
-                    'kategori' => 'Rawat Jalan',
-                    'tindakan' => $request->rj_tindakan,
-                    'konsultasi' => $request->rj_konsultasi,
-                    'ok' => $request->rj_ok,
-                    'cathlab' => $request->rj_cathlab,
-                    'radiologi' => $request->rj_radiologi,
+                    'penjamin'     => $request->kode,
+                    'kategori'     => 'Rawat Jalan',
+                    'tindakan'     => $request->rj_tindakan,
+                    'konsultasi'   => $request->rj_konsultasi,
+                    'ok'           => $request->rj_ok,
+                    'cathlab'      => $request->rj_cathlab,
+                    'radiologi'    => $request->rj_radiologi,
                     'laboratorium' => $request->rj_lab,
                     'akomodasi' => $request->rj_akomodasi,
                     'sewa_alat' => $request->rj_alat,
                     'paket' => $request->rj_paket,
                     'obat' => $request->rj_obat
                 ],
-                //RI
+                  //RI
                 [
-                    'penjamin' => $request->kode,
-                    'kategori' => 'Rawat Inap',
-                    'tindakan' => $request->ri_tindakan,
-                    'konsultasi' => $request->ri_konsultasi,
-                    'ok' => $request->ri_ok,
-                    'cathlab' => $request->ri_cathlab,
-                    'radiologi' => $request->ri_radiologi,
+                    'penjamin'     => $request->kode,
+                    'kategori'     => 'Rawat Inap',
+                    'tindakan'     => $request->ri_tindakan,
+                    'konsultasi'   => $request->ri_konsultasi,
+                    'ok'           => $request->ri_ok,
+                    'cathlab'      => $request->ri_cathlab,
+                    'radiologi'    => $request->ri_radiologi,
                     'laboratorium' => $request->ri_lab,
                     'akomodasi' => $request->ri_akomodasi,
                     'sewa_alat' => $request->ri_alat,
@@ -164,19 +164,19 @@ class PenjaminController extends Controller
         if ($query) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Ditambahkan.',
             ], status: 400);
         }
     }
 
-    // update status check
+      // update status check
     public function updateStatus(Request $request, $id)
     {
         $query = Penjamins::where('id', $id)->update([
@@ -187,13 +187,13 @@ class PenjaminController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
-                'data' => [],
+                'data'    => [],
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengubah status.',
-                'data' => [],
+                'data'    => [],
             ], status: 400);
         }
     }
@@ -252,19 +252,19 @@ class PenjaminController extends Controller
         if ($query && $query1) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Diubah.',
             ], status: 400);
         }
     }
 
-    // Delete
+      // Delete
     public function destroy(Request $request, $id)
     {
         $query = Penjamins::where('id', $id)->delete();
@@ -272,13 +272,13 @@ class PenjaminController extends Controller
         if ($query) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Dihapus.',
             ], status: 400);
         }
