@@ -6,6 +6,7 @@ use App\Http\Controllers\Icd10Controller;
 use App\Http\Controllers\Icd9Controller;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\PoliController;
+use App\Http\Controllers\Poli_tindakanController;
 use App\Http\Controllers\PenjaminController;
 use App\Http\Controllers\SpesialisController;
 use App\Http\Controllers\LoginController;
