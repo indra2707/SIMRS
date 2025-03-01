@@ -16,12 +16,13 @@ class Diskon_penjamins extends Model
         'kategori',
         'tindakan',
         'konsultasi',
+        'sewa_alat',
         'ok',
         'cathlab',
         'radiologi',
         'laboratorium',
         'akomodasi',
         'paket',
-        'sewa_alat'
+        'obat'
     ];
 }
