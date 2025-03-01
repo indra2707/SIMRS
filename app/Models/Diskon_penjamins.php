@@ -11,6 +11,9 @@ class Diskon_penjamins extends Model
 
     protected $table = 'diskon_penjamins';
 
+    // disable update_at
+    public $timestamps = false;
+
     protected $fillable = [
         'penjamin',
         'kategori',
