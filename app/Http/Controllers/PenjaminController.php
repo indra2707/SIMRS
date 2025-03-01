@@ -7,6 +7,8 @@ use App\Models\Penjamins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+use function Psy\debug;
+
 class PenjaminController extends Controller
 {
     // Index
@@ -23,13 +25,19 @@ class PenjaminController extends Controller
     // Views Table
     public function views()
     {
-        $query = Penjamins::all();
+        // $query = Penjamins::all();
+
+        $query = Db::table('penjamins')
+            ->join('coas', 'coas.id', '=', 'penjamins.coa')
+            ->select('penjamins.*','coas.kode as kode_coa')
+            ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
                 'kode' => $value->kode,
+                'kode_coa' => $value->kode_coa,
                 'nama' => $value->nama,
                 'coa' => $value->coa,
                 'email' => $value->email,
@@ -125,13 +133,15 @@ class PenjaminController extends Controller
                     'kategori' => 'Rawat Jalan',
                     'tindakan' => $request->rj_tindakan,
                     'konsultasi' => $request->rj_konsultasi,
+                    'sewa_alat' => $request->rj_alat,
                     'ok' => $request->rj_ok,
                     'cathlab' => $request->rj_cathlab,
                     'radiologi' => $request->rj_radiologi,
                     'laboratorium' => $request->rj_lab,
                     'akomodasi' => $request->rj_akomodasi,
                     'sewa_alat' => $request->rj_alat,
-                    'paket' => $request->rj_paket
+                    'paket' => $request->rj_paket,
+                    'obat' => $request->rj_obat
                 ],
                 //RI
                 [
@@ -139,13 +149,15 @@ class PenjaminController extends Controller
                     'kategori' => 'Rawat Inap',
                     'tindakan' => $request->ri_tindakan,
                     'konsultasi' => $request->ri_konsultasi,
+                    'sewa_alat' => $request->ri_alat,
                     'ok' => $request->ri_ok,
                     'cathlab' => $request->ri_cathlab,
                     'radiologi' => $request->ri_radiologi,
                     'laboratorium' => $request->ri_lab,
                     'akomodasi' => $request->ri_akomodasi,
                     'sewa_alat' => $request->ri_alat,
-                    'paket' => $request->ri_paket
+                    'paket' => $request->ri_paket,
+                    'obat' => $request->ri_obat
                 ],
             ]
         );
@@ -189,15 +201,57 @@ class PenjaminController extends Controller
     }
 
     // Update
-    public function update(Request $request, $id)
+    public function update(Request $request, $id, $kode)
     {
         $query = Penjamins::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kategori' => $request->kategori,
+            'coa' => $request->coa,
+            'email' => $request->email,
+            'tarif' => $request->tarif,
+            'telpon' => $request->telpon,
+            'alamat' => $request->alamat,
+            'margin' => $request->margin,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
-        if ($query) {
+
+        debug($kode);
+        // update diskon
+        $query1 = Diskon_penjamins::where('penjamin', $kode)->update([
+            //RI
+            [
+                'penjamin' => $request->kode,
+                'kategori' => 'Rawat Jalan',
+                'tindakan' => $request->rj_tindakan,
+                'konsultasi' => $request->rj_konsultasi,
+                'sewa_alat' => $request->rj_konsultasi,
+                'ok' => $request->rj_ok,
+                'cathlab' => $request->rj_cathlab,
+                'radiologi' => $request->rj_radiologi,
+                'laboratorium' => $request->rj_lab,
+                'akomodasi' => $request->rj_akomodasi,
+                'paket' => $request->rj_paket,
+                'obat' => $request->rj_obat
+            ],
+
+             //RI
+             [
+                'penjamin' => $request->kode,
+                'kategori' => 'Rawat Inap',
+                'tindakan' => $request->ri_tindakan,
+                'konsultasi' => $request->ri_konsultasi,
+                'sewa_alat' => $request->ri_konsultasi,
+                'ok' => $request->ri_ok,
+                'cathlab' => $request->ri_cathlab,
+                'radiologi' => $request->ri_radiologi,
+                'laboratorium' => $request->ri_lab,
+                'akomodasi' => $request->ri_akomodasi,
+                'paket' => $request->ri_paket,
+                'obat' => $request->ri_obat
+            ],
+        ]);
+
+        if ($query && $query1) {
             return response()->json([
                 'success' => true,
                 'data' => [],
