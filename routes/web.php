@@ -71,6 +71,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
         Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
         Route::delete('/poli/delete/{id}', [PoliController::class, 'destroy'])->name('master-data.poli.delete');
+        //MAPPING TINDAKAN POLI
+        Route::get('/tindakan-poli', [Poli_tindakanController::class, 'index'])->name('master-data.tindakan-poli');
+        Route::get('/tindakan-poli/view', [Poli_tindakanController::class, 'views'])->name('master-data.tindakan-poli.view');
+        Route::post('/tindakan-poli/store', [Poli_tindakanController::class, 'store'])->name('master-data.tindakan-poli.create');
+        Route::post('/tindakan-poli/update-status/{id}', [Poli_tindakanController::class, 'updateStatus'])->name('master-data.tindakan-poli.update-status');
+        Route::put('/tindakan-poli/update/{id}', [Poli_tindakanController::class, 'update'])->name('master-data.tindakan-poli.update');
+        Route::delete('/tindakan-poli/delete/{id}', [Poli_tindakanController::class, 'destroy'])->name('master-data.tindakan-poli.delete');
+
         // PENJAMIN
         Route::get('/penjamin', [PenjaminController::class, 'index'])->name('master-data.penjamin');
         Route::get('/penjamin/view', [PenjaminController::class, 'views'])->name('master-data.penjamin.view');
