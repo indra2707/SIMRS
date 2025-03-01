@@ -43,11 +43,26 @@ class PenjaminController extends Controller
         return response()->json($data, 200);
     }
 
-    // public function get_detail_discont($id)
-    // {
+    public function get_detail_discont($id)
+    {
+        $data = [
+            'row_disc_rajal' => Diskon_penjamins::where([
+                ['penjamin', $id],
+                ['kategori', 'Rawat Jalan'],
+            ])->first(),
+            'row_disc_ranap' => Diskon_penjamins::where([
+                ['penjamin', $id],
+                ['kategori', 'Rawat Inap'],
+            ])->first(),
+        ];
+        return response()->json($data, 200);
 
-    //     return response()->json($data, 200);
-    // }
+
+
+        // $row_disc_rajal = Diskon_penjamins::where('penjamin', $id)->where('kategori', 'Rawat Jalan')->first();
+        // $data = ;
+        // return response()->json($data, 200);
+    }
 
     // Store
     public function select()
@@ -105,29 +120,32 @@ class PenjaminController extends Controller
         $query = Diskon_penjamins::insert(
             [
                 // RJ
-                ['penjamin'=> $request->kode,
-                 'kategori'=> 'Rawat Jalan',
-                 'tindakan'=> $request-> rj_tindakan,
-                 'konsultasi'=> $request->rj_konsultasi,
-                 'ok'=> $request->rj_ok,
-                 'cathlab'=> $request->rj_cathlab,
-                 'radiologi'=> $request->rj_radiologi,
-                 'laboratorium'=> $request->rj_lab,
-                 'akomodasi'=> $request->rj_akomodasi,
-                 'paket'=> $request->rj_paket
+                [
+                    'penjamin' => $request->kode,
+                    'kategori' => 'Rawat Jalan',
+                    'tindakan' => $request->rj_tindakan,
+                    'konsultasi' => $request->rj_konsultasi,
+                    'ok' => $request->rj_ok,
+                    'cathlab' => $request->rj_cathlab,
+                    'radiologi' => $request->rj_radiologi,
+                    'laboratorium' => $request->rj_lab,
+                    'akomodasi' => $request->rj_akomodasi,
+                    'sewa_alat' => $request->rj_alat,
+                    'paket' => $request->rj_paket
                 ],
-
                 //RI
-                ['penjamin'=> $request->kode,
-                 'kategori'=> 'Rawat Inap',
-                 'tindakan'=> $request-> ri_tindakan,
-                 'konsultasi'=> $request->ri_konsultasi,
-                 'ok'=> $request->ri_ok,
-                 'cathlab'=> $request->ri_cathlab,
-                 'radiologi'=> $request->ri_radiologi,
-                 'laboratorium'=> $request->ri_lab,
-                 'akomodasi'=> $request->ri_akomodasi,
-                 'paket'=> $request->ri_paket
+                [
+                    'penjamin' => $request->kode,
+                    'kategori' => 'Rawat Inap',
+                    'tindakan' => $request->ri_tindakan,
+                    'konsultasi' => $request->ri_konsultasi,
+                    'ok' => $request->ri_ok,
+                    'cathlab' => $request->ri_cathlab,
+                    'radiologi' => $request->ri_radiologi,
+                    'laboratorium' => $request->ri_lab,
+                    'akomodasi' => $request->ri_akomodasi,
+                    'sewa_alat' => $request->ri_alat,
+                    'paket' => $request->ri_paket
                 ],
             ]
         );

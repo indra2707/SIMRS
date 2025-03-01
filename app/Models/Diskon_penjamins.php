@@ -9,6 +9,8 @@ class Diskon_penjamins extends Model
 {
     use HasFactory;
 
+    protected $table = 'diskon_penjamins';
+
     protected $fillable = [
         'penjamin',
         'kategori',
@@ -19,6 +21,7 @@ class Diskon_penjamins extends Model
         'radiologi',
         'laboratorium',
         'akomodasi',
-        'paket'
+        'paket',
+        'sewa_alat'
     ];
 }

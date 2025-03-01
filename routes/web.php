@@ -66,7 +66,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         // POLIKLINIK
         Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
         Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
-        Route::get('/poli/get-detail-diskon', [PoliController::class, 'get_detail_discont'])->name('master-data.poli.detail-diskon');
         Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
         Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
         Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
@@ -82,6 +81,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // PENJAMIN
         Route::get('/penjamin', [PenjaminController::class, 'index'])->name('master-data.penjamin');
         Route::get('/penjamin/view', [PenjaminController::class, 'views'])->name('master-data.penjamin.view');
+        Route::get('/penjamin/get-detail-diskon/{id}', [PenjaminController::class, 'get_detail_discont'])->name('master-data.penjamin.detail-diskon');
         Route::post('/penjamin/store', [PenjaminController::class, 'store'])->name('master-data.penjamin.create');
         Route::post('/penjamin/update-status/{id}', [PenjaminController::class, 'updateStatus'])->name('master-data.penjamin.update-status');
         Route::put('/penjamin/update/{id}', [PenjaminController::class, 'update'])->name('master-data.penjamin.update');
