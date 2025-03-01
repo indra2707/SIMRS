@@ -5,7 +5,7 @@
     // Open Modal
     $(document).on('click', '.add-btn', function() {
         $('.form-sk-tarif').removeClass('was-validated');
-        $('#form-modal').modal('show');
+        $('#modal-sk-tarif').modal('show');
         $('.modal-title').text('Form Tambah SK Tarif');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
@@ -54,7 +54,7 @@
                         } else {
                             Alert('warning', res.message);
                         }
-                        $('#form-modal').modal('hide');
+                        $('#modal-sk-tarif').modal('hide');
                         form.classList.remove('was-validated');
                     },
                     error: function(xhr, status, error) {
@@ -98,23 +98,23 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            ajax: {
-                type: "GET",
-                url: "{{ route('tarif.sk-tarif.view') }}",
-                dataType: "json",
-                beforeSend: function() {
-                    $table.bootstrapTable('loading');
-                },
-                complete: function() {
-                    $table.bootstrapTable('resetView');
-                },
-                success: function(res, status, xhr) {
-                    if (xhr.status == 200 && res.success == true) {
-                        $table.bootstrapTable('load', res.data);
-                    }
-                }}
-            },
-            // url: "{{ route('tarif.sk-tarif.view') }}",
+            // ajax: {
+            //     type: "GET",
+            //     url: "{{ route('tarif.sk-tarif.view') }}",
+            //     dataType: "json",
+            //     beforeSend: function() {
+            //         $table.bootstrapTable('loading');
+            //     },
+            //     complete: function() {
+            //         $table.bootstrapTable('resetView');
+            //     },
+            //     success: function(res, status, xhr) {
+            //         if (xhr.status == 200 && res.success == true) {
+            //             $table.bootstrapTable('load', res.data);
+            //         }
+            //     }}
+            // },
+            url: "{{ route('tarif.sk-tarif.view') }}",
             columns: [
                 [
                         {
@@ -196,7 +196,7 @@
     // Handle events button actions
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
-            $('#form-modal').modal('show');
+            $('#modal-sk-tarif').modal('show');
             $('.modal-title').text('Form Edit SK Tarif');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);

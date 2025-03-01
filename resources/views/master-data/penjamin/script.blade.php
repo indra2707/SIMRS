@@ -11,10 +11,10 @@
         $('input[name="kode"]').val('');
         $('input[name="nama"]').val('');
         $('input[name="email"]').val('');
-        $('input[name="tarif"]').val('');
         $('input[name="telpon"]').val('');
         $('input[name="margin"]').val('');
         $('textarea[name="alamat"]').val('');
+        $('select[name="tarif"]').val('').trigger('change');
         $('select[name="coa"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
 
@@ -27,6 +27,7 @@
         $('input[name="rj_lab"]').val('');
         $('input[name="rj_akomodasi"]').val('');
         $('input[name="rj_paket"]').val('');
+        $('input[name="rj_obat"]').val('');
 
         $('input[name="ri_tindakan"]').val('');
         $('input[name="ri_konsultasi"]').val('');
@@ -37,14 +38,16 @@
         $('input[name="ri_lab"]').val('');
         $('input[name="ri_akomodasi"]').val('');
         $('input[name="ri_paket"]').val('');
+        $('input[name="ri_obat"]').val('');
     });
 
     // Save
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
-        if (id) {
-            var url = "{{ route('master-data.penjamin.update', ':id') }}";
-            url = url.replace(':id', id);
+        var kode = $('input[name="kode"]').val();
+        if (id && kode) {
+            var url = "{{ route('master-data.penjamin.update', ':id', ':kode') }}";
+            url = url.replace(':id', id, ':kode', kode);
             var type = "PUT";
         } else {
             var url = "{{ route('master-data.penjamin.create') }}";
@@ -125,17 +128,23 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.penjamin.view') }}",
             columns: [
-                [{
-                        width: '100%',
+                [
+                    // {
+                    //     width: '100%',
+                    //     field: 'id',
+                    //     sortable: true,
+                    // },
+                    {
+                        title: 'Kode',
+                        width: '150%',
                         field: 'kode',
                         sortable: true,
                     },
                     {
                         title: 'Kode COA',
                         width: '150%',
-                        field: 'coa',
+                        field: 'kode_coa',
                         sortable: true,
-                        visible: false,
                     },
                     {
                         field: 'nama',
@@ -226,6 +235,7 @@
                     $('input[name="rj_lab"]').val(row_rajal ? row_rajal.laboratorium : '');
                     $('input[name="rj_akomodasi"]').val(row_rajal ? row_rajal.akomodasi : '');
                     $('input[name="rj_paket"]').val(row_rajal ? row_rajal.paket : '');
+                    $('input[name="rj_obat"]').val(row_rajal ? row_rajal.obat : '');
                     // Ranap
                     $('input[name="ri_tindakan"]').val(row_ranap ? row_ranap.tindakan : '');
                     $('input[name="ri_konsultasi"]').val(row_ranap ? row_ranap.konsultasi : '');
@@ -236,6 +246,7 @@
                     $('input[name="ri_lab"]').val(row_ranap ? row_ranap.laboratorium : '');
                     $('input[name="ri_akomodasi"]').val(row_ranap ? row_ranap.akomodasi : '');
                     $('input[name="ri_paket"]').val(row_ranap ? row_ranap.paket : '');
+                    $('input[name="ri_obat"]').val(row_ranap ? row_ranap.obat : '');
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 400) {

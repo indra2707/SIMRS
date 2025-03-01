@@ -54,7 +54,7 @@
     </div>
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="form-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" id="modal-sk-tarif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
@@ -94,7 +94,7 @@
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="deskripsi">Deskripsi</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm w-100" name="deskripsi" id="deskripsi" style="resize: none;" cols="3"></textarea>
+                                <textarea class="form-control form-control-sm w-100" name="deskripsi" id="deskripsi" style="resize: none;" cols="3" required></textarea>
                             </div>
                         </div>
                     </form>

@@ -35,10 +35,9 @@
                                 <table id="table_penjamin" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
-                                            {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode penjamin</b></th>
+                                            <th scope="col"><b>Kode Penjamin</b></th>
+                                            <th scope="col"><b>Kode Penjamin</b></th>
                                             <th scope="col"><b>Nama penjamin</b></th>
-                                            <th scope="col"><b>Kategori</b></th>
                                             <th scope="col"><b>Status</b></th>
                                             <th scope="col"><b>Action</b></th>
                                         </tr>
@@ -93,7 +92,9 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="coa"><b>COA</b></label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control js-select-2" id="coa" name="coa" data-url="{{ route('master-data.penjamin.select') }}" data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                        <select class="form-select form-control js-select-2" id="coa" name="coa"
+                                            data-url="{{ route('master-data.penjamin.select') }}"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
                                     </div>
                                 </div>
 
@@ -124,8 +125,10 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama"><b>Tarif</b></label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control js-select-2" id="tarif" name="tarif" data-url="{{ route('master-data.penjamin.select_tarif') }}" data-placeholder="---- Pilih Salah Satu ----" required></select>
-                                       </div>
+                                        <select class="form-select form-control js-select-2" id="tarif" name="tarif"
+                                            data-url="{{ route('master-data.penjamin.select_tarif') }}"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                    </div>
                                 </div>
 
                                 {{-- Telpon --}}
@@ -175,8 +178,8 @@
                                                     for="nama"><b>Tindakan</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_tindakan" placeholder="Tidakan..." required><span
+                                                        <input class="form-control" type="number" name="rj_tindakan"
+                                                            placeholder="Tidakan..." required><span
                                                             class="input-group-text input-group-sm">%
                                                         </span>
                                                     </div>
@@ -189,8 +192,8 @@
                                                     for="nama"><b>Konsultasi</b></label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_konsultasi" placeholder="Konsultasi..." required><span
+                                                        <input class="form-control" type="number" name="rj_konsultasi"
+                                                            placeholder="Konsultasi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -203,8 +206,22 @@
                                                         Alat</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_alat" placeholder="Sewa Alat..." required><span
+                                                        <input class="form-control" type="number" name="rj_alat"
+                                                            placeholder="Sewa Alat..." required><span
+                                                            class="input-group-text">%
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- Obat --}}
+                                            <div class="mb-2 row">
+                                                <label class="col-sm-4 col-form-label" for="nama"><b>Obat & BMHP
+                                                    </b></label>
+                                                <div class=" col-sm-7">
+                                                    <div class="input-group input-group-sm">
+                                                        <input class="form-control" type="number" name="rj_obat"
+                                                            placeholder="Obat & BMHP..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -212,15 +229,15 @@
                                             </div>
                                         </div>
 
-                                            <div class="col-md-4">
+                                        <div class="col-md-4">
                                             {{-- OK --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="nama"><b>OK</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_ok" placeholder="Kamar Bedah / OK..."
-                                                            required><span class="input-group-text">%
+                                                        <input class="form-control" type="number" name="rj_ok"
+                                                            placeholder="Kamar Bedah / OK..." required><span
+                                                            class="input-group-text">%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -232,8 +249,8 @@
                                                     for="nama"><b>Cathlab</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_cathlab" placeholder="Cathlab..." required><span
+                                                        <input class="form-control" type="number" name="rj_cathlab"
+                                                            placeholder="Cathlab..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -246,8 +263,8 @@
                                                     for="nama"><b>Radiologi</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_radiologi" placeholder="Radiologi..." required><span
+                                                        <input class="form-control" type="number" name="rj_radiologi"
+                                                            placeholder="Radiologi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -255,15 +272,15 @@
                                             </div>
                                         </div>
 
-                                             <div class="col-md-4">
+                                        <div class="col-md-4">
                                             {{-- Laboratorium --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
                                                     for="nama"><b>Laboratorium</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_lab" placeholder="Laboratorium..." required><span
+                                                        <input class="form-control" type="number" name="rj_lab"
+                                                            placeholder="Laboratorium..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -276,22 +293,21 @@
                                                     for="nama"><b>Akomodasi</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_akomodasi" placeholder="Akomodasi..." required><span
+                                                        <input class="form-control" type="number" name="rj_akomodasi"
+                                                            placeholder="Akomodasi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                             {{-- Paket --}}
-                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Paket</b></label>
+                                            {{-- Paket --}}
+                                            <div class="mb-2 row">
+                                                <label class="col-sm-4 col-form-label" for="nama"><b>Paket</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="rj_paket" placeholder="Paket..." required><span
+                                                        <input class="form-control" type="number" name="rj_paket"
+                                                            placeholder="Paket..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -318,8 +334,8 @@
                                                     for="nama"><b>Tindakan</b></label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_tindakan" placeholder="Tindakan..." required><span
+                                                        <input class="form-control" type="number" name="ri_tindakan"
+                                                            placeholder="Tindakan..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -332,8 +348,8 @@
                                                     for="nama"><b>Konsultasi</b></label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_konsultasi" placeholder="Konsultasi..." required><span
+                                                        <input class="form-control" type="number" name="ri_konsultasi"
+                                                            placeholder="Konsultasi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -346,8 +362,22 @@
                                                         Alat</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_alat" placeholder="Sewa Alat..." required><span
+                                                        <input class="form-control" type="number" name="ri_alat"
+                                                            placeholder="Sewa Alat..." required><span
+                                                            class="input-group-text">%
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- Obat & BMHP --}}
+                                            <div class="mb-2 row">
+                                                <label class="col-sm-4 col-form-label" for="nama"><b>Obat &
+                                                        BMHP</b></label>
+                                                <div class=" col-sm-7">
+                                                    <div class="input-group input-group-sm">
+                                                        <input class="form-control" type="number" name="ri_obat"
+                                                            placeholder="Obat & BHMP..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -355,15 +385,15 @@
                                             </div>
                                         </div>
 
-                                            <div class="col-md-4">
+                                        <div class="col-md-4">
                                             {{-- OK --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="nama"><b>OK</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_ok" placeholder="Kamar Bedah / OK..."
-                                                            required><span class="input-group-text">%
+                                                        <input class="form-control" type="number" name="ri_ok"
+                                                            placeholder="Kamar Bedah / OK..." required><span
+                                                            class="input-group-text">%
                                                         </span>
                                                     </div>
                                                 </div>
@@ -375,8 +405,8 @@
                                                     for="nama"><b>Cathlab</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_cathlab" placeholder="Cathlab..." required><span
+                                                        <input class="form-control" type="number" name="ri_cathlab"
+                                                            placeholder="Cathlab..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -389,8 +419,8 @@
                                                     for="nama"><b>Radiologi</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_radiologi" placeholder="Radiologi..." required><span
+                                                        <input class="form-control" type="number" name="ri_radiologi"
+                                                            placeholder="Radiologi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -398,15 +428,15 @@
                                             </div>
                                         </div>
 
-                                             <div class="col-md-4">
+                                        <div class="col-md-4">
                                             {{-- Laboratorium --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
                                                     for="nama"><b>Laboratorium</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_lab" placeholder="Laboratorium..." required><span
+                                                        <input class="form-control" type="number" name="ri_lab"
+                                                            placeholder="Laboratorium..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
@@ -419,22 +449,21 @@
                                                     for="nama"><b>Akomodasi</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_akomodasi" placeholder="Akomodasi..." required><span
+                                                        <input class="form-control" type="number" name="ri_akomodasi"
+                                                            placeholder="Akomodasi..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                             {{-- Paket --}}
-                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Paket</b></label>
+                                            {{-- Paket --}}
+                                            <div class="mb-2 row">
+                                                <label class="col-sm-4 col-form-label" for="nama"><b>Paket</b></label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
-                                                        <input class="form-control" type="number"
-                                                            name="ri_paket" placeholder="Paket..." required><span
+                                                        <input class="form-control" type="number" name="ri_paket"
+                                                            placeholder="Paket..." required><span
                                                             class="input-group-text">%
                                                         </span>
                                                     </div>
