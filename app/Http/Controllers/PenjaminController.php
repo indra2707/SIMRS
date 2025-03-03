@@ -11,7 +11,7 @@ use function Psy\debug;
 
 class PenjaminController extends Controller
 {
-      // Index
+    // Index
     public function index()
     {
         $data = [
@@ -22,14 +22,14 @@ class PenjaminController extends Controller
         return view('master-data.penjamin.penjamin', $data);
     }
 
-      // Views Table
+    // Views Table
     public function views()
     {
         // $query = Penjamins::all();
 
         $query = Db::table('penjamins')
             ->join('coas', 'coas.id', '=', 'penjamins.coa')
-            ->select('penjamins.*','coas.kode as kode_coa')
+            ->select('penjamins.*', 'coas.kode as kode_coa')
             ->get();
 
         $data = [];
@@ -67,12 +67,12 @@ class PenjaminController extends Controller
 
 
 
-          // $row_disc_rajal = Diskon_penjamins::where('penjamin', $id)->where('kategori', 'Rawat Jalan')->first();
-          // $data = ;
-          // return response()->json($data, 200);
+        // $row_disc_rajal = Diskon_penjamins::where('penjamin', $id)->where('kategori', 'Rawat Jalan')->first();
+        // $data = ;
+        // return response()->json($data, 200);
     }
 
-      // Store
+    // Store
     public function select()
     {
         $query = DB::table('coas')
@@ -91,7 +91,7 @@ class PenjaminController extends Controller
     }
 
 
-      // Store
+    // Store
     public function select_tarif()
     {
         $query = DB::table('sk_tarifs')
@@ -109,10 +109,10 @@ class PenjaminController extends Controller
     }
 
 
-      // Store
+    // Store
     public function store(Request $request)
     {
-          // dd($request);
+        // dd($request);
         $query = Penjamins::create([
             'kode'   => $request->kode,
             'nama'   => $request->nama,
@@ -127,7 +127,7 @@ class PenjaminController extends Controller
 
         $query = Diskon_penjamins::insert(
             [
-                  // RJ
+                // RJ
                 [
                     'penjamin'     => $request->kode,
                     'kategori'     => 'Rawat Jalan',
@@ -142,7 +142,7 @@ class PenjaminController extends Controller
                     'paket' => $request->rj_paket,
                     'obat' => $request->rj_obat
                 ],
-                  //RI
+                //RI
                 [
                     'penjamin'     => $request->kode,
                     'kategori'     => 'Rawat Inap',
@@ -176,7 +176,7 @@ class PenjaminController extends Controller
         }
     }
 
-      // update status check
+    // update status check
     public function updateStatus(Request $request, $id)
     {
         $query = Penjamins::where('id', $id)->update([
@@ -199,7 +199,7 @@ class PenjaminController extends Controller
     }
 
     // Update
-    public function update(Request $request, $id, $kode)
+    public function update(Request $request, $id)
     {
         $query = Penjamins::where('id', $id)->update([
             'kode' => $request->kode,
@@ -210,46 +210,40 @@ class PenjaminController extends Controller
             'telpon' => $request->telpon,
             'alamat' => $request->alamat,
             'margin' => $request->margin,
-            'status' => $request->status == 'on' ? '1' : '0',
         ]);
 
-        debug($kode);
-        // update diskon
-        $query1 = Diskon_penjamins::where('penjamin', $kode)->update([
-            //RI
-            [
-                'penjamin' => $request->kode,
-                'kategori' => 'Rawat Jalan',
-                'tindakan' => $request->rj_tindakan,
-                'konsultasi' => $request->rj_konsultasi,
-                'sewa_alat' => $request->rj_konsultasi,
-                'ok' => $request->rj_ok,
-                'cathlab' => $request->rj_cathlab,
-                'radiologi' => $request->rj_radiologi,
-                'laboratorium' => $request->rj_lab,
-                'akomodasi' => $request->rj_akomodasi,
-                'paket' => $request->rj_paket,
-                'obat' => $request->rj_obat
-            ],
-
-             //RI
-             [
-                'penjamin' => $request->kode,
-                'kategori' => 'Rawat Inap',
-                'tindakan' => $request->ri_tindakan,
-                'konsultasi' => $request->ri_konsultasi,
-                'sewa_alat' => $request->ri_konsultasi,
-                'ok' => $request->ri_ok,
-                'cathlab' => $request->ri_cathlab,
-                'radiologi' => $request->ri_radiologi,
-                'laboratorium' => $request->ri_lab,
-                'akomodasi' => $request->ri_akomodasi,
-                'paket' => $request->ri_paket,
-                'obat' => $request->ri_obat
-            ],
+        $query = Diskon_penjamins::where([
+            'penjamin' => $request->kode,
+            'kategori' => 'Rawat Jalan'
+        ])->update([
+            'tindakan'     => $request->rj_tindakan,
+            'konsultasi'   => $request->rj_konsultasi,
+            'ok'           => $request->rj_ok,
+            'cathlab'      => $request->rj_cathlab,
+            'radiologi'    => $request->rj_radiologi,
+            'laboratorium' => $request->rj_lab,
+            'akomodasi'    => $request->rj_akomodasi,
+            'sewa_alat'    => $request->rj_alat,
+            'paket'        => $request->rj_paket
         ]);
 
-        if ($query && $query1) {
+          // Update Diskon Penjamin RI
+        $query = Diskon_penjamins::where([
+            'penjamin' => $request->kode,
+            'kategori' => 'Rawat Inap'
+        ])->update([
+            'tindakan'     => $request->ri_tindakan,
+            'konsultasi'   => $request->ri_konsultasi,
+            'ok'           => $request->ri_ok,
+            'cathlab'      => $request->ri_cathlab,
+            'radiologi'    => $request->ri_radiologi,
+            'laboratorium' => $request->ri_lab,
+            'akomodasi'    => $request->ri_akomodasi,
+            'sewa_alat'    => $request->ri_alat,
+            'paket'        => $request->ri_paket
+        ]);
+
+        if ($query) {
             return response()->json([
                 'success' => true,
                 'data'    => [],
@@ -264,7 +258,7 @@ class PenjaminController extends Controller
         }
     }
 
-      // Delete
+    // Delete
     public function destroy(Request $request, $id)
     {
         $query = Penjamins::where('id', $id)->delete();
