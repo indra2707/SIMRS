@@ -121,8 +121,7 @@
 
 
     {{-- Modal Mapping Tindakan --}}
-    <div class="modal fade" id="modal-kelompok" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modal-kelompok" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,50 +129,50 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        @csrf
-                        {{-- Hidden Input --}}
-                        <div class="mb-2 row">
-                            <input type="hidden" name="id">
+                    @csrf
+                    {{-- Hidden Input --}}
+                    <div class="mb-2 row">
+                        <input type="hidden" name="id">
+                    </div>
+                    {{-- Kode --}}
+                    <div class="mb-2 row">
+                        <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control-sm" name="kode" type="text"
+                                placeholder="Kode Poliklinik BPJS..." disabled>
                         </div>
-                        {{-- Kode --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="kode" type="text"
-                                    placeholder="Kode Poliklinik BPJS..." disabled>
-                            </div>
+                    </div>
+                    {{-- Nama --}}
+                    <div class="mb-2 row">
+                        <label class="col-sm-2 col-form-label" for="nama"><b>Nama Poliklinik</b></label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control-sm" name="nama" type="text"
+                                placeholder="Nama Poliklinik..." disabled>
                         </div>
-                        {{-- Nama --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama Poliklinik</b></label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="nama" type="text"
-                                    placeholder="Nama Poliklinik..." disabled>
-                            </div>
+                    </div>
+                    {{-- Kategori --}}
+                    <div class="mb-2 row">
+                        <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control select2" name="kategori" disabled>
+                                <option></option>
+                                <option value="Rawat Jalan">Rawat Jalan</option>
+                                <option value="Rawat Inap">Rawat Inap</option>
+                                <option value="Penunjang Medis">Penunjang Medis</option>
+                                <option value="Farmasi">Farmasi</option>
+                            </select>
                         </div>
-                        {{-- Kategori --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
-                            <div class="col-sm-10">
-                                <select class="form-select form-control select2" name="kategori" disabled>
-                                    <option></option>
-                                    <option value="Rawat Jalan">Rawat Jalan</option>
-                                    <option value="Rawat Inap">Rawat Inap</option>
-                                    <option value="Penunjang Medis">Penunjang Medis</option>
-                                    <option value="Farmasi">Farmasi</option>
-                                </select>
-                            </div>
+                    </div>
+                    {{-- Satus --}}
+                    <div class="media mb-2">
+                        <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                        <div class="media-body switch-sm icon-state">
+                            <label class="switch">
+                                <input class="form-control" name="status" type="checkbox" checked disabled>
+                                <span class="switch-state"></span>
+                            </label>
                         </div>
-                        {{-- Satus --}}
-                        <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                            <div class="media-body switch-sm icon-state">
-                                <label class="switch">
-                                    <input class="form-control" name="status" type="checkbox" checked disabled>
-                                    <span class="switch-state"></span>
-                                </label>
-                            </div>
-                        </div>
+                    </div>
 
                     {{-- modal tambah tindakan --}}
                     <div class="col-sm-12 col-xxl-12">
@@ -193,10 +192,10 @@
                                     <div class="tab-pane fade show active" id="info-home" role="tabpanel"
                                         aria-labelledby="info-home-tab">
                                         {{-- Add Button --}}
-                                            <button class="btn btn-secondary add-tindakan">
-                                                <span class="fa fa-plus"></span>
-                                                <span> Tambah Tindakan</span>
-                                            </button>
+                                        <button class="btn btn-secondary add-tindakan">
+                                            <span class="fa fa-plus"></span>
+                                            <span> Tambah Tindakan</span>
+                                        </button>
 
                                         {{-- Table View --}}
                                         <div class="col-sm-12 col-lg-12 col-xl-12">
@@ -213,66 +212,6 @@
                                                 </table>
                                             </div>
                                         </div>
-
-                                        {{-- Modal Form Input Tindakan --}}
-                                        <div class="modal fade" id="modal-input-tindakan" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true"
-                                            data-bs-backdrop="static" data-keyboard="false">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Title</h5>
-                                                        <button class="btn-close" type="button" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form class="form-wizard form-tindakan" novalidate=""
-                                                            autocomplete="off">
-                                                            @csrf
-                                                            {{-- Hidden Input --}}
-                                                            <div class="mb-2 row">
-                                                                <input type="hidden" name="id1">
-                                                            </div>
-                                                            {{-- Hidden kode poli --}}
-                                                            <div class="mb-2 row">
-                                                                <input type="hidden" name="kode">
-                                                            </div>
-                                                            {{-- Tindakan --}}
-                                                            <div class="mb-2 row">
-                                                                <label class="col-sm-2 col-form-label"
-                                                                    for="nama"><b>Tindakan</b></label>
-                                                                <div class="col-sm-10">
-                                                                    <input class="form-control form-control-sm"
-                                                                        name="tindakan" type="text"
-                                                                        placeholder="Nama Tindakan..." required>
-                                                                </div>
-                                                            </div>
-                                                            {{-- Satus --}}
-                                                            <div class="media mb-2">
-                                                                <label
-                                                                    class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
-                                                                <div class="media-body switch-sm icon-state">
-                                                                    <label class="switch">
-                                                                        <input class="form-control" name="status"
-                                                                            type="checkbox" checked>
-                                                                        <span class="switch-state"></span>
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-danger" type="button"
-                                                            data-bs-dismiss="modal">
-                                                            <span class="fa fa-times"></span> Batal</button>
-                                                        <button class="btn btn-primary save-btn-tindakan" type="button"><span
-                                                                class="fa fa-check"></span>
-                                                            Simpan</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
 
                                     <div class="tab-pane fade" id="info-profile" role="tabpanel"
@@ -300,6 +239,54 @@
         </div>
     </div>
 
+    {{-- Modal Form Input Tindakan --}}
+    <div class="modal fade" id="modal-input-tindakan" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-wizard form-tindakan" novalidate="" autocomplete="off">
+                        @csrf
+                        {{-- Hidden Input --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="id1">
+                        </div>
+                        {{-- Hidden kode poli --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="kode">
+                        </div>
+                        {{-- Tindakan --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama"><b>Tindakan</b></label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="tindakan" type="text"
+                                    placeholder="Nama Tindakan..." required>
+                            </div>
+                        </div>
+                        {{-- Satus --}}
+                        <div class="media mb-2">
+                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <div class="media-body switch-sm icon-state">
+                                <label class="switch">
+                                    <input class="form-control" name="status" type="checkbox" checked>
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn-tindakan" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 

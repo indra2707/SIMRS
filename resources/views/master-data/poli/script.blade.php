@@ -27,7 +27,7 @@
 
     // Open Modal Tindakan
     $(document).on('click', '.add-tindakan', function() {
-        // $('#modal-kelompok').modal('hide');
+        $('#modal-kelompok').modal('hide');
         $('#modal-input-tindakan').modal('show');
         $('.form-tindakan').removeClass('was-validated');
         $('.modal-title').text('Form Tambah Tindakan');
@@ -283,7 +283,7 @@
     // Page Load Event
     $(function() {
         initTable();
-        initTable1();
+        // initTable1();
     });
 
     // ---------------------------------------------------------------------------------------------
@@ -405,8 +405,8 @@
     // ---------------------------------------------------------------------------------------------
     // init table Tindakan
 
-    function initTable1() {
-        $table1.bootstrapTable('destroy').bootstrapTable({
+    function initTable1($kode) {
+            $table1.bootstrapTable('destroy').bootstrapTable({
             height: 450,
             locale: 'en-US',
             search: true,
@@ -425,7 +425,12 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             // exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.tindakan-poli.view')}}",
+            url: "{{ route('master-data.tindakan-poli.view') }}",
+            queryParams : function(params) {
+                return {
+                    kode : $kode
+                 }
+            },
             columns: [
                 [{
                         title: 'KODE',
@@ -536,7 +541,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
+            // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
             '</div>',
@@ -546,16 +551,18 @@
     // Handle events button actions
     window.operateEvents = {
         'click .btn-info': function(e, value, row, index) {
-            var url = "{{ route('master-data.tindakan-poli', ':id') }}";
-            url = url.replace(':id', row.kode);
-            $.ajax({
-                type: 'GET',
-                url: url,
-                dataType: "json",
-                // success: function(res) {
-                //     var row_rajal = res.row_disc_rajal;
-                // }
-            });
+            initTable1(row.kode);
+
+            // $.ajax({
+            //     type: 'GET',
+            //     url: url,
+            //     dataType: "json",
+            //     // success: function(res) {
+            //     //     var row_rajal = res.row_disc_rajal;
+            //     // }
+            // });
+
+
 
             $('#modal-kelompok').modal('show');
             $('.modal-title').text('Form Mapping Data');

@@ -22,14 +22,14 @@ class Poli_tindakanController extends Controller
     }
 
     // Views Table
-    public function views()
+    public function views(Request $request)
     {
 
-        $query = Poli_tindakans::all();
+        // $query = Poli_tindakans::all();
 
-        // $query = DB::table('poli_tindakans')
-        //        ->where('kode_poli', $kode)
-        //        ->get();
+        $query = DB::table('poli_tindakans')
+               ->where('kode_poli', $request->kode)
+               ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
