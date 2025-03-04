@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\MasterData;
 
-use App\Models\Polis;
+use App\Http\Controllers\Controller;
+use App\Models\MaterData\Poli_tindakans;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class PoliController extends Controller
+use function Psy\debug;
+
+class Poli_tindakanController extends Controller
 {
     // Index
     public function index()
@@ -19,17 +23,21 @@ class PoliController extends Controller
     }
 
     // Views Table
-    public function views()
+    public function views(Request $request)
     {
-        $query = Polis::all();
+
+        // $query = Poli_tindakans::all();
+
+        $query = DB::table('poli_tindakans')
+               ->where('kode_poli', $request->kode)
+               ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id' => $value->id,
-                'kode' => $value->kode,
-                'kategori' => $value->kategori,
-                'nama' => $value->nama,
+                'id1' => $value->id,
+                'kode_tindakan' => $value->kode_tindakan,
+                // 'kode_poli' => $value->kode,
                 'status' => $value->status,
             ];
         }
@@ -39,16 +47,13 @@ class PoliController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'kode' => 'required',
-            'nama' => 'required',
-            'kategori' => 'required',
+            'tindakan' => 'required',
+            // 'kode_poli' => 'required',
             'status' => 'required',
         ]);
-        $query = Polis::create([
-            'kode' => $request->kode,
-            'nama' => $request->nama,
-            'created_by' => $request->get('username'),
-            'kategori' => $request->kategori,
+        $query = Poli_tindakans::create([
+            'kode_poli' => $request->kode,
+            'kode_tindakan' => $request->tindakan,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -69,7 +74,7 @@ class PoliController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Polis::where('id', $id)->update([
+        $query = Poli_tindakans::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
@@ -95,7 +100,7 @@ class PoliController extends Controller
             'nama' => 'required',
             'kategori' => 'required',
         ]);
-        $query = Polis::where('id', $id)->update([
+        $query = Poli_tindakans::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
             'kategori' => $request->kategori,
@@ -117,9 +122,9 @@ class PoliController extends Controller
     }
 
     // Delete
-    public function destroy($id)
+    public function destroy($id1)
     {
-        $query = Polis::where('id', $id)->delete();
+        $query = Poli_tindakans::where('id', $id1)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,

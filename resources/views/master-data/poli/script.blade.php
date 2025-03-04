@@ -533,18 +533,17 @@
         ].join("");
     }
 
-
     function actionsFunction1(value, row, index) {
         return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
+            // '<div class="dropdown icon-dropdown">',
+            '<button class="btn  btn-delete1" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+            '<i class="fa fa-trash text-danger"></i>',
             '</button>',
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
-            '</div>',
-            '</div>',
+            // '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+            // // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
+            // '<a class="dropdown-item btn-delete1" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            // '</div>',
+            // '</div>',
         ].join("");
     }
 
@@ -667,7 +666,7 @@
             $('select[name="kategori"]').val(row.kategori).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete1': function(e, value, row, index) {
             var url = "{{ route('master-data.tindakan-poli.delete', ':id1') }}";
             url = url.replace(':id1', row.id1);
             Swal.fire({

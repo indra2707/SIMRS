@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\MasterData;
 
-use App\Models\Icd10s;
+use App\Http\Controllers\Controller;
+use App\Models\MaterData\Icd10s;
 use Illuminate\Http\Request;
+
 
 class Icd10Controller extends Controller
 {

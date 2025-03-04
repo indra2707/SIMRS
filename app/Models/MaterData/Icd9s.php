@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\MaterData;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Poli_tindakans extends Model
+
+class Icd9s extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'kode_poli',
-        'kode_tindakan',
+        'kode',
+        'nama',
         'status'
     ];
 }
