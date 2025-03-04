@@ -141,3 +141,28 @@ function InitSelect2(element, options) {
         },
     });
 }
+
+// <input type='text' onkeypress='validate(event)' />
+function validateNumber(evt) {
+
+
+
+
+    var theEvent = evt || window.event;
+    console.warn("keyup",theEvent.type);
+    // Handle paste
+    if (theEvent.type === "paste") {
+        console.warn("paste");
+
+        key = event.clipboardData.getData("text/plain");
+    } else {
+        // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault) theEvent.preventDefault();
+    }
+});

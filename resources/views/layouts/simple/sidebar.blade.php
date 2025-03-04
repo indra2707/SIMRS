@@ -103,8 +103,8 @@
                             <span>Tarif</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('tarif.sk-tarif') }}">SK Tarif</a></li>
-                            <li><a href="#">Tarif Tindakan</a></li>
+                            <li><a href="{{ route('tarif.sk-tarif.index') }}">SK Tarif</a></li>
+                            <li><a class="{{ Request::is('tarif.tindakan*') ? 'active' : '' }}" href="{{ route('tarif.tindakan.index') }}">Tarif Tindakan</a></li>
                         </ul>
                     </li>
 

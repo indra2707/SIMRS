@@ -91,7 +91,7 @@ Route::group(['middleware' => 'loggedin'], function () {
     // Tarif
     Route::prefix('tarif')->group(function () {
         // SK Tarif
-        Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
+        Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif.index');
         Route::get('/sk-tarif/view', [SKTarifController::class, 'views'])->name('tarif.sk-tarif.view');
         Route::post('/sk-tarif/store', [SKTarifController::class, 'store'])->name('tarif.sk-tarif.create');
         Route::post('/sk-tarif/update-status/{id}', [SKTarifController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
@@ -108,6 +108,8 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::prefix('global-controller')->group(function () {
         // Tarif Tindakan
         Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
+        // Generate Kode
+        Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generate_kode_tarif_tindakan'])->name('generate-kode-tarif-tindakan');
     });
 });
 
