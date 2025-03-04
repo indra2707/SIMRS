@@ -10,8 +10,8 @@ use App\Http\Controllers\Poli_tindakanController;
 use App\Http\Controllers\PenjaminController;
 use App\Http\Controllers\SpesialisController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MasterData\TarifTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
+use App\Http\Controllers\Tarif\TarifTindakanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -87,9 +87,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/penjamin/delete/{id}', [PenjaminController::class, 'destroy'])->name('master-data.penjamin.delete');
         Route::get('/select-coa', [PenjaminController::class, 'select'])->name('master-data.penjamin.select');
         Route::get('/select-tarif', [PenjaminController::class, 'select_tarif'])->name('master-data.penjamin.select_tarif');
-        // Tarif Tindakan
-        Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
-        Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
     });
     // Tarif
     Route::prefix('tarif')->group(function () {
@@ -100,6 +97,11 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/sk-tarif/update-status/{id}', [SKTarifController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
         Route::put('/sk-tarif/update/{id}', [SKTarifController::class, 'update'])->name('tarif.sk-tarif.update');
         Route::delete('/sk-tarif/delete/{id}', [SKTarifController::class, 'destroy'])->name('tarif.sk-tarif.delete');
+
+        // Tindakan
+        Route::get('/index', [TarifTindakanController::class, 'index'])->name('tarif.tindakan.index');
+        Route::get('/tarif-tindakan/view', [TarifTindakanController::class, 'views'])->name('tarif.tindakan.view');
+        // Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
     });
 
     // Router Controller Global
