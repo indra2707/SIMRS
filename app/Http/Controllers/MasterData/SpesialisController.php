@@ -1,42 +1,37 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\MasterData;
 
-use App\Models\Poli_tindakans;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Models\MaterData\Spesialisses;
 use Illuminate\Http\Request;
 
-use function Psy\debug;
 
-class Poli_tindakanController extends Controller
+
+class SpesialisController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'Poliklinik',
+            'title' => 'Spesialis',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Poliklinik',
+            'menuSubtitle' => 'Spesialis',
         ];
-        return view('master-data.poli.poli', $data);
+        return view('master-data.spesialis.spesialis', $data);
     }
 
     // Views Table
-    public function views(Request $request)
+    public function views()
     {
-
-        // $query = Poli_tindakans::all();
-
-        $query = DB::table('poli_tindakans')
-               ->where('kode_poli', $request->kode)
-               ->get();
+        $query = Spesialisses::all();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id1' => $value->id,
-                'kode_tindakan' => $value->kode_tindakan,
-                // 'kode_poli' => $value->kode,
+                'id' => $value->id,
+                'kode' => $value->kode,
+                'nama' => $value->nama,
                 'status' => $value->status,
             ];
         }
@@ -46,13 +41,13 @@ class Poli_tindakanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tindakan' => 'required',
-            // 'kode_poli' => 'required',
+            'kode' => 'required',
+            'nama' => 'required',
             'status' => 'required',
         ]);
-        $query = Poli_tindakans::create([
-            'kode_poli' => $request->kode,
-            'kode_tindakan' => $request->tindakan,
+        $query = Spesialisses::create([
+            'kode' => $request->kode,
+            'nama' => $request->nama,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -73,7 +68,7 @@ class Poli_tindakanController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Poli_tindakans::where('id', $id)->update([
+        $query = Spesialisses::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
@@ -95,14 +90,12 @@ class Poli_tindakanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            // 'kode' => 'required',
+
             'nama' => 'required',
-            'kategori' => 'required',
         ]);
-        $query = Poli_tindakans::where('id', $id)->update([
+        $query = Spesialisses::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
-            'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -121,9 +114,9 @@ class Poli_tindakanController extends Controller
     }
 
     // Delete
-    public function destroy($id1)
+    public function destroy($id)
     {
-        $query = Poli_tindakans::where('id', $id1)->delete();
+        $query = Spesialisses::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,

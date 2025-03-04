@@ -1,33 +1,35 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\MasterData;
 
-use App\Models\Spesialisses;
+use App\Http\Controllers\Controller;
+use App\Models\MaterData\Coas;
 use Illuminate\Http\Request;
 
-class SpesialisController extends Controller
+class CoaController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'Spesialis',
+            'title' => 'COA',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Spesialis',
+            'menuSubtitle' => 'COA',
         ];
-        return view('master-data.spesialis.spesialis', $data);
+        return view('master-data.coa.coa', $data);
     }
 
     // Views Table
     public function views()
     {
-        $query = Spesialisses::all();
+        $query = Coas::all();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
                 'kode' => $value->kode,
+                'kategori' => $value->kategori,
                 'nama' => $value->nama,
                 'status' => $value->status,
             ];
@@ -40,11 +42,13 @@ class SpesialisController extends Controller
         $request->validate([
             'kode' => 'required',
             'nama' => 'required',
+            'kategori' => 'required',
             'status' => 'required',
         ]);
-        $query = Spesialisses::create([
+        $query = Coas::create([
             'kode' => $request->kode,
             'nama' => $request->nama,
+            'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -53,7 +57,7 @@ class SpesialisController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -65,7 +69,7 @@ class SpesialisController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Spesialisses::where('id', $id)->update([
+        $query = Coas::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
@@ -74,7 +78,7 @@ class SpesialisController extends Controller
                 'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
                 'data' => [],
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengubah status.',
@@ -87,12 +91,14 @@ class SpesialisController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-
+            'kode' => 'required',
             'nama' => 'required',
+            'kategori' => 'required',
         ]);
-        $query = Spesialisses::where('id', $id)->update([
+        $query = Coas::where('id', $id)->update([
             'kode' => $request->kode,
             'nama' => $request->nama,
+            'kategori' => $request->kategori,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -101,7 +107,7 @@ class SpesialisController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -113,14 +119,14 @@ class SpesialisController extends Controller
     // Delete
     public function destroy($id)
     {
-        $query = Spesialisses::where('id', $id)->delete();
+        $query = Coas::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,
                 'data' => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],

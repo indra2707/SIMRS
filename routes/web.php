@@ -2,20 +2,25 @@
 
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Icd10Controller;
-use App\Http\Controllers\Icd9Controller;
-use App\Http\Controllers\CoaController;
-use App\Http\Controllers\PoliController;
-use App\Http\Controllers\Poli_tindakanController;
-use App\Http\Controllers\PenjaminController;
-use App\Http\Controllers\SpesialisController;
+
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MasterData\TarifTindakanController;
-use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+
+
+use App\Http\Controllers\MasterData\Icd9Controller;
+use App\Http\Controllers\MasterData\CoaController;
+use App\Http\Controllers\MasterData\TarifTindakanController;
+use App\Http\Controllers\MasterData\Icd10Controller;
+use App\Http\Controllers\MasterData\SpesialisController;
+use App\Http\Controllers\MasterData\PenjaminController;
+use App\Http\Controllers\MasterData\PetugasController;
+use App\Http\Controllers\MasterData\Poli_tindakanController;
+use App\Http\Controllers\MasterData\PoliController;
+use App\Http\Controllers\Tarif\SKTarifController;
+
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -87,6 +92,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/penjamin/delete/{id}', [PenjaminController::class, 'destroy'])->name('master-data.penjamin.delete');
         Route::get('/select-coa', [PenjaminController::class, 'select'])->name('master-data.penjamin.select');
         Route::get('/select-tarif', [PenjaminController::class, 'select_tarif'])->name('master-data.penjamin.select_tarif');
+        // PETUGAS
+        Route::get('/petugas', [PetugasController::class, 'index'])->name('master-data.petugas');
+        Route::get('/petugas/view', [PetugasController::class, 'views'])->name('master-data.petugas.view');
+        Route::post('/petugas/store', [PetugasController::class, 'store'])->name('master-data.petugas.create');
+        Route::post('/petugas/update-status/{id}', [PetugasController::class, 'updateStatus'])->name('master-data.petugas.update-status');
+        Route::put('/petugas/update/{id}', [PetugasController::class, 'update'])->name('master-data.petugas.update');
+        Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
+        Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');

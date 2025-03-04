@@ -1,18 +1,23 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\MaterData;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Polis extends Model
+class Penjamins extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'kode',
         'nama',
-        'kategori',
-        'status'
+        'coa',
+        'email',
+        'tarif',
+        'status',
+        'telpon',
+        'alamat',
+        'margin'
     ];
 }

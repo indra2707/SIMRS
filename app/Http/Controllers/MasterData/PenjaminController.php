@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\MasterData;
 
-use App\Models\Diskon_penjamins;
-use App\Models\Penjamins;
+use App\Http\Controllers\Controller;
+use App\Models\MaterData\Diskon_penjamins;
+use App\Models\MaterData\Penjamins;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -73,17 +74,16 @@ class PenjaminController extends Controller
     }
 
     // Store
-    public function select()
+    public function select_spesialis()
     {
-        $query = DB::table('coas')
+        $query = DB::table('spesialisses')
             ->where('status', '1')
-            ->where('kategori', 'penjamin')
             ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[$key]['id']   = $value->id;
-            $data[$key]['text'] = $value->kode . ' - ' . $value->nama;
+            $data[$key]['text'] = $value->nama;
         }
         return response()->json([
             'data' => $data
@@ -91,7 +91,25 @@ class PenjaminController extends Controller
     }
 
 
-    // Store
+     // Store COA
+     public function select()
+     {
+         $query = DB::table('coas')
+             ->where('status', '1')
+             ->get();
+
+         $data = [];
+         foreach ($query as $key => $value) {
+             $data[$key]['id']   = $value->id;
+             $data[$key]['text'] = $value->kode .'-'. $value->nama;
+         }
+         return response()->json([
+             'data' => $data
+         ], 200);
+     }
+
+
+    // Store Tarif
     public function select_tarif()
     {
         $query = DB::table('sk_tarifs')
