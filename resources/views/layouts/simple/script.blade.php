@@ -27,6 +27,16 @@
 
 <!-- Sweetalert -->
 <script src="{{ asset('assets/js/sweet-alert/sweetalert.min.js') }}"></script>
+
+{{-- Cleave --}}
+<script src="{{ asset(path: 'assets/js/cleave/cleave.min.js') }}"></script>
+<script src="{{ asset(path: 'assets/js/cleave/cleave-phone.id.js') }}"></script>
+<script src="{{ asset(path: 'assets/js/cleave/custom-cleave.js') }}"></script>
+
+{{-- Dropzone --}}
+
+
+
 {{-- Select2 --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script> --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}

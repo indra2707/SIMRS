@@ -124,53 +124,58 @@
                                     </div>
                                 </div>
                                 <div class="col-md-8">
-                                    <label class="col-form-label" for="kode">Nilai Cito</label>
+                                    <label class="col-form-label" for="nilai_cito">Nilai Cito</label>
                                     <div class="input-group input-group-sm">
-                                        <input class="form-control numInput" type="text" name="nilai_cito" placeholder="Nilai Cito" aria-label="Example text with button addon" data-bs-original-title="" title="Satuan persen" required>
+                                        <input class="form-control numInput" type="text" name="nilai_cito"
+                                            id="nilai_cito" placeholder="Nilai Cito..." title="Satuan persen"
+                                            onkeypress='validateNumber(event)' required>
                                         <span class="input-group-text">%</span>
                                     </div>
                                     {{-- <input class="form-control form-control-sm" name="kode" type="text"
                                         placeholder="Tindakan..." required> --}}
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label" for="kode">Status Tindakan</label>
-                                    <input class="form-control form-control-sm" name="kode" type="text"
-                                        placeholder="Tindakan..." required>
+                                    <label class="col-form-label" for="status_tindakan">Status Tindakan</label>
+                                    <input class="form-control form-control-sm" name="status_tindakan"
+                                        id="status_tindakan" type="text" placeholder="Tindakan..." required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-form-label" for="kode">Jasa Medis Flat</label>
+                                    <label class="col-form-label" for="flat">Jasa Medis Flat</label>
                                     <div class="media-body switch-sm icon-state">
                                         <label class="switch">
-                                            <input class="form-control" name="status" type="checkbox" checked>
+                                            <input class="form-control" name="flat" id="flat" type="checkbox">
                                             <span class="switch-state"></span>
                                         </label>
                                     </div>
                                 </div>
                                 <div class="kanban-item">
-                                    <a class="kanban-box p-2" href="#" data-bs-original-title="" title="">
+                                    <a class="kanban-box p-2" href="#">
                                         <span class="kanban-title">Pilih salah satu</span>
                                         <div class="d-flex">
                                             <div class="m-checkbox-inline">
                                                 <div class="form-check form-check-inline checkbox checkbox-dark mb-0">
-                                                    <input class="form-check-input" id="inline-1" name="options"
-                                                        type="checkbox" data-bs-original-title="" title="">
-                                                    <label class="form-check-label" for="inline-1">Status Operasi</label>
+                                                    <input class="form-check-input one-checked" id="status_operasi"
+                                                        name="status_operasi" type="checkbox">
+                                                    <label class="form-check-label" for="status_operasi">Status
+                                                        Operasi</label>
                                                 </div>
                                                 <div class="form-check form-check-inline checkbox checkbox-dark mb-0">
-                                                    <input class="form-check-input" id="inline-2" name="options"
-                                                        type="checkbox" data-bs-original-title="" title="">
-                                                    <label class="form-check-label" for="inline-2">Status Cathlab</label>
+                                                    <input class="form-check-input one-checked" id="status_cathlab"
+                                                        name="status_cathlab" type="checkbox">
+                                                    <label class="form-check-label" for="status_cathlab">Status
+                                                        Cathlab</label>
                                                 </div>
                                                 <div class="form-check form-check-inline checkbox checkbox-dark mb-0">
-                                                    <input class="form-check-input" id="inline-3" type="checkbox"
-                                                        data-bs-original-title="" title="">
-                                                    <label class="form-check-label" for="inline-3">Tindakan
+                                                    <input class="form-check-input one-checked" id="tindakan_anestesi"
+                                                        name="tindakan_anestesi" type="checkbox">
+                                                    <label class="form-check-label" for="tindakan_anestesi">Tindakan
                                                         Anestesi</label>
                                                 </div>
                                                 <div class="form-check form-check-inline checkbox checkbox-dark mb-0">
-                                                    <input class="form-check-input" id="inline-4" type="checkbox"
-                                                        data-bs-original-title="" title="">
-                                                    <label class="form-check-label" for="inline-4">Tindakan Asisten
+                                                    <input class="form-check-input one-checked" id="tindakan_asisten"
+                                                        name="tindakan_asisten" type="checkbox">
+                                                    <label class="form-check-label" for="tindakan_asisten"
+                                                        name="tindakan_asisten">Tindakan Asisten
                                                         Opr</label>
                                                 </div>
                                             </div>

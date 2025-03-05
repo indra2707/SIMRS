@@ -1,5 +1,29 @@
-// // Input mask js
-// (function () {
+$(".ktp-number").each(function (index, ele) {
+    var cleaveCustom = new Cleave(ele, {
+        delimiter: " ",
+        blocks: [4, 2, 6, 4],
+        numericOnly: true,
+    });
+});
+
+$(".phone-number").each(function (index, ele) {
+    var cleaveCustom = new Cleave(ele, {
+        prefix: "+62",
+        delimiters: [" "],
+        blocks: [3, 3, 9],
+        numericOnly: true,
+    });
+});
+
+$(".npwp-number").each(function (index, ele) {
+    var cleaveCustom = new Cleave(ele, {
+        delimiters: [".", ".", ".", "-", "."],
+        blocks: [2, 3, 3, 1, 3, 4],
+        numericOnly: true,
+        uppercase: true,
+    });
+});
+
 // var numberKtp = new Cleave(".input-ktp", {
 //     delimiters: [" "],
 //     blocks: [4, 2, 6, 4],
@@ -14,14 +38,14 @@
 //     uppercase: true,
 // });
 
-//     //Phone number
-var phoneNumber = new Cleave(".input-phone", {
-    prefix: "+62",
-    delimiters: [" "],
-    blocks: [3, 12],
-    numericOnly: true,
-    uppercase: true,
-});
+// //     //Phone number
+// var phoneNumber = new Cleave(".input-phone", {
+//     prefix: "+62",
+//     delimiters: [" "],
+//     blocks: [3, 12],
+//     numericOnly: true,
+//     uppercase: true,
+// });
 
 //     // Card number
 //     var cleave1 = new Cleave("#cleave-card-number", {

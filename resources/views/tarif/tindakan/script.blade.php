@@ -10,7 +10,7 @@
         var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
         url = url.replace(':id', 1);
         $.get(url,
-            function (data, textStatus, jqXHR) {
+            function(data, textStatus, jqXHR) {
                 $('input[name="kode"]').val(data['data']).attr('readonly', true);
             },
             "JSON"
@@ -28,8 +28,8 @@
     });
 
 
-     // Save
-     $(document).on('click', '.save-btn', function() {
+    // Save
+    $(document).on('click', '.save-btn', function() {
         // var id = $('input[name="id"]').val();
         // if (id) {
         //     var url = "{{ route('tarif.sk-tarif.update', ':id') }}";
