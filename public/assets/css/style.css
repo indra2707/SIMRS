@@ -41522,6 +41522,12 @@ html[dir=rtl] body.dark-only .page-wrapper .page-body-wrapper .page-body .card:n
     background-repeat: no-repeat;
 }
 
+.modal-fullscreen {
+    width: 85vw;
+    max-width: none;
+    height: 95%;
+    /* margin: 0; */
+}
 /**=====================
     63. Box-layout CSS ends
 ==========================**/

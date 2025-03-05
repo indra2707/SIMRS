@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tarif\Tarif_tindakan;
 use Illuminate\Http\Request;
 
 class GlobalController extends Controller
@@ -38,4 +39,22 @@ class GlobalController extends Controller
         ], status: 200);
     }
     // ----------------------------------------------------------------
+    // Generate Nomor Kode Tarif Tindakkan
+    public function generate_kode_tarif_tindakan($id)
+    {
+        $query = Tarif_tindakan::select('MAX(RIGHT(kode_tarif, 10)) as kode')->where('id', $id);
+        if ($query->count() > 0) {
+            $query = $query->first();
+            $kode = "TND" . sprintf("%07s", $query->kode + 1);
+            return response()->json([
+                'success' => true,
+                'data' => $kode,
+            ]);
+        }else{
+            return response()->json([
+                'success' => true,
+                'data' => "TND00000001",
+            ]);
+        }
+    }
 }

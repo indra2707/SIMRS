@@ -97,6 +97,7 @@
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
+            buttonClass: 'btn btn-primary',
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             // ajax: {
             //     type: "GET",

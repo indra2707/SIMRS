@@ -25,23 +25,24 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-secondary add-btn">
+                        <button class="btn btn-primary add-btn">
                             <span class="fa fa-plus"></span>
                             <span> Tambah</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive currency-table">
-                                <table id="table_icd9" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary f-w-600 text-bold text-white text-uppercase text-center">
+                                <table id="table_icd9" class="table table-hover" data-buttons-class="primary"
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col"><b>No SK</b></th>
-                                            <th scope="col"><b>Tanggal Efektif Mulai</b></th>
-                                            <th scope="col"><b>Tanggal Efektif Berakhir</b></th>
-                                            <th scope="col"><b>Deskripsi</b></th>
-                                            <th scope="col"><b>status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th class="f-light">No</th>
+                                            <th class="f-light">No SK</th>
+                                            <th class="f-light">Tanggal Efektif Mulai</th>
+                                            <th class="f-light">Tanggal Efektif Berakhir</th>
+                                            <th class="f-light">Deskripsi</th>
+                                            <th class="f-light">status</th>
+                                            <th class="f-light">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -73,28 +74,32 @@
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="no_sk">No SK</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="no_sk" type="text" placeholder="No SK..." required>
+                                <input class="form-control form-control-sm" name="no_sk" type="text"
+                                    placeholder="No SK..." required>
                             </div>
                         </div>
                         {{-- Tanggal Efektif Mulai --}}
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="tgl_mulai">Tgl Mulai</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_mulai" type="text" placeholder="Tanggal Efektif Mulai..." data-language="en" required>
+                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_mulai"
+                                    type="text" placeholder="Tanggal Efektif Mulai..." data-language="en" required>
                             </div>
                         </div>
                         {{-- Tanggal Efektif Berakhir --}}
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="tgl_akhir">Tgl Berakhir</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_akhir" type="text" placeholder="Tanggal Efektif Berakhir..." data-language="en" required>
+                                <input class="form-control form-control-sm js-datepicker digits" name="tgl_akhir"
+                                    type="text" placeholder="Tanggal Efektif Berakhir..." data-language="en" required>
                             </div>
                         </div>
                         {{-- Deskripsi --}}
                         <div class="mb-1 row">
                             <label class="col-sm-2 col-form-label" for="deskripsi">Deskripsi</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm w-100" name="deskripsi" id="deskripsi" style="resize: none;" cols="3" required></textarea>
+                                <textarea class="form-control form-control-sm w-100" name="deskripsi" id="deskripsi" style="resize: none;"
+                                    cols="3" required></textarea>
                             </div>
                         </div>
                     </form>
@@ -113,5 +118,5 @@
 
 
 @section('script')
-    @include('tarif.SKTarif.script')
+    @include('tarif.sk-tarif.script')
 @endsection

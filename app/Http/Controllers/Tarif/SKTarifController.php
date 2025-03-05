@@ -16,7 +16,7 @@ class SKTarifController extends Controller
             'menuTitle' => 'Tarif',
             'menuSubtitle' => 'SK Tarif',
         ];
-        return view('Tarif.SKTarif.sk-tarif', $data);
+        return view('Tarif.sk-tarif.index', $data);
     }
 
     public function views()

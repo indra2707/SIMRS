@@ -4,6 +4,8 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Tarif\TarifTindakanController;
+use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
@@ -12,7 +14,6 @@ use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\CoaController;
-use App\Http\Controllers\MasterData\TarifTindakanController;
 use App\Http\Controllers\MasterData\Icd10Controller;
 use App\Http\Controllers\MasterData\JadwalController;
 use App\Http\Controllers\MasterData\SpesialisController;
@@ -21,7 +22,6 @@ use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\Poli_obatController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\PoliController;
-use App\Http\Controllers\Tarif\SKTarifController;
 
 
 // Login/Logout Route Middleware
@@ -124,18 +124,25 @@ Route::group(['middleware' => 'loggedin'], function () {
     // Tarif
     Route::prefix('tarif')->group(function () {
         // SK Tarif
-        Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif');
+        Route::get('/sk-tarif', [SKTarifController::class, 'index'])->name('tarif.sk-tarif.index');
         Route::get('/sk-tarif/view', [SKTarifController::class, 'views'])->name('tarif.sk-tarif.view');
         Route::post('/sk-tarif/store', [SKTarifController::class, 'store'])->name('tarif.sk-tarif.create');
         Route::post('/sk-tarif/update-status/{id}', [SKTarifController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
         Route::put('/sk-tarif/update/{id}', [SKTarifController::class, 'update'])->name('tarif.sk-tarif.update');
         Route::delete('/sk-tarif/delete/{id}', [SKTarifController::class, 'destroy'])->name('tarif.sk-tarif.delete');
+
+        // Tindakan
+        Route::get('/index', [TarifTindakanController::class, 'index'])->name('tarif.tindakan.index');
+        Route::get('/tarif-tindakan/view', [TarifTindakanController::class, 'views'])->name('tarif.tindakan.view');
+        // Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
     });
 
     // Router Controller Global
     Route::prefix('global-controller')->group(function () {
         // Tarif Tindakan
         Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
+        // Generate Kode
+        Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generate_kode_tarif_tindakan'])->name('generate-kode-tarif-tindakan');
     });
 });
 
