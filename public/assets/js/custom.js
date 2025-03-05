@@ -110,7 +110,7 @@ $(".js-select-2").select2({
         quietMillis: 250,
         data: function (term, page) {
             return {
-                q: term, // search term
+                term: term, // search term
             };
         },
         results: function (data, page) {
@@ -213,3 +213,27 @@ $(document).on("paste", ".numInput", function (e) {
 $(document).on("click", ".one-checked", function () {
     $(".one-checked").not(this).prop("checked", false);
 });
+
+// var startTime = "10:00";
+// var endTime = "12:00";
+// var hours = convertTimeToHours(startTime, endTime);
+function convertTimeToHours(startTime, endTime) {
+    // Function to convert time to minutes
+    function timeToMinutes(time) {
+        var timeParts = time.split(":");
+        var hours = parseInt(timeParts[0], 10);
+        var minutes = parseInt(timeParts[1], 10);
+        return hours * 60 + minutes;
+    }
+
+    // Convert both times to minutes
+    var startMinutes = timeToMinutes(startTime);
+    var endMinutes = timeToMinutes(endTime);
+
+    // Calculate the difference in minutes
+    var differenceInMinutes = endMinutes - startMinutes;
+
+    // Convert minutes back to hours
+    var differenceInHours = differenceInMinutes / 60;
+    return differenceInHours;
+}
