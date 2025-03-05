@@ -14,9 +14,11 @@ use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\CoaController;
 use App\Http\Controllers\MasterData\TarifTindakanController;
 use App\Http\Controllers\MasterData\Icd10Controller;
+use App\Http\Controllers\MasterData\JadwalController;
 use App\Http\Controllers\MasterData\SpesialisController;
 use App\Http\Controllers\MasterData\PenjaminController;
 use App\Http\Controllers\MasterData\PetugasController;
+use App\Http\Controllers\MasterData\Poli_obatController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\PoliController;
 use App\Http\Controllers\Tarif\SKTarifController;
@@ -82,6 +84,13 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/tindakan-poli/update-status/{id}', [Poli_tindakanController::class, 'updateStatus'])->name('master-data.tindakan-poli.update-status');
         Route::put('/tindakan-poli/update/{id}', [Poli_tindakanController::class, 'update'])->name('master-data.tindakan-poli.update');
         Route::delete('/tindakan-poli/delete/{id}', [Poli_tindakanController::class, 'destroy'])->name('master-data.tindakan-poli.delete');
+        //MAPPING OBAT POLI
+        Route::get('/obat-poli', [Poli_obatController::class, 'index'])->name('master-data.obat-poli');
+        Route::get('/obat-poli/view', [Poli_obatController::class, 'views'])->name('master-data.obat-poli.view');
+        Route::post('/obat-poli/store', [Poli_obatController::class, 'store'])->name('master-data.obat-poli.create');
+        Route::post('/obat-poli/update-status/{id}', [Poli_obatController::class, 'updateStatus'])->name('master-data.obat-poli.update-status');
+        Route::put('/obat-poli/update/{id}', [Poli_obatController::class, 'update'])->name('master-data.obat-poli.update');
+        Route::delete('/obat-poli/delete/{id2}', [Poli_obatController::class, 'destroy'])->name('master-data.obat-poli.delete');
         // PENJAMIN
         Route::get('/penjamin', [PenjaminController::class, 'index'])->name('master-data.penjamin');
         Route::get('/penjamin/view', [PenjaminController::class, 'views'])->name('master-data.penjamin.view');
@@ -100,6 +109,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/petugas/update/{id}', [PetugasController::class, 'update'])->name('master-data.petugas.update');
         Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
         Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
+        // JADWAL
+        Route::get('/jadwal', [JadwalController::class, 'index'])->name('master-data.jadwal');
+        Route::get('/jadwal/view', [JadwalController::class, 'views'])->name('master-data.jadwal.view');
+        Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('master-data.jadwal.create');
+        Route::post('/jadwal/update-status/{id}', [JadwalController::class, 'updateStatus'])->name('master-data.jadwal.update-status');
+        Route::put('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('master-data.jadwal.update');
+        Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'destroy'])->name('master-data.jadwal.delete');
+        Route::get('/jadwal-poli', [JadwalController::class, 'select'])->name('master-data.poli.select');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
