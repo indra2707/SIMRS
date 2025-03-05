@@ -235,5 +235,5 @@ function convertTimeToHours(startTime, endTime) {
 
     // Convert minutes back to hours
     var differenceInHours = differenceInMinutes / 60;
-    return differenceInHours;
+    return differenceInMinutes;
 }
