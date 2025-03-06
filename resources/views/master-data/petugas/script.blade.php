@@ -9,14 +9,11 @@
 
     });
 
-
-
-
     var $table = $('#table_petugas');
 
     // Open Modal
     $(document).on('click', '.add-petugas', function() {
-        $('.form-coa').removeClass('was-validated');
+        $('.form-petugas').removeClass('was-validated');
         $('#modal-petugas').modal('show');
         $('.modal-title').text('Form Tambah Petugas');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -45,14 +42,14 @@
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.coa.update', ':id') }}";
+            var url = "{{ route('master-data.petugas.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('master-data.coa.create') }}";
+            var url = "{{ route('master-data.petugas.create') }}";
             var type = "POST";
         }
-        var forms = document.getElementsByClassName('form-coa');
+        var forms = document.getElementsByClassName('form-petugas');
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
@@ -63,7 +60,7 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-coa').serialize(),
+                    data: $('.form-petugas').serialize(),
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -186,38 +183,25 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.coa.view') }}",
+            url: "{{ route('master-data.petugas.view') }}",
             columns: [
                 [
-                    //     {
-                    //     title: 'No.',
-                    //     align: 'center',
-                    //     valign: 'middle',
-                    //     sortable: true,
-                    //     width: '5%',
-                    //     formatter: function (value, row, index) {
-                    //         return index + 1
-                    //     }
-                    // },
                     {
-                        width: '100%',
-                        // title: 'KODE ICD 10',
-                        field: 'kode',
-                        sortable: true,
-                    },
-                    {
-                        // title: 'NAMA ICD 10',
-                        field: 'nama',
-                        sortable: true,
-                    },
-                    {
-                        width: '50%',
+                        width: '300%',
                         field: 'kategori',
                         sortable: true,
                     },
                     {
+                        width: '50%',
+                        field: 'kode_bpjs',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama',
+                        sortable: true,
+                    },
+                    {
                         width: '5%',
-                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
@@ -297,7 +281,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
+            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Ttd</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -309,7 +293,7 @@
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-petugas').modal('show');
-            $('.modal-title').text('Form Edit coa');
+            $('.modal-title').text('Form Edit Petugas');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
@@ -317,7 +301,7 @@
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('master-data.coa.delete', ':id') }}";
+            var url = "{{ route('master-data.petugas.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -386,7 +370,7 @@
     // Window operateChange Status
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('master-data.coa.update-status', ':id') }}";
+            var url = "{{ route('master-data.petugas.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,

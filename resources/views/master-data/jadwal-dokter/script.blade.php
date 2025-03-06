@@ -219,6 +219,11 @@
                         sortable: true,
                     },
                     {
+                        width: '250%',
+                        field: 'jam',
+                        sortable: true,
+                    },
+                    {
                         width: '100%',
                         field: 'kouta',
                         sortable: true,

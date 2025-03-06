@@ -5,7 +5,7 @@ namespace App\Models\MaterData;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Coas extends Model
+class Petugas extends Model
 {
     use HasFactory;
 
@@ -13,6 +13,18 @@ class Coas extends Model
         'kode',
         'nama',
         'kategori',
-        'status'
+        'status',
+        'nik',
+        'jenis_kelamin',
+        'no_hp',
+        'username',
+        'kode_spesialis',
+        'kode_bpjs',
+        'alamat',
+        'kode_tindakan1',
+        'kode_tindakan2',
+        'tanggal',
+        'foto',
+        'ttd'
     ];
 }
