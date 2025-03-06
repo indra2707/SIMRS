@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
-            <div class="notification-slider slick-initialized slick-slider slick-vertical" >
+            <div class="notification-slider slick-initialized slick-slider slick-vertical">
                 <h5 class="mb-0 f-w-400">
                     <span><b>SIMRS - OTAK & JANTUNG PERTAMINA</b></span>
                     {{-- <span class="font-primary">SIMRS - OTAK & JANTUNG PERTAMINA</span> --}}
@@ -202,9 +202,10 @@
                     </div>
                 </li>
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
-                    <div class="media profile-media"><img class="b-r-10"
-                            src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
-                        <div class="media-body"><span>{{ Session::get('username') }}</span>
+                    <div class="media profile-media">
+                        <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
+                        <div class="media-body">
+                            <span>{{ Session::get('username') }}</span>
                             <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                         </div>
                     </div>

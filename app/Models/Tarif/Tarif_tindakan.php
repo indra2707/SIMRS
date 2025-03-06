@@ -16,6 +16,7 @@ class Tarif_tindakan extends Model
         'kode_tarif',
         'no_sk',
         'tindakan',
+        'kelompok_tindakan',
         'tarif_rs',
         'group_tindakan',
         'tipe',

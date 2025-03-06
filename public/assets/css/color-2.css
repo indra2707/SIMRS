@@ -1,0 +1,122 @@
+body.dark-only .page-wrapper.material-icon .page-header .header-wrapper .nav-right .actions-nav .more_action {
+    color: #fff;
+}
+
+.page-wrapper.material-icon .page-header .header-wrapper .nav-right .actions-nav .more_action {
+    color: #2F2F3B;
+}
+
+
+/**=====================
+     76. Language CSS start
+==========================**/
+.current_action {
+    cursor: pointer;
+    text-transform: uppercase;
+    overflow: hidden;
+}
+
+.action_icon.selected {
+    display: none;
+}
+
+.action_icon span.action-txt {
+    display: inline-flex;
+    margin-left: 8px;
+    font-weight: 500;
+}
+
+.action_icon span span {
+    color: #999;
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+/*more lang*/
+.more_actions {
+    transform: translateY(-20px);
+    opacity: 0;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s cubic-bezier(0.25, 1.15, 0.35, 1.15);
+}
+
+.setting_action_wrapper.active .more_actions {
+    display: block;
+    position: absolute;
+    background-color: #fff;
+    top: 47px;
+    right: 0;
+    box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
+}
+
+.setting_action_wrapper.active .more_actions:before {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #fff;
+    content: "";
+    top: -7px;
+    position: absolute;
+    right: 20px;
+    z-index: 2;
+}
+
+.setting_action_wrapper.active .more_actions:after {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid #bdc2c5;
+    content: "";
+    top: -7px;
+    position: absolute;
+    right: 20px;
+    z-index: 1;
+}
+
+.more_actions.active {
+    opacity: 1;
+    transform: translateY(0px);
+}
+
+.more_actions .action_icon {
+    padding: 10px 15px;
+    display: flex;
+}
+
+.more_actions .action_icon:hover {
+    background: var(--theme-deafult);
+    color: #fff;
+}
+
+.more_actions .action_icon:hover span {
+    color: #fff;
+}
+
+.setting_action_wrapper.active .more_actions .action_icon {
+    border-bottom: 1px solid #eaeaea;
+}
+
+body.dark-only .setting_action_wrapper.active .more_actions:before {
+    border-bottom: 7px solid #262932;
+}
+
+body.dark-only .setting_action_wrapper.active .more_actions .action_icon {
+    border-bottom: 1px solid #1d1e26;
+}
+
+body.dark-only .page-wrapper .page-header .setting_action_wrapper.active .more_actions {
+    background-color: #1d1e26;
+}
+
+body.dark-only .page-wrapper .page-header .setting_action_wrapper.active .action_icon {
+    background-color: #262932;
+}
+
+html[dir=rtl] .setting_action_wrapper.active .more_actions.active {
+    left: unset;
+    right: 12px;
+}
+/**=====================

@@ -14,12 +14,13 @@ return new class extends Migration
         Schema::create('tarif_tindakans', function (Blueprint $table) {
             $table->id();
             $table->char('kode_tarif', 20)->unique();
-            $table->char('no_sk');
+            $table->char('no_sk')->nullable();
             $table->string('tindakan', 255);
-            $table->decimal('tarif_rs', 15, 0);
-            $table->string('group_tindakan', 50);
+            $table->decimal('tarif_rs', 15, 0)->nullable();
+            $table->string('kelompok_tindakan', 50)->nullable();
             $table->string('tipe', 50);
             $table->string('kategori_layanan', 50);
+            $table->string('group_tindakan', 50);
             $table->enum('status_cito', ['0', '1'])->default('1')->nullable();
             $table->integer('cito')->length(11)->default(0)->comment('Satuan Persen');
             $table->enum('status', ['0', '1'])->default('1')->nullable()->comment('Status Tindakan : 0 = tidak aktif, 1 = aktif');
