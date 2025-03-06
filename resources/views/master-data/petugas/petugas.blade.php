@@ -35,11 +35,11 @@
                                 {{-- <table id="table_petugas" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
-                                            <th scope="col"><b>Kode COA</b></th>
-                                            <th scope="col"><b>Nama COA</b></th>
-                                            <th scope="col"><b>Kategori</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode COA</th>
+                                            <th scope="col">Nama COA</th>
+                                            <th scope="col">Kategori</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table> --}}
@@ -72,7 +72,7 @@
 
                                 {{-- Kategori --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                                    <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control select2" name="kategori" required>
                                             <option></option>
@@ -96,7 +96,7 @@
 
                                 {{-- Kode --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Kode"><b>Kode</b></label>
+                                    <label class="col-sm-2 col-form-label" for="Kode">Kode</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="kode" type="text"
                                             placeholder="Kode Petugas..." required>
@@ -105,16 +105,16 @@
 
                                 {{-- NIK --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="NIK"><b>NIK</b></label>
+                                    <label class="col-sm-2 col-form-label" for="NIK">NIK</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="nik" type="text"
+                                        <input class="form-control form-control-sm ktp-number" name="nik" type="text"
                                             placeholder="NIK..." required>
                                     </div>
                                 </div>
 
                                 {{-- Nama Petugas --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Nama Petugas"><b>Nama</b></label>
+                                    <label class="col-sm-2 col-form-label" for="Nama Petugas">Nama</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="nama" type="text"
                                             placeholder="Nama Petugas..." required>
@@ -122,34 +122,40 @@
                                 </div>
 
                                 {{-- Jenis Kelamin --}}
-                                <div class="mb-2 row">
-                                    <div class="col-sm-12 form-check">
-                                        <label class="col-sm-2 col-form-label" for="Jenis Kelamin"><b>JK</b></label>
-                                        {{-- Laki Laki --}}
-                                        <input class="radio_animated" id="L" type="radio" value="L"
-                                            name="jk" required>
-                                        <span class="selectgroup-button">Laki-Laki</span>
-                                        &nbsp;&nbsp;&nbsp;
-                                        {{-- Perempuan --}}
-                                        </label>
-                                        <input class="radio_animated" id="P" type="radio" value="P"
-                                            name="jk" required>
-                                        <span class="selectgroup-button">Perempuan</span>
+                                <div class="form-group row my-0 g-lg-2 col-md-12">
+                                    <div class="col-md-2">
+                                        <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="Jenis Kelamin">JK</label>
+                                    </div>
+                                </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" id="validationFormCheck2" type="radio"
+                                                name="radio-stacked" required="">
+                                            <label class="form-check-label" for="validationFormCheck2">Laki-Laki</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" id="validationFormCheck3" type="radio"
+                                                name="radio-stacked" required="">
+                                            <label class="form-check-label" for="validationFormCheck3">Perempuan</label>
+                                        </div>
                                     </div>
                                 </div>
 
                                 {{-- No HP --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="hp"><b>No HP</b></label>
+                                    <label class="col-sm-2 col-form-label" for="hp">No HP</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="hp" type="text"
-                                            placeholder="No HP..." maxlength="13">
+                                        <input class="form-control form-control-sm phone-number" name="hp" type="text"
+                                            placeholder="No HP...">
                                     </div>
                                 </div>
 
                                 {{-- Username --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="user"><b>Username</b></label>
+                                    <label class="col-sm-2 col-form-label" for="user">Username</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="user" type="text"
                                             placeholder="Username..." required>
@@ -158,7 +164,7 @@
 
                                 {{-- NO SIP --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="NO SIP"><b>NO SIP</b></label>
+                                    <label class="col-sm-2 col-form-label" for="NO SIP">NO SIP</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="sip" type="text"
                                             placeholder="No SIP...">
@@ -167,7 +173,7 @@
 
                                 {{-- Satus --}}
                                 <div class="media mb-2">
-                                    <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                                    <label class="col-sm-2 col-form-label m-r-10">Status</label>
                                     <div class="media-body switch-sm icon-state">
                                         <label class="switch col-sm-4">
                                             <input class="form-control" name="status" type="checkbox" checked>
@@ -181,7 +187,7 @@
                             <div class="col-md-6">
                                 {{-- Spesialis --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama"><b>Spesialis</b></label>
+                                    <label class="col-sm-2 col-form-label" for="nama">Spesialis</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control js-select-2" id="Spesialis"
                                             name=spesialis"
@@ -192,7 +198,7 @@
 
                                 {{-- Kode BPJS --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="kode BPJS"><b>BPJS</b></label>
+                                    <label class="col-sm-2 col-form-label" for="kode BPJS">BPJS</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="bpjs" type="text"
                                             placeholder="Kode Dokter BPJS...">
@@ -201,7 +207,7 @@
 
                                 {{-- Alamat --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="alamat"><b>Alamat</b></label>
+                                    <label class="col-sm-2 col-form-label" for="alamat">Alamat</label>
                                     <div class="col-sm-10">
                                         <textarea class="form-control form-control-sm" name="alamat" id="" cols="30" rows="3"
                                             placeholder="Alamat Lengkap..."></textarea>
@@ -210,7 +216,7 @@
 
                                 {{-- Margin Obat --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama"><b>Status</b></label>
+                                    <label class="col-sm-2 col-form-label" for="nama">Status</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control select2" name="status">
                                             <option></option>
@@ -223,7 +229,7 @@
 
                                 {{-- Konsul --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Konsul"><b>Konsul</b></label>
+                                    <label class="col-sm-2 col-form-label" for="Konsul">Konsul</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="konsul" type="text"
                                             placeholder="Tindakan Konsultasi Dokter...">
@@ -232,7 +238,7 @@
 
                                 {{-- Visite --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Visite"><b>Visite</b></label>
+                                    <label class="col-sm-2 col-form-label" for="Visite">Visite</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="visite" type="text"
                                             placeholder="Tindakan Visite Dokter...">
@@ -250,7 +256,7 @@
 
                                 {{-- Upload Fot --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Upload"><b>Foto</b></label>
+                                    <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="foto" type="file"
                                             placeholder="Upload Foto Dokter...">

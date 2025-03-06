@@ -36,10 +36,10 @@
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode</b></th>
-                                            <th scope="col"><b>Nama ICD 10</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode</th>
+                                            <th scope="col">Nama ICD 10</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -69,21 +69,21 @@
                         </div>
                         {{-- Kode --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode ICD 10</b></label>
+                            <label class="col-sm-2 col-form-label" for="kode">Kode ICD 10</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="kode" type="text" placeholder="Kode ICD 10..." required>
                             </div>
                         </div>
                         {{-- Nama --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama ICD 10</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Nama ICD 10</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama ICD 10..." required>
                             </div>
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>

@@ -35,11 +35,11 @@
                                 <table id="table_penjamin" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
-                                            <th scope="col"><b>Kode Penjamin</b></th>
-                                            <th scope="col"><b>Kode Penjamin</b></th>
-                                            <th scope="col"><b>Nama penjamin</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode Penjamin</th>
+                                            <th scope="col">Kode Penjamin</th>
+                                            <th scope="col">Nama penjamin</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -72,7 +72,7 @@
 
                                 {{-- Kode --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="kode"><b>Kode</b></label>
+                                    <label class="col-sm-2 col-form-label" for="kode">Kode</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="kode" type="text"
                                             placeholder="Kode penjamin..." required>
@@ -81,7 +81,7 @@
 
                                 {{-- Nama --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama"><b>Nama</b></label>
+                                    <label class="col-sm-2 col-form-label" for="nama">Nama</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="nama" type="text"
                                             placeholder="Nama penjamin..." required>
@@ -90,7 +90,7 @@
 
                                 {{-- Kategori --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="coa"><b>COA</b></label>
+                                    <label class="col-sm-2 col-form-label" for="coa">COA</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control js-select-2" id="coa" name="coa"
                                             data-url="{{ route('master-data.penjamin.select') }}"
@@ -100,7 +100,7 @@
 
                                 {{-- Email --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="email"><b>Email</b></label>
+                                    <label class="col-sm-2 col-form-label" for="email">Email</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="email" type="email"
                                             placeholder="Email...">
@@ -109,7 +109,7 @@
 
                                 {{-- Satus --}}
                                 <div class="media mb-2">
-                                    <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                                    <label class="col-sm-2 col-form-label m-r-10">Status</label>
                                     <div class="media-body switch-sm icon-state">
                                         <label class="switch col-sm-4">
                                             <input class="form-control" name="status" type="checkbox" checked>
@@ -123,7 +123,7 @@
                             <div class="col-md-6">
                                 {{-- Tarif --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama"><b>Tarif</b></label>
+                                    <label class="col-sm-2 col-form-label" for="nama">Tarif</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control js-select-2" id="tarif" name="tarif"
                                             data-url="{{ route('master-data.penjamin.select_tarif') }}"
@@ -133,7 +133,7 @@
 
                                 {{-- Telpon --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="telpon"><b>No Telpon</b></label>
+                                    <label class="col-sm-2 col-form-label" for="telpon">No Telpon</label>
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm" name="telpon" type="number"
                                             placeholder="No Telpon...">
@@ -142,7 +142,7 @@
 
                                 {{-- Alamat --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="alamat"><b>Alamat</b></label>
+                                    <label class="col-sm-2 col-form-label" for="alamat">Alamat</label>
                                     <div class="col-sm-10">
                                         <textarea class="form-control form-control-sm" name="alamat" id="" cols="30" rows="3"
                                             placeholder="Alamat Lengkap..."></textarea>
@@ -151,7 +151,7 @@
 
                                 {{-- Margin Obat --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="margin"><b>Margin</b></label>
+                                    <label class="col-sm-2 col-form-label" for="margin">Margin</label>
                                     <div class=" col-sm-10">
                                         <div class="input-group input-group-sm">
                                             <input class="form-control" type="number" name="margin"
@@ -175,7 +175,7 @@
                                             {{-- Tindakan --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Tindakan</b></label>
+                                                    for="nama">Tindakan</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_tindakan"
@@ -189,7 +189,7 @@
                                             {{-- KOnsultasi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Konsultasi</b></label>
+                                                    for="nama">Konsultasi</label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_konsultasi"
@@ -202,8 +202,8 @@
 
                                             {{-- Sewa Alat --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Sewa
-                                                        Alat</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Sewa
+                                                        Alat</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_alat"
@@ -216,8 +216,8 @@
 
                                             {{-- Obat --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Obat & BMHP
-                                                    </b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Obat & BMHP
+                                                    </label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_obat"
@@ -232,7 +232,7 @@
                                         <div class="col-md-4">
                                             {{-- OK --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>OK</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">OK</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_ok"
@@ -246,7 +246,7 @@
                                             {{-- Cathlab --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Cathlab</b></label>
+                                                    for="nama">Cathlab</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_cathlab"
@@ -260,7 +260,7 @@
                                             {{-- Radiologi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Radiologi</b></label>
+                                                    for="nama">Radiologi</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_radiologi"
@@ -276,7 +276,7 @@
                                             {{-- Laboratorium --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Laboratorium</b></label>
+                                                    for="nama">Laboratorium</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_lab"
@@ -290,7 +290,7 @@
                                             {{-- Akomodasi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Akomodasi</b></label>
+                                                    for="nama">Akomodasi</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_akomodasi"
@@ -303,7 +303,7 @@
 
                                             {{-- Paket --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Paket</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Paket</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="rj_paket"
@@ -331,7 +331,7 @@
                                             {{-- Tindakan --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Tindakan</b></label>
+                                                    for="nama">Tindakan</label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_tindakan"
@@ -345,7 +345,7 @@
                                             {{-- KOnsultasi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Konsultasi</b></label>
+                                                    for="nama">Konsultasi</label>
                                                 <div class="col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_konsultasi"
@@ -358,8 +358,8 @@
 
                                             {{-- Sewa Alat --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Sewa
-                                                        Alat</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Sewa
+                                                        Alat</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_alat"
@@ -372,8 +372,8 @@
 
                                             {{-- Obat & BMHP --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Obat &
-                                                        BMHP</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Obat &
+                                                        BMHP</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_obat"
@@ -388,7 +388,7 @@
                                         <div class="col-md-4">
                                             {{-- OK --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>OK</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">OK</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_ok"
@@ -402,7 +402,7 @@
                                             {{-- Cathlab --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Cathlab</b></label>
+                                                    for="nama">Cathlab</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_cathlab"
@@ -416,7 +416,7 @@
                                             {{-- Radiologi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Radiologi</b></label>
+                                                    for="nama">Radiologi</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_radiologi"
@@ -432,7 +432,7 @@
                                             {{-- Laboratorium --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Laboratorium</b></label>
+                                                    for="nama">Laboratorium</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_lab"
@@ -446,7 +446,7 @@
                                             {{-- Akomodasi --}}
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label"
-                                                    for="nama"><b>Akomodasi</b></label>
+                                                    for="nama">Akomodasi</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_akomodasi"
@@ -459,7 +459,7 @@
 
                                             {{-- Paket --}}
                                             <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="nama"><b>Paket</b></label>
+                                                <label class="col-sm-4 col-form-label" for="nama">Paket</label>
                                                 <div class=" col-sm-7">
                                                     <div class="input-group input-group-sm">
                                                         <input class="form-control" type="number" name="ri_paket"

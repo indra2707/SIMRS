@@ -35,10 +35,10 @@
                                 <table id="table_spesialis" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
-                                            <th scope="col"><b>Kode Poli BPJS</b></th>
-                                            <th scope="col"><b>Nama Spesialis</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode Poli BPJS</th>
+                                            <th scope="col">Nama Spesialis</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -68,7 +68,7 @@
                         </div>
                         {{-- Kode BPJS --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
+                            <label class="col-sm-2 col-form-label" for="kode">Kode BPJS</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="kode" type="text"
                                     placeholder="Kode Spesialis BPJS...">
@@ -76,7 +76,7 @@
                         </div>
                         {{-- Nama --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama Spesialis</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Nama Spesialis</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="nama" type="text"
                                     placeholder="Nama Spesialis..." required>
@@ -84,7 +84,7 @@
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>

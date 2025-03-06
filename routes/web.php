@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\CoaController;
 use App\Http\Controllers\MasterData\Icd10Controller;
-use App\Http\Controllers\MasterData\JadwalController;
+use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\SpesialisController;
 use App\Http\Controllers\MasterData\PenjaminController;
 use App\Http\Controllers\MasterData\PetugasController;
@@ -110,13 +110,13 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
         Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
         // JADWAL
-        Route::get('/jadwal', [JadwalController::class, 'index'])->name('master-data.jadwal');
-        Route::get('/jadwal/view', [JadwalController::class, 'views'])->name('master-data.jadwal.view');
-        Route::post('/jadwal/store', [JadwalController::class, 'store'])->name('master-data.jadwal.create');
-        Route::post('/jadwal/update-status/{id}', [JadwalController::class, 'updateStatus'])->name('master-data.jadwal.update-status');
-        Route::put('/jadwal/update/{id}', [JadwalController::class, 'update'])->name('master-data.jadwal.update');
-        Route::delete('/jadwal/delete/{id}', [JadwalController::class, 'destroy'])->name('master-data.jadwal.delete');
-        Route::get('/jadwal-poli', [JadwalController::class, 'select'])->name('master-data.poli.select');
+        Route::get('/jadwal-dokter', [Jadwal_dokterController::class, 'index'])->name('master-data.jadwal-dokter');
+        Route::get('/jadwal-dokter/view', [Jadwal_dokterController::class, 'views'])->name('master-data.jadwal-dokter.view');
+        Route::post('/jadwal-dokter/store', [Jadwal_dokterController::class, 'store'])->name('master-data.jadwal-dokter.create');
+        Route::post('/jadwal-dokter/update-status/{id}', [Jadwal_dokterController::class, 'updateStatus'])->name('master-data.jadwal-dokter.update-status');
+        Route::put('/jadwal-dokter/update/{id}', [Jadwal_dokterController::class, 'update'])->name('master-data.jadwal-dokter.update');
+        Route::delete('/jadwal-dokter/delete/{id}', [Jadwal_dokterController::class, 'destroy'])->name('master-data.jadwal-dokter.delete');
+        Route::get('/jadwal-poli', [Jadwal_dokterController::class, 'select'])->name('master-data.poli.select');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
