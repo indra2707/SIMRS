@@ -173,8 +173,10 @@
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row.status ===
-                                    '1' ? 'checked' : '') + '>',
+                                '<input type="checkbox" class="update-status" ' + (row
+                                    .status ===
+                                    '1' ?
+                                    'checked' : '') + '>',
                                 '<span class="switch-state"></span>',
                                 '</label>',
                                 '</div>'
@@ -203,41 +205,49 @@
 
     function actionsFunction(value, row, index) {
         return [
-            '<ul class="nav-menus">',
-                '<li class="language-nav">',
-                    '<div class="translate_wrapper">',
-                        '<div class="current_lang">',
-                            '<div class="lang"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">EN </span>',
-                            '</div>',
-                        '</div>',
-                        '<div class="more_lang">',
-                             '<div class="lang selected" data-value="en"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">English<span> (US)</span></span></div>',
-                            '<div class="lang" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="lang-txt">Deutsch</span></div>',
-                            '<div class="lang" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="lang-txt">Español</span></div>',
-                            '<div class="lang" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="lang-txt">Français</span></div>',
-                            '<div class="lang" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="lang-txt">Português<span> (BR)</span></span></div>',
-                            '<div class="lang" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="lang-txt">简体中文</span></div>',
-                            '<div class="lang" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="lang-txt">لعربية <span> (ae)</span></span></div>',
-                        '</div>',
-                    '</div>',
-                '</li>',
-            '</ul>',
+            // '<ul class="nav-menus">',
+            //     '<li class="language-nav">',
+            //         '<div class="actions_wrapper">',
+            //             '<div class="current_action">',
+            //                 '<div class="action_icon" id="action_icon">',
+            //                     '<i class="icon-more-alt"></i>',    
+            //                 '</div>',
+            //             '</div>',
+            //             '<div class="more_actions">',
+            //                 '<div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="action-txt">Deutsch</span></div>',
+            //                 '<div class="action_icon" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="action-txt">Español</span></div>',
+            //                 '<div class="action_icon" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="action-txt">Français</span></div>',
+            //                 '<div class="action_icon" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="action-txt">Português<span> (BR)</span></span></div>',
+            //                 '<div class="action_icon" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="action-txt">简体中文</span></div>',
+            //                 '<div class="action_icon" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="action-txt">لعربية <span> (ae)</span></span></div>',
+            //             '</div>',
+            //         '</div>',
+            //     '</li>',
+            // '</ul>',
 
 
 
 
 
 
-            // '<div class="dropdown icon-dropdown">',
-            // '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            // '<i class="icon-more-alt"></i>',
-            // '</button>',
+            '<div class="current_action">',
+                '<button class="btn action_icon" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                    '<i class="icon-more-alt"></i>',
+                '</button>',
+
+            // '<div class="more_actions" aria-labelledby="setings-menu">',
+
+            '<div class="dropdown-menu dropdown-menu-end more_actions" aria-labelledby="setings-menu" style="">',
+                                 '<div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="action-txt">Deutsch</span></div>',
+            // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
+            // '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            // '</div>',
             // '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
             // // '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
             // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             // '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             // '</div>',
-            // '</div>',
+            '</div>',
         ].join("");
     }
 
@@ -288,5 +298,5 @@
                 }
             })
         }
-    }
+    };
 </script>
