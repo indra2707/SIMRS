@@ -134,7 +134,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Tindakan
         Route::get('/index', [TarifTindakanController::class, 'index'])->name('tarif.tindakan.index');
         Route::get('/tarif-tindakan/view', [TarifTindakanController::class, 'views'])->name('tarif.tindakan.view');
-        // Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
+        Route::post('/tarif-tindakan/store', [TarifTindakanController::class, 'store'])->name('tarif.tindakan.create');
+        Route::get('/tarif-tindakan/update', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
     });
 
     // Router Controller Global
@@ -142,7 +143,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Tarif Tindakan
         Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
         // Generate Kode
-        Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generate_kode_tarif_tindakan'])->name('generate-kode-tarif-tindakan');
+        Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generateKodeTarifTindakan'])->name('generate-kode-tarif-tindakan');
+        // Update Status
+        Route::post('/update-status/{id}', [GlobalController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
+
     });
 });
 
