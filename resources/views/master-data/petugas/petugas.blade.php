@@ -32,17 +32,17 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                {{-- <table id="table_petugas" class="table table-hover" data-toggle="table">
+                                <table id="table_petugas" class="table table-hover" data-toggle="table">
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
-                                            <th scope="col">Kode COA</th>
-                                            <th scope="col">Nama COA</th>
                                             <th scope="col">Kategori</th>
+                                            <th scope="col">Kode BPJS</th>
+                                            <th scope="col">Nama Petugas</th>
                                             <th scope="col">Status</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
-                                </table> --}}
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-wizard form-coa" novalidate="" autocomplete="off">
+                    <form class="form-wizard form-petugas" novalidate="" autocomplete="off">
                         @csrf
                         <div class="form-group row my-0 g-lg-2 col-md-12">
                             <div class="col-md-6">
@@ -189,7 +189,7 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Spesialis</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control js-select-2" id="Spesialis"
+                                        <select class="form-select form-control js-select-2" id="spesialis"
                                             name=spesialis"
                                             data-url="{{ route('master-data.spesialis.select_spesialis') }}"
                                             data-placeholder="---- Pilih Salah Satu ----"></select>

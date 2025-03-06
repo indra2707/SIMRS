@@ -42,6 +42,7 @@ class Jadwal_dokterController extends Controller
                 'status' => $value->status,
                 'mulai' => $value->mulai,
                 'akhir' => $value->akhir,
+                'jam' => date('G:i',strtotime($value->mulai)).' - '.date('G:i',strtotime($value->akhir)),
                 'estimasi' => $value->estimasi,
                 'kouta' => $value->kouta,
             ];
