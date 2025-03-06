@@ -141,7 +141,7 @@ Route::group(['middleware' => 'loggedin'], function () {
     // Router Controller Global
     Route::prefix('global-controller')->group(function () {
         // Tarif Tindakan
-        Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarif_tindakan'])->name('get-select-tarif-tindakan');
+        Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarifTindakan'])->name('get-select-tarif-tindakan');
         // Generate Kode
         Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generateKodeTarifTindakan'])->name('generate-kode-tarif-tindakan');
         // Update Status
