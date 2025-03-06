@@ -36,11 +36,11 @@
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode COA</b></th>
-                                            <th scope="col"><b>Nama COA</b></th>
-                                            <th scope="col"><b>Kategori</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode COA</th>
+                                            <th scope="col">Nama COA</th>
+                                            <th scope="col">Kategori</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -70,7 +70,7 @@
                         </div>
                         {{-- Kode --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode COA</b></label>
+                            <label class="col-sm-2 col-form-label" for="kode">Kode COA</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="kode" type="text" placeholder="Kode COA..."
                                     required>
@@ -78,7 +78,7 @@
                         </div>
                         {{-- Nama --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama COA</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Nama COA</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama COA..."
                                     required>
@@ -86,7 +86,7 @@
                         </div>
                         {{-- Kategori --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
                             <div class="col-sm-10">
                                 <select class="form-select form-control select2" name="kategori" required>
                                     <option></option>
@@ -98,7 +98,7 @@
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>

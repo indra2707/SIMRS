@@ -88,7 +88,7 @@
                             <li><a href="{{ route('master-data.petugas') }}">Petugas</a></li>
                             <li><a href="{{ route('master-data.spesialis') }}">Spesialis</a></li>
                             <li><a href="{{ route('master-data.poli') }}">Poliklinik</a></li>
-                            <li><a href="{{ route('master-data.jadwal') }}">Jadwal Dokter</a></li>
+                            <li><a href="{{ route('master-data.jadwal-dokter') }}">Jadwal Dokter</a></li>
                             <li><a href="{{ route('master-data.penjamin') }}">Penjamin</a></li>
                         </ul>
                     </li>

@@ -36,11 +36,11 @@
                                     <thead class="bg-secondary text-light text-bold text-uppercase text-center">
                                         <tr>
                                             {{-- <th scope="col">No</th> --}}
-                                            <th scope="col"><b>Kode BPJS</b></th>
-                                            <th scope="col"><b>Nama Polikinik</b></th>
-                                            <th scope="col"><b>Kategori</b></th>
-                                            <th scope="col"><b>Status</b></th>
-                                            <th scope="col"><b>Action</b></th>
+                                            <th scope="col">Kode BPJS</th>
+                                            <th scope="col">Nama Polikinik</th>
+                                            <th scope="col">Kategori</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -70,7 +70,7 @@
                         </div>
                         {{-- Kode --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
+                            <label class="col-sm-2 col-form-label" for="kode">Kode BPJS</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="kode" type="text"
                                     placeholder="Kode Poliklinik BPJS...">
@@ -78,7 +78,7 @@
                         </div>
                         {{-- Nama --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Nama Poliklinik</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Nama Poliklinik</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="nama" type="text"
                                     placeholder="Nama Poliklinik..." required>
@@ -86,7 +86,7 @@
                         </div>
                         {{-- Kategori --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
                             <div class="col-sm-10">
                                 <select class="form-select form-control select2" name="kategori" required>
                                     <option></option>
@@ -99,7 +99,7 @@
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>
@@ -136,7 +136,7 @@
                     </div>
                     {{-- Kode --}}
                     <div class="mb-2 row">
-                        <label class="col-sm-2 col-form-label" for="kode"><b>Kode BPJS</b></label>
+                        <label class="col-sm-2 col-form-label" for="kode">Kode BPJS</label>
                         <div class="col-sm-10">
                             <input class="form-control form-control-sm" name="kode" type="text"
                                 placeholder="Kode Poliklinik BPJS..." disabled>
@@ -144,7 +144,7 @@
                     </div>
                     {{-- Nama --}}
                     <div class="mb-2 row">
-                        <label class="col-sm-2 col-form-label" for="nama"><b>Nama Poliklinik</b></label>
+                        <label class="col-sm-2 col-form-label" for="nama">Nama Poliklinik</label>
                         <div class="col-sm-10">
                             <input class="form-control form-control-sm" name="nama" type="text"
                                 placeholder="Nama Poliklinik..." disabled>
@@ -152,7 +152,7 @@
                     </div>
                     {{-- Kategori --}}
                     <div class="mb-2 row">
-                        <label class="col-sm-2 col-form-label" for="nama"><b>Kategori</b></label>
+                        <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
                         <div class="col-sm-10">
                             <select class="form-select form-control select2" name="kategori" disabled>
                                 <option></option>
@@ -165,7 +165,7 @@
                     </div>
                     {{-- Satus --}}
                     <div class="media mb-2">
-                        <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                        <label class="col-sm-2 col-form-label m-r-10">Status</label>
                         <div class="media-body switch-sm icon-state">
                             <label class="switch">
                                 <input class="form-control" name="status" type="checkbox" checked disabled>
@@ -201,14 +201,14 @@
                                         <div class="col-sm-12 col-lg-12 col-xl-12">
                                             <div class="table-responsive signal-table">
                                                 <table id="table_tindakan" class="table table-hover" data-toggle="table">
-                                                    {{-- <thead
+                                                    <thead
                                                         class="bg-secondary text-light text-bold text-uppercase text-center">
                                                         <tr>
-                                                            <th scope="col"><b>Nama Tindakan</b></th>
-                                                            <th scope="col"><b>Status</b></th>
-                                                            <th scope="col"><b>Action</b></th>
+                                                            <th scope="col">Nama Tindakan</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Action</th>
                                                         </tr>
-                                                    </thead> --}}
+                                                    </thead>
                                                 </table>
                                             </div>
                                         </div>
@@ -216,14 +216,27 @@
 
                                     <div class="tab-pane fade" id="info-profile" role="tabpanel"
                                         aria-labelledby="profile-info-tab">
-                                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                                            Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-                                            unknown printer took a galley of type and scrambled it to make a type specimen
-                                            book. It has survived not only five centuries, but also the leap into electronic
-                                            typesetting, remaining essentially unchanged. It was popularised in the 1960s
-                                            with the release of Letraset sheets containing Lorem Ipsum passages, and more
-                                            recently with desktop publishing software like Aldus PageMaker including
-                                            versions of Lorem Ipsum</p>
+                                         {{-- Add Button --}}
+                                         <button class="btn btn-secondary add-obat">
+                                            <span class="fa fa-plus"></span>
+                                            <span> Tambah Obat & BMHP</span>
+                                        </button>
+
+                                        {{-- Table View --}}
+                                        <div class="col-sm-12 col-lg-12 col-xl-12">
+                                            <div class="table-responsive signal-table">
+                                                <table id="table_obat" class="table table-hover" data-toggle="table">
+                                                    <thead
+                                                        class="bg-secondary text-light text-bold text-uppercase text-center">
+                                                        <tr>
+                                                            <th scope="col">Nama Obat & BMHP</th>
+                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -260,7 +273,7 @@
                         </div>
                         {{-- Tindakan --}}
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama"><b>Tindakan</b></label>
+                            <label class="col-sm-2 col-form-label" for="nama">Tindakan</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="tindakan" type="text"
                                     placeholder="Nama Tindakan..." required>
@@ -268,7 +281,7 @@
                         </div>
                         {{-- Satus --}}
                         <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10"><b>Status</b></label>
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
                                     <input class="form-control" name="status" type="checkbox" checked>
@@ -282,6 +295,55 @@
                     <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
                         <span class="fa fa-times"></span> Batal</button>
                     <button class="btn btn-primary save-btn-tindakan" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Form Input Obat & BMHP --}}
+    <div class="modal fade" id="modal-input-obat" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-wizard form-obat" novalidate="" autocomplete="off">
+                        @csrf
+                        {{-- Hidden Input --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="id1">
+                        </div>
+                        {{-- Hidden kode poli --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="kode">
+                        </div>
+                        {{-- Obat --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Nama Obat</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="kode_obat" type="text"
+                                    placeholder="Nama Obat & BMHP..." required>
+                            </div>
+                        </div>
+                        {{-- Satus --}}
+                        <div class="media mb-2">
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
+                            <div class="media-body switch-sm icon-state">
+                                <label class="switch">
+                                    <input class="form-control" name="status2" type="checkbox" checked>
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn-obat" type="button"><span class="fa fa-check"></span>
                         Simpan</button>
                 </div>
             </div>

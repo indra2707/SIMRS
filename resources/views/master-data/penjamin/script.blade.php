@@ -211,7 +211,7 @@
             $('input[name="tarif"]').val(row.tarif);
             $('input[name="telpon"]').val(row.telpon);
             $('textarea[name="alamat"]').val(row.alamat);
-            $('input[name="margin"]').val(row.margin);
+            $('select[name="margin"]').val(row.margin).trigger('change');
             $('select[name="coa"]').val(row.coa).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
 

@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    // Variable Name
+
     // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
@@ -8,8 +8,11 @@
         allowClear: true
 
     });
+
+     // Tabel
     var $table = $('#table_poli');
     var $table1 = $('#table_tindakan');
+    var $table2 = $('#table_obat');
 
     // Open Modal Poli
     $(document).on('click', '.add-btn', function() {
@@ -37,6 +40,22 @@
     });
 
     $('#modal-input-tindakan').on('hidden.bs.modal', function() {
+        $('#modal-kelompok').modal('show');
+    });
+
+
+     // Open Modal Obat
+     $(document).on('click', '.add-obat', function() {
+        $('#modal-kelompok').modal('hide');
+        $('#modal-input-obat').modal('show');
+        $('.form-obat').removeClass('was-validated');
+        $('.modal-title').text('Form Tambah Obat & BMHP');
+        $('.save-btn-obat').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        $('input[name="kode_obat"]').val('');
+        $('input[name="status2"]').prop('checked', true);
+    });
+
+    $('#modal-input-obat').on('hidden.bs.modal', function() {
         $('#modal-kelompok').modal('show');
     });
 
@@ -280,10 +299,130 @@
         });
     });
 
+
+    // Save Obat & BMHP
+    $(document).on('click', '.save-btn-obat', function() {
+        var id2 = $('input[name="id2"]').val();
+        if (id2) {
+            var url = "{{ route('master-data.obat-poli.update', ':id2') }}";
+            url = url.replace(':id2', id2);
+            var type = "PUT";
+        } else {
+            var url = "{{ route('master-data.obat-poli.create') }}";
+            // url = url.replace(':kode', kode);
+            var type = "POST";
+        }
+        var forms = document.getElementsByClassName('form-obat');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (!form.checkValidity()) {
+                form.querySelector(".form-control:invalid").focus();
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $.ajax({
+                    type: type,
+                    url: url,
+                    dataType: "json",
+                    data: $('.form-obat').serialize(),
+                    beforeSend: function() {
+                        $('.save-btn-obat').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                        ).attr('disabled', 'disabled');
+                    },
+                    complete: function() {
+                        $('.save-btn-obat').html(
+                                '<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
+                    },
+                    success: function(res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Success',
+                                message: res.message
+                            }, {
+                                type: 'success',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-input-obat').modal('hide');
+                            $table2.bootstrapTable('refresh');
+                        } else {
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Warning',
+                                message: res.message
+                            }, {
+                                type: 'warning',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-input-obat').modal('hide');
+                        }
+                        form.classList.remove('was-validated');
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 400) {
+                            var errors = xhr.responseJSON.errors;
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: error,
+                                message: xhr.responseJSON.message
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                        } else if (xhr.status == 500) {
+                            $.notify({
+                                icon: 'icon-info-alt',
+                                title: 'error',
+                                message: "Silahkan hubungi IT Rumah Sakit!"
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                        }
+                        form.classList.remove('was-validated');
+                    }
+                });
+            }
+            form.classList.add('was-validated');
+        });
+    });
+
     // Page Load Event
     $(function() {
         initTable();
-        // initTable1();
     });
 
     // ---------------------------------------------------------------------------------------------
@@ -404,7 +543,6 @@
 
     // ---------------------------------------------------------------------------------------------
     // init table Tindakan
-
     function initTable1($kode) {
             $table1.bootstrapTable('destroy').bootstrapTable({
             height: 450,
@@ -433,19 +571,19 @@
             },
             columns: [
                 [{
-                        title: 'KODE',
+                        // title: 'KODE',
                         field: 'id1',
                         sortable: true,
                         visible: false,
                     },
                     {
-                        title: 'NAMA TINDAKAN',
+                        // title: 'NAMA TINDAKAN',
                         field: 'kode_tindakan',
                         sortable: true,
                     },
                     {
                         width: '5%',
-                        title: 'STATUS',
+                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange1,
@@ -471,6 +609,122 @@
                         clickToSelect: false,
                         events: window.operateEvents1,
                         formatter: actionsFunction1
+                    }
+                ]
+            ],
+            error: function(xhr, status, error) {
+                if (xhr.status == 400) {
+                    var errors = xhr.responseJSON.errors;
+                    $.notify({
+                        icon: 'fa fa-check',
+                        title: error,
+                        message: xhr.responseJSON.message
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
+                } else if (xhr.status == 500) {
+                    $.notify({
+                        icon: 'icon-info-alt',
+                        title: 'error',
+                        message: "Silahkan hubungi IT Rumah Sakit!"
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
+                }
+            },
+            responseHandler: function(data) {
+                return data;
+            }
+        });
+    }
+
+
+     // ---------------------------------------------------------------------------------------------
+    // init table Tindakan
+    function initTable2($kode) {
+            $table2.bootstrapTable('destroy').bootstrapTable({
+            height: 450,
+            locale: 'en-US',
+            search: true,
+            // showColumns: true,
+            // showPaginationSwitch: true,
+            // showToggle: true,
+            // showExport: true,
+            pagination: true,
+            pageSize: 50,
+            pageList: [10, 20, 35, 50, 100, 'all'],
+            showRefresh: true,
+            stickyHeader: false,
+            fixedColumns: false,
+            fullscreen: true,
+            minimumCountColumns: 2,
+            icons: iconsFunction(),
+            loadingTemplate: loadingTemplate,
+            // exportTypes: ['json', 'csv', 'txt', 'excel'],
+            url: "{{ route('master-data.obat-poli.view') }}",
+            queryParams : function(params) {
+                return {
+                    kode : $kode
+                 }
+            },
+            columns: [
+                [{
+                        // title: 'KODE',
+                        field: 'id2',
+                        sortable: true,
+                        visible: false,
+                    },
+                    {
+                        // title: 'NAMA TINDAKAN',
+                        field: 'kode_obat',
+                        sortable: true,
+                    },
+                    {
+                        width: '5%',
+                        // title: 'STATUS',
+                        field: 'status',
+                        sortable: true,
+                        events: window.operateChange2,
+                        formatter: function(value, row, index) {
+                            return [
+                                '<div class="media-body text-center switch-sm icon-state">',
+                                '<label class="switch">',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
+                                '<span class="switch-state"></span>',
+                                '</label>',
+                                '</div>'
+                            ].join("");
+                        }
+                    },
+                    {
+                        width: '5%',
+                        title: 'ACTIONS',
+                        field: 'action',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        clickToSelect: false,
+                        events: window.operateEvents2,
+                        formatter: actionsFunction2
                     }
                 ]
             ],
@@ -547,25 +801,30 @@
         ].join("");
     }
 
+    function actionsFunction2(value, row, index) {
+        return [
+            // '<div class="dropdown icon-dropdown">',
+            '<button class="btn  btn-delete2" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+            '<i class="fa fa-trash text-danger"></i>',
+            '</button>',
+            // '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+            // // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
+            // '<a class="dropdown-item btn-delete1" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            // '</div>',
+            // '</div>',
+        ].join("");
+    }
+
     // Handle events button actions
     window.operateEvents = {
         'click .btn-info': function(e, value, row, index) {
             initTable1(row.kode);
-
-            // $.ajax({
-            //     type: 'GET',
-            //     url: url,
-            //     dataType: "json",
-            //     // success: function(res) {
-            //     //     var row_rajal = res.row_disc_rajal;
-            //     // }
-            // });
-
-
+            initTable2(row.kode);
 
             $('#modal-kelompok').modal('show');
             $('.modal-title').text('Form Mapping Data');
             $table1.bootstrapTable('refresh');
+            $table2.bootstrapTable('refresh');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
@@ -650,8 +909,6 @@
         }
     }
 
-    // OPERATION TINDAKAN POLI
-    // Handle events button actions
     // modal-input-tindakan
     window.operateEvents1 = {
         'click .btn-edit': function(e, value, row, index) {
@@ -663,7 +920,6 @@
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
             $('input[name="nama"]').val(row.nama);
-            $('select[name="kategori"]').val(row.kategori).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete1': function(e, value, row, index) {
@@ -733,7 +989,87 @@
         }
     }
 
-    // Window operateChange Status
+    // modal-input-obat
+    window.operateEvents2 = {
+        'click .btn-edit': function(e, value, row, index) {
+            // $('#modal-poli').modal('hide');
+            $('#modal-kelompok').modal('hide');
+            $('#modal-input-obat').modal('show');
+            $('.modal-title').text('Form Edit poli');
+            $('.save-btn-obat').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+            $('input[name="id"]').val(row.id);
+            $('input[name="kode"]').val(row.kode);
+            $('input[name="kode_obat"]').val(row.kode_obat);
+            $('input[name="status"]').prop('checked', row.status === '1');
+        },
+        'click .btn-delete2': function(e, value, row, index) {
+            var url = "{{ route('master-data.obat-poli.delete', ':id2') }}";
+            url = url.replace(':id2', row.id2);
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Anda yakin ingin menghapus data ini?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res, status, xhr) {
+                            if (xhr.status == 200 && res.success == true) {
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Success',
+                                    message: res.message
+                                }, {
+                                    type: 'success',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Warning',
+                                    message: res.message
+                                }, {
+                                    type: 'warning',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
+                            }
+                        }
+                    }).done(function() {
+                        $table2.bootstrapTable('refresh');
+                    });
+
+                }
+            })
+        }
+    }
+
+    // Window operateChange Status poli
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
             var url = "{{ route('master-data.poli.update-status', ':id') }}";
@@ -825,11 +1161,104 @@
         }
     }
 
-    // Window operateChange Status
+    // Window operateChange Status tindakan
     window.operateChange1 = {
         'click .update-status': function(e, value, row, index) {
             var url = "{{ route('master-data.tindakan-poli.update-status', ':id1') }}";
             url = url.replace(':id1', row.id1);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    status: e.target.checked ? 1 : 0,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res, status, xhr) {
+                    if (xhr.status == 200 && res.success == true) {
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: 'Success',
+                            message: res.message
+                        }, {
+                            type: 'success',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    } else {
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: 'Warning',
+                            message: res.message
+                        }, {
+                            type: 'warning',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    }
+                    $table1.bootstrapTable('refresh');
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.status == 400) {
+                        var errors = xhr.responseJSON.errors;
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: error,
+                            message: xhr.responseJSON.message
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    } else if (xhr.status == 500) {
+                        $.notify({
+                            icon: 'icon-info-alt',
+                            title: 'error',
+                            message: "Silahkan hubungi IT Rumah Sakit!"
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    }
+                }
+            });
+        }
+    }
+
+
+    // Window operateChange Status tindakan
+    window.operateChange2 = {
+        'click .update-status': function(e, value, row, index) {
+            var url = "{{ route('master-data.obat-poli.update-status', ':id') }}";
+            url = url.replace(':id', row.id2);
             $.ajax({
                 url: url,
                 type: "POST",

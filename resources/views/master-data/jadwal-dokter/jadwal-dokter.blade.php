@@ -1,0 +1,175 @@
+@extends('layouts.simple.master')
+@section('title', $title)
+
+@section('css')
+
+@endsection
+
+@section('style')
+
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Jadwal Dokter</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item">{{ $menuTitle }}</li>
+    <li class="breadcrumb-item active">{{ $menuSubtitle }}</li>
+@endsection
+
+@section('content')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        {{-- Add Button --}}
+                        <button class="btn btn-secondary add-btn">
+                            <span class="fa fa-plus"></span>
+                            <span> Tambah Jadwal Dokter</span>
+                        </button>
+                        {{-- Table View --}}
+                        <div class="col-sm-12 col-lg-12 col-xl-12">
+                            <div class="table-responsive signal-table">
+                                <table id="table_coa" class="table table-hover" data-toggle="table">
+                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                        <tr>
+                                            <th scope="col">Poliklinik</th>
+                                            <th scope="col">Nama Dokter</th>
+                                            <th scope="col">Hari</th>
+                                            <th scope="col">Kouta</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Form --}}
+    <div class="modal fade" id="modal-jadwal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-wizard form-jadwal" novalidate="" autocomplete="off">
+                        @csrf
+                        {{-- Hidden Input --}}
+                        <div class="mb-2 row">
+                            <input type="hidden" name="id">
+                        </div>
+                        {{-- Layanan --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode_poli">Layanan</label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control js-select-2" id="kode_poli" name="kode_poli"
+                                    data-url="{{ route('master-data.poli.select') }}"
+                                    data-placeholder="---- Pilih Salah Satu ----" required></select>
+                            </div>
+                        </div>
+
+                        {{-- Hari --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Hari</label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control select2" name="hari" required>
+                                    <option></option>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                    <option value="Sabtu">Sabtu</option>
+                                    <option value="Minggu">Minggu</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        {{-- Dokter --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Dokter</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="kode_dokter" type="text"
+                                    placeholder="Dokter..." required>
+                            </div>
+                        </div>
+
+                        <div class="form-group row my-0 g-lg-2 col-md-12">
+                            <div class="col-md-6">
+                                {{-- Mulai --}}
+                                <div class="mb-21 row">
+                                    <label class="col-sm-4 col-form-label" for="nama">Waktu Mulai</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" id="mulai" name="mulai" type="time"
+                                            placeholder="mulai..." required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                {{-- Akhir --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-4 col-form-label" for="nama">Waktu Selasai</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" id="akhir" name="akhir" type="time"
+                                            placeholder="Selesai..." required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                         {{-- Estimasi --}}
+                         <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Estimasi</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" id="estimasi" name="estimasi" type="number"
+                                    placeholder="Batas Waktu Sesi per Pasien (dalam menit)" required>
+                            </div>
+                        </div>
+
+                        {{-- Kouta --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Kouta</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" id="kouta" name="kouta" type="number"
+                                    placeholder="Kouta..." readonly>
+                            </div>
+                        </div>
+
+                        {{-- Satus --}}
+                        <div class="media mb-2">
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
+                            <div class="media-body switch-sm icon-state">
+                                <label class="switch">
+                                    <input class="form-control" name="status" type="checkbox" checked>
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+
+
+@section('script')
+    @include('master-data.jadwal-dokter.script')
+@endsection
