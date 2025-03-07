@@ -35,31 +35,31 @@
                             </div>
                         </div>
                     </div>
-                    <ul class="nav-menus">
+                    {{-- <ul class="nav-menus">
                         <li class="language-nav">
-                            <div class="translate_wrapper">
-                                <div class="current_lang">
-                                    <div class="lang">
+                            <div class="actions_wrapper">
+                                <div class="current_action">
+                                    <div class="action_icon">
                                         <i class="icon-more-alt"></i>
                                     </div>
                                 </div>
-                                <div class="more_lang">
-                                    <div class="lang" data-value="de"><i class="flag-icon flag-icon-de"></i><span
+                                <div class="more_actions">
+                                    <div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span
                                             class="action-txt">Deutsch</span></div>
-                                    <div class="lang" data-value="es"><i class="flag-icon flag-icon-es"></i><span
+                                    <div class="action_icon" data-value="es"><i class="flag-icon flag-icon-es"></i><span
                                             class="action-txt">Español</span></div>
-                                    <div class="lang" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span
+                                    <div class="action_icon" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span
                                             class="action-txt">Français</span></div>
-                                    <div class="lang" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span
+                                    <div class="action_icon" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span
                                             class="action-txt">Português<span> (BR)</span></span></div>
-                                    <div class="lang" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span
+                                    <div class="action_icon" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span
                                             class="action-txt">简体中文</span></div>
-                                    <div class="lang" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span
+                                    <div class="action_icon" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span
                                             class="action-txt">لعربية <span> (ae)</span></span></div>
                                 </div>
                             </div>
                         </li>
-                    </ul>
+                    </ul> --}}
                     <div class="card-body pt-0 campaign-table">
                         <div class="recent-table table-responsive currency-table">
                             <table id="table_tindakan_tarif" class="table table-hover" data-buttons-class="primary"

@@ -3,13 +3,45 @@
       // With Placeholder
       $(".select2").select2({
         placeholder: "---- Pilih Salah Satu----",
-        theme:"bootstrap-5",
-        dropdownParent:$("#modal-petugas"),
-        allowClear:true
+        theme: "bootstrap-5",
+        dropdownParent: $("#modal-petugas"),
+        allowClear: true
 
     });
 
     var $table = $('#table_petugas');
+    var reader = new FileReader();
+
+    // Main Wrapper Selector
+    const avatarFileUpload = document.getElementById('AvatarFileUpload');
+    // Preview Wrapper Selector
+    const imageViewer = avatarFileUpload.querySelector('.selected-image-holder>img');
+    // Image Selector button Selector
+    const imageSelector = avatarFileUpload.querySelector('.avatar-selector-btn');
+    // Image Input File Selector
+    const imageInput = avatarFileUpload.querySelector('input[name="profil"]');
+
+    /** Trigger Browsing Image to Upload */
+    imageSelector.addEventListener('click', e => {
+        e.preventDefault()
+        // Trigger Image input click
+        imageInput.click()
+    });
+
+    /** IF Selected Image has change */
+    imageInput.addEventListener('change', e => {
+        // Open File eader
+        reader.onload = function() {
+
+            // Preview Image
+            imageViewer.src = reader.result;
+        };
+        // Read Selected Image as DataURL
+        console.warn(e.target.files);
+
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
 
     // Open Modal
     $(document).on('click', '.add-petugas', function() {
@@ -25,11 +57,9 @@
         $('select[name="status"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
 
-        $("#hp").inputmask("mask", {
-      "mask": ["+62 999-9999-99999", "+62 999-9999-999999"]
-    }, {
-      numericInput: true
-    }); //specifying
+        //     $("#hp").inputmask("mask", {"mask": ["+62 999-9999-99999", "+62 999-9999-999999"]}, {
+        //   numericInput: true
+        // }); //specifying
     // $("#nik").inputmask("mask", {
     //   "mask": "9999999999999999"
     // }, {
@@ -185,8 +215,7 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.petugas.view') }}",
             columns: [
-                [
-                    {
+                [{
                         width: '300%',
                         field: 'kategori',
                         sortable: true,
