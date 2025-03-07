@@ -135,13 +135,11 @@
                     //     sortable: true,
                     // },
                     {
-                        title: 'Kode',
                         width: '150%',
                         field: 'kode',
                         sortable: true,
                     },
                     {
-                        title: 'Kode COA',
                         width: '150%',
                         field: 'kode_coa',
                         sortable: true,

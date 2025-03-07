@@ -451,12 +451,10 @@
             columns: [
                 [{
                         width: '100%',
-                        // title: 'KODE ICD 10',
                         field: 'kode',
                         sortable: true,
                     },
                     {
-                        // title: 'NAMA ICD 10',
                         field: 'nama',
                         sortable: true,
                     },
@@ -467,7 +465,6 @@
                     },
                     {
                         width: '5%',
-                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
@@ -485,7 +482,6 @@
                     },
                     {
                         width: '5%',
-                        // title: 'ACTIONS',
                         field: 'action',
                         align: 'center',
                         valign: 'middle',
@@ -545,7 +541,7 @@
     // init table Tindakan
     function initTable1($kode) {
             $table1.bootstrapTable('destroy').bootstrapTable({
-            height: 450,
+            height: 350,
             locale: 'en-US',
             search: true,
             // showColumns: true,
@@ -553,7 +549,7 @@
             // showToggle: true,
             // showExport: true,
             pagination: true,
-            pageSize: 50,
+            pageSize: 10,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
             stickyHeader: false,
@@ -570,20 +566,18 @@
                  }
             },
             columns: [
-                [{
-                        // title: 'KODE',
-                        field: 'id1',
-                        sortable: true,
-                        visible: false,
-                    },
+                [
+                    // {
+                    //     field: 'id1',
+                    //     sortable: true,
+                    //     visible: false,
+                    // },
                     {
-                        // title: 'NAMA TINDAKAN',
                         field: 'kode_tindakan',
                         sortable: true,
                     },
                     {
                         width: '5%',
-                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange1,
@@ -661,7 +655,7 @@
     // init table Tindakan
     function initTable2($kode) {
             $table2.bootstrapTable('destroy').bootstrapTable({
-            height: 450,
+            height: 350,
             locale: 'en-US',
             search: true,
             // showColumns: true,
@@ -669,7 +663,7 @@
             // showToggle: true,
             // showExport: true,
             pagination: true,
-            pageSize: 50,
+            pageSize: 10,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
             stickyHeader: false,
@@ -686,20 +680,18 @@
                  }
             },
             columns: [
-                [{
-                        // title: 'KODE',
-                        field: 'id2',
-                        sortable: true,
-                        visible: false,
-                    },
+                [
+                    // {
+                    //     field: 'id2',
+                    //     sortable: true,
+                    //     visible: false,
+                    // },
                     {
-                        // title: 'NAMA TINDAKAN',
                         field: 'kode_obat',
                         sortable: true,
                     },
                     {
                         width: '5%',
-                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange2,

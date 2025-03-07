@@ -25,22 +25,22 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-secondary add-btn">
+                        <button class="btn btn-primary add-btn">
                             <span class="fa fa-plus"></span>
-                            <span> Tambah</span>
+                            <span> Tambah Poli</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_poli" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                <table id="table_poli" class="table table-hover" data-buttons-class="primary"
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            {{-- <th scope="col">No</th> --}}
-                                            <th scope="col">Kode BPJS</th>
-                                            <th scope="col">Nama Polikinik</th>
-                                            <th scope="col">Kategori</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th class="f-light">Kode BPJS</th>
+                                            <th class="f-light">Nama Polikinik</th>
+                                            <th class="f-light">Kategori</th>
+                                            <th class="f-light">Status</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -192,7 +192,7 @@
                                     <div class="tab-pane fade show active" id="info-home" role="tabpanel"
                                         aria-labelledby="info-home-tab">
                                         {{-- Add Button --}}
-                                        <button class="btn btn-secondary add-tindakan">
+                                        <button class="btn btn-primary add-tindakan">
                                             <span class="fa fa-plus"></span>
                                             <span> Tambah Tindakan</span>
                                         </button>
@@ -200,13 +200,13 @@
                                         {{-- Table View --}}
                                         <div class="col-sm-12 col-lg-12 col-xl-12">
                                             <div class="table-responsive signal-table">
-                                                <table id="table_tindakan" class="table table-hover" data-toggle="table">
-                                                    <thead
-                                                        class="bg-secondary text-light text-bold text-uppercase text-center">
+                                                <table id="table_tindakan" class="table table-hover"
+                                                    data-buttons-class="primary" data-toggle="table">
+                                                    <thead class="text-bold text-white text-uppercase text-center">
                                                         <tr>
-                                                            <th scope="col">Nama Tindakan</th>
-                                                            <th scope="col">Status</th>
-                                                            <th scope="col">Action</th>
+                                                            <th class="f-light">Nama Tindakan</th>
+                                                            <th class="f-light">Status</th>
+                                                            <th >Action</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -216,8 +216,8 @@
 
                                     <div class="tab-pane fade" id="info-profile" role="tabpanel"
                                         aria-labelledby="profile-info-tab">
-                                         {{-- Add Button --}}
-                                         <button class="btn btn-secondary add-obat">
+                                        {{-- Add Button --}}
+                                        <button class="btn btn-primary add-obat">
                                             <span class="fa fa-plus"></span>
                                             <span> Tambah Obat & BMHP</span>
                                         </button>
@@ -225,19 +225,20 @@
                                         {{-- Table View --}}
                                         <div class="col-sm-12 col-lg-12 col-xl-12">
                                             <div class="table-responsive signal-table">
-                                                <table id="table_obat" class="table table-hover" data-toggle="table">
-                                                    <thead
-                                                        class="bg-secondary text-light text-bold text-uppercase text-center">
+                                                <table id="table_obat" class="table table-hover" data-buttons-class="primary"
+                                                data-toggle="table">
+                                                <thead class="text-bold text-white text-uppercase text-center">
                                                         <tr>
-                                                            <th scope="col">Nama Obat & BMHP</th>
-                                                            <th scope="col">Status</th>
-                                                            <th scope="col">Action</th>
+                                                            <th class="f-light">Nama Obat & BMHP</th>
+                                                            <th class="f-light">Status</th>
+                                                            <th >Action</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>

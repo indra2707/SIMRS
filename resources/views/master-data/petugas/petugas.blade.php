@@ -25,21 +25,22 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-secondary add-petugas">
+                        <button class="btn btn-primary add-petugas">
                             <span class="fa fa-plus"></span>
-                            <span> Tambah</span>
+                            <span> Tambah Petugas</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_petugas" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                <table id="table_petugas" class="table table-hover" data-buttons-class="primary"
+                                data-toggle="table">
+                                <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th scope="col">Kategori</th>
-                                            <th scope="col">Kode BPJS</th>
-                                            <th scope="col">Nama Petugas</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th class="f-light">Kategori</th>
+                                            <th class="f-light">Kode BPJS</th>
+                                            <th class="f-light">Nama Petugas</th>
+                                            <th class="f-light">Status</th>
+                                            <th >Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -122,23 +123,23 @@
                                 </div>
 
                                 {{-- Jenis Kelamin --}}
-                                <div class="form-group row my-0 g-lg-2 col-md-12">
+                                <div class="form-group row my-0 g-lg-1 col-md-12">
                                     <div class="col-md-2">
                                         <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="Jenis Kelamin">JK</label>
+                                            <label class="col-sm-2 col-form-label" for="Jenis Kelamin">JK</label>
+                                        </div>
                                     </div>
-                                </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="form-check">
                                             <input class="form-check-input" id="validationFormCheck2" type="radio"
-                                                name="radio-stacked" required="">
+                                                name="jenis_kelamin" required="">
                                             <label class="form-check-label" for="validationFormCheck2">Laki-Laki</label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <div class="form-check mb-3">
+                                    <div class="col-md-2">
+                                        <div class="form-check">
                                             <input class="form-check-input" id="validationFormCheck3" type="radio"
-                                                name="radio-stacked" required="">
+                                                name="jenis_kelamin" required="">
                                             <label class="form-check-label" for="validationFormCheck3">Perempuan</label>
                                         </div>
                                     </div>
@@ -148,8 +149,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="hp">No HP</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm phone-number" name="hp" type="text"
-                                            placeholder="No HP...">
+                                        <input class="form-control form-control-sm phone-number" name="hp"
+                                            type="text" placeholder="No HP...">
                                     </div>
                                 </div>
 
@@ -187,12 +188,14 @@
                             <div class="col-md-6">
                                 {{-- Spesialis --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama">Spesialis</label>
+                                    <label class="col-sm-2 col-form-label" for="spesialis">Spesialis</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control js-select-2" id="spesialis"
                                             name=spesialis"
                                             data-url="{{ route('master-data.spesialis.select_spesialis') }}"
-                                            data-placeholder="---- Pilih Salah Satu ----"></select>
+                                            data-placeholder="---- Pilih Salah Satu ----">
+                                            {{-- <option></option> --}}
+                                        </select>
                                     </div>
                                 </div>
 
@@ -216,9 +219,9 @@
 
                                 {{-- Margin Obat --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="nama">Status</label>
+                                    <label class="col-sm-2 col-form-label" for="status_dokter">Status</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control select2" name="status">
+                                        <select class="form-select form-control select2" name="status_dokter">
                                             <option></option>
                                             <option value="Mitra">Mitra</option>
                                             <option value="PWT/PWTT">PWT/PWTT</option>

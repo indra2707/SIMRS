@@ -25,22 +25,22 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-secondary add-btn">
+                        <button class="btn btn-primary add-btn">
                             <span class="fa fa-plus"></span>
-                            <span> Tambah</span>
+                            <span> Tambah COA</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_coa" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                <table id="table_coa" class="table table-hover" data-buttons-class="primary"
+                                data-toggle="table">
+                                <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            {{-- <th scope="col">No</th> --}}
-                                            <th scope="col">Kode COA</th>
-                                            <th scope="col">Nama COA</th>
-                                            <th scope="col">Kategori</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th class="f-light">Kode COA</th>
+                                            <th class="f-light">Nama COA</th>
+                                            <th class="f-light">Kategori</th>
+                                            <th class="f-light">Status</th>
+                                            <th >Action</th>
                                         </tr>
                                     </thead>
                                 </table>

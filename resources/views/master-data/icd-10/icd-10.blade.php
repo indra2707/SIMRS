@@ -25,21 +25,21 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-secondary add-btn">
+                        <button class="btn btn-primary add-btn">
                             <span class="fa fa-plus"></span>
                             <span> Tambah</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_icd10" class="table table-hover" data-toggle="table">
-                                    <thead class="bg-secondary text-light text-bold text-uppercase text-center">
+                                <table id="table_icd10" class="table table-hover" data-buttons-class="primary"
+                                data-toggle="table">
+                                <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            {{-- <th scope="col">No</th> --}}
-                                            <th scope="col">Kode</th>
-                                            <th scope="col">Nama ICD 10</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Action</th>
+                                            <th class="f-light">Kode</th>
+                                            <th class="f-light">Nama ICD 10</th>
+                                            <th class="f-light">Status</th>
+                                            <th >Action</th>
                                         </tr>
                                     </thead>
                                 </table>
