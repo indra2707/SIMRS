@@ -10,6 +10,8 @@ class Poli_tindakans extends Model
 {
     use HasFactory;
 
+    protected $table = 'poli_tindakans';
+
     protected $fillable = [
         'kode_poli',
         'kode_tindakan',

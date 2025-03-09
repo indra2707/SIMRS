@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
@@ -9,8 +8,8 @@
 
     });
 
-     // Tabel
-    var $table = $('#table_poli');
+    // Tabel
+    var $tablePoli = $('#table_poli');
     var $table1 = $('#table_tindakan');
     var $table2 = $('#table_obat');
 
@@ -27,6 +26,12 @@
         $('input[name="status"]').prop('checked', true);
     });
 
+    $('#info-home-tab').on('click', function() {
+        initTableTindakan($('input[name="kode"]').val());
+    });
+    $('#profile-info-tab').on('click', function() {
+        initTableObat($('input[name="kode"]').val());
+    });
 
     // Open Modal Tindakan
     $(document).on('click', '.add-tindakan', function() {
@@ -44,8 +49,8 @@
     });
 
 
-     // Open Modal Obat
-     $(document).on('click', '.add-obat', function() {
+    // Open Modal Obat
+    $(document).on('click', '.add-obat', function() {
         $('#modal-kelompok').modal('hide');
         $('#modal-input-obat').modal('show');
         $('.form-obat').removeClass('was-validated');
@@ -94,81 +99,22 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-poli').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('warning', res.message);
                             $('#modal-poli').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
-                            var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info',
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
                         }
                         form.classList.remove('was-validated');
                     }
@@ -215,81 +161,22 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-input-tindakan').modal('hide');
                             $table1.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('warning', res.message);
                             $('#modal-input-tindakan').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
-                            var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info',
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
                         }
                         form.classList.remove('was-validated');
                     }
@@ -336,81 +223,22 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-input-obat').modal('hide');
                             $table2.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('warning', res.message);
                             $('#modal-input-obat').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
-                            var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info',
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
                         }
                         form.classList.remove('was-validated');
                     }
@@ -427,15 +255,12 @@
 
     // ---------------------------------------------------------------------------------------------
     // init table
+    // Table Poliklinik
     function initTable() {
-        $table.bootstrapTable('destroy').bootstrapTable({
+        $tablePoli.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
             search: true,
-            // showColumns: true,
-            // showPaginationSwitch: true,
-            // showToggle: true,
-            // showExport: true,
             pagination: true,
             pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
@@ -467,7 +292,7 @@
                         width: '5%',
                         field: 'status',
                         sortable: true,
-                        events: window.operateChange,
+                        events: window.updateStatusPoli,
                         formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
@@ -487,49 +312,11 @@
                         valign: 'middle',
                         sortable: true,
                         clickToSelect: false,
-                        events: window.operateEvents,
-                        formatter: actionsFunction
+                        events: window.eventsPoliklinik,
+                        formatter: actionsFunctionPoliklinik
                     }
                 ]
             ],
-            error: function(xhr, status, error) {
-                if (xhr.status == 400) {
-                    var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                }
-            },
             responseHandler: function(data) {
                 return data;
             }
@@ -539,8 +326,8 @@
 
     // ---------------------------------------------------------------------------------------------
     // init table Tindakan
-    function initTable1($kode) {
-            $table1.bootstrapTable('destroy').bootstrapTable({
+    function initTableTindakan($kode) {
+        $table1.bootstrapTable('destroy').bootstrapTable({
             height: 350,
             locale: 'en-US',
             search: true,
@@ -560,19 +347,13 @@
             loadingTemplate: loadingTemplate,
             // exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.tindakan-poli.view') }}",
-            queryParams : function(params) {
+            queryParams: function(params) {
                 return {
-                    kode : $kode
-                 }
+                    kode: $kode
+                }
             },
             columns: [
-                [
-                    // {
-                    //     field: 'id1',
-                    //     sortable: true,
-                    //     visible: false,
-                    // },
-                    {
+                [{
                         field: 'kode_tindakan',
                         sortable: true,
                     },
@@ -606,44 +387,6 @@
                     }
                 ]
             ],
-            error: function(xhr, status, error) {
-                if (xhr.status == 400) {
-                    var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                }
-            },
             responseHandler: function(data) {
                 return data;
             }
@@ -651,17 +394,13 @@
     }
 
 
-     // ---------------------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------------------
     // init table Tindakan
-    function initTable2($kode) {
-            $table2.bootstrapTable('destroy').bootstrapTable({
+    function initTableObat($kode) {
+        $table2.bootstrapTable('destroy').bootstrapTable({
             height: 350,
             locale: 'en-US',
             search: true,
-            // showColumns: true,
-            // showPaginationSwitch: true,
-            // showToggle: true,
-            // showExport: true,
             pagination: true,
             pageSize: 10,
             pageList: [10, 20, 35, 50, 100, 'all'],
@@ -672,21 +411,14 @@
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
-            // exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.obat-poli.view') }}",
-            queryParams : function(params) {
+            queryParams: function(params) {
                 return {
-                    kode : $kode
-                 }
+                    kode: $kode
+                }
             },
             columns: [
-                [
-                    // {
-                    //     field: 'id2',
-                    //     sortable: true,
-                    //     visible: false,
-                    // },
-                    {
+                [{
                         field: 'kode_obat',
                         sortable: true,
                     },
@@ -720,58 +452,20 @@
                     }
                 ]
             ],
-            error: function(xhr, status, error) {
-                if (xhr.status == 400) {
-                    var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                }
-            },
             responseHandler: function(data) {
                 return data;
             }
         });
     }
 
-    function actionsFunction(value, row, index) {
+    function actionsFunctionPoliklinik(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
+            '<a class="dropdown-item btn-infos" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -808,15 +502,11 @@
     }
 
     // Handle events button actions
-    window.operateEvents = {
-        'click .btn-info': function(e, value, row, index) {
-            initTable1(row.kode);
-            initTable2(row.kode);
-
-            $('#modal-kelompok').modal('show');
+    window.eventsPoliklinik = {
+        'click .btn-infos': function(e, value, row, index) {
+            $('#modal-infos').modal('show');
+            initTableTindakan(row.kode);
             $('.modal-title').text('Form Mapping Data');
-            $table1.bootstrapTable('refresh');
-            $table2.bootstrapTable('refresh');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="kode"]').val(row.kode);
@@ -857,39 +547,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
                     }).done(function() {
@@ -937,39 +597,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
                     }).done(function() {
@@ -1017,39 +647,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
                     }).done(function() {
@@ -1062,91 +662,33 @@
     }
 
     // Window operateChange Status poli
-    window.operateChange = {
+    window.updateStatusPoli = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('master-data.poli.update-status', ':id') }}";
+            var url = "{{ route('tarif.sk-tarif.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
                     status: e.target.checked ? 1 : 0,
+                    table: 'polis',
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Success',
-                            message: res.message
-                        }, {
-                            type: 'success',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('success', res.message);
                     } else {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Warning',
-                            message: res.message
-                        }, {
-                            type: 'warning',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('warning', res.message);
                     }
-                    $table.bootstrapTable('refresh');
+                    $tablePoli.bootstrapTable('refresh');
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 400) {
-                        var errors = xhr.responseJSON.errors;
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: error,
-                            message: xhr.responseJSON.message
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
-                        $.notify({
-                            icon: 'icon-info-alt',
-                            title: 'error',
-                            message: "Silahkan hubungi IT Rumah Sakit!"
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('info',
+                            "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                        );
                     }
                 }
             });

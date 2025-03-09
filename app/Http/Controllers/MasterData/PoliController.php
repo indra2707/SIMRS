@@ -67,27 +67,6 @@ class PoliController extends Controller
         }
     }
 
-    // update status check
-    public function updateStatus(Request $request, $id)
-    {
-        $query = Polis::where('id', $id)->update([
-            'status' => $request->status,
-        ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
-                'data' => [],
-            ], status: 200);
-        }else{
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengubah status.',
-                'data' => [],
-            ], status: 400);
-        }
-    }
-
     // Update
     public function update(Request $request, $id)
     {

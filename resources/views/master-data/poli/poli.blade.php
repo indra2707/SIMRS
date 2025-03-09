@@ -121,7 +121,7 @@
 
 
     {{-- Modal Mapping Tindakan --}}
-    <div class="modal fade" id="modal-kelompok" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="modal-infos" role="dialog" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -179,11 +179,13 @@
                         <div class="card">
                             <div class="card-body">
                                 <ul class="nav nav-tabs border-tab nav-primary" id="info-tab" role="tablist">
-                                    <li class="nav-item"><a class="nav-link active" id="info-home-tab"
-                                            data-bs-toggle="tab" href="#info-home" role="tab"
-                                            aria-controls="info-home" aria-selected="true"><i
-                                                class="icofont icofont-bed-patient"></i>Tindakan</a></li>
-                                    <li class="nav-item"><a class="nav-link" id="profile-info-tab" data-bs-toggle="tab"
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="info-home-tab" data-bs-toggle="tab"
+                                            href="#info-home" role="tab" aria-controls="info-home"
+                                            aria-selected="true"><i class="icofont icofont-bed-patient"></i>Tindakan</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-info-tab" data-bs-toggle="tab"
                                             href="#info-profile" role="tab" aria-controls="info-profile"
                                             aria-selected="false"><i class="icofont icofont-capsule"></i>Obat & BHMP</a>
                                     </li>
@@ -206,7 +208,7 @@
                                                         <tr>
                                                             <th class="f-light">Nama Tindakan</th>
                                                             <th class="f-light">Status</th>
-                                                            <th >Action</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
@@ -225,13 +227,13 @@
                                         {{-- Table View --}}
                                         <div class="col-sm-12 col-lg-12 col-xl-12">
                                             <div class="table-responsive signal-table">
-                                                <table id="table_obat" class="table table-hover" data-buttons-class="primary"
-                                                data-toggle="table">
-                                                <thead class="text-bold text-white text-uppercase text-center">
+                                                <table id="table_obat" class="table table-hover"
+                                                    data-buttons-class="primary" data-toggle="table">
+                                                    <thead class="text-bold text-white text-uppercase text-center">
                                                         <tr>
                                                             <th class="f-light">Nama Obat & BMHP</th>
                                                             <th class="f-light">Status</th>
-                                                            <th >Action</th>
+                                                            <th>Action</th>
                                                         </tr>
                                                     </thead>
                                                 </table>
