@@ -76,6 +76,7 @@ class PetugasController extends Controller
             'kode_tindakan2' => $request->kode_tindakan2,
             'tanggal' => $request->tanggal,
             'foto' => $request->foto,
+            'status_dokter' => $request->status_dokter,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {

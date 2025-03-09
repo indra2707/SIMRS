@@ -93,9 +93,19 @@
         $('input[name="id"]').val('');
         $('input[name="kode"]').val('');
         $('input[name="nama"]').val('');
+        $('input[name="nik"]').val('');
+        $('input[name="hp"]').val('');
+        $('input[name="user"]').val('');
+        $('input[name="bpjs"]').val('');
+        $('input[name="tgl_akhir"]').val('');
+        $('textarea[name="alamat"]').val('');
+        $('textarea[name="konsul"]').val('');
+        $('textarea[name="visite"]').val('');
+        $('input[name=jenis_kelamin]').prop('checked',false);
+        $('input[name="sip"]').val('');
         $('select[name="spesialis"]').val('').trigger('change');
         $('select[name="kategori"]').val('').trigger('change');
-        $('select[name="status"]').val('').trigger('change');
+        $('select[name="status_dokter"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
 
         //     $("#hp").inputmask("mask", {"mask": ["+62 999-9999-99999", "+62 999-9999-999999"]}, {

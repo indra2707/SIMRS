@@ -32,7 +32,7 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_coa" lass="table table-hover" data-buttons-class="primary"
+                                <table id="table_coa" class="table table-hover" data-buttons-class="primary"
                                 data-toggle="table">
                                 <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
@@ -42,7 +42,7 @@
                                             <th class="f-light">Hari</th>
                                             <th class="f-light">Kouta</th>
                                             <th class="f-light">Status</th>
-                                            <th class="f-shadow">Action</th>
+                                            <th class="">Action</th>
                                         </tr>
                                     </thead>
                                 </table>

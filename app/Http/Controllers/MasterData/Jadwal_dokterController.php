@@ -120,15 +120,14 @@ class Jadwal_dokterController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-            'kategori' => 'required',
-        ]);
         $query = Jadwal_dokters::where('id', $id)->update([
-            'kode' => $request->kode,
-            'nama' => $request->nama,
-            'kategori' => $request->kategori,
+            'kode_poli' => $request->kode_poli,
+            'kode_dokter' => $request->kode_dokter,
+            'hari' => $request->hari,
+            'mulai' => $request->mulai,
+            'akhir' => $request->akhir,
+            'estimasi' => $request->estimasi,
+            'kouta' => $request->kouta,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
