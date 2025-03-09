@@ -24,14 +24,6 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-
-
-
-
-
-
-
-
                         {{-- Add Button --}}
                         <button class="btn btn-secondary add-petugas">
                             <span class="fa fa-plus"></span>
@@ -189,9 +181,17 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Tanda Tangan</label>
+                                    <div class="col-sm-10 text-center row">
+                                        <div id="signature-pad"></div>
+                                        <textarea id="signature64" name="signed" style="display: none"></textarea>
+                                        <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
+                                    </div>
+                                    {{-- <div class="col-sm-2 text-center">
+                                    </div> --}}
+                                </div>
                             </div>
-
-
                             <div class="col-md-6">
                                 {{-- Spesialis --}}
                                 <div class="mb-2 row">

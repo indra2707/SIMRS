@@ -9,6 +9,47 @@
 
     });
 
+    var sig = $('#signature-pad').signature({syncField: '#signature64', syncFormat: 'PNG'});
+    $('#clear').click(function(e) {
+        e.preventDefault();
+        sig.signature('clear');
+        $("#signature64").val('');
+    });
+
+
+
+
+    // $('#removeSignature').click(function() {
+    //     var destroy = $(this).text() === 'Remove';
+    //     $(this).text(destroy ? 'Re-attach' : 'Remove');
+    //     $('#signature-pad').signature(destroy ? 'destroy' : {});
+    // });
+
+    // $('#disableSignature').click(function() {
+    //     var enable = $(this).text() === 'Enable';
+    //     $(this).text(enable ? 'Disable' : 'Enable');
+    //     $('#signature-pad').signature(enable ? 'enable' : 'disable');
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var $table = $('#table_petugas');
     var reader = new FileReader();
 
