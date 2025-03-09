@@ -30,3 +30,6 @@
 
     <link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/date-picker.css')}}">
 
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/vendor/jquery.signature.package-1.2.1/css/jquery.signature.css')}}">
+    {{-- <link rel="stylesheet" type="text/css" href="http://keith-wood.name/css/jquery.signature.css"> --}}
+    {{-- <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/south-street/jquery-ui.css" rel="stylesheet">  --}}
