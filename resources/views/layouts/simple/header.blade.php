@@ -30,7 +30,7 @@
         </div>
         <div class="nav-right col-xxl-7 col-xl-6 col-md-7 col-8 pull-right right-header p-0 ms-auto">
             <ul class="nav-menus">
-                {{-- <li class="language-nav">
+                <li class="language-nav">
                     <div class="translate_wrapper">
                         <div class="current_lang">
                             <div class="lang"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">EN </span>
@@ -53,7 +53,7 @@
                                     class="lang-txt">لعربية <span> (ae)</span></span></div>
                         </div>
                     </div>
-                </li> --}}
+                </li>
                 {{-- <li> <span class="header-search">
                         <svg>
                             <use href="{{ asset('assets/svg/icon-sprite.svg#search') }}"></use>

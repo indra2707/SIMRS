@@ -154,7 +154,7 @@
                         events: window.operateChange,
                         formatter: function(value, row, index) {
                             return [
-                               '<div class="media-body text-center switch-sm icon-state">',
+                                '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
                                 '<input type="checkbox" class="update-status" ' + (row.status ===
                                     '1' ? 'checked' : '') + '>',

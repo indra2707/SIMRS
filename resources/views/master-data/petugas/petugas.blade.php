@@ -133,9 +133,9 @@
                                 <div class="form-group row my-0 g-lg-2 col-md-12">
                                     <div class="col-md-2">
                                         <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="Jenis Kelamin">JK</label>
+                                            <label class="col-sm-2 col-form-label" for="Jenis Kelamin">JK</label>
+                                        </div>
                                     </div>
-                                </div>
                                     <div class="col-md-3">
                                         <div class="form-check">
                                             <input class="form-check-input" id="validationFormCheck2" type="radio"

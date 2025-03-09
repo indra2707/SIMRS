@@ -1,7 +1,7 @@
 <script type="text/javascript">
     // Variable Name
-      // With Placeholder
-      $(".select2").select2({
+    // With Placeholder
+    $(".select2").select2({
         placeholder: "---- Pilih Salah Satu----",
         theme: "bootstrap-5",
         dropdownParent: $("#modal-petugas"),
@@ -60,11 +60,14 @@
         //     $("#hp").inputmask("mask", {"mask": ["+62 999-9999-99999", "+62 999-9999-999999"]}, {
         //   numericInput: true
         // }); //specifying
-    // $("#nik").inputmask("mask", {
-    //   "mask": "9999999999999999"
-    // }, {
-    //   numericInput: true
-    // }); //specifying
+        // $("#nik").inputmask("mask", {
+        //   "mask": "9999999999999999"
+        // }, {
+        //   numericInput: true
+        // }); //specifying
+
+        imageInput.value = '';
+        imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
 
     });
 
@@ -94,7 +97,7 @@
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                            ).attr('disabled', 'disabled');
+                        ).attr('disabled', 'disabled');
                     },
                     complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
@@ -487,5 +490,4 @@
             });
         }
     }
-
 </script>
