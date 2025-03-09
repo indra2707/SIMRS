@@ -42,7 +42,7 @@
                                             <th class="f-light">Tanggal Efektif Berakhir</th>
                                             <th class="f-light">Deskripsi</th>
                                             <th class="f-light">status</th>
-                                            <th class="f-light">Action</th>
+                                            <th #">Action</th>
                                         </tr>
                                     </thead>
                                 </table>
