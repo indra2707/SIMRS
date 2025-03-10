@@ -115,7 +115,7 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                        $('#modal-tarif-tindakan').modal('hide');
+                            $('#modal-tarif-tindakan').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
