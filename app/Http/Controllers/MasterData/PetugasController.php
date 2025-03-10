@@ -68,7 +68,6 @@ class PetugasController extends Controller
             'nama' => $request->nama,
             'jenis_kelamin' => $request->jenis_kelamin,
             'no_hp' => $request->no_hp,
-            'username' => $request->username,
             'kode_spesialis' => $request->kode_spesialis,
             'kode_bpjs' => $request->kode_bpjs,
             'alamat' => $request->alamat,

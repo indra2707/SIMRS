@@ -96,6 +96,7 @@ class PenjaminController extends Controller
      {
          $query = DB::table('coas')
              ->where('status', '1')
+             ->where('kategori', 'Penjamin')
              ->get();
 
          $data = [];

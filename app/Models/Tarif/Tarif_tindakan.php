@@ -12,19 +12,16 @@ class Tarif_tindakan extends Model
     protected $table = 'tarif_tindakans';
 
     protected $fillable = [
-        'id',
         'kode_tarif',
-        'no_sk',
         'tindakan',
-        'kelompok_tindakan',
-        'tarif_rs',
-        'group_tindakan',
-        'tipe',
-        'kategori_layanan',
-        'status_cito',
+        'kategori',
         'cito',
         'status',
-        'flat',
-        'status_operasi',
+        'coa_pendapatan_rj',
+        'coa_pendapatan_ri',
+        'coa_reduksi_rj',
+        'coa_reduksi_ri',
+        'coa_mcu_onsite',
+        'coa_mcu_insite',
     ];
 }

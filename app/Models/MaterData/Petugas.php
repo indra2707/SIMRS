@@ -17,7 +17,6 @@ class Petugas extends Model
         'nik',
         'jenis_kelamin',
         'no_hp',
-        'username',
         'kode_spesialis',
         'kode_bpjs',
         'alamat',

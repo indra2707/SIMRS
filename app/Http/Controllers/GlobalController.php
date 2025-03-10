@@ -8,38 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class GlobalController extends Controller
 {
-    // ----------------------------------------------------------------
-    // Menu Tarif Tindakkan Select2
-    public function tarifTindakan()
-    {
-        return response()->json([
-            'success' => true,
-            'data' => [
-                [
-                    'id' => 'Tarif Tindakan',
-                    'text' => 'Tarif Tindakan',
-                ],
-                [
-                    'id' => 2,
-                    'text' => 'Tarif Obat',
-                ],
-                [
-                    'id' => 3,
-                    'text' => 'Tarif Laboratorium',
-                ],
-                [
-                    'id' => 4,
-                    'text' => 'Tarif Radiologi',
-                ],
-                [
-                    'id' => 5,
-                    'text' => 'Tarif Operasi',
-                ],
-            ],
-            'message' => 'Data Berhasil Ditambahkan.',
-        ], status: 200);
-    }
-    // ----------------------------------------------------------------
     // Generate Nomor Kode Tarif Tindakkan
     public function generateKodeTarifTindakan($id)
     {
@@ -58,7 +26,7 @@ class GlobalController extends Controller
             ]);
         }
     }
-    // ----------------------------------------------------------------
+
     // Update Status
     public function updateStatus(Request $request, $id)
     {
