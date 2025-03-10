@@ -25,26 +25,26 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                                    <button class="btn btn-primary add-btn">
-                                        <span class="fa fa-plus"></span>
+                        <button class="btn btn-primary add-btn">
+                            <span class="fa fa-plus"></span>
                             <span> Tambah Traif</span>
-                                    </button>
+                        </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                            <table id="table_tindakan_tarif" class="table table-hover" data-buttons-class="primary"
-                                data-toggle="table">
-                                <thead class="text-bold text-white text-uppercase text-center">
-                                    <tr>
+                                <table id="table_tindakan_tarif" class="table table-hover" data-buttons-class="primary"
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
+                                        <tr>
                                             <th class="f-light">Kode Tindakan</th>
                                             <th class="f-light">Nama Tindakan</th>
-                                        <th class="f-light">Kategori</th>
+                                            <th class="f-light">Kategori</th>
                                             <th class="f-light">Cito (%)</th>
                                             <th class="f-light">Status</th>
                                             <th>#</th>
-                                    </tr>
-                                </thead>
-                            </table>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                         <div class="row">
                             <div class="mb-2 row">
                                 <div class="col-sm-10">
-                            <input type="hidden" name="id">
+                                    <input type="hidden" name="id">
                                 </div>
                             </div>
 
@@ -78,7 +78,7 @@
                                 <div class="col-sm-10">
                                     <input class="form-control form-control-sm" name="kode_tarif" type="text">
                                 </div>
-                                </div>
+                            </div>
 
                             {{-- Nama --}}
                             <div class="mb-2 row">
@@ -87,7 +87,7 @@
                                     <input class="form-control form-control-sm" name="tindakan" type="text"
                                         placeholder="Nama Tindakan..." required>
                                 </div>
-                                </div>
+                            </div>
                             {{-- Kategori --}}
                             <div class="mb-2 row">
                                 <label class="col-sm-2 col-form-label" for="kategori">Kategori</label>
@@ -121,13 +121,13 @@
                             {{-- Satus --}}
                             <div class="media mb-2">
                                 <label class="col-sm-2 col-form-label m-r-10">Status</label>
-                                    <div class="media-body switch-sm icon-state">
-                                        <label class="switch">
+                                <div class="media-body switch-sm icon-state">
+                                    <label class="switch">
                                         <input class="form-control" name="status" type="checkbox" checked>
-                                            <span class="switch-state"></span>
-                                        </label>
-                                    </div>
+                                        <span class="switch-state"></span>
+                                    </label>
                                 </div>
+                            </div>
 
                             {{-- COA --}}
                             <div class="kanban-item">
@@ -161,8 +161,8 @@
                                                         data-url="{{ route('master-data.coa.select1') }}"
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
 
                                         <div class="col-md-4">
                                             {{-- COA REDUKSI RJ --}}
@@ -209,10 +209,10 @@
                                                         data-url="{{ route('master-data.coa.select5') }}"
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
-                                                </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
+                                </a>
                             </div>
 
                         </div>
