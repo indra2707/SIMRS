@@ -80,7 +80,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/poli', [PoliController::class, 'index'])->name('master-data.poli');
         Route::get('/poli/view', [PoliController::class, 'views'])->name('master-data.poli.view');
         Route::post('/poli/store', [PoliController::class, 'store'])->name('master-data.poli.create');
-        Route::post('/poli/update-status/{id}', [PoliController::class, 'updateStatus'])->name('master-data.poli.update-status');
         Route::put('/poli/update/{id}', [PoliController::class, 'update'])->name('master-data.poli.update');
         Route::delete('/poli/delete/{id}', [PoliController::class, 'destroy'])->name('master-data.poli.delete');
         //MAPPING TINDAKAN POLI

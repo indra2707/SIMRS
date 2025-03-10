@@ -41564,22 +41564,23 @@ body.dark-only .page-wrapper.material-icon .page-header .header-wrapper .nav-rig
 /*more lang*/
 .more_actions {
     transform: translateY(-20px);
-    opacity: 0;
+    opacity: 1;
     cursor: pointer;
     display: none;
     transition: all 0.3s cubic-bezier(0.25, 1.15, 0.35, 1.15);
 }
 
-.translate_wrapper.active .more_actions {
+.actions_wrapper.active .more_actions {
     display: block;
-    position: absolute;
+    /* position: absolute; */
     background-color: #fff;
+    transform: translate(-10px, 36px);
     top: 47px;
-    right: 0;
+    right: 14px;
     box-shadow: 0 0 20px rgba(89, 102, 122, 0.1);
 }
 
-.translate_wrapper.active .more_actions:before {
+.actions_wrapper.active .more_actions:before {
     width: 0;
     height: 0;
     border-left: 7px solid transparent;
@@ -41592,7 +41593,7 @@ body.dark-only .page-wrapper.material-icon .page-header .header-wrapper .nav-rig
     z-index: 2;
 }
 
-.translate_wrapper.active .more_actions:after {
+.actions_wrapper.active .more_actions:after {
     width: 0;
     height: 0;
     border-left: 7px solid transparent;
@@ -41624,27 +41625,272 @@ body.dark-only .page-wrapper.material-icon .page-header .header-wrapper .nav-rig
     color: #fff;
 }
 
-.translate_wrapper.active .more_actions .action_icon {
+.actions_wrapper.active .more_actions .action_icon {
     border-bottom: 1px solid #eaeaea;
 }
 
-body.dark-only .translate_wrapper.active .more_actions:before {
+body.dark-only .actions_wrapper.active .more_actions:before {
     border-bottom: 7px solid #262932;
 }
 
-body.dark-only .translate_wrapper.active .more_actions .action_icon {
+body.dark-only .actions_wrapper.active .more_actions .action_icon {
     border-bottom: 1px solid #1d1e26;
 }
 
-body.dark-only .page-wrapper .page-header .translate_wrapper.active .more_actions {
+body.dark-only .page-wrapper .page-header .actions_wrapper.active .more_actions {
     background-color: #1d1e26;
 }
 
-body.dark-only .page-wrapper .page-header .translate_wrapper.active .action_icon {
+body.dark-only .page-wrapper .page-header .actions_wrapper.active .action_icon {
     background-color: #262932;
 }
 
-html[dir=rtl] .translate_wrapper.active .more_actions.active {
+html[dir=rtl] .actions_wrapper.active .more_actions.active {
     left: unset;
     right: 12px;
+}
+
+
+
+
+
+
+body.dark-only .user-profile .hovercard .user-image .avatar img {
+    border-color: #262932;
+}
+
+.common-align>div img {
+    width: calc(80px + .03125*(100vw - 320px));
+    height: calc(80px + .03125*(100vw - 320px));
+    max-width: calc(80px + 75*(100vw - 320px) / 1600);
+    max-height: calc(80px + 75*(100vw - 320px) / 1600);
+    border-radius: 4px;
+    border: calc(5px + .00125*(100vw - 320px)) solid #fff;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+/* .user-profile .hovercard .user-image .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 155px;
+    max-height: 155px;
+    border-radius: 50%;
+    border: 7px solid #fff;
+} */
+
+.common-align>div input {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(32px + .005*(100vw - 320px));
+    opacity: 0;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.common-align>div .icon-wrapper#cancelButton {
+    top: -16px;
+    left: calc(73% + 7*(100vw - 320px) / 1600);
+    transform: scale(.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .3sease;
+    border-radius: 50%;
+    width: calc(32px + .005*(100vw - 320px));
+    background-color: var(--white);
+}
+
+.user-profile .common-user-image .user-image .avatar .common-align>div .icon-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(32px + .005*(100vw - 320px));
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    background-color: #0000003d;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: calc(12px + 5*(100vw - 320px) / 1600);
+    box-shadow: 0 0 6px 3px #4466f21a;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+}
+
+body.dark-only .user-profile .hovercard .user-image .icon-wrapper {
+    background-color: #262932;
+}
+
+.user-profile .hovercard .user-image .icon-wrapper {
+    position: absolute;
+    bottom: -18px;
+    left: 94px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(32px + .005*(100vw - 320px));
+    width: calc(32px + .005*(100vw - 320px));
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: calc(12px + 5*(100vw - 320px) / 1600);
+    box-shadow: 0 0 6px 3px #4466f21a;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+    font-family: 'themify';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body .common-align>div .icon-wrapper#cancelButton i {
+    color: #fff9;
+}
+
+
+.common-align>div .icon-wrapper#cancelButton i {
+    color: #242934;
+    font-size: calc(14px + 3*(100vw - 320px) / 1600);
+}
+
+.common-align>div .icon-wrapper i {
+    color: #fff;
+}
+
+.icofont {
+    color: #fff;
+    font-family: "IcoFont" !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.dark-only .page-wrapper .page-body-wrapper .page-body .common-align>div .icon-wrapper#cancelButton i {
+    color: #fff9;
+}
+
+.common-align>div .icon-wrapper#cancelButton i {
+    color: #242934;
+    font-size: calc(14px + 3*(100vw - 320px) / 1600);
+}
+
+.user-profile .common-user-image .user-image .avatar .common-align>div .icon-wrapper i {
+    color: #fff;
+}
+
+.user-profile .common-user-image .user-image .avatar .common-align>div .icon-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(32px + .005*(100vw - 320px));
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    background-color: #0000003d;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: calc(12px + 5*(100vw - 320px) / 1600);
+    box-shadow: 0 0 6px 3px #4466f21a;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+}
+
+.user-profile .common-user-image .user-image .avatar .common-align>div .icon-wrapper i {
+    color: #fff;
+}
+
+.user-profile .common-user-image .user-image .avatar .common-align>div .icon-wrapper i {
+    color: #fff;
+}
+
+
+/* Avatar File Input Wrapper */
+div#AvatarFileUpload {
+    position: relative;
+    /* width: 150px;
+    height: 150px; */
+    width: 280px;
+    height: 300px;
+    background: #f9f9f9;
+    border: 3px solid #bbb;
+    border-radius: 3% 3%;
+    margin: auto;
+}
+
+/* Image Preview Wrapper and Container */
+div#AvatarFileUpload>.selected-image-holder {
+    width: 100%;
+    height: 100%;
+    border-radius: 3% 3%;
+
+}
+
+div#AvatarFileUpload>.selected-image-holder {
+    width: 100%;
+    overflow: hidden;
+}
+
+div#AvatarFileUpload>.selected-image-holder>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-fit: center center;
+}
+
+
+div#AvatarFileUpload>.avatar-selector input[type="file"] {
+    display: none;
+}
+
+div#AvatarFileUpload>.avatar-selector>.avatar-selector-btn {
+    /* width: 100%;
+    height: 100%; */
+    /* background: #f5f5ff; */
+    padding: 10px 10px;
+    /* border-radius: 50% 50%; */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(32px + .005*(100vw - 320px));
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    background-color: #0000003d;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: calc(12px + 5*(100vw - 320px) / 1600);
+    box-shadow: 0 0 6px 3px #4466f21a;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+
+}
+
+
+.kbw-signature {
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }

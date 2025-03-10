@@ -46,11 +46,6 @@ class Poli_tindakanController extends Controller
     // Store
     public function store(Request $request)
     {
-        $request->validate([
-            'tindakan' => 'required',
-            // 'kode_poli' => 'required',
-            'status' => 'required',
-        ]);
         $query = Poli_tindakans::create([
             'kode_poli' => $request->kode,
             'kode_tindakan' => $request->tindakan,

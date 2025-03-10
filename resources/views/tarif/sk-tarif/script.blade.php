@@ -61,7 +61,9 @@
                         if (xhr.status == 400) {
                             Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            Alert('info', "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!");
+                            Alert('info',
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                                );
                         }
                         form.classList.remove('was-validated');
                     }
@@ -117,14 +119,13 @@
             // },
             url: "{{ route('tarif.sk-tarif.view') }}",
             columns: [
-                [
-                        {
+                [{
                         title: 'No.',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         width: '5%',
-                        formatter: function (value, row, index) {
+                        formatter: function(value, row, index) {
                             return index + 1
                         }
                     },
@@ -153,7 +154,7 @@
                         events: window.operateChange,
                         formatter: function(value, row, index) {
                             return [
-                               '<div class="media-body text-center switch-sm icon-state">',
+                                '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
                                 '<input type="checkbox" class="update-status" ' + (row.status ===
                                     '1' ? 'checked' : '') + '>',
@@ -268,7 +269,9 @@
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
-                        Alert('info', "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!");
+                        Alert('info',
+                            "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
                     }
                 }
             });

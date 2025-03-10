@@ -1,5 +1,6 @@
 <!-- latest jquery-->
 <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <!-- Bootstrap js-->
 <script src="{{ asset('assets/js/bootstrap/bootstrap.bundle.min.js') }}"></script>
 <!-- Bootstrap Table js-->
@@ -33,9 +34,12 @@
 <script src="{{ asset(path: 'assets/js/cleave/cleave-phone.id.js') }}"></script>
 <script src="{{ asset(path: 'assets/js/cleave/custom-cleave.js') }}"></script>
 
+{{-- Signature Pad --}}
+<script type="text/javascript" src="{{ asset(path: 'assets/vendor/jquery.signature.package-1.2.1/js/jquery.signature.js') }}"></script>
+
+
+
 {{-- Dropzone --}}
-
-
 
 {{-- Select2 --}}
 {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script> --}}

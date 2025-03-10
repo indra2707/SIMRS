@@ -1,15 +1,88 @@
 <script type="text/javascript">
     // Variable Name
-      // With Placeholder
-      $(".select2").select2({
+    // With Placeholder
+    $(".select2").select2({
         placeholder: "---- Pilih Salah Satu----",
-        theme:"bootstrap-5",
-        dropdownParent:$("#modal-petugas"),
-        allowClear:true
+        theme: "bootstrap-5",
+        dropdownParent: $("#modal-petugas"),
+        allowClear: true
 
     });
 
+    var sig = $('#signature-pad').signature({syncField: '#signature64', syncFormat: 'PNG'});
+    $('#clear').click(function(e) {
+        e.preventDefault();
+        sig.signature('clear');
+        $("#signature64").val('');
+    });
+
+
+
+
+    // $('#removeSignature').click(function() {
+    //     var destroy = $(this).text() === 'Remove';
+    //     $(this).text(destroy ? 'Re-attach' : 'Remove');
+    //     $('#signature-pad').signature(destroy ? 'destroy' : {});
+    // });
+
+    // $('#disableSignature').click(function() {
+    //     var enable = $(this).text() === 'Enable';
+    //     $(this).text(enable ? 'Disable' : 'Enable');
+    //     $('#signature-pad').signature(enable ? 'enable' : 'disable');
+    // });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     var $table = $('#table_petugas');
+    var reader = new FileReader();
+
+    // Main Wrapper Selector
+    const avatarFileUpload = document.getElementById('AvatarFileUpload');
+    // Preview Wrapper Selector
+    const imageViewer = avatarFileUpload.querySelector('.selected-image-holder>img');
+    // Image Selector button Selector
+    const imageSelector = avatarFileUpload.querySelector('.avatar-selector-btn');
+    // Image Input File Selector
+    const imageInput = avatarFileUpload.querySelector('input[name="profil"]');
+
+    /** Trigger Browsing Image to Upload */
+    imageSelector.addEventListener('click', e => {
+        e.preventDefault()
+        // Trigger Image input click
+        imageInput.click()
+    });
+
+    /** IF Selected Image has change */
+    imageInput.addEventListener('change', e => {
+        // Open File eader
+        reader.onload = function() {
+
+            // Preview Image
+            imageViewer.src = reader.result;
+        };
+        // Read Selected Image as DataURL
+        console.warn(e.target.files);
+
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
 
     // Open Modal
     $(document).on('click', '.add-petugas', function() {
@@ -35,16 +108,17 @@
         $('select[name="status_dokter"]').val('').trigger('change');
         $('input[name="status"]').prop('checked', true);
 
-        $("#hp").inputmask("mask", {
-      "mask": ["+62 999-9999-99999", "+62 999-9999-999999"]
-    }, {
-      numericInput: true
-    }); //specifying
-    // $("#nik").inputmask("mask", {
-    //   "mask": "9999999999999999"
-    // }, {
-    //   numericInput: true
-    // }); //specifying
+        //     $("#hp").inputmask("mask", {"mask": ["+62 999-9999-99999", "+62 999-9999-999999"]}, {
+        //   numericInput: true
+        // }); //specifying
+        // $("#nik").inputmask("mask", {
+        //   "mask": "9999999999999999"
+        // }, {
+        //   numericInput: true
+        // }); //specifying
+
+        imageInput.value = '';
+        imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
 
     });
 
@@ -74,7 +148,7 @@
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                            ).attr('disabled', 'disabled');
+                        ).attr('disabled', 'disabled');
                     },
                     complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
@@ -195,8 +269,7 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.petugas.view') }}",
             columns: [
-                [
-                    {
+                [{
                         width: '300%',
                         field: 'kategori',
                         sortable: true,
@@ -468,5 +541,4 @@
             });
         }
     }
-
 </script>

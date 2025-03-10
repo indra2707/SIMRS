@@ -6,7 +6,7 @@
 @endsection
 
 @section('style')
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/photoswipe.css') }}">
 @endsection
 
 @section('breadcrumb-title')
@@ -182,9 +182,17 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Tanda Tangan</label>
+                                    <div class="col-sm-10 text-center row">
+                                        <div id="signature-pad"></div>
+                                        <textarea id="signature64" name="signed" style="display: none"></textarea>
+                                        <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
+                                    </div>
+                                    {{-- <div class="col-sm-2 text-center">
+                                    </div> --}}
+                                </div>
                             </div>
-
-
                             <div class="col-md-6">
                                 {{-- Spesialis --}}
                                 <div class="mb-2 row">
@@ -261,8 +269,34 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="foto" type="file"
-                                            placeholder="Upload Foto Dokter...">
+                                        <div id="AvatarFileUpload">
+                                            <!-- Image Preview Wrapper -->
+                                            <div class="selected-image-holder">
+                                                <img src="" alt="AvatarInput" id="previews">
+                                            </div>
+                                            <!-- Image Preview Wrapper -->
+                                            <!-- Browse Image to Upload Wrapper -->
+                                            <div class="avatar-selector">
+                                                <input type="file" accept="images/jpg, images/png" id="profil"
+                                                    name="profil">
+                                                <a href="#" class="avatar-selector-btn">
+                                                    <i class="icofont icofont-pencil-alt-5"></i>
+                                                </a>
+                                            </div>
+                                            <!-- Browse Image to Upload Wrapper -->
+                                        </div>
+                                        {{-- <div class="common-align">
+                                            <div>
+                                                <img id="output" src="{{ asset('assets/images/user/1.jpg') }}"
+                                                    alt="Profile Image"><input type="file" accept="image/*"
+                                                    onchange="#">
+                                                <div class="icon-wrapper" id="cancelButton"><i
+                                                        class="icofont icofont-error"></i></div>
+                                                <div class="icon-wrapper">
+                                                    <i class="icofont icofont-pencil-alt-5"></i>
+                                                </div>
+                                            </div>
+                                        </div> --}}
                                     </div>
                                 </div>
 
@@ -285,5 +319,8 @@
 
 
 @section('script')
-    @include('master-data.petugas.script')
+    @include('master-data.petugas.script');
+    <script src="{{ asset('assets/js/photoswipe/photoswipe.min.js') }}"></script>
+    <script src="{{ asset('assets/js/photoswipe/photoswipe-ui-default.min.js') }}"></script>
+    <script src="{{ asset('assets/js/photoswipe/photoswipe.js') }}"></script>
 @endsection

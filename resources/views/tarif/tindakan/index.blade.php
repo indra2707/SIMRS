@@ -48,6 +48,55 @@
                             </div>
                         </div>
                     </div>
+                    {{-- <ul class="nav-menus">
+                        <li class="language-nav">
+                            <div class="actions_wrapper">
+                                <div class="current_action">
+                                    <div class="action_icon">
+                                        <i class="icon-more-alt"></i>
+                                    </div>
+                                </div>
+                                <div class="more_actions">
+                                    <div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span
+                                            class="action-txt">Deutsch</span></div>
+                                    <div class="action_icon" data-value="es"><i class="flag-icon flag-icon-es"></i><span
+                                            class="action-txt">Español</span></div>
+                                    <div class="action_icon" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span
+                                            class="action-txt">Français</span></div>
+                                    <div class="action_icon" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span
+                                            class="action-txt">Português<span> (BR)</span></span></div>
+                                    <div class="action_icon" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span
+                                            class="action-txt">简体中文</span></div>
+                                    <div class="action_icon" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span
+                                            class="action-txt">لعربية <span> (ae)</span></span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul> --}}
+                    <div class="card-body pt-0 campaign-table">
+                        <div class="recent-table table-responsive currency-table">
+                            <table id="table_tindakan_tarif" class="table table-hover" data-buttons-class="primary"
+                                data-toggle="table">
+                                <thead class="text-bold text-white text-uppercase text-center">
+                                    <tr>
+                                        <th class="f-light">No.</th>
+                                        <th class="f-light">Kode Tarif</th>
+                                        <th class="f-light">Tindakan</th>
+                                        <th class="f-light">Tarif RS</th>
+                                        <th class="f-light">Kelompok</th>
+                                        <th class="f-light">Tipe</th>
+                                        <th class="f-light">Kategori</th>
+                                        <th class="f-light">Group</th>
+                                        <th class="f-light">Cito</th>
+                                        <th class="f-light">Status Operasi</th>
+                                        <th class="f-light">Status Tindakan</th>
+                                        <th class="f-light">Flat</th>
+                                        <th class="f-light">#</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
