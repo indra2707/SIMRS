@@ -111,10 +111,11 @@ class PenjaminController extends Controller
 
 
     // Store Tarif
-    public function select_tarif()
+    public function select_tarif(Request $reques)
     {
         $query = DB::table('sk_tarifs')
             ->where('status', '1')
+            ->where('no_sk', 'like', "%$reques->term%")
             ->get();
 
         $data = [];

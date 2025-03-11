@@ -101,7 +101,7 @@
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-poli').modal('hide');
-                            $table.bootstrapTable('refresh');
+                            $tablePoli.bootstrapTable('refresh');
                         } else {
                             Alert('warning', res.message);
                             $('#modal-poli').modal('hide');
@@ -553,7 +553,7 @@
                             }
                         }
                     }).done(function() {
-                        $table.bootstrapTable('refresh');
+                        $tablePoli.bootstrapTable('refresh');
                     });
 
                 }

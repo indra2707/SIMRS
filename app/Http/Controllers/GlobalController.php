@@ -11,7 +11,7 @@ class GlobalController extends Controller
     // Generate Nomor Kode Tarif Tindakkan
     public function generateKodeTarifTindakan($id)
     {
-        $query = Tarif_tindakan::select(columns: Tarif_tindakan::raw("MAX(RIGHT(kode_tarif, 7)) as kode"))->where('id', $id);
+        $query = Tarif_tindakan::select(columns: Tarif_tindakan::raw("MAX(RIGHT(kode_tarif, 7)) as kode"))->where('kode_tarif', $id);
         if ($query->count() > 0) {
             $query = $query->first();
             $kode = "TND" . sprintf("%07s", $query->kode + 1);
