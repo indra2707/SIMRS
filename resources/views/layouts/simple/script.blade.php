@@ -68,8 +68,8 @@
     <script>
         new WOW().init();
     </script>
-@endif
-@yield('script')
+@endif'
 {{-- Custom JS --}}
+<script src="{{ asset('assets/js/custom-script.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
-
+@yield('script')
