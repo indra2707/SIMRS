@@ -32,7 +32,7 @@ function InitSelect2(element, options) {
             element.empty();
             element.select2({
                 allowClear: true,
-                dropdownParent: $(".modal-parent").length > 0 ? $(".modal-parent") : null,
+                dropdownParent: options.dropdownParent,
                 // data: data.data,
                 ajax: {
                     type: "GET",
