@@ -60,22 +60,48 @@ class PetugasController extends Controller
     // Store
     public function store(Request $request)
     {
+        //    make dir images
+        if (!is_dir('uploads/images/profil/')) {
+            mkdir('uploads/images/profil/', 0777, true);
+        }
+        $filename = NULL;
+        $path = NULL;
+        if ($request->has('profil')) {
+            $file = $request->file('profil');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'Profile' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $path = 'uploads/images/profil/';
+            $file->move($path, $filename);
+        }
+
+        //    make dir images
+        if (!is_dir('uploads/images/signatur/')) {
+            mkdir('uploads/images/signatur/', 0777, true);
+        }
+        
+        $image_parts = explode(";base64,", $request->signed);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];      
+        $image_base64 = base64_decode($image_parts[1]);
+        $file_name = 'uploads/images/signatur/' . 'Signature_' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.'.$image_type;
+        file_put_contents($file_name, $image_base64);
+
         $query = Petugas::create([
             'id' => $request->id,
             'kategori' => $request->kategori,
             'kode' => $request->kode,
             'nik' => $request->nik,
             'nama' => $request->nama,
-            'jenis_kelamin' => $request->jenis_kelamin,
+            'jenis_kelamin' => $request->jenis_kelamin == 'on' ? 'L' : 'P',
             'no_hp' => $request->no_hp,
-            'username' => $request->username,
             'kode_spesialis' => $request->kode_spesialis,
             'kode_bpjs' => $request->kode_bpjs,
             'alamat' => $request->alamat,
             'kode_tindakan1' => $request->kode_tindakan1,
             'kode_tindakan2' => $request->kode_tindakan2,
             'tanggal' => $request->tanggal,
-            'foto' => $request->foto,
+            'foto' => $filename,
+            'ttd' =>str_replace('uploads/images/signatur/','',$file_name),
             'status_dokter' => $request->status_dokter,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
@@ -85,7 +111,7 @@ class PetugasController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -106,7 +132,7 @@ class PetugasController extends Controller
                 'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
                 'data' => [],
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal mengubah status.',
@@ -135,7 +161,7 @@ class PetugasController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -154,7 +180,7 @@ class PetugasController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],

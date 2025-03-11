@@ -33,14 +33,15 @@
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
                                 <table id="table_petugas" class="table table-hover" data-buttons-class="primary"
-                                data-toggle="table">
-                                <thead class="text-bold text-white text-uppercase text-center">
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
+                                            <th class="f-light">Profile</th>
                                             <th class="f-light">Kategori</th>
                                             <th class="f-light">Kode BPJS</th>
                                             <th class="f-light">Nama Petugas</th>
                                             <th class="f-light">Status</th>
-                                            <th >Action</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -70,27 +71,13 @@
                                 <div class="mb-2 row">
                                     <input type="hidden" name="id">
                                 </div>
-
                                 {{-- Kategori --}}
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control select2" name="kategori" required>
+                                        <select class="form-select form-control" name="kategori"
+                                            data-placeholder="---- Pilih Kategori ----" required>
                                             <option></option>
-                                            <option value="Dokter">Dokter</option>
-                                            <option value="Dokter Spesialis">Dokter Spesialis</option>
-                                            <option value="Dokter Sub Spesialis">Dokter Sub Spesialis</option>
-                                            <option value="Perawat">Perawat</option>
-                                            <option value="Bidan">Bidan</option>
-                                            <option value="Apoteker">Apoteker</option>
-                                            <option value="Ahligizi">Ahligizi</option>
-                                            <option value="Radiographer">Radiographer</option>
-                                            <option value="Rekam Medis">Rekam Medis</option>
-                                            <option value="Fisioterapis">Fisioterapis</option>
-                                            <option value="Analis">Analis</option>
-                                            <option value="Keuangan">Keuangan</option>
-                                            <option value="Kasir">Kasir</option>
-                                            <option value="ICT">ICT</option>
                                         </select>
                                     </div>
                                 </div>
@@ -99,7 +86,7 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="Kode">Kode</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="kode" type="text"
+                                        <input class="form-control form-control-sm rupiah-number" name="kode" type="text"
                                             placeholder="Kode Petugas..." required>
                                     </div>
                                 </div>
@@ -132,14 +119,14 @@
                                     <div class="col-md-2">
                                         <div class="form-check">
                                             <input class="form-check-input" id="validationFormCheck2" type="radio"
-                                                name="jenis_kelamin" required="">
+                                                name="jenis_kelamin" required="" value="L">
                                             <label class="form-check-label" for="validationFormCheck2">Laki-Laki</label>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <div class="form-check">
                                             <input class="form-check-input" id="validationFormCheck3" type="radio"
-                                                name="jenis_kelamin" required="">
+                                                name="jenis_kelamin" required="" value="P">
                                             <label class="form-check-label" for="validationFormCheck3">Perempuan</label>
                                         </div>
                                     </div>
@@ -151,15 +138,6 @@
                                     <div class="col-sm-10">
                                         <input class="form-control form-control-sm phone-number" name="hp"
                                             type="text" placeholder="No HP...">
-                                    </div>
-                                </div>
-
-                                {{-- Username --}}
-                                <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="user">Username</label>
-                                    <div class="col-sm-10">
-                                        <input class="form-control form-control-sm" name="user" type="text"
-                                            placeholder="Username..." required>
                                     </div>
                                 </div>
 
@@ -182,15 +160,39 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="mb-2 row">
+                                {{-- <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Tanda Tangan</label>
-                                    <div class="col-sm-10 text-center row">
+                                    <div class="file-box col-sm-10 text-center">
                                         <div id="signature-pad"></div>
-                                        <textarea id="signature64" name="signed" style="display: none"></textarea>
-                                        <button id="clear" class="btn btn-danger btn-sm">Clear Signature</button>
-                                    </div>
-                                    {{-- <div class="col-sm-2 text-center">
+                                        <textarea id="signature64" class="form-control" name="signed" style="display: none"></textarea>
+                                        <div class="file-bottom mt-2">
+                                            <button id="clear" class="btn btn-danger btn-sm">Clear
+                                                Signature</button>
+                                            </div>
+                                        </div>
                                     </div> --}}
+
+                                {{-- Upload Fot --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
+                                    <div class="col-sm-10">
+                                        <div id="AvatarFileUpload">
+                                            <!-- Image Preview Wrapper -->
+                                            <div class="selected-image-holder">
+                                                <img src="" alt="AvatarInput" id="previews">
+                                            </div>
+                                            <!-- Image Preview Wrapper -->
+                                            <!-- Browse Image to Upload Wrapper -->
+                                            <div class="avatar-selector">
+                                                <input type="file" accept="images/jpg, images/png" id="profil"
+                                                    name="profil">
+                                                <a href="#" class="avatar-selector-btn">
+                                                    <i class="icofont icofont-pencil-alt-5"></i>
+                                                </a>
+                                            </div>
+                                            <!-- Browse Image to Upload Wrapper -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -198,12 +200,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="spesialis">Spesialis</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control js-select-2" id="spesialis"
-                                            name=spesialis"
-                                            data-url="{{ route('master-data.spesialis.select_spesialis') }}"
-                                            data-placeholder="---- Pilih Salah Satu ----">
-                                            {{-- <option></option> --}}
-                                        </select>
+                                        <select class="form-select form-control" name="spesialis"
+                                            data-placeholder="---- Pilih Spesialis ----"></select>
                                     </div>
                                 </div>
 
@@ -220,8 +218,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="alamat">Alamat</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control form-control-sm" name="alamat" id="" cols="30" rows="3"
-                                            placeholder="Alamat Lengkap..."></textarea>
+                                        <textarea class="form-control form-control-sm" style="resize: none" name="alamat" id="" cols="30"
+                                            rows="3" placeholder="Alamat Lengkap..."></textarea>
                                     </div>
                                 </div>
 
@@ -229,11 +227,9 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="status_dokter">Status</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control select2" name="status_dokter">
+                                        <select class="form-select form-control select2" name="status_dokter"
+                                            data-placeholder="---- Pilih Status ----">
                                             <option></option>
-                                            <option value="Mitra">Mitra</option>
-                                            <option value="PWT/PWTT">PWT/PWTT</option>
-                                            <option value="Sub Spesialis">Sub Spesialis/Konsulen/Profesor</option>
                                         </select>
                                     </div>
                                 </div>
@@ -264,42 +260,6 @@
                                             type="text" placeholder="Tanggal Berakhir SIP..." data-language="en">
                                     </div>
                                 </div>
-
-                                {{-- Upload Fot --}}
-                                <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
-                                    <div class="col-sm-10">
-                                        <div id="AvatarFileUpload">
-                                            <!-- Image Preview Wrapper -->
-                                            <div class="selected-image-holder">
-                                                <img src="" alt="AvatarInput" id="previews">
-                                            </div>
-                                            <!-- Image Preview Wrapper -->
-                                            <!-- Browse Image to Upload Wrapper -->
-                                            <div class="avatar-selector">
-                                                <input type="file" accept="images/jpg, images/png" id="profil"
-                                                    name="profil">
-                                                <a href="#" class="avatar-selector-btn">
-                                                    <i class="icofont icofont-pencil-alt-5"></i>
-                                                </a>
-                                            </div>
-                                            <!-- Browse Image to Upload Wrapper -->
-                                        </div>
-                                        {{-- <div class="common-align">
-                                            <div>
-                                                <img id="output" src="{{ asset('assets/images/user/1.jpg') }}"
-                                                    alt="Profile Image"><input type="file" accept="image/*"
-                                                    onchange="#">
-                                                <div class="icon-wrapper" id="cancelButton"><i
-                                                        class="icofont icofont-error"></i></div>
-                                                <div class="icon-wrapper">
-                                                    <i class="icofont icofont-pencil-alt-5"></i>
-                                                </div>
-                                            </div>
-                                        </div> --}}
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
 
