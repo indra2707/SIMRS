@@ -208,8 +208,16 @@
                         sortable: true,
                     },
                     {
-                        // width: '450%',
+                        width: '800%',
+                        // title: 'Kode Dokter',
                         field: 'kode_dokter',
+                        sortable: true,
+                        visible: false,
+
+                    },
+                    {
+                        // width: '450%',
+                        field: 'nama_dokter',
                         sortable: true,
 
                     },
@@ -326,7 +334,7 @@
             $('input[name="id"]').val(row.id);
             $('select[name="kode_poli"]').val(row.kode_poli).trigger('change');
             $('select[name="hari"]').val(row.hari).trigger('change');
-            $('input[name="kode_dokter"]').val(row.kode_dokter);
+            $('select[name="kode_dokter"]').val(row.kode_dokter).trigger('change');
             $('input[name="mulai"]').val(row.mulai);
             $('input[name="akhir"]').val(row.akhir);
             $('input[name="estimasi"]').val(row.estimasi);

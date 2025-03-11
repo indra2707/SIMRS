@@ -5,6 +5,7 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use App\Models\MaterData\Coas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CoaController extends Controller
 {
@@ -36,6 +37,115 @@ class CoaController extends Controller
         }
         return response()->json($data, 200);
     }
+
+    // Store COA
+    public function select()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // Store COA
+    public function select1()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // Store COA
+    public function select2()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // Store COA
+    public function select3()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // Store COA
+    public function select4()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // Store COA
+    public function select5()
+    {
+        $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->kode .'-'. $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
     // Store
     public function store(Request $request)
     {

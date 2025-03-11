@@ -37,9 +37,10 @@
                                 <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">Poliklinik</th>
+                                            <th class="f-light">Kode Dokter</th>
                                             <th class="f-light">Nama Dokter</th>
                                             <th class="f-light">Hari</th>
-                                            <th class="f-light">Hari</th>
+                                            <th class="f-light">Jam</th>
                                             <th class="f-light">Kouta</th>
                                             <th class="f-light">Status</th>
                                             <th class="">Action</th>
@@ -98,11 +99,21 @@
                         </div>
 
                         {{-- Dokter --}}
-                        <div class="mb-2 row">
+                        {{-- <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="nama">Dokter</label>
                             <div class="col-sm-10">
                                 <input class="form-control form-control-sm" name="kode_dokter" type="text"
                                     placeholder="Dokter..." required>
+                            </div>
+                        </div> --}}
+
+                        {{-- Dokter --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode_poli">Dokter</label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control js-select-2" id="kode_dokter" name="kode_dokter"
+                                    data-url="{{ route('master-data.petugas.select') }}"
+                                    data-placeholder="---- Pilih Salah Satu ----" required></select>
                             </div>
                         </div>
 

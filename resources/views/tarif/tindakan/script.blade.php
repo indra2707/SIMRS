@@ -1,5 +1,13 @@
 <script type="text/javascript">
     // Variable Name
+    $(".select2").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        dropdownParent: $("#modal-tarif-tindakan"),
+        allowClear: true
+
+    });
+
     var $table = $('#table_tindakan_tarif');
 
     // Open Modal
@@ -7,26 +15,36 @@
         $('.form-tarif-tindakan').removeClass('was-validated');
         $('#modal-tarif-tindakan').modal('show');
         $('.modal-title').text('Form Tambah Tarif Tindakan');
-        var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
-        url = url.replace(':id', 1);
-        $.get(url,
-            function(data, textStatus, jqXHR) {
-                $('input[name="kode"]').val(data['data']).attr('readonly', true);
-            },
-            "JSON"
-        );
+        $('input[name="id"]').val('');
+        $('input[name="tindakan"]').val('');
+        $('input[name="cito"]').val('30');
+        $('select[name="coa_ri"]').val('').trigger('change');
+        $('select[name="coa_rj"]').val('').trigger('change');
+        $('select[name="reduksi_ri"]').val('').trigger('change');
+        $('select[name="reduksi_rj"]').val('').trigger('change');
+        $('select[name="onsite"]').val('').trigger('change');
+        $('select[name="insite"]').val('').trigger('change');
+        $('select[name="kategori"]').val('').trigger('change');
 
-
-
-
-        // $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        // $('input[name="id"]').val('');
-        // $('input[name="no_sk"]').val('');
-        // $('input[name="tgl_mulai"]').val('');
-        // $('input[name="tgl_akhir"]').val('');
-        // $('textarea[name="deskripsi"]').val('');
+        // var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
+        // url = url.replace(':id', 1);
+        // $.get(url,
+        //     function(data, textStatus, jqXHR) {
+        //         $('input[name="kode"]').val(data['data']).attr('readonly', true);
+        //     },
+        //     "JSON"
+        // );
     });
 
+    // Open Modal Harga Tindakan
+    $(document).on('click', '.add-btn-harga', function() {
+        $('#modal-harga-tindakan').modal('hide');
+        $('.form-harga-detail').removeClass('was-validated');
+        $('#modal-harga-detail').modal('show');
+        $('.modal-title').text('Form Tambah Harga Tindakan');
+        $('input[name="id"]').val('');
+        $('select[name="tarif"]').val('').trigger('change');
+    });
 
     // Save
     $(document).on('click', '.save-btn', function() {
@@ -46,7 +64,6 @@
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                console.warn($('.form-tarif-tindakan').serialize());
                 $.ajax({
                     type: type,
                     url: url,
@@ -63,21 +80,81 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            Alert('success', res.message);
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Success',
+                                message: res.message
+                            }, {
+                                type: 'success',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-tarif-tindakan').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
-                            Alert('warning', res.message);
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Warning',
+                                message: res.message
+                            }, {
+                                type: 'warning',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-tarif-tindakan').modal('hide');
                         }
-                        $('#modal-tarif-tindakan').modal('hide');
                         form.classList.remove('was-validated');
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
-                            Alert('error', xhr.responseJSON.message);
+                            var errors = xhr.responseJSON.errors;
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: error,
+                                message: xhr.responseJSON.message
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
                         } else if (xhr.status == 500) {
-                            Alert('info',
-                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                            );
+                            $.notify({
+                                icon: 'icon-info-alt',
+                                title: 'error',
+                                message: "Silahkan hubungi IT Rumah Sakit!"
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
                         }
                         form.classList.remove('was-validated');
                     }
@@ -86,7 +163,6 @@
             form.classList.add('was-validated');
         });
     });
-
 
     // Page Load Event
     $(function() {
@@ -117,17 +193,19 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('tarif.tindakan.view') }}",
             columns: [
-                [{
-                        title: 'No.',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        width: '5%',
-                        formatter: function(value, row, index) {
-                            return index + 1
-                        }
-                    },
+                [
+                    //     {
+                    //     title: 'No.',
+                    //     align: 'center',
+                    //     valign: 'middle',
+                    //     sortable: true,
+                    //     width: '5%',
+                    //     formatter: function (value, row, index) {
+                    //         return index + 1
+                    //     }
+                    // },
                     {
+                        width: '100%',
                         field: 'kode_tarif',
                         sortable: true,
                     },
@@ -136,56 +214,31 @@
                         sortable: true,
                     },
                     {
-                        field: 'tarif_rs',
+                        field: 'kategori',
                         sortable: true,
                     },
                     {
-                        field: 'kelompok_tindakan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'tipe',
-                        sortable: true,
-                    },
-                    {
-                        field: 'kategori_layanan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'group_tindakan',
-                        sortable: true,
-                    },
-                    {
+                        width: '100%',
                         field: 'cito',
-                        sortable: true,
-                    },
-                    {
-                        field: 'status_operasi',
                         sortable: true,
                     },
                     {
                         width: '5%',
                         // title: 'STATUS',
-                        field: 'status_tindakan',
+                        field: 'status',
                         sortable: true,
                         events: window.operateChange,
                         formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row
-                                    .status ===
-                                    '1' ?
-                                    'checked' : '') + '>',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
                                 '<span class="switch-state"></span>',
                                 '</label>',
                                 '</div>'
                             ].join("");
                         }
-                    },
-                    {
-                        field: 'flat',
-                        sortable: true,
                     },
                     {
                         width: '5%',
@@ -199,73 +252,59 @@
                         formatter: actionsFunction
                     }
                 ]
-            ]
+            ],
+            error: function(xhr, status, error) {
+                if (xhr.status == 400) {
+                    var errors = xhr.responseJSON.errors;
+                    $.notify({
+                        icon: 'fa fa-check',
+                        title: error,
+                        message: xhr.responseJSON.message
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
+                } else if (xhr.status == 500) {
+                    $.notify({
+                        icon: 'icon-info-alt',
+                        title: 'error',
+                        message: "Silahkan hubungi IT Rumah Sakit!"
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
+                }
+            },
+            responseHandler: function(data) {
+                return data;
+            }
         });
     }
 
     function actionsFunction(value, row, index) {
         return [
-            // '<ul class="nav-menus">',
-            //     '<li class="language-nav">',
-            //         '<div class="actions_wrapper">',
-            //             '<div class="current_action">',
-            //                 '<div class="action_icon" id="action_icon">',
-            //                     '<i class="icon-more-alt"></i>',    
-            //                 '</div>',
-            //             '</div>',
-            //             '<div class="more_actions">',
-            //                 '<div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="action-txt">Deutsch</span></div>',
-            //                 '<div class="action_icon" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="action-txt">Español</span></div>',
-            //                 '<div class="action_icon" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="action-txt">Français</span></div>',
-            //                 '<div class="action_icon" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="action-txt">Português<span> (BR)</span></span></div>',
-            //                 '<div class="action_icon" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="action-txt">简体中文</span></div>',
-            //                 '<div class="action_icon" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="action-txt">لعربية <span> (ae)</span></span></div>',
-            //         '<div class="translate_wrapper">',
-            //             '<div class="current_lang">',
-            //                 '<div class="lang"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">EN </span>',
-            //                 '</div>',
-            //             '</div>',
-            //             '<div class="more_lang">',
-            //                  '<div class="lang selected" data-value="en"><i class="flag-icon flag-icon-us"></i><span class="lang-txt">English<span> (US)</span></span></div>',
-            //                 '<div class="lang" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="lang-txt">Deutsch</span></div>',
-            //                 '<div class="lang" data-value="es"><i class="flag-icon flag-icon-es"></i><span class="lang-txt">Español</span></div>',
-            //                 '<div class="lang" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span class="lang-txt">Français</span></div>',
-            //                 '<div class="lang" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span class="lang-txt">Português<span> (BR)</span></span></div>',
-            //                 '<div class="lang" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span class="lang-txt">简体中文</span></div>',
-            //                 '<div class="lang" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span class="lang-txt">لعربية <span> (ae)</span></span></div>',
-            //             '</div>',
-            //         '</div>',
-            //     '</li>',
-            // '</ul>',
-
-
-
-
-
-
-            '<div class="current_action">',
-                '<button class="btn action_icon" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-                    '<i class="icon-more-alt"></i>',
-                '</button>',
-
-            // '<div class="more_actions" aria-labelledby="setings-menu">',
-
-            '<div class="dropdown-menu dropdown-menu-end more_actions" aria-labelledby="setings-menu" style="">',
-                                 '<div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span class="action-txt">Deutsch</span></div>',
-            // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            // '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
-            // '</div>',
-            // '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // // '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
-            // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            // '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
-            // '</div>',
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
+            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -273,19 +312,37 @@
         ].join("");
     }
 
+    // Handle events button actions
     window.operateEvents = {
+        'click .btn-info': function(e, value, row, index) {
+            $('#modal-harga-tindakan').modal('show');
+            $('.modal-title').text('Form Harga Tindakan');
+            $('input[name="id"]').val(row.id);
+            $('input[name="kode_tarif"]').val(row.kode_tarif);
+            $('input[name="tindakan"]').val(row.tindakan);
+            $('input[name="cito"]').val(row.cito);
+            $('input[name="status"]').prop('checked', row.status === '1');
+            $('select[name="kategori"]').val(row.kategori).trigger('change');
+        },
         'click .btn-edit': function(e, value, row, index) {
-            $('#modal-sk-tarif').modal('show');
-            $('.modal-title').text('Form Edit SK Tarif');
+            $('#modal-tarif-tindakan').modal('show');
+            $('.modal-title').text('Form Edit Tarif Tindakan');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
-            $('input[name="no_sk"]').val(row.no_sk);
-            $('input[name="tgl_mulai"]').val(row.tgl_mulai);
-            $('input[name="tgl_akhir"]').val(row.tgl_akhir);
-            $('textarea[name="deskripsi"]').val(row.deskripsi);
+            $('input[name="kode_tarif"]').val(row.kode_tarif);
+            $('input[name="tindakan"]').val(row.tindakan);
+            $('input[name="cito"]').val(row.cito);
+            $('input[name="status"]').prop('checked', row.status === '1');
+            $('select[name="kategori"]').val(row.kategori).trigger('change');
+            $('select[name="coa_pendapatan_rj"]').val(row.coa_pendapatan_rj).trigger('change');
+            $('select[name="coa_pendapatan_ri"]').val(row.coa_pendapatan_ri).trigger('change');
+            $('select[name="coa_reduksi_rj"]').val(row.coa_reduksi_rj).trigger('change');
+            $('select[name="coa_reduksi_ri"]').val(row.coa_reduksi_ri).trigger('change');
+            $('select[name="coa_mcu_onsite"]').val(row.coa_mcu_onsite).trigger('change');
+            $('select[name="coa_mcu_insite"]').val(row.coa_mcu_insite).trigger('change');
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('tarif.sk-tarif.delete', ':id') }}";
+            var url = "{{ route('tarif.tindakan.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -307,10 +364,39 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                Alert('success', res.message);
-                                $table.bootstrapTable('refresh');
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Success',
+                                    message: res.message
+                                }, {
+                                    type: 'success',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
                             } else {
-                                Alert('warning', res.message);
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Warning',
+                                    message: res.message
+                                }, {
+                                    type: 'warning',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
                             }
                         }
                     }).done(function() {
@@ -320,5 +406,97 @@
                 }
             })
         }
-    };
+    }
+
+    // Window operateChange Status
+    window.operateChange = {
+        'click .update-status': function(e, value, row, index) {
+            var url = "{{ route('tarif.tarif.update-status', ':id') }}";
+            url = url.replace(':id', row.id);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    status: e.target.checked ? 1 : 0,
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function(res, status, xhr) {
+                    if (xhr.status == 200 && res.success == true) {
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: 'Success',
+                            message: res.message
+                        }, {
+                            type: 'success',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    } else {
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: 'Warning',
+                            message: res.message
+                        }, {
+                            type: 'warning',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    }
+                    $table.bootstrapTable('refresh');
+                },
+                error: function(xhr, status, error) {
+                    if (xhr.status == 400) {
+                        var errors = xhr.responseJSON.errors;
+                        $.notify({
+                            icon: 'fa fa-check',
+                            title: error,
+                            message: xhr.responseJSON.message
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    } else if (xhr.status == 500) {
+                        $.notify({
+                            icon: 'icon-info-alt',
+                            title: 'error',
+                            message: "Silahkan hubungi IT Rumah Sakit!"
+                        }, {
+                            type: 'danger',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    }
+                }
+            });
+        }
+    }
 </script>

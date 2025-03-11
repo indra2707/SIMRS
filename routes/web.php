@@ -63,6 +63,12 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/coa/update-status/{id}', [CoaController::class, 'updateStatus'])->name('master-data.coa.update-status');
         Route::put('/coa/update/{id}', [CoaController::class, 'update'])->name('master-data.coa.update');
         Route::delete('/coa/delete/{id}', [CoaController::class, 'destroy'])->name('master-data.coa.delete');
+        Route::get('/coa/select-coa', [CoaController::class, 'select'])->name('master-data.coa.select');
+        Route::get('/coa/select1-coa', [CoaController::class, 'select1'])->name('master-data.coa.select1');
+        Route::get('/coa/select2-coa', [CoaController::class, 'select2'])->name('master-data.coa.select2');
+        Route::get('/coa/select3-coa', [CoaController::class, 'select3'])->name('master-data.coa.select3');
+        Route::get('/coa/select4-coa', [CoaController::class, 'select4'])->name('master-data.coa.select4');
+        Route::get('/coa/select5-coa', [CoaController::class, 'select4'])->name('master-data.coa.select5');
         // SPESIALIS
         Route::get('/spesialis', [SpesialisController::class, 'index'])->name('master-data.spesialis');
         Route::get('/spesialis/view', [SpesialisController::class, 'views'])->name('master-data.spesialis.view');
@@ -116,6 +122,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/jadwal-dokter/update/{id}', [Jadwal_dokterController::class, 'update'])->name('master-data.jadwal-dokter.update');
         Route::delete('/jadwal-dokter/delete/{id}', [Jadwal_dokterController::class, 'destroy'])->name('master-data.jadwal-dokter.delete');
         Route::get('/jadwal-poli', [Jadwal_dokterController::class, 'select'])->name('master-data.poli.select');
+        Route::get('/jadwal-petugas', [Jadwal_dokterController::class, 'select_petugas'])->name('master-data.petugas.select');
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
@@ -134,7 +141,9 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/index', [TarifTindakanController::class, 'index'])->name('tarif.tindakan.index');
         Route::get('/tarif-tindakan/view', [TarifTindakanController::class, 'views'])->name('tarif.tindakan.view');
         Route::post('/tarif-tindakan/store', [TarifTindakanController::class, 'store'])->name('tarif.tindakan.create');
-        Route::get('/tarif-tindakan/update', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
+        Route::post('/tarif/update-status/{id}', [TarifTindakanController::class, 'updateStatus'])->name('tarif.tarif.update-status');
+        Route::put('/tarif-tindakan/update//{id}', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
+        Route::delete('/tarif-tindakan/delete/{id}', [TarifTindakanController::class, 'destroy'])->name('tarif.tindakan.delete');
     });
 
     // Router Controller Global
