@@ -1,5 +1,5 @@
 $(".ktp-number").each(function (index, ele) {
-    var cleaveCustom = new Cleave(ele, {
+    new Cleave(ele, {
         delimiter: " ",
         blocks: [4, 2, 6, 4],
         numericOnly: true,
@@ -7,7 +7,7 @@ $(".ktp-number").each(function (index, ele) {
 });
 
 $(".phone-number").each(function (index, ele) {
-    var cleaveCustom = new Cleave(ele, {
+    new Cleave(ele, {
         prefix: "+62",
         delimiters: [" "],
         blocks: [3, 3, 9],
@@ -16,11 +16,19 @@ $(".phone-number").each(function (index, ele) {
 });
 
 $(".npwp-number").each(function (index, ele) {
-    var cleaveCustom = new Cleave(ele, {
+    new Cleave(ele, {
         delimiters: [".", ".", ".", "-", "."],
         blocks: [2, 3, 3, 1, 3, 4],
         numericOnly: true,
         uppercase: true,
+    });
+});
+
+$(".rupiah-number").each(function (index, ele) {
+    new Cleave(ele, {
+        numeral: true,
+        prefix: "Rp ",
+        signBeforePrefix: $(this).val() < 0,
     });
 });
 

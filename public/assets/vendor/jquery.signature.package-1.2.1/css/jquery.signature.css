@@ -1,8 +1,35 @@
 /* Styles for signature plugin v1.2.0. */
 .kbw-signature {
 	display: inline-block;
+    position: relative;
+    background: #fff;
+    border: 1px solid #a0a0a0;
+    border-radius: 4px;
+    box-shadow: 0 0 6px 3px #4466f21a;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+    overflow: hidden;
+    margin: 0 auto;
+    font-size: calc(12px + 5*(100vw - 320px) / 1600);
+    box-shadow: 0 0 6px 3px #4466f21a;
+    -webkit-backdrop-filter: blur(1.5px);
+    backdrop-filter: blur(1.5px);
+    width: 400px;
+    max-width: 100% !important;
+    min-width: 200px !important;
+    height: 200px !important;
+    max-height: 100% !important;
+    min-height: 100px !important;
+
+}
+.kbw-signature canvas {
+    cursor: crosshair;
+}
+.kbw-signature-disabled canvas {
 	border: 1px solid #a0a0a0;
 	-ms-touch-action: none;
+    touch-action: none;
+    cursor: not-allowed;
 }
 .kbw-signature-disabled {
 	opacity: 0.35;
