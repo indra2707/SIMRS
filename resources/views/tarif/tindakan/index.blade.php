@@ -48,61 +48,12 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <ul class="nav-menus">
-                        <li class="language-nav">
-                            <div class="actions_wrapper">
-                                <div class="current_action">
-                                    <div class="action_icon">
-                                        <i class="icon-more-alt"></i>
-                                    </div>
-                                </div>
-                                <div class="more_actions">
-                                    <div class="action_icon" data-value="de"><i class="flag-icon flag-icon-de"></i><span
-                                            class="action-txt">Deutsch</span></div>
-                                    <div class="action_icon" data-value="es"><i class="flag-icon flag-icon-es"></i><span
-                                            class="action-txt">Español</span></div>
-                                    <div class="action_icon" data-value="fr"><i class="flag-icon flag-icon-fr"></i><span
-                                            class="action-txt">Français</span></div>
-                                    <div class="action_icon" data-value="pt"><i class="flag-icon flag-icon-pt"></i><span
-                                            class="action-txt">Português<span> (BR)</span></span></div>
-                                    <div class="action_icon" data-value="cn"><i class="flag-icon flag-icon-cn"></i><span
-                                            class="action-txt">简体中文</span></div>
-                                    <div class="action_icon" data-value="ae"><i class="flag-icon flag-icon-ae"></i><span
-                                            class="action-txt">لعربية <span> (ae)</span></span></div>
-                                </div>
-                            </div>
-                        </li>
-                    </ul> --}}
-                    <div class="card-body pt-0 campaign-table">
-                        <div class="recent-table table-responsive currency-table">
-                            <table id="table_tindakan_tarif" class="table table-hover" data-buttons-class="primary"
-                                data-toggle="table">
-                                <thead class="text-bold text-white text-uppercase text-center">
-                                    <tr>
-                                        <th class="f-light">No.</th>
-                                        <th class="f-light">Kode Tarif</th>
-                                        <th class="f-light">Tindakan</th>
-                                        <th class="f-light">Tarif RS</th>
-                                        <th class="f-light">Kelompok</th>
-                                        <th class="f-light">Tipe</th>
-                                        <th class="f-light">Kategori</th>
-                                        <th class="f-light">Group</th>
-                                        <th class="f-light">Cito</th>
-                                        <th class="f-light">Status Operasi</th>
-                                        <th class="f-light">Status Tindakan</th>
-                                        <th class="f-light">Flat</th>
-                                        <th class="f-light">#</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Modal Form Tarif--}}
+    {{-- Modal Form Tarif --}}
     <div class="modal fade" id="modal-tarif-tindakan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -358,10 +309,10 @@
                                 <div class="card-header-right-icon">
                                     <div class="dropdown icon-dropdown">
                                         {{-- Button Add Form Tarif --}}
-                                        <button class="btn btn-primary add-btn-harga">
+                                        <a class="btn btn-primary add-btn-harga" href="#" type="button">
                                             <span class="fa fa-plus"></span>
                                             <span> Tambah Tarif</span>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -419,52 +370,94 @@
 
                             {{-- SK Tarif --}}
                             <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="kode">SK Tarif</label>
-                                <div class="col-sm-10">
+                                <label class="col-sm-1 col-form-label" for="kode">SK Tarif</label>
+                                <div class="col-sm-11">
                                     <select class="form-select form-control js-select-2" id="tarif" name="tarif"
                                         data-url="{{ route('master-data.penjamin.select_tarif') }}"
                                         data-placeholder="---- Pilih Salah Satu ----" required></select>
                                 </div>
                             </div>
-
-                            {{-- Nama --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Kelas 1</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control form-control-sm" name="kelas1" type="text"
-                                        placeholder="Harga Kelas 1..." required>
-                                </div>
-                            </div>
-
-                            {{-- Satus --}}
-                            <div class="media mb-2">
-                                <label class="col-sm-2 col-form-label m-r-10">Status</label>
-                                <div class="media-body switch-sm icon-state">
-                                    <label class="switch">
-                                        <input class="form-control" name="status" type="checkbox" checked>
-                                        <span class="switch-state"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            {{-- input --}}
-
-
                         </div>
+
+                            <div class="form-group row my-0 g-lg-2 col-md-12">
+                                <div class="col-md-6">
+                                    {{-- kelas 1 --}}
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 1</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="kelas1" type="text"
+                                                placeholder="Harga Kelas 1..." required>
+                                        </div>
+                                    </div>
+
+                                      {{-- kelas 2 --}}
+                                      <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 2</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" id="rupiah" name="kelas2" type="text"
+                                                placeholder="Harga Kelas 2..." required>
+                                        </div>
+                                    </div>
+
+                                      {{-- kelas 3 --}}
+                                      <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 3</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="kelas3" type="text"
+                                                placeholder="Harga Kelas 3..." required>
+                                        </div>
+                                    </div>
+
+                                    {{-- isolasi --}}
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">Isolasi</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="isolasi" type="text"
+                                                placeholder="Harga isolasi..." required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    {{-- Intensif --}}
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">Intensif</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="intensif" type="text"
+                                                placeholder="Harga Intensif..." required>
+                                        </div>
+                                    </div>
+
+                                    {{-- VIP --}}
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">VIP</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="vip" type="text"
+                                                placeholder="Harga vip..." required>
+                                        </div>
+                                    </div>
+
+                                    {{-- VVIP --}}
+                                    <div class="mb-2 row">
+                                        <label class="col-sm-2 col-form-label" for="nama">VVIP</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control form-control-sm rupiah-number" name="vvip" type="text"
+                                                placeholder="Harga vvip..." required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </a>
                 </div>
-
+                </form>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn-harga" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
             </div>
-            </form>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                <span class="fa fa-times"></span> Batal</button>
-            <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
-                Simpan</button>
-        </div>
-    </div>
-    </div>
     </div>
 
 

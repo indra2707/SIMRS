@@ -148,7 +148,6 @@
                     },
                     {
                         width: '5%',
-                        // title: 'STATUS',
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
@@ -255,6 +254,7 @@
                 type: "POST",
                 data: {
                     status: e.target.checked ? 1 : 0,
+                    table: 'sk_tarifs',
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(res, status, xhr) {
