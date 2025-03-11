@@ -75,16 +75,16 @@ class PetugasController extends Controller
         }
 
         //    make dir images
-        if (!is_dir('uploads/images/signatur/')) {
-            mkdir('uploads/images/signatur/', 0777, true);
-        }
+        // if (!is_dir('uploads/images/signatur/')) {
+        //     mkdir('uploads/images/signatur/', 0777, true);
+        // }
         
-        $image_parts = explode(";base64,", $request->signed);
-        $image_type_aux = explode("image/", $image_parts[0]);
-        $image_type = $image_type_aux[1];      
-        $image_base64 = base64_decode($image_parts[1]);
-        $file_name = 'uploads/images/signatur/' . 'Signature_' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.'.$image_type;
-        file_put_contents($file_name, $image_base64);
+        // $image_parts = explode(";base64,", $request->signed);
+        // $image_type_aux = explode("image/", $image_parts[0]);
+        // $image_type = $image_type_aux[1];      
+        // $image_base64 = base64_decode($image_parts[1]);
+        // $file_name = 'uploads/images/signatur/' . 'Signature_' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.'.$image_type;
+        // file_put_contents($file_name, $image_base64);
 
         $query = Petugas::create([
             'id' => $request->id,

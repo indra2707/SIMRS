@@ -86,7 +86,7 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="Kode">Kode</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="kode" type="text"
+                                        <input class="form-control form-control-sm" name="kode" type="text"
                                             placeholder="Kode Petugas..." required>
                                     </div>
                                 </div>
@@ -275,12 +275,37 @@
         </div>
     </div>
 
+    <!-- PhotoSwipe Modal Structure -->
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="pswp__bg"></div>
+        <div class="pswp__scroll-wrap">
+            <div class="pswp__container">
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+                <div class="pswp__item"></div>
+            </div>
+            <div class="pswp__ui pswp__ui--hidden">
+                <div class="pswp__top-bar">
+                    <div class="pswp__counter"></div>
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                    <button class="pswp__button pswp__button--share" title="Share"></button>
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                </div>
+                <div class="pswp__caption">
+                    <div class="pswp__caption__center"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @section('script')
-    @include('master-data.petugas.script');
     <script src="{{ asset('assets/js/photoswipe/photoswipe.min.js') }}"></script>
     <script src="{{ asset('assets/js/photoswipe/photoswipe-ui-default.min.js') }}"></script>
     <script src="{{ asset('assets/js/photoswipe/photoswipe.js') }}"></script>
+    <script src="{{ asset('assets/js/photoswipe/jqPhotoSwipe.min.js') }}"></script>
+    <script src="{{ asset('assets/js/photoswipe/photoswipe-custome.js') }}"></script>
+    @include('master-data.petugas.script');
 @endsection

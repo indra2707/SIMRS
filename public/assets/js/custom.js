@@ -33,7 +33,6 @@ function InitSelect2(element, options) {
             element.select2({
                 allowClear: true,
                 dropdownParent: options.dropdownParent,
-                // data: data.data,
                 ajax: {
                     type: "GET",
                     url: options.url,

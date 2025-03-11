@@ -41888,3 +41888,23 @@ div#AvatarFileUpload>.avatar-selector>.avatar-selector-btn {
     backdrop-filter: blur(1.5px);
 
 }
+
+.product-names {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-names .light-product-box {
+    min-width: 49px;
+    height: 49px;
+    border-radius: 3px;
+    background-color: var(--chart-progress-light);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-names .light-product-box img {
+    height: 26px;
+}

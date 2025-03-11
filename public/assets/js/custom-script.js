@@ -149,8 +149,8 @@ function clearFormInputFields(element) {
     var elements = $(element);
     elements.removeClass('was-validated');
     elements.find('input, select, textarea').val('');
-    // elements.find('input, select, textarea').val('');
     elements.find('input:radio, input:checkbox').prop('checked', false);
     // Select2 Reset
     elements.find('select').val(null).trigger('change');
+    elements.find('input[name="_token"]').val($('meta[name="csrf-token"]').attr('content'));
 }

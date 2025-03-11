@@ -1,15 +1,75 @@
 <script type="text/javascript">
     // Variable Name
-    // With Placeholder
-    $(".select2").select2({
-        placeholder: "---- Pilih Salah Satu----",
-        theme: "bootstrap-5",
-        dropdownParent: $("#modal-petugas"),
-        allowClear: true
 
+    // Options Select2 Array kategori
+    var optionsSelect2DataKategori = [{
+        id: 'Dokter',
+        text: 'Dokter'
+    }, {
+        id: 'Dokter Spesialis',
+        text: 'Dokter Spesialis'
+    }, {
+        id: 'Dokter Sub Spesialis',
+        text: 'Dokter Sub Spesialis'
+    }, {
+        id: 'Perawat',
+        text: 'Perawat'
+    }, {
+        id: 'Bidan',
+        text: 'Bidan'
+    }, {
+        id: 'Apoteker',
+        text: 'Apoteker'
+    }, {
+        id: 'Ahligizi',
+        text: 'Ahligizi'
+    }, {
+        id: 'Radiographer',
+        text: 'Radiographer'
+    }, {
+        id: 'Rekam Medis',
+        text: 'Rekam Medis'
+    }, {
+        id: 'Fisioterapis',
+        text: 'Fisioterapis'
+    }, {
+        id: 'Analis',
+        text: 'Analis'
+    }, {
+        id: 'Keuangan',
+        text: 'Keuangan'
+    }, {
+        id: 'Kasir',
+        text: 'Kasir'
+    }, {
+        id: 'ICT',
+        text: 'ICT'
+    }];
+
+    // Status Dokter Option Data
+    var optionsSelect2DataStatusDokter = [{
+        id: 'Mitra',
+        text: 'Mitra'
+    }, {
+        id: 'PWT/PWTT',
+        text: 'PWT/PWTT'
+    }, {
+        id: 'Sub Spesialis',
+        text: 'Sub Spesialis/Konsulen/Profesor'
+    }];
+
+
+
+
+
+
+
+
+    var sig = $('#signature-pad').signature({
+        syncField: '#signature64',
+        syncFormat: 'PNG'
     });
 
-    var sig = $('#signature-pad').signature({syncField: '#signature64', syncFormat: 'PNG'});
     $('#clear').click(function(e) {
         e.preventDefault();
         sig.signature('clear');
@@ -86,37 +146,23 @@
 
     // Open Modal
     $(document).on('click', '.add-petugas', function() {
-        $('.form-petugas').removeClass('was-validated');
         $('#modal-petugas').modal('show');
         $('.modal-title').text('Form Tambah Petugas');
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="id"]').val('');
-        $('input[name="kode"]').val('');
-        $('input[name="nama"]').val('');
-        $('input[name="nik"]').val('');
-        $('input[name="hp"]').val('');
-        $('input[name="user"]').val('');
-        $('input[name="bpjs"]').val('');
-        $('input[name="tgl_akhir"]').val('');
-        $('textarea[name="alamat"]').val('');
-        $('textarea[name="konsul"]').val('');
-        $('textarea[name="visite"]').val('');
-        $('input[name=jenis_kelamin]').prop('checked',false);
-        $('input[name="sip"]').val('');
-        $('select[name="spesialis"]').val('').trigger('change');
-        $('select[name="kategori"]').val('').trigger('change');
-        $('select[name="status_dokter"]').val('').trigger('change');
-        $('input[name="status"]').prop('checked', true);
-
-        //     $("#hp").inputmask("mask", {"mask": ["+62 999-9999-99999", "+62 999-9999-999999"]}, {
-        //   numericInput: true
-        // }); //specifying
-        // $("#nik").inputmask("mask", {
-        //   "mask": "9999999999999999"
-        // }, {
-        //   numericInput: true
-        // }); //specifying
-
+        clearFormInputFields('.form-petugas');
+        InitSelect2($("select[name='spesialis']"), {
+            url: "{{ route('master-data.spesialis.select_spesialis') }}",
+            dropdownParent: $("#modal-petugas"),
+            // initialsValue: $("#jabatan").data("value") ? $("#jabatan").data("value") : null,
+        });
+        InitSelect2Array($("select[name='kategori']"), {
+            data: optionsSelect2DataKategori,
+            initialValue: ''
+        });
+        InitSelect2Array($("select[name='status_dokter']"), {
+            data: optionsSelect2DataStatusDokter,
+            initialValue: ''
+        });
+        sig.signature('clear');
         imageInput.value = '';
         imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
 
@@ -140,11 +186,34 @@
                 event.preventDefault();
                 event.stopPropagation();
             } else {
+                const fileInput = $('#profil')[0],
+                    file = fileInput.files[0],
+                    maxSize = 1 * 1024 * 1024,
+                    allowedTypes = ['image/jpeg', 'image/png',
+                        'image/jpg'
+                    ]; // Example allowed types
+                // Validate file type
+                if (file && !allowedTypes.includes(file.type)) {
+                    Alert('warning',
+                        'Jenis berkas tidak valid. Jenis yang diperbolehkan: JPEG, PNG, JPG.');
+                    return;
+                }
+                // Validate file size
+                if (file && file.size > maxSize) {
+                    Alert('warning', 'Ukuran file melebihi batas maksimal 1 MB');
+                    return;
+                }
+                let formData = new FormData(form);
                 $.ajax({
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-petugas').serialize(),
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    data: formData,
+                    // data: $('.form-petugas').serialize(),
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -270,12 +339,24 @@
             url: "{{ route('master-data.petugas.view') }}",
             columns: [
                 [{
-                        width: '300%',
+                        field: 'kategori',
+                        sortable: false,
+                        formatter: function(value, row, index) {
+                            return [
+                                '<div class="product-names">',
+                                '<div class="light-product-box">',
+                                '<a class="fancybox" href="{{ asset('assets/images/big-lightgallry/012.jpg') }}"><img class="img-fluid" src="{{ asset('assets/images/big-lightgallry/012.jpg') }}" alt="laptop"></a>',
+                                '</div>',
+                                '<a href="javascript:void(0)" style="cursor: default">' + row.kode +
+                                '</a>',
+                                '</div>',
+                            ].join("");
+                        }
+                    }, {
                         field: 'kategori',
                         sortable: true,
                     },
                     {
-                        width: '50%',
                         field: 'kode_bpjs',
                         sortable: true,
                     },
@@ -292,7 +373,8 @@
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                '<input type="checkbox" class="update-status" ' + (row
+                                    .status ===
                                     '1' ? 'checked' : '') + '>',
                                 '<span class="switch-state"></span>',
                                 '</label>',
@@ -313,44 +395,6 @@
                     }
                 ]
             ],
-            error: function(xhr, status, error) {
-                if (xhr.status == 400) {
-                    var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
-                }
-            },
             responseHandler: function(data) {
                 return data;
             }
@@ -364,7 +408,6 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Ttd</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -541,4 +584,49 @@
             });
         }
     }
+
+
+    // View Image FancyBox
+    // $(".fancybox").each(function(index, ele) {
+    //     ele.jqPhotoSwipe({
+    //         galleryOpen: function(gallery) {
+    //             //with `gallery` object you can access all methods and properties described here http://photoswipe.com/documentation/api.html
+    //             //console.log(gallery);
+    //             //console.log(gallery.currItem);
+    //             //console.log(gallery.getCurrentIndex());
+    //             //gallery.zoomTo(1, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 500);
+    //             gallery.toggleDesktopZoom();
+    //         }
+    //     });
+    // });
+
+    // fine fancybox class in table
+    // var table = $table.bootstrapTable();
+    // table.find(".fancybox").jqPhotoSwipe({
+    //         galleryOpen: function(gallery) {
+    //             //with `gallery` object you can access all methods and properties described here http://photoswipe.com/documentation/api.html
+    //             //console.log(gallery);
+    //             //console.log(gallery.currItem);
+    //             //console.log(gallery.getCurrentIndex());
+    //             //gallery.zoomTo(1, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 500);
+    //             gallery.toggleDesktopZoom();
+    //         }
+    //     });
+    // table.$(".fancybox").jqPhotoSwipe({
+    //     galleryOpen: function(gallery) {
+    //         //with `gallery` object you can access all methods and properties described here http://photoswipe.com/documentation/api.html
+    //         //console.log(gallery);
+    //         //console.log(gallery.currItem);
+    //         //console.log(gallery.getCurrentIndex());
+    //         //gallery.zoomTo(1, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 500);
+    //         gallery.toggleDesktopZoom();
+    //     }
+    // });
+
+    // $(document).on("click", ".fancybox", function () {
+    //     console.warn("clicked");
+
+    //     var image = $(this).attr("data-image");
+    //     $.fancybox.open(image);
+    // });
 </script>
