@@ -29,11 +29,24 @@ class PetugasController extends Controller
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id' => $value->id,
-                'kode' => $value->kode,
-                'kategori' => $value->kategori,
-                'nama' => $value->nama,
-                'status' => $value->status,
+                'id'               => $value->id,
+                'kode_petugas'     => $value->kode_petugas,
+                'nama'             => $value->nama,
+                'nik'              => $value->nik,
+                'jenis_kelamin'    => $value->jenis_kelamin,
+                'status_petugas'   => $value->status_petugas,
+                'no_hp'            => $value->no_hp,
+                'alamat'           => $value->alamat,
+                'kode_bpjs'        => $value->kode_bpjs,
+                'kategori'         => $value->kategori,
+                'no_sip'           => $value->no_sip,
+                'masa_berlaku_sip' => convertYmdToDmy($value->masa_berlaku_sip),
+                'kode_spesialis'   => $value->kode_spesialis,
+                'tindakan_konsul'  => $value->tindakan_konsul,
+                'tindakan_visite'  => $value->tindakan_visite,
+                'foto'             => $value->foto,
+                'signatures'       => $value->signatures,
+                'status'           => $value->status,
             ];
         }
         return response()->json($data, 200);
@@ -69,41 +82,41 @@ class PetugasController extends Controller
         if ($request->has('profil')) {
             $file = $request->file('profil');
             $extension = $file->getClientOriginalExtension();
-            $filename = 'Profile' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $filename = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
             $path = 'uploads/images/profil/';
             $file->move($path, $filename);
         }
 
         //    make dir images
-        // if (!is_dir('uploads/images/signatur/')) {
-        //     mkdir('uploads/images/signatur/', 0777, true);
+        // if (!is_dir('uploads/images/signature/')) {
+        //     mkdir('uploads/images/signature/', 0777, true);
         // }
-        
+
         // $image_parts = explode(";base64,", $request->signed);
         // $image_type_aux = explode("image/", $image_parts[0]);
-        // $image_type = $image_type_aux[1];      
+        // $image_type = $image_type_aux[1];
         // $image_base64 = base64_decode($image_parts[1]);
-        // $file_name = 'uploads/images/signatur/' . 'Signature_' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.'.$image_type;
+        // $file_name = 'uploads/images/signature/' . 'Signature_' . strtolower (string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.'.$image_type;
         // file_put_contents($file_name, $image_base64);
 
         $query = Petugas::create([
-            'id' => $request->id,
-            'kategori' => $request->kategori,
-            'kode' => $request->kode,
-            'nik' => $request->nik,
-            'nama' => $request->nama,
-            'jenis_kelamin' => $request->jenis_kelamin == 'on' ? 'L' : 'P',
-            'no_hp' => $request->no_hp,
-            'kode_spesialis' => $request->kode_spesialis,
-            'kode_bpjs' => $request->kode_bpjs,
-            'alamat' => $request->alamat,
-            'kode_tindakan1' => $request->kode_tindakan1,
-            'kode_tindakan2' => $request->kode_tindakan2,
-            'tanggal' => $request->tanggal,
-            'foto' => $filename,
-            'ttd' =>str_replace('uploads/images/signatur/','',$file_name),
-            'status_dokter' => $request->status_dokter,
-            'status' => $request->status == 'on' ? '1' : '0',
+            'id'               => $request->id,
+            'kode_petugas'     => $request->kode_petugas,
+            'nama'             => $request->nama,
+            'nik'              => str_replace(' ', '', $request->nik),
+            'jenis_kelamin'    => $request->jenis_kelamin == 'on' ? 'L' : 'P',
+            'status_petugas'   => $request->status_petugas,
+            'no_hp'            => str_replace(' ', '', $request->no_hp),
+            'alamat'           => $request->alamat,
+            'kode_bpjs'        => $request->kode_bpjs,
+            'kategori'         => $request->kategori,
+            'no_sip'           => $request->no_sip,
+            'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
+            'kode_spesialis'   => $request->kode_spesialis,
+            'kode_konsul'      => $request->kode_konsul,
+            'kode_visite'      => $request->kode_visite,
+            'foto'             => $filename,
+            'status'           => '1',
         ]);
         if ($query) {
             return response()->json([

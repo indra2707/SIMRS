@@ -11,7 +11,7 @@
 :root {
     --theme-deafult: #7366ff;
     --theme-secondary: #f73164;
-    --light-background: rgba(242, 243, 247, 0.7);
+    --light-background: rgba(31, 32, 40, 0.65);
     --body-font-color: #2F2F3B;
     --chart-border: #ECF3FA;
     --recent-chart-bg: #FCFCFD;
@@ -44,7 +44,7 @@ body[class=dark-only] {
     --light-bg: #1d1e26;
     --white: #262932;
     --sidebar-border: rgba(255, 255, 255, 0.1);
-    --light2: #1d1e26;
+    --light2: #F5F6F9;
     --chart-border: #374558;
     --recent-box-bg: #1d1e26;
     --recent-border: #374558;
@@ -70,8 +70,8 @@ svg.f-light {
     opacity: 0.8;
 }
 
-.light-card {
-    background-color: var(--light-background);
+body.dark-only .light-card {
+    background-color: var(--light-background) !important;
 }
 
 .light-background {
@@ -11293,7 +11293,7 @@ th {
 }
 
 .table td {
-    color: #2F2F3B;
+    color: #000000;
 }
 
 .table [class*=bg-] {
@@ -27458,7 +27458,7 @@ ul.dot-group li {
 55. theme layout CSS Start
 ==========================**/
 body.dark-only {
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--light2);
     background-color: #1d1e26;
 }
 
@@ -41908,3 +41908,21 @@ div#AvatarFileUpload>.avatar-selector>.avatar-selector-btn {
 .product-names .light-product-box img {
     height: 26px;
 }
+
+.form-check-input.is-valid~.form-check-label::before, .was-validated .radio-primary .form-check-input:valid~.form-check-label::before {
+    border-color: var(--theme-deafult);
+}
+
+.form-check-input.is-valid~.form-check-label::after, .was-validated .radio-primary .form-check-input:valid~.form-check-label::after {
+    background-color: var(--theme-deafult);
+}
+
+.form-check-input.is-invalid~.form-check-label::before, .was-validated .radio-primary .form-check-input:invalid~.form-check-label::before {
+    border-color: #dc3545;
+}
+
+.form-check-input.is-invalid~.form-check-label::after, .was-validated .radio-primary .form-check-input:invalid~.form-check-label::after {
+    background-color: #dc3545;
+}
+
+

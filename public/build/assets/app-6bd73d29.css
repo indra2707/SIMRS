@@ -19088,7 +19088,7 @@ textarea.form-control-lg {
     display: block;
     min-height: 1.5rem;
     padding-left: 1.5em;
-    margin-bottom: .125rem
+    margin-bottom: -0.875rem
 }
 
 .form-check .form-check-input {
@@ -30938,9 +30938,9 @@ svg.f-light {
     opacity: .8
 }
 
-.light-card {
+/* .light-card {
     background-color: var(--light-background)
-}
+} */
 
 .light-background {
     background-color: var(--light-bg)

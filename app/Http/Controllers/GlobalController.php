@@ -47,4 +47,22 @@ class GlobalController extends Controller
             ], status: 400);
         }
     }
+
+    public function optionsSelectSpesialis(Request $request)
+    {
+        $query = DB::table('spesialisses')
+            ->where('status', '1')
+            ->where('nama', 'like', "%$request->search%")
+            ->get();
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id' => $value->id,
+                'text' => $value->nama,
+            ];
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
 }
