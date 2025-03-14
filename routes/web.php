@@ -148,6 +148,8 @@ Route::group(['middleware' => 'loggedin'], function () {
 
     // Router Controller Global
     Route::prefix('global-controller')->group(function () {
+        // Spesialis
+        Route::get('/get-select-spesialis', [GlobalController::class, 'optionsSelectSpesialis'])->name('get-select-spesialis');
         // Tarif Tindakan
         Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarifTindakan'])->name('get-select-tarif-tindakan');
         // Generate Kode

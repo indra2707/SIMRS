@@ -10,20 +10,22 @@ class Petugas extends Model
     use HasFactory;
 
     protected $fillable = [
-        'kode',
+        'kode_petugas',
         'nama',
-        'kategori',
-        'status',
         'nik',
         'jenis_kelamin',
+        'status_petugas',
         'no_hp',
-        'kode_spesialis',
-        'kode_bpjs',
         'alamat',
-        'kode_tindakan1',
-        'kode_tindakan2',
-        'tanggal',
+        'kode_bpjs',
+        'kategori',
+        'no_sip',
+        'masa_berlaku_sip',
+        'kode_spesialis',
+        'tindakan_konsul',
+        'tindakan_visite',
         'foto',
-        'ttd'
+        'signatures',
+        'status'
     ];
 }
