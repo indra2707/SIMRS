@@ -22,7 +22,7 @@ use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\Poli_obatController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\PoliController;
-
+use App\Http\Controllers\Tarif\HargaTindakanController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -144,6 +144,11 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/tarif/update-status/{id}', [TarifTindakanController::class, 'updateStatus'])->name('tarif.tarif.update-status');
         Route::put('/tarif-tindakan/update//{id}', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
         Route::delete('/tarif-tindakan/delete/{id}', [TarifTindakanController::class, 'destroy'])->name('tarif.tindakan.delete');
+
+         // Harga Tindakan
+         Route::get('/index-harga', [HargaTindakanController::class, 'index'])->name('tarif.harga.index');
+         Route::get('/harga-tindakan/view', [HargaTindakanController::class, 'views'])->name('tarif.harga.view');
+         Route::post('/harga-tindakan/store', [HargaTindakanController::class, 'store'])->name('tarif.harga.create');
     });
 
     // Router Controller Global
