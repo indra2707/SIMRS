@@ -145,7 +145,7 @@
             dropdownParent: $("#modal-petugas"),
             initialValue: ""
         });
-        sig.signature('clear');
+        // sig.signature('clear');
         imageInput.value = '';
         imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
     });
@@ -236,7 +236,7 @@
         if (id) {
             var url = "{{ route('master-data.petugas.update', ':id') }}";
             url = url.replace(':id', id);
-            var type = "POST";
+            var type = "PUT";
         } else {
             var url = "{{ route('master-data.petugas.create') }}";
             var type = "POST";
@@ -270,12 +270,10 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                            'content'),
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'multipart/form-data'
-                    },
+                    mimeType: "multipart/form-data",
+                    contentType: false,
+                    cache: false,
+                    processData: false,
                     data: formData,
                     beforeSend: function() {
                         $('.save-btn').html(
@@ -340,19 +338,14 @@
                         field: 'profile',
                         sortable: false,
                         formatter: function(value, row, index) {
-                            if (row.foto == null) {
-                                var imagesPath = "{{ asset('/assets/images/avatar/user2.png') }}";
-                            } else {
-                                var imagesPath = "{{ asset('/uploads/images/profil') }}/" + row.foto;
-                            }
                             return [
                                 '<div class="product-names">',
                                 '<div class="light-product-box">',
-                                '<a class="fancybox" href="' + imagesPath +
-                                '" data-fancybox="gallery" data-caption="' + row
+                                '<a class="fancybox" href="{{ asset('/uploads/images/profil') }}' +
+                                '/' + row.foto + '" data-fancybox="gallery" data-caption="' + row
                                 .nama + '">',
-                                '<img class="img-fluid img-40" src="' + imagesPath +
-                                '" alt="laptop">',
+                                '<img class="img-fluid img-40" src="{{ asset('/uploads/images/profil') }}' +
+                                '/' + row.foto + '" alt="laptop">',
                                 '</a>',
                                 '</div>',
                                 '<div>',
@@ -575,7 +568,7 @@
                 data: {
                     status: e.target.checked ? 1 : 0,
                     _token: "{{ csrf_token() }}",
-                    table: 'petugas'
+                    table:'petugas'
                 },
                 success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {

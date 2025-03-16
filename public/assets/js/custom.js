@@ -24,6 +24,9 @@ function InitSelect2(element, options) {
         method: "GET",
         dataType: "json",
         async: false,
+        data: {
+            values: options.initialValue
+        },
         beforeSend: function () {
             element.addClass("loading");
         },
@@ -40,10 +43,16 @@ function InitSelect2(element, options) {
                     data: function (params) {
                         return {
                             search: params.term,
-                            // values: options.initialValue
                         };
                     },
                     processResults: function (data) {
+                        // var results = [];
+                        // $.each(data.data, function (index, item) {
+                        //     results.push({
+                        //         id: item.id,
+                        //         text: item.text,
+                        //     });
+                        // })
                         return {
                             results: data.data
                         };

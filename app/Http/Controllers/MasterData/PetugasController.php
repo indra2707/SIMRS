@@ -7,6 +7,7 @@ use App\Models\MaterData\Petugas;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Response;
 
 class PetugasController extends Controller
 {
@@ -25,7 +26,6 @@ class PetugasController extends Controller
     public function views()
     {
         $query = Petugas::all();
-
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
@@ -49,18 +49,17 @@ class PetugasController extends Controller
                 'status'           => $value->status,
             ];
         }
-        return response()->json($data, 200);
+        return Response::json($data, 200);
     }
 
     // Select Spesialis
     public function select()
     {
         $query = DB::table('Petugas')
-            ->where('status', '1')
-            ->where('kategori', 'penjamin')
+            ->where(['status' => '1', 'kategori' => 'penjamin'])
             ->get();
 
-        $data = [];
+        $data = []; 
         foreach ($query as $key => $value) {
             $data[$key]['id']   = $value->id;
             $data[$key]['text'] = $value->kode . ' - ' . $value->nama;
@@ -133,41 +132,51 @@ class PetugasController extends Controller
         }
     }
 
-    // update status check
-    public function updateStatus(Request $request, $id)
-    {
-        $query = Petugas::where('id', $id)->update([
-            'status' => $request->status,
-        ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
-                'data' => [],
-            ], status: 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengubah status.',
-                'data' => [],
-            ], status: 400);
-        }
-    }
-
     // Update
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'kode' => 'required',
-            'nama' => 'required',
-            'kategori' => 'required',
-        ]);
-        $query = Petugas::where('id', $id)->update([
-            'kode' => $request->kode,
-            'nama' => $request->nama,
-            'kategori' => $request->kategori,
-            'status' => $request->status == 'on' ? '1' : '0',
-        ]);
+        dd($request->all());
+        if (!is_dir('uploads/images/profil/')) {
+            mkdir('uploads/images/profil/', 0777, true);
+        }
+        $filename = NULL;
+        $path = NULL;
+        if ($request->has('profil')) {
+            $file = $request->file('profil');
+            $extension = $file->getClientOriginalExtension();
+            $filename = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $path = 'uploads/images/profil/';
+            $file->move($path, $filename);
+        }
+
+        $dataValues = [
+            'kode_petugas'     => $request->kode_petugas,
+            'nama'             => $request->nama,
+            'nik'              => str_replace(' ', '', $request->nik),
+            'jenis_kelamin'    => $request->jenis_kelamin == 'on' ? 'L' : 'P',
+            'status_petugas'   => $request->status_petugas,
+            'no_hp'            => str_replace(' ', '', $request->no_hp),
+            'alamat'           => $request->alamat,
+            'kode_bpjs'        => $request->kode_bpjs,
+            'kategori'         => $request->kategori,
+            'no_sip'           => $request->no_sip,
+            'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
+            'kode_spesialis'   => $request->kode_spesialis,
+            'kode_konsul'      => $request->kode_konsul,
+            'kode_visite'      => $request->kode_visite,
+            'foto'             => $filename,
+        ];
+
+        // Cek Foto Kosong atau Tidak di database
+        $query = Petugas::where('id', $id)->first();
+        if ($query->foto != $filename) {
+            $file = $path . $query->foto;
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+
+        $query = Petugas::where('id', $id)->update($dataValues);
         if ($query) {
             return response()->json([
                 'success' => true,

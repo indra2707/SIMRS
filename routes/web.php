@@ -110,7 +110,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/petugas', [PetugasController::class, 'index'])->name('master-data.petugas');
         Route::get('/petugas/view', [PetugasController::class, 'views'])->name('master-data.petugas.view');
         Route::post('/petugas/store', [PetugasController::class, 'store'])->name('master-data.petugas.create');
-        Route::post('/petugas/update-status/{id}', [PetugasController::class, 'updateStatus'])->name('master-data.petugas.update-status');
         Route::put('/petugas/update/{id}', [PetugasController::class, 'update'])->name('master-data.petugas.update');
         Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
         Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
@@ -160,7 +159,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Generate Kode
         Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generateKodeTarifTindakan'])->name('generate-kode-tarif-tindakan');
         // Update Status
-        Route::post('/update-status/{id}', [GlobalController::class, 'updateStatus'])->name('tarif.sk-tarif.update-status');
+        Route::post('/update-status/{id}', [GlobalController::class, 'updateStatus'])->name('get-select-update-status');
 
     });
 });
