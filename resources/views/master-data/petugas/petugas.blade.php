@@ -270,6 +270,7 @@
                     <form class="form-wizard form-signature text-center" novalidate="" autocomplete="off">
                         {{-- @csrf --}}
                         <input type="hidden" name="id">
+                        <input type="hidden" name="nama">
                         {{-- View Signature Img --}}
                         <div class="file-box img-signature">
                             <div class="image-wrapper">

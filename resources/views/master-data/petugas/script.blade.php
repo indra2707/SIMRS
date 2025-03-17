@@ -390,6 +390,7 @@
             $('#modal-signature').modal('show');
             $('.modal-title').text('Tanda Tangan');
             $('input[name="id"]').val(row.id);
+            $('input[name="nama"]').val(row.nama);
             console.warn(row);
 
             if (row.signatures) {
