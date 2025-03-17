@@ -82,8 +82,8 @@ class PetugasController extends Controller
             'no_sip'           => $request->no_sip,
             'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
             'kode_spesialis'   => $request->spesialis,
-            'kode_konsul'      => $request->tindakan_konsul,
-            'kode_visite'      => $request->tindakan_visite,
+            'tindakan_konsul'  => $request->tindakan_konsul,
+            'tindakan_visite'  => $request->tindakan_visite,
             'foto'             => $filename,
             'status'           => '1',
         ]);
