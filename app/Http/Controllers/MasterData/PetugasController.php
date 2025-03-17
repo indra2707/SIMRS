@@ -169,17 +169,16 @@ class PetugasController extends Controller
         }
 
         if ($request->has('signed') && $request->signed != "") {
-            $image_parts = explode(";base64,", $request->signed);
-            $image_type_aux = explode("image/", $image_parts[0]);
-            $image_type = $image_type_aux[1];
-            $image_base64 = base64_decode($image_parts[1]);
-            $file_name = 'Signature' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $image_type;
-            $path = 'uploads/images/signature/';
-            file_put_contents($path . $file_name, $image_base64);
-
             // Cek Signature Kosong atau Tidak di database
             $query = Petugas::where('id', $id)->first();
-            if ($query->signatures != $file_name) {
+            if ($query->signatures != null) {
+                $image_parts = explode(";base64,", $request->signed);
+                $image_type_aux = explode("image/", $image_parts[0]);
+                $image_type = $image_type_aux[1];
+                $image_base64 = base64_decode($image_parts[1]);
+                $file_name = 'Signature' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $image_type;
+                $path = 'uploads/images/signature/';
+                file_put_contents($path . $file_name, $image_base64);
                 $file = $path . $query->signatures;
                 if (file_exists($file)) {
                     unlink($file);

@@ -65,7 +65,7 @@
                     <div class="form-group row my-0 g-lg-2 col-md-12">
                         <div class="card-wrapper border rounded-3 p-2 light-card checkbox-checked">
                             <form class="g-3 form-petugas" novalidate="" autocomplete="off">
-                                @csrf
+                                {{-- @csrf --}}
                                 {{-- Hidden ID --}}
                                 <input type="hidden" name="id" id="id">
                                 <div class="row">
@@ -92,7 +92,7 @@
                                         <div class="mb-2 row">
                                             <label class="col-sm-3 col-form-label" for="nik">NIK</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control form-control-sm" id="nik"
+                                                <input type="text" class="form-control form-control-sm ktp-number" id="nik"
                                                     name="nik" placeholder="NIK..." title="Nomor Induk Kependudukan"
                                                     required>
                                             </div>
@@ -268,7 +268,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-wizard form-signature text-center" novalidate="" autocomplete="off">
-                        @csrf
+                        {{-- @csrf --}}
                         <input type="hidden" name="id">
                         {{-- View Signature Img --}}
                         <div class="file-box img-signature">

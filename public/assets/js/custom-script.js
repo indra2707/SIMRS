@@ -151,7 +151,7 @@ function clearFormInputFields(element) {
     elements.find('input:radio, input:checkbox').prop('checked', false);
     // Select2 Reset
     elements.find('select').val(null).trigger('change');
-    elements.find('input[name="_token"]').val($('meta[name="csrf-token"]').attr('content'));
+    // elements.find('input[name="_token"]').val($('meta[name="csrf-token"]').attr('content'));
 }
 
 $.ajaxSetup({
