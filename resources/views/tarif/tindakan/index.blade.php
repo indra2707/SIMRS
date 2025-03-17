@@ -118,6 +118,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             {{-- Satus --}}
                             <div class="media mb-2">
                                 <label class="col-sm-2 col-form-label m-r-10">Status</label>
@@ -129,9 +130,11 @@
                                 </div>
                             </div>
 
+
+
                             {{-- COA --}}
                             <div class="kanban-item">
-                                <a class="kanban-box p-1 col-sm-11" href="#" data-bs-original-title=""
+                                <a class="kanban-box p-1 col-sm-11" href="javascript:void(0)" data-bs-original-title=""
                                     title="">
                                     <span class="kanban-title">Mapping COA</span><br><br>
                                     <div class="d-flex">
@@ -145,10 +148,9 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="coa_rj">COA RJ</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_pendapatan_rj" name="coa_pendapatan_rj"
-                                                        data-url="{{ route('master-data.coa.select') }}"
-                                                        data-placeholder="---- Pilih ----"></select>
+                                                    <select class="form-select form-control" id="coa_pendapatan_rj"
+                                                        name="coa_pendapatan_rj" data-placeholder="---- Pilih ----">
+                                                    </select>
                                                 </div>
                                             </div>
 
@@ -156,9 +158,8 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="coa_ri">COA RI</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_pendapatan_ri" name="coa_pendapatan_ri"
-                                                        data-url="{{ route('master-data.coa.select1') }}"
+                                                    <select class="form-select form-control" id="coa_pendapatan_ri"
+                                                        name="coa_pendapatan_ri" {{-- data-url="{{ route('master-data.coa.select1') }}" --}}
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
@@ -169,9 +170,8 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="reduksi_rj">Reduksi RJ</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_reduksi_rj" name="coa_reduksi_rj"
-                                                        data-url="{{ route('master-data.coa.select2') }}"
+                                                    <select class="form-select form-control" id="coa_reduksi_rj"
+                                                        name="coa_reduksi_rj" {{-- data-url="{{ route('master-data.coa.select2') }}" --}}
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
@@ -180,9 +180,8 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="reduksi_ri">Reduksi RI</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_reduksi_ri" name="coa_reduksi_ri"
-                                                        data-url="{{ route('master-data.coa.select3') }}"
+                                                    <select class="form-select form-control" id="coa_reduksi_ri"
+                                                        name="coa_reduksi_ri" {{-- data-url="{{ route('master-data.coa.select3') }}" --}}
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
@@ -309,7 +308,8 @@
                                 <div class="card-header-right-icon">
                                     <div class="dropdown icon-dropdown">
                                         {{-- Button Add Form Tarif --}}
-                                        <a class="btn btn-primary add-btn-harga" href="#" type="button">
+                                        <a class="btn btn-primary add-btn-harga" href="javascript:void(0)"
+                                            type="button">
                                             <span class="fa fa-plus"></span>
                                             <span> Tambah Tarif</span>
                                         </a>
@@ -372,81 +372,80 @@
                             <div class="mb-2 row">
                                 <label class="col-sm-1 col-form-label" for="kode">SK Tarif</label>
                                 <div class="col-sm-11">
-                                    <select class="form-select form-control js-select-2" id="tarif" name="tarif"
-                                        data-url="{{ route('master-data.penjamin.select_tarif') }}"
+                                    <select class="form-select form-control" id="tarif" name="tarif"
                                         data-placeholder="---- Pilih Salah Satu ----" required></select>
                                 </div>
                             </div>
                         </div>
 
-                            <div class="form-group row my-0 g-lg-2 col-md-12">
-                                <div class="col-md-6">
-                                    {{-- kelas 1 --}}
-                                    <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 1</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="kelas1" type="text"
-                                                placeholder="Harga Kelas 1..." required>
-                                        </div>
-                                    </div>
-
-                                      {{-- kelas 2 --}}
-                                      <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 2</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" id="rupiah" name="kelas2" type="text"
-                                                placeholder="Harga Kelas 2..." required>
-                                        </div>
-                                    </div>
-
-                                      {{-- kelas 3 --}}
-                                      <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">Kelas 3</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="kelas3" type="text"
-                                                placeholder="Harga Kelas 3..." required>
-                                        </div>
-                                    </div>
-
-                                    {{-- isolasi --}}
-                                    <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">Isolasi</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="isolasi" type="text"
-                                                placeholder="Harga isolasi..." required>
-                                        </div>
+                        <div class="form-group row my-0 g-lg-2 col-md-12">
+                            <div class="col-md-6">
+                                {{-- kelas 1 --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Kelas 1</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="kelas1"
+                                            type="text" placeholder="Harga Kelas 1..." required>
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    {{-- Intensif --}}
-                                    <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">Intensif</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="intensif" type="text"
-                                                placeholder="Harga Intensif..." required>
-                                        </div>
+                                {{-- kelas 2 --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Kelas 2</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" id="rupiah"
+                                            name="kelas2" type="text" placeholder="Harga Kelas 2..." required>
                                     </div>
+                                </div>
 
-                                    {{-- VIP --}}
-                                    <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">VIP</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="vip" type="text"
-                                                placeholder="Harga vip..." required>
-                                        </div>
+                                {{-- kelas 3 --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Kelas 3</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="kelas3"
+                                            type="text" placeholder="Harga Kelas 3..." required>
                                     </div>
+                                </div>
 
-                                    {{-- VVIP --}}
-                                    <div class="mb-2 row">
-                                        <label class="col-sm-2 col-form-label" for="nama">VVIP</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control form-control-sm rupiah-number" name="vvip" type="text"
-                                                placeholder="Harga vvip..." required>
-                                        </div>
+                                {{-- isolasi --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Isolasi</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="isolasi"
+                                            type="text" placeholder="Harga isolasi..." required>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                {{-- Intensif --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Intensif</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="intensif"
+                                            type="text" placeholder="Harga Intensif..." required>
+                                    </div>
+                                </div>
+
+                                {{-- VIP --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">VIP</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="vip"
+                                            type="text" placeholder="Harga vip..." required>
+                                    </div>
+                                </div>
+
+                                {{-- VVIP --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">VVIP</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm rupiah-number" name="vvip"
+                                            type="text" placeholder="Harga vvip..." required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         </a>
                 </div>
                 </form>
@@ -459,6 +458,9 @@
             </div>
         </div>
     </div>
+
+
+
 
 
 

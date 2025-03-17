@@ -39,12 +39,28 @@ class CoaController extends Controller
     }
 
     // Store COA
-    public function select()
+    public function select(Request $request)
     {
-        $query = DB::table('coas')
+        // $query = DB::table('coas')
+        //     ->where('status', '1')
+        //     ->where('kategori', 'Tindakan')
+        //     ->get();
+
+        if ($request->value != null) {
+            $query = DB::table('coas')
             ->where('status', '1')
+            ->where('id', '=', $request->value)
             ->where('kategori', 'Tindakan')
             ->get();
+        }else{
+            $query = DB::table('coas')
+            ->where('status', '1')
+            ->where('kategori', 'Tindakan')
+            ->where('nama', 'like', "%$request->search%")
+            ->where('kode', 'like', "%$request->search%")
+            ->get();
+        }
+
 
         $data = [];
         foreach ($query as $key => $value) {

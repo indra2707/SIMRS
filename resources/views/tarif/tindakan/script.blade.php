@@ -9,23 +9,45 @@
     });
 
     var $table = $('#table_tindakan_tarif');
+    var $table1 = $('#table_harga_tarif');
 
     // Open Modal
     $(document).on('click', '.add-btn', function() {
         $('.form-tarif-tindakan').removeClass('was-validated');
         $('#modal-tarif-tindakan').modal('show');
         $('.modal-title').text('Form Tambah Tarif Tindakan');
-        // clearFormInputFields('.form-tarif-tindakan');
-        $('input[name="id"]').val('');
-        $('input[name="tindakan"]').val('');
-        $('input[name="cito"]').val('30');
-        $('select[name="coa_ri"]').val('').trigger('change');
-        $('select[name="coa_rj"]').val('').trigger('change');
-        $('select[name="reduksi_ri"]').val('').trigger('change');
-        $('select[name="reduksi_rj"]').val('').trigger('change');
-        $('select[name="onsite"]').val('').trigger('change');
-        $('select[name="insite"]').val('').trigger('change');
-        $('select[name="kategori"]').val('').trigger('change');
+        clearFormInputFields('.form-tarif-tindakan');
+        // $('input[name="id"]').val('');
+        // $('input[name="tindakan"]').val('');
+        // $('input[name="cito"]').val('30');
+        // $('select[name="coa_ri"]').val('').trigger('change');
+        // $('select[name="coa_rj"]').val('').trigger('change');
+        // $('select[name="reduksi_ri"]').val('').trigger('change');
+        // $('select[name="reduksi_rj"]').val('').trigger('change');
+        // $('select[name="onsite"]').val('').trigger('change');
+        // $('select[name="insite"]').val('').trigger('change');
+        // $('select[name="kategori"]').val('').trigger('change');
+
+        InitSelect2($('select[name="coa_pendapatan_rj"]'), {
+            url: "{{ route('master-data.coa.select') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ""
+        });
+
+        InitSelect2($('select[name="coa_pendapatan_ri"]'), {
+            url: "{{ route('master-data.coa.select1') }}",
+            dropdownParent: $("#modal-tarif-tindakan")
+        });
+
+        InitSelect2($('select[name="coa_reduksi_rj"]'), {
+            url: "{{ route('master-data.coa.select2') }}",
+            dropdownParent: $("#modal-tarif-tindakan")
+        });
+
+        InitSelect2($('select[name="coa_reduksi_ri"]'), {
+            url: "{{ route('master-data.coa.select3') }}",
+            dropdownParent: $("#modal-tarif-tindakan")
+        });
 
         // var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
         // url = url.replace(':id', $('input[name="kode_tarif"]').val());
@@ -41,43 +63,24 @@
     // Open Modal Harga Tindakan
     $(document).on('click', '.add-btn-harga', function() {
         $('#modal-harga-tindakan').modal('hide');
-        $('.form-harga-detail').removeClass('was-validated');
         $('#modal-harga-detail').modal('show');
         $('.modal-title').text('Form Tambah Harga Tindakan');
-        $('input[name="id"]').val('');
-        $('select[name="tarif"]').val('').trigger('change');
+        // clearFormInputFields('.form-harga-detail');
+
+        // $('input[name="id"]').val('');
+        // $('select[name="tarif"]').val('').trigger('change');
+        // $('.form-harga-detail').removeClass('was-validated');
+
+        InitSelect2($('select[name="tarif"]'), {
+            url: "{{ route('master-data.penjamin.select_tarif') }}",
+            dropdownParent: $("#modal-harga-detail")
+        });
     });
 
     $('#modal-harga-detail').on('hidden.bs.modal', function() {
         $('#modal-harga-tindakan').modal('show');
     });
 
-
-    // // Format rupiah
-    // var rupiah = document.getElementById('rupiah');
-	// 	rupiah.addEventListener('keyup', function(e){
-	// 		// tambahkan 'Rp.' pada saat form di ketik
-	// 		// gunakan fungsi formatRupiah() untuk mengubah angka yang di ketik menjadi format angka
-	// 		rupiah.value = formatRupiah(this.value, 'Rp. ');
-	// 	});
-
-	// 	/* Fungsi formatRupiah */
-	// 	function formatRupiah(angka, prefix){
-	// 		var number_string = angka.replace(/[^,\d]/g, '').toString(),
-	// 		split   		= number_string.split(','),
-	// 		sisa     		= split[0].length % 3,
-	// 		rupiah     		= split[0].substr(0, sisa),
-	// 		ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-	// 		// tambahkan titik jika yang di input sudah menjadi angka ribuan
-	// 		if(ribuan){
-	// 			separator = sisa ? '.' : '';
-	// 			rupiah += separator + ribuan.join('.');
-	// 		}
-
-	// 		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-	// 		return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-	// 	}
 
     // Save
     $(document).on('click', '.save-btn', function() {
@@ -202,7 +205,7 @@
         initTable();
     });
 
-    // ---------------------------------------------------------------------------------------------
+
     // init table
     function initTable() {
         $table.bootstrapTable('destroy').bootstrapTable({
@@ -330,6 +333,86 @@
         });
     }
 
+
+    // init table harga tindakan
+    function initTableHarga($kode_tarif) {
+        $table1.bootstrapTable('destroy').bootstrapTable({
+            height: 350,
+            locale: 'en-US',
+            search: true,
+            // showColumns: true,
+            // showPaginationSwitch: true,
+            // showToggle: true,
+            // showExport: true,
+            pagination: true,
+            pageSize: 10,
+            pageList: [10, 20, 35, 50, 100, 'all'],
+            showRefresh: true,
+            stickyHeader: false,
+            fixedColumns: false,
+            fullscreen: true,
+            minimumCountColumns: 2,
+            icons: iconsFunction(),
+            loadingTemplate: loadingTemplate,
+            exportTypes: ['json', 'csv', 'txt', 'excel'],
+            url: "{{ route('tarif.harga.view') }}",
+            queryParams: function(params) {
+                return {
+                    kode: $kode_tarif
+                }
+            },
+            columns: [
+                [{
+                        field: 'sk',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelas1',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelas2',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelas3',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelasintensif',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelasisolasi',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelasvip',
+                        sortable: true,
+                    },
+                    {
+                        field: 'kelasvvip',
+                        sortable: true,
+                    },
+                    // {
+                    //     width: '5%',
+                    //     title: 'ACTIONS',
+                    //     field: 'action',
+                    //     align: 'center',
+                    //     valign: 'middle',
+                    //     sortable: true,
+                    //     clickToSelect: false,
+                    //     events: window.operateEvents1,
+                    //     formatter: actionsFunction1
+                    // }
+                ]
+            ],
+            responseHandler: function(data) {
+                return data;
+            }
+        });
+    }
+
     function actionsFunction(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
@@ -349,6 +432,7 @@
     window.operateEvents = {
         'click .btn-info': function(e, value, row, index) {
             $('#modal-harga-tindakan').modal('show');
+
             $('.modal-title').text('Form Harga Tindakan');
             $('input[name="id"]').val(row.id);
             $('input[name="kode_tarif"]').val(row.kode_tarif);
@@ -356,6 +440,7 @@
             $('input[name="cito"]').val(row.cito);
             $('input[name="status"]').prop('checked', row.status === '1');
             $('select[name="kategori"]').val(row.kategori).trigger('change');
+            initTableHarga(row.kode_tarif);
         },
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-tarif-tindakan').modal('show');
@@ -367,7 +452,14 @@
             $('input[name="cito"]').val(row.cito);
             $('input[name="status"]').prop('checked', row.status === '1');
             $('select[name="kategori"]').val(row.kategori).trigger('change');
-            $('select[name="coa_pendapatan_rj"]').val(row.coa_pendapatan_rj).trigger('change');
+            // $('select[name="coa_pendapatan_rj"]').val(row.coa_pendapatan_rj).trigger('change');
+
+            InitSelect2($('select[name="coa_pendapatan_rj"]'), {
+                url: "{{ route('master-data.coa.select') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_pendapatan_rj
+            });
+
             $('select[name="coa_pendapatan_ri"]').val(row.coa_pendapatan_ri).trigger('change');
             $('select[name="coa_reduksi_rj"]').val(row.coa_reduksi_rj).trigger('change');
             $('select[name="coa_reduksi_ri"]').val(row.coa_reduksi_ri).trigger('change');
