@@ -120,7 +120,7 @@
                             </div>
 
                             {{-- Satus --}}
-                            <div class="media mb-2">
+                            {{-- <div class="media mb-2">
                                 <label class="col-sm-2 col-form-label m-r-10">Status</label>
                                 <div class="media-body switch-sm icon-state">
                                     <label class="switch">
@@ -128,7 +128,7 @@
                                         <span class="switch-state"></span>
                                     </label>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 
@@ -159,7 +159,7 @@
                                                 <label class="col-sm-4 col-form-label" for="coa_ri">COA RI</label>
                                                 <div class=" col-sm-7">
                                                     <select class="form-select form-control" id="coa_pendapatan_ri"
-                                                        name="coa_pendapatan_ri" {{-- data-url="{{ route('master-data.coa.select1') }}" --}}
+                                                        name="coa_pendapatan_ri"
                                                         data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
@@ -171,8 +171,7 @@
                                                 <label class="col-sm-4 col-form-label" for="reduksi_rj">Reduksi RJ</label>
                                                 <div class=" col-sm-7">
                                                     <select class="form-select form-control" id="coa_reduksi_rj"
-                                                        name="coa_reduksi_rj" {{-- data-url="{{ route('master-data.coa.select2') }}" --}}
-                                                        data-placeholder="---- Pilih ----"></select>
+                                                        name="coa_reduksi_rj" data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
 
@@ -181,8 +180,7 @@
                                                 <label class="col-sm-4 col-form-label" for="reduksi_ri">Reduksi RI</label>
                                                 <div class=" col-sm-7">
                                                     <select class="form-select form-control" id="coa_reduksi_ri"
-                                                        name="coa_reduksi_ri" {{-- data-url="{{ route('master-data.coa.select3') }}" --}}
-                                                        data-placeholder="---- Pilih ----"></select>
+                                                        name="coa_reduksi_ri" data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
                                         </div>
@@ -192,10 +190,8 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="insite">MCU Insite</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_mcu_insite" name="coa_mcu_insite"
-                                                        data-url="{{ route('master-data.coa.select4') }}"
-                                                        data-placeholder="---- Pilih ----"></select>
+                                                    <select class="form-select form-control" id="coa_mcu_insite"
+                                                        name="coa_mcu_insite" data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
 
@@ -203,10 +199,8 @@
                                             <div class="mb-2 row">
                                                 <label class="col-sm-4 col-form-label" for="onsite">MCU Onsite</label>
                                                 <div class=" col-sm-7">
-                                                    <select class="form-select form-control js-select-2"
-                                                        id="coa_mcu_onsite" name="coa_mcu_onsite"
-                                                        data-url="{{ route('master-data.coa.select5') }}"
-                                                        data-placeholder="---- Pilih ----"></select>
+                                                    <select class="form-select form-control" id="coa_mcu_onsite"
+                                                        name="coa_mcu_onsite" data-placeholder="---- Pilih ----"></select>
                                                 </div>
                                             </div>
                                         </div>

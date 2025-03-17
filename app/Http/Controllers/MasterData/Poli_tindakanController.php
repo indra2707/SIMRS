@@ -25,19 +25,23 @@ class Poli_tindakanController extends Controller
     // Views Table
     public function views(Request $request)
     {
-
         // $query = Poli_tindakans::all();
+        // $query = DB::table('poli_tindakans')
+        //        ->where('kode_poli', $request->kode)
+        //        ->get();
 
-        $query = DB::table('poli_tindakans')
-               ->where('kode_poli', $request->kode)
-               ->get();
+        $query = Db::table('poli_tindakans')
+        ->join('tarif_tindakans', 'tarif_tindakans.id', '=', 'poli_tindakans.kode_tindakan')
+        ->select('poli_tindakans.*', 'tarif_tindakans.tindakan')
+        ->where('kode_poli', $request->kode)
+        ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id1' => $value->id,
                 'kode_tindakan' => $value->kode_tindakan,
-                // 'kode_poli' => $value->kode,
+                'tindakan' => $value->tindakan,
                 'status' => $value->status,
             ];
         }

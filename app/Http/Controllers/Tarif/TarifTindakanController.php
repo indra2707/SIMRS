@@ -103,7 +103,7 @@ class TarifTindakanController extends Controller
             'tindakan'          => $request->tindakan,
             'kategori'          => $request->kategori,
             'cito'              => $request->cito,
-            'status'            => $request->status == 'on' ? '1' : '0',
+            // 'status'            => $request->status == 'on' ? '1' : '0',
             'coa_pendapatan_rj' => $request->coa_pendapatan_rj,
             'coa_pendapatan_ri' => $request->coa_pendapatan_ri,
             'coa_reduksi_rj'    => $request->coa_reduksi_rj,

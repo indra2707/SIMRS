@@ -28,65 +28,32 @@ class Jadwal_dokterController extends Controller
         $query = Db::table('Jadwal_dokters')
             ->join('polis', 'polis.id', '=', 'Jadwal_dokters.kode_poli')
             ->join('petugas', 'petugas.id', '=', 'jadwal_dokters.kode_dokter')
-            ->select('Jadwal_dokters.*', 'polis.nama as nama_poli', 'petugas.nama as nama_dokter')
+            ->join('spesialisses', 'spesialisses.id', '=', 'petugas.kode_spesialis')
+            ->select('Jadwal_dokters.*', 'polis.nama as nama_poli', 'petugas.nama as nama_dokter', 'spesialisses.nama as nama_spesialis')
             ->get();
 
 
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id' => $value->id,
-                'kode_poli' => $value->kode_poli,
-                'nama_poli' => $value->nama_poli,
-                'hari' => $value->hari,
-                'kode_dokter' => $value->kode_dokter,
-                'nama_dokter' => $value->nama_dokter,
-                'status' => $value->status,
-                'mulai' => $value->mulai,
-                'akhir' => $value->akhir,
-                'jam' => date('G:i',strtotime($value->mulai)).' - '.date('G:i',strtotime($value->akhir)),
-                'estimasi' => $value->estimasi,
-                'kouta' => $value->kouta,
+                'id'                => $value->id,
+                'kode_poli'         => $value->kode_poli,
+                'nama_poli'         => $value->nama_poli,
+                'nama_spesialis'    => $value->nama_spesialis,
+                'hari'              => $value->hari,
+                'kode_dokter'       => $value->kode_dokter,
+                'nama_dokter'       => $value->nama_dokter,
+                'status'            => $value->status,
+                'mulai'             => $value->mulai,
+                'akhir'             => $value->akhir,
+                'jam'               => date('G:i',strtotime($value->mulai)).' - '.date('G:i',strtotime($value->akhir)),
+                'estimasi'          => $value->estimasi,
+                'kouta'             => $value->kouta,
             ];
         }
         return response()->json($data, 200);
     }
 
-     // Store Poliklinik
-     public function select()
-     {
-         $query = DB::table('polis')
-             ->where('status', '1')
-             ->where('kategori', 'Rawat Jalan')
-             ->get();
-
-         $data = [];
-         foreach ($query as $key => $value) {
-             $data[$key]['id']   = $value->id;
-             $data[$key]['text'] = $value->nama;
-         }
-         return response()->json([
-             'data' => $data
-         ], 200);
-     }
-
-     // Store Poliklinik
-     public function select_petugas()
-     {
-         $query = DB::table('petugas')
-             ->where('status', '1')
-            //  ->where('kategori', 'Rawat Jalan')
-             ->get();
-
-         $data = [];
-         foreach ($query as $key => $value) {
-             $data[$key]['id']   = $value->id;
-             $data[$key]['text'] = $value->nama;
-         }
-         return response()->json([
-             'data' => $data
-         ], 200);
-     }
 
     // Store
     public function store(Request $request)
@@ -99,7 +66,7 @@ class Jadwal_dokterController extends Controller
             'akhir' => $request->akhir,
             'estimasi' => $request->estimasi,
             'kouta' => $request->kouta,
-            'status' => $request->status == 'on' ? '1' : '0',
+            // 'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([
@@ -148,7 +115,7 @@ class Jadwal_dokterController extends Controller
             'akhir' => $request->akhir,
             'estimasi' => $request->estimasi,
             'kouta' => $request->kouta,
-            'status' => $request->status == 'on' ? '1' : '0',
+            // 'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([

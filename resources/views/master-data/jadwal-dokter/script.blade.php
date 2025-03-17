@@ -21,15 +21,15 @@
     $('#mulai').on('keyup', function(e) {
         var mulai = e.target.value;
         var akhir = $('#akhir').val();
-        var estimasi =  $('#estimasi').val();
+        var estimasi = $('#estimasi').val();
         var menit = convertTimeToHours(mulai, akhir) / parseInt(estimasi);
         $('#kouta').val(Math.ceil(menit));
     })
 
     $('#akhir').on('keyup', function(e) {
         var mulai = $('#mulai').val();
-        var akhir = e.target.value ;
-        var estimasi =  $('#estimasi').val();
+        var akhir = e.target.value;
+        var estimasi = $('#estimasi').val();
         var menit = convertTimeToHours(mulai, akhir) / parseInt(estimasi);
         $('#kouta').val(Math.ceil(menit));
     })
@@ -42,16 +42,20 @@
         $('#modal-jadwal').modal('show');
         $('.modal-title').text('Form Tambah Jadwal Dokter');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="id"]').val('');
-        $('input[name="kouta"]').val('');
-        $('input[name="kode_dokter"]').val('');
-        $('input[name="mulai"]').val('');
-        $('input[name="awal"]').val('');
-        $('input[name="akhir"]').val('');
-        $('input[name="estimasi"]').val('');
-        $('select[name="kode_poli"]').val('').trigger('change');
-        $('select[name="hari"]').val('').trigger('change');
-        $('input[name="status"]').prop('checked', true);
+        clearFormInputFields('.form-jadwal');
+
+        InitSelect2($("select[name='kode_dokter']"), {
+            url: "{{ route('get-select-petugas') }}",
+            dropdownParent: $("#modal-jadwal"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='kode_poli']"), {
+            url: "{{ route('get-select-poli') }}",
+            dropdownParent: $("#modal-jadwal"),
+            initialValue: ''
+        });
+
     });
 
     // Save
@@ -201,7 +205,12 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.jadwal-dokter.view') }}",
             columns: [
-                [
+                [{
+                        width: '350%',
+                        field: 'kode_poli',
+                        sortable: true,
+                        visible: false,
+                    },
                     {
                         width: '350%',
                         field: 'nama_poli',
@@ -209,7 +218,6 @@
                     },
                     {
                         width: '800%',
-                        // title: 'Kode Dokter',
                         field: 'kode_dokter',
                         sortable: true,
                         visible: false,
@@ -218,6 +226,12 @@
                     {
                         // width: '450%',
                         field: 'nama_dokter',
+                        sortable: true,
+
+                    },
+                    {
+                        // width: '450%',
+                        field: 'nama_spesialis',
                         sortable: true,
 
                     },
@@ -332,14 +346,24 @@
             $('.modal-title').text('Form Edit coa');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
-            $('select[name="kode_poli"]').val(row.kode_poli).trigger('change');
             $('select[name="hari"]').val(row.hari).trigger('change');
-            $('select[name="kode_dokter"]').val(row.kode_dokter).trigger('change');
             $('input[name="mulai"]').val(row.mulai);
             $('input[name="akhir"]').val(row.akhir);
             $('input[name="estimasi"]').val(row.estimasi);
             $('input[name="kouta"]').val(row.kouta);
             $('input[name="status"]').prop('checked', row.status === '1');
+
+            InitSelect2($("select[name='kode_dokter']"), {
+                url: "{{ route('get-select-petugas') }}",
+                dropdownParent: $("#modal-jadwal"),
+                initialValue: row.kode_dokter
+            });
+
+            InitSelect2($("select[name='kode_poli']"), {
+                url: "{{ route('get-select-poli') }}",
+                dropdownParent: $("#modal-jadwal"),
+                initialValue: row.kode_poli
+            });
         },
         'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('master-data.jadwal-dokter.delete', ':id') }}";

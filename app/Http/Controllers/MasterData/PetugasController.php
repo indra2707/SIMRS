@@ -171,6 +171,7 @@ class PetugasController extends Controller
         if ($request->has('signed') && $request->signed != "") {
             // Cek Signature Kosong atau Tidak di database
             $query = Petugas::where('id', $id)->first();
+            $file_name ="";
             if ($query->signatures != null) {
                 $image_parts = explode(";base64,", $request->signed);
                 $image_type_aux = explode("image/", $image_parts[0]);

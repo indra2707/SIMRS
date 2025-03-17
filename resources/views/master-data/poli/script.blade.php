@@ -35,17 +35,22 @@
 
     // Open Modal Tindakan
     $(document).on('click', '.add-tindakan', function() {
-        $('#modal-kelompok').modal('hide');
+        $('#modal-infos').modal('hide');
         $('#modal-input-tindakan').modal('show');
         $('.form-tindakan').removeClass('was-validated');
         $('.modal-title').text('Form Tambah Tindakan');
         $('.save-btn-tindakan').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="tindakan"]').val('');
         $('input[name="status1"]').prop('checked', true);
+
+        InitSelect2($("select[name='tindakan']"), {
+            url: "{{ route('get-select-tindakan') }}",
+            dropdownParent: $("#modal-input-tindakan"),
+            initialValue: ''
+        });
     });
 
     $('#modal-input-tindakan').on('hidden.bs.modal', function() {
-        $('#modal-kelompok').modal('show');
+        $('#modal-infos').modal('show');
     });
 
 
@@ -356,6 +361,11 @@
                 [{
                         field: 'kode_tindakan',
                         sortable: true,
+                        visible: false,
+                    },
+                    {
+                        field: 'tindakan',
+                        sortable: true,
                     },
                     {
                         width: '5%',
@@ -475,15 +485,9 @@
 
     function actionsFunction1(value, row, index) {
         return [
-            // '<div class="dropdown icon-dropdown">',
-            '<button class="btn  btn-delete1" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="fa fa-trash text-danger"></i>',
+            '<button class="btn btn-danger btn-sm btn-delete1">',
+            '<span class="fa fa-trash"></span>',
             '</button>',
-            // '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            // // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            // '<a class="dropdown-item btn-delete1" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
-            // '</div>',
-            // '</div>',
         ].join("");
     }
 

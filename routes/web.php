@@ -63,12 +63,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/coa/update-status/{id}', [CoaController::class, 'updateStatus'])->name('master-data.coa.update-status');
         Route::put('/coa/update/{id}', [CoaController::class, 'update'])->name('master-data.coa.update');
         Route::delete('/coa/delete/{id}', [CoaController::class, 'destroy'])->name('master-data.coa.delete');
-        Route::get('/coa/select-coa', [CoaController::class, 'select'])->name('master-data.coa.select');
-        Route::get('/coa/select1-coa', [CoaController::class, 'select1'])->name('master-data.coa.select1');
-        Route::get('/coa/select2-coa', [CoaController::class, 'select2'])->name('master-data.coa.select2');
-        Route::get('/coa/select3-coa', [CoaController::class, 'select3'])->name('master-data.coa.select3');
-        Route::get('/coa/select4-coa', [CoaController::class, 'select4'])->name('master-data.coa.select4');
-        Route::get('/coa/select5-coa', [CoaController::class, 'select4'])->name('master-data.coa.select5');
         // SPESIALIS
         Route::get('/spesialis', [SpesialisController::class, 'index'])->name('master-data.spesialis');
         Route::get('/spesialis/view', [SpesialisController::class, 'views'])->name('master-data.spesialis.view');
@@ -113,7 +107,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/petugas/update/{id}', [PetugasController::class, 'update'])->name('master-data.petugas.update');
         Route::put('/petugas/update_signature/{id}', [PetugasController::class, 'update_signature'])->name('master-data.petugas.update_signature');
         Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
-        Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
         // JADWAL
         Route::get('/jadwal-dokter', [Jadwal_dokterController::class, 'index'])->name('master-data.jadwal-dokter');
         Route::get('/jadwal-dokter/view', [Jadwal_dokterController::class, 'views'])->name('master-data.jadwal-dokter.view');
@@ -155,6 +148,14 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::prefix('global-controller')->group(function () {
         // Spesialis
         Route::get('/get-select-spesialis', [GlobalController::class, 'optionsSelectSpesialis'])->name('get-select-spesialis');
+        // Petugas
+        Route::get('/get-select-petugas', [GlobalController::class, 'optionsSelectPetugas'])->name('get-select-petugas');
+        // Poli
+        Route::get('/get-select-poli', [GlobalController::class, 'optionsSelectPoli'])->name('get-select-poli');
+        // COA
+        Route::get('/get-select-coa', [GlobalController::class, 'optionsSelectCoa'])->name('get-select-coa');
+        // Tindakan
+        Route::get('/get-select-tindakan', [GlobalController::class, 'optionsSelectTindakan'])->name('get-select-tindakan');
         // Tarif Tindakan
         Route::get('/get-select-tarif-tindakan', [GlobalController::class, 'tarifTindakan'])->name('get-select-tarif-tindakan');
         // Generate Kode
