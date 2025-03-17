@@ -153,3 +153,9 @@ function clearFormInputFields(element) {
     elements.find('select').val(null).trigger('change');
     elements.find('input[name="_token"]').val($('meta[name="csrf-token"]').attr('content'));
 }
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});

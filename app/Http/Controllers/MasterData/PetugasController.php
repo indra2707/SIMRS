@@ -105,7 +105,6 @@ class PetugasController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        dd($id);
         if (!is_dir('uploads/images/profil/')) {
             mkdir('uploads/images/profil/', 0777, true);
         }
@@ -131,9 +130,9 @@ class PetugasController extends Controller
             'kategori'         => $request->kategori,
             'no_sip'           => $request->no_sip,
             'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
-            'kode_spesialis'   => $request->kode_spesialis,
-            'kode_konsul'      => $request->kode_konsul,
-            'kode_visite'      => $request->kode_visite,
+            'kode_spesialis'   => $request->spesialis,
+            'tindakan_konsul'  => $request->tindakan_konsul,
+            'tindakan_visite'  => $request->tindakan_visite,
             'foto'             => $filename,
         ];
 
@@ -210,6 +209,20 @@ class PetugasController extends Controller
     // Delete
     public function destroy($id)
     {
+        // Delete Images
+        $pathProfile = 'uploads/images/profil/';
+        $pathSignature = 'uploads/images/signature/';
+        $query = Petugas::where('id', $id)->first();
+        $fileProfile = $pathProfile . $query->foto;
+        $fileProSignature = $pathSignature . $query->signatures;
+
+        if ($query->foto != null || $query->signatures != null || $query->foto != "" || $query->signatures != "") {
+            if (file_exists($fileProfile) && file_exists($fileProSignature)) {
+                unlink($fileProfile);
+                unlink($fileProSignature);
+            }
+        }
+
         $query = Petugas::where('id', $id)->delete();
         if ($query) {
             return response()->json([

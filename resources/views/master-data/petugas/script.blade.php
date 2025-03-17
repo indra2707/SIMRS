@@ -156,10 +156,8 @@
         if (id) {
             var url = "{{ route('master-data.petugas.update', ':id') }}";
             url = url.replace(':id', id);
-            var type = "PUT";
         } else {
             var url = "{{ route('master-data.petugas.create') }}";
-            var type = "POST";
         }
         var forms = document.getElementsByClassName('form-petugas');
         var validation = Array.prototype.filter.call(forms, function(form) {
@@ -187,7 +185,7 @@
                 }
                 let myformData = new FormData(form);
                 $.ajax({
-                    type: type,
+                    type: "POST",
                     url: url,
                     dataType: "json",
                     processData: false,
