@@ -183,11 +183,11 @@ class PetugasController extends Controller
                 if (file_exists($file)) {
                     unlink($file);
                 }
+                $dataValues = [
+                    'signatures' => $file_name
+                ];
+                $query = Petugas::where('id', $id)->update($dataValues);
             }
-            $dataValues = [
-                'signatures' => $file_name
-            ];
-            $query = Petugas::where('id', $id)->update($dataValues);
         }
 
         if ($query) {
