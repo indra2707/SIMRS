@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('nik', 50)->unique();
             $table->enum('jenis_kelamin', allowed: ['L', 'P']);
             $table->string('status_petugas', length: 100)->nullable();
-            $table->string('no_hp', length: 30);
-            $table->text('alamat');
+            $table->string('no_hp', length: 30)->nullable();;
+            $table->text('alamat')->nullable();;
             $table->string('kode_bpjs', 100)->unique();
             $table->string('kategori', 100)->nullable();
             $table->string('no_sip', 100)->nullable();
