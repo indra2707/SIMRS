@@ -153,8 +153,3 @@ function clearFormInputFields(element) {
     elements.find('select').val(null).trigger('change');
     elements.find('input[name="_token"]').val($('meta[name="csrf-token"]').attr('content'));
 }
-
-// Buton Batal to Clear Input Field
-// $('.modal').on('hidden.bs.modal', function (e) {
-//     $(this).find("input,textarea,select").val('').end().find("input[type=checkbox], input[type=radio]").prop("checked", "").end();
-// })

@@ -233,82 +233,47 @@
     // Save Signatures
     $(document).on('click', '.save-signature-btn', function() {
         var id = $('input[name="id"]').val();
-        if (id) {
-            var url = "{{ route('master-data.petugas.update', ':id') }}";
-            url = url.replace(':id', id);
-            var type = "POST";
-        } else {
-            var url = "{{ route('master-data.petugas.create') }}";
-            var type = "POST";
-        }
-        var forms = document.getElementsByClassName('form-petugas');
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                const fileInput = $('#profil')[0],
-                    file = fileInput.files[0],
-                    maxSize = 1 * 1024 * 1024,
-                    allowedTypes = ['image/jpeg', 'image/png',
-                        'image/jpg'
-                    ]; // Example allowed types
-                // Validate file type
-                if (file && !allowedTypes.includes(file.type)) {
-                    Alert('warning',
-                        'Jenis berkas tidak valid. Jenis yang diperbolehkan: JPEG, PNG, JPG.');
-                    return;
+        var url = "{{ route('master-data.petugas.update_signature', ':id') }}";
+        url = url.replace(':id', id);
+        $.ajax({
+            type: "PUT",
+            url: url,
+            dataType: "json",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
+                    'content'),
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'multipart/form-data'
+            },
+            data: $('.form-signature').serialize(),
+            beforeSend: function() {
+                $('.save-btn').html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                ).attr('disabled', 'disabled');
+            },
+            complete: function() {
+                $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                    .removeAttr('disabled');
+            },
+            success: function(res, status, xhr) {
+                if (xhr.status == 200 && res.success == true) {
+                    Alert('success', res.message);
+                    $table.bootstrapTable('refresh');
+                } else {
+                    Alert('warning', res.message);
                 }
-                // Validate file size
-                if (file && file.size > maxSize) {
-                    Alert('warning', 'Ukuran file melebihi batas maksimal 1 MB');
-                    return;
+                $('#modal-signature').modal('hide');
+                form.classList.remove('was-validated');
+            },
+            error: function(xhr, status, error) {
+                if (xhr.status == 400) {
+                    Alert('error', xhr.responseJSON.message);
+                } else if (xhr.status == 500) {
+                    Alert('info',
+                        "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                    );
                 }
-                let formData = new FormData(form);
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: "json",
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr(
-                            'content'),
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'multipart/form-data'
-                    },
-                    data: formData,
-                    beforeSend: function() {
-                        $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                        ).attr('disabled', 'disabled');
-                    },
-                    complete: function() {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-                    success: function(res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert('success', res.message);
-                            $table.bootstrapTable('refresh');
-                        } else {
-                            Alert('warning', res.message);
-                        }
-                        $('#modal-petugas').modal('hide');
-                        form.classList.remove('was-validated');
-                    },
-                    error: function(xhr, status, error) {
-                        if (xhr.status == 400) {
-                            Alert('error', xhr.responseJSON.message);
-                        } else if (xhr.status == 500) {
-                            Alert('info',
-                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                            );
-                        }
-                        form.classList.remove('was-validated');
-                    }
-                });
             }
-            form.classList.add('was-validated');
         });
     });
 
@@ -426,16 +391,21 @@
         'click .btn-signature': function(e, value, row, index) {
             $('#modal-signature').modal('show');
             $('.modal-title').text('Tanda Tangan');
-            if (row.signature) {
+            $('input[name="id"]').val(row.id);
+            console.warn(row);
+
+            if (row.signatures) {
                 $('.img-signature').show();
-                $('.images-sig').attr('src', "{{ asset('/uploads/images/signature') }}" + "/" + row.signature);
+                $('.images-sig').attr('src', "{{ asset('/uploads/images/signature') }}" + "/" + row.signatures);
                 $('.signatures-pad').hide();
+                $('.modal-footer').hide();
             } else {
                 $('.img-signature').hide();
                 $('.images-sig').attr('src', "{{ asset('assets/images/avatar/user2.png') }}");
                 $('.signatures-pad').show();
                 sig.signature('clear');
                 $("#signature64").val('');
+                $('.modal-footer').show();
             }
         },
         'click .btn-edit': function(e, value, row, index) {
@@ -464,7 +434,11 @@
             });
             $('textarea[name="alamat"]').val(row.alamat);
             imageInput.value = '';
-            imageViewer.src = "{{ asset('/uploads/images/profil') }}" + '/' + row.foto;
+            if (row.foto) {
+                imageViewer.src = "{{ asset('/uploads/images/profil') }}" + '/' + row.foto;
+            } else {
+                imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
+            }
             $('input[name="kode_bpjs"]').val(row.kode_bpjs);
             InitSelect2Array($("select[name='kategori']"), {
                 data: optionsSelect2DataKategori,
@@ -560,6 +534,7 @@
     $(document).on('click', '.update-signature', function() {
         $('.signatures-pad').show();
         $('.img-signature').hide();
+        $('.modal-footer').show();
         sig.signature('clear');
         $("#signature64").val('');
     });

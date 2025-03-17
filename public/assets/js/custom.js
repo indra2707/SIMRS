@@ -19,50 +19,65 @@ $(".js-select-2").each(function (index, element) {
 });
 
 function InitSelect2(element, options) {
-    $.ajax({
-        url: options.url,
-        method: "GET",
-        dataType: "json",
-        async: false,
-        data: {
-            values: options.initialValue
-        },
-        beforeSend: function () {
-            element.addClass("loading");
-        },
-        success: function (data) {
-            element.removeClass("loading");
-            element.empty();
-            element.select2({
-                allowClear: true,
-                dropdownParent: options.dropdownParent ? options.dropdownParent : null,
-                ajax: {
-                    type: "GET",
-                    url: options.url,
-                    dataType: "json",
-                    data: function (params) {
-                        return {
-                            search: params.term,
-                        };
+    if (options.initialValue) {
+        $.ajax({
+            url: options.url,
+            method: "GET",
+            dataType: "json",
+            async: false,
+            data: {
+                values: options.initialValue
+            },
+            beforeSend: function () {
+                element.addClass("loading");
+            },
+            success: function (data) {
+                element.removeClass("loading");
+                element.empty();
+                element.select2({
+                    allowClear: true,
+                    dropdownParent: options.dropdownParent ? options.dropdownParent : null,
+                    ajax: {
+                        type: "GET",
+                        url: options.url,
+                        dataType: "json",
+                        data: function (params) {
+                            return {
+                                search: params.term,
+                            };
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.data
+                            };
+                        },
                     },
-                    processResults: function (data) {
-                        // var results = [];
-                        // $.each(data.data, function (index, item) {
-                        //     results.push({
-                        //         id: item.id,
-                        //         text: item.text,
-                        //     });
-                        // })
-                        return {
-                            results: data.data
-                        };
-                    },
+                    data: data.data,
+                });
+                element.val(options.initialValue).trigger("change");
+            },
+        });
+    } else {
+        element.select2({
+            allowClear: true,
+            dropdownParent: options.dropdownParent ? options.dropdownParent : null,
+            ajax: {
+                type: "GET",
+                url: options.url,
+                dataType: "json",
+                data: function (params) {
+                    return {
+                        search: params.term,
+                    };
                 },
-                data: data.data,
-            });
-            element.val(options.initialValue).trigger("change");
-        },
-    });
+                processResults: function (data) {
+                    return {
+                        results: data.data
+                    };
+                },
+            },
+        });
+    }
 }
 
 function InitSelect2Array(element, options) {

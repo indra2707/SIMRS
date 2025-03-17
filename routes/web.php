@@ -111,6 +111,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/petugas/view', [PetugasController::class, 'views'])->name('master-data.petugas.view');
         Route::post('/petugas/store', [PetugasController::class, 'store'])->name('master-data.petugas.create');
         Route::put('/petugas/update/{id}', [PetugasController::class, 'update'])->name('master-data.petugas.update');
+        Route::put('/petugas/update_signature/{id}', [PetugasController::class, 'update_signature'])->name('master-data.petugas.update_signature');
         Route::delete('/petugas/delete/{id}', [PetugasController::class, 'destroy'])->name('master-data.petugas.delete');
         Route::get('/select-spesialis', [PenjaminController::class, 'select_spesialis'])->name('master-data.spesialis.select_spesialis');
         // JADWAL

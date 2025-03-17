@@ -50,17 +50,21 @@ class GlobalController extends Controller
 
     public function optionsSelectSpesialis(Request $request)
     {
-        if ($request->value != null) {
-            $query = DB::table('spesialisses')
-            ->where('status', '1')
-            ->where('id', '=', $request->value)
-            ->get();
+        if ($request->values != "") {
+            $where = [
+                ['status', '=', '1'],
+                ['id', '=', $request->values],
+                ['nama', 'like', "%$request->search%"]
+            ];
         }else{
-            $query = DB::table('spesialisses')
-            ->where('status', '1')
-            ->where('nama', 'like', "%$request->search%")
-            ->get();
+            $where = [
+                ['status', '=', '1'],
+                ['nama', 'like', "%$request->search%"]
+            ];
         }
+        $query = DB::table('spesialisses')
+            ->where($where)
+            ->get();
 
         $data = [];
         foreach ($query as $key => $value) {
