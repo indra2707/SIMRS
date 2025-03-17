@@ -398,14 +398,14 @@
                 $('.img-signature').show();
                 $('.images-sig').attr('src', "{{ asset('/uploads/images/signature') }}" + "/" + row.signatures);
                 $('.signatures-pad').hide();
-                $('.modal-footer').hide();
+                $('#modal-signature .modal-footer').hide();
             } else {
                 $('.img-signature').hide();
                 $('.images-sig').attr('src', "{{ asset('assets/images/avatar/user2.png') }}");
                 $('.signatures-pad').show();
                 sig.signature('clear');
                 $("#signature64").val('');
-                $('.modal-footer').show();
+                $('#modal-signature .modal-footer').show();
             }
         },
         'click .btn-edit': function(e, value, row, index) {
@@ -534,7 +534,7 @@
     $(document).on('click', '.update-signature', function() {
         $('.signatures-pad').show();
         $('.img-signature').hide();
-        $('.modal-footer').show();
+        $('#modal-signature .modal-footer').show();
         sig.signature('clear');
         $("#signature64").val('');
     });
