@@ -14,12 +14,12 @@ class Harga_tindakans extends Model
     protected $fillable = [
         'kode_tarif',
         'kode_sk',
-        'kelas1',
-        'kelas2',
-        'kelas3',
-        'kelasisolasi',
-        'kelasintensif',
-        'kelasvip',
-        'kelasvvip',
+        'kelas_1',
+        'kelas_2',
+        'kelas_3',
+        'kelas_isolasi',
+        'kelas_intensif',
+        'kelas_vip',
+        'kelas_vvip',
     ];
 }

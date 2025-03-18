@@ -73,38 +73,43 @@
                         <div class="mb-2 row">
                             <input type="hidden" name="id">
                         </div>
-                        {{-- Layanan --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode_poli">Layanan</label>
-                            <div class="col-sm-10">
-                                <select class="form-select form-control" id="kode_poli" name="kode_poli"
-                                    data-placeholder="---- Pilih Salah Satu ----" required></select>
-                            </div>
-                        </div>
 
-                        {{-- Hari --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Hari</label>
-                            <div class="col-sm-10">
-                                <select class="form-select form-control select2" name="hari" required>
-                                    <option></option>
-                                    <option value="Senin">Senin</option>
-                                    <option value="Selasa">Selasa</option>
-                                    <option value="Rabu">Rabu</option>
-                                    <option value="Kamis">Kamis</option>
-                                    <option value="Jumat">Jumat</option>
-                                    <option value="Sabtu">Sabtu</option>
-                                    <option value="Minggu">Minggu</option>
-                                </select>
-                            </div>
-                        </div>
+                        <div class="form-group row my-0 g-lg-2 col-md-12">
+                            <div class="col-md-12">
+                                {{-- Layanan --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="kode_poli">Layanan</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select form-control" id="kode_poli" name="kode_poli"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                    </div>
+                                </div>
 
-                        {{-- Dokter --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="kode_poli">Dokter</label>
-                            <div class="col-sm-10">
-                                <select class="form-select form-control" id="kode_dokter" name="kode_dokter"
-                                    data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                {{-- Hari --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Hari</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select form-control select2" name="hari" required>
+                                            <option></option>
+                                            <option value="Senin">Senin</option>
+                                            <option value="Selasa">Selasa</option>
+                                            <option value="Rabu">Rabu</option>
+                                            <option value="Kamis">Kamis</option>
+                                            <option value="Jumat">Jumat</option>
+                                            <option value="Sabtu">Sabtu</option>
+                                            <option value="Minggu">Minggu</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- Dokter --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="kode_poli">Dokter</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select form-control" id="kode_dokter" name="kode_dokter"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -131,21 +136,26 @@
                             </div>
                         </div>
 
-                        {{-- Estimasi --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Estimasi</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control-sm" id="estimasi" name="estimasi"
-                                    type="number" placeholder="Batas Waktu Sesi per Pasien (dalam menit)" required>
-                            </div>
-                        </div>
+                        <div class="form-group row my-0 g-lg-2 col-md-12">
+                            <div class="col-md-12">
+                                {{-- Estimasi --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Estimasi</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm" id="estimasi" name="estimasi"
+                                            type="number" placeholder="Batas Waktu Sesi per Pasien (dalam menit)"
+                                            required>
+                                    </div>
+                                </div>
 
-                        {{-- Kouta --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Kouta</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control-sm" id="kouta" name="kouta" type="number"
-                                    placeholder="Kouta..." readonly>
+                                {{-- Kouta --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama">Kouta</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control-sm" id="kouta" name="kouta"
+                                            type="number" placeholder="Kouta..." readonly>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

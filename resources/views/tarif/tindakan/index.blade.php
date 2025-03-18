@@ -231,110 +231,108 @@
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-wizard form-harga-tindakan needs-validation" novalidate="" autocomplete="off">
-                        @csrf
-                        <div class="row">
-                            <div class="mb-2 row">
-                                <div class="col-sm-10">
-                                    <input type="hidden" name="id">
-                                </div>
+                    {{-- <form class="form-wizard form-harga-tindakan needs-validation" novalidate="" autocomplete="off"> --}}
+                    @csrf
+                    <div class="row">
+                        <div class="mb-2 row">
+                            <div class="col-sm-10">
+                                <input type="hidden" name="id">
                             </div>
+                        </div>
 
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="kode">Kode Tindakan</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control form-control-sm" name="kode_tarif" type="text"
-                                        disabled>
-                                </div>
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode">Kode Tindakan</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="kode_tarif" type="text" disabled>
                             </div>
+                        </div>
 
-                            {{-- Nama --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Nama Tindakan</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control form-control-sm" name="tindakan" type="text" disabled
-                                        placeholder="Nama Tindakan..." required>
-                                </div>
+                        {{-- Nama --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Nama Tindakan</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control-sm" name="tindakan" type="text" disabled
+                                    placeholder="Nama Tindakan..." required>
                             </div>
-                            {{-- Kategori --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
-                                <div class="col-sm-10">
-                                    <select class="form-select form-control select2" name="kategori" required disabled>
-                                        <option></option>
-                                        <option value="Tindakan">Tindakan</option>
-                                        <option value="Konsultasi">Konsultasi</option>
-                                        <option value="Sewa Alat">Sewa Alat</option>
-                                        <option value="Kamar Bedah">Kamar Bedah</option>
-                                        <option value="Cathlab">Cathlab</option>
-                                        <option value="Radiologi">Radiologi</option>
-                                        <option value="Laboratorium">Laboratorium</option>
-                                        <option value="Akomodasi">Akomodasi</option>
-                                        <option value="Paket">Paket</option>
-                                    </select>
-                                </div>
+                        </div>
+                        {{-- Kategori --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Kategori</label>
+                            <div class="col-sm-10">
+                                <select class="form-select form-control select2" name="kategori" required disabled>
+                                    <option></option>
+                                    <option value="Tindakan">Tindakan</option>
+                                    <option value="Konsultasi">Konsultasi</option>
+                                    <option value="Sewa Alat">Sewa Alat</option>
+                                    <option value="Kamar Bedah">Kamar Bedah</option>
+                                    <option value="Cathlab">Cathlab</option>
+                                    <option value="Radiologi">Radiologi</option>
+                                    <option value="Laboratorium">Laboratorium</option>
+                                    <option value="Akomodasi">Akomodasi</option>
+                                    <option value="Paket">Paket</option>
+                                </select>
                             </div>
-                            {{-- Nilai Cito --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Nilai Cito</label>
-                                <div class="col-sm-2">
-                                    <div class="input-group input-group-sm">
-                                        <input class="form-control numInput" type="text" name="cito" disabled
-                                            id="nilai_cito" placeholder="Nilai Cito..." title="Satuan persen">
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Satus --}}
-                            <div class="media mb-2">
-                                <label class="col-sm-2 col-form-label m-r-10">Status</label>
-                                <div class="media-body switch-sm icon-state">
-                                    <label class="switch">
-                                        <input class="form-control" name="status" type="checkbox" checked disabled>
-                                        <span class="switch-state"></span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <hr>
-
-                            <div class="header-top">
-                                <div class="card-header-right-icon">
-                                    <div class="dropdown icon-dropdown">
-                                        {{-- Button Add Form Tarif --}}
-                                        <a class="btn btn-primary add-btn-harga" href="javascript:void(0)"
-                                            type="button">
-                                            <span class="fa fa-plus"></span>
-                                            <span> Tambah Tarif</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card-body pt-0 campaign-table">
-                                <div class="recent-table table-responsive currency-table">
-                                    <table id="table_harga_tarif" class="table table-hover" data-buttons-class="primary"
-                                        data-toggle="table">
-                                        <thead class="text-bold text-white text-uppercase text-center">
-                                            <tr>
-                                                <th class="f-light">SK Tarif</th>
-                                                <th class="f-light">Kelas 1</th>
-                                                <th class="f-light">Kelas 2</th>
-                                                <th class="f-light">Kelas 3</th>
-                                                <th class="f-light">Kelas Isolasi</th>
-                                                <th class="f-light">Kelas Intensif</th>
-                                                <th class="f-light">Kelas VIP</th>
-                                                <th class="f-light">Kelas VVIP</th>
-                                                <th>#</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
+                        </div>
+                        {{-- Nilai Cito --}}
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="nama">Nilai Cito</label>
+                            <div class="col-sm-2">
+                                <div class="input-group input-group-sm">
+                                    <input class="form-control numInput" type="text" name="cito" disabled
+                                        id="nilai_cito" placeholder="Nilai Cito..." title="Satuan persen">
+                                    <span class="input-group-text">%</span>
                                 </div>
                             </div>
                         </div>
-                        </a>
+                        {{-- Satus --}}
+                        <div class="media mb-2">
+                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
+                            <div class="media-body switch-sm icon-state">
+                                <label class="switch">
+                                    <input class="form-control" name="status" type="checkbox" checked disabled>
+                                    <span class="switch-state"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="header-top">
+                            <div class="card-header-right-icon">
+                                <div class="dropdown icon-dropdown">
+                                    {{-- Button Add Form Tarif --}}
+                                    <a class="btn btn-primary add-btn-harga" href="javascript:void(0)" type="button">
+                                        <span class="fa fa-plus"></span>
+                                        <span> Tambah Harga</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body pt-0 campaign-table">
+                            <div class="recent-table table-responsive currency-table">
+                                <table id="table_harga_tarif" class="table table-hover" data-buttons-class="primary"
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
+                                        <tr>
+                                            <th class="f-light">SK Tarif</th>
+                                            <th class="f-light">Kelas 1</th>
+                                            <th class="f-light">Kelas 2</th>
+                                            <th class="f-light">Kelas 3</th>
+                                            <th class="f-light">Isolasi</th>
+                                            <th class="f-light">Intensif</th>
+                                            <th class="f-light">VIP</th>
+                                            <th class="f-light">VVIP</th>
+                                            <th>#</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
                 </div>
-                </form>
+                {{-- </form> --}}
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
                         <span class="fa fa-times"></span> Batal</button>
@@ -358,16 +356,22 @@
                         <div class="row">
                             <div class="mb-2 row">
                                 <div class="col-sm-10">
-                                    <input type="hidden" name="id">
+                                    <input type="hidden" name="id1">
+                                    <input type="hidden" name="kode_tarif">
                                 </div>
                             </div>
+                        </div>
 
-                            {{-- SK Tarif --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-1 col-form-label" for="kode">SK Tarif</label>
-                                <div class="col-sm-11">
-                                    <select class="form-select form-control" id="tarif" name="tarif"
-                                        data-placeholder="---- Pilih Salah Satu ----" required></select>
+
+                        <div class="form-group row my-0 g-lg-2 col-md-12">
+                            <div class="col-md-12">
+                                {{-- SK Tarif --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-1 col-form-label" for="kode">SK Tarif</label>
+                                    <div class="col-sm-11">
+                                        <select class="form-select form-control" id="kode_sk" name="kode_sk"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -378,8 +382,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Kelas 1</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="kelas1"
-                                            type="text" placeholder="Harga Kelas 1..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_1"
+                                            name="kelas_1" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
 
@@ -387,8 +391,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Kelas 2</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" id="rupiah"
-                                            name="kelas2" type="text" placeholder="Harga Kelas 2..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_2"
+                                            name="kelas_2" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
 
@@ -396,8 +400,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Kelas 3</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="kelas3"
-                                            type="text" placeholder="Harga Kelas 3..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_3"
+                                            name="kelas_3" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
 
@@ -405,8 +409,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Isolasi</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="isolasi"
-                                            type="text" placeholder="Harga isolasi..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_isolasi"
+                                            name="kelas_isolasi" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
                             </div>
@@ -416,8 +420,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">Intensif</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="intensif"
-                                            type="text" placeholder="Harga Intensif..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_intensif"
+                                            name="kelas_intensif" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
 
@@ -425,8 +429,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">VIP</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="vip"
-                                            type="text" placeholder="Harga vip..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_vip"
+                                            name="kelas_vip" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
 
@@ -434,8 +438,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="nama">VVIP</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control form-control-sm rupiah-number" name="vvip"
-                                            type="text" placeholder="Harga vvip..." required>
+                                        <input class="form-control form-control-sm rupiah-number" id="kelas_vvip"
+                                            name="kelas_vvip" type="text" placeholder="Rp..." required>
                                     </div>
                                 </div>
                             </div>

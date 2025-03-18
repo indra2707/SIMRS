@@ -66,14 +66,24 @@
 
     // Open Modal Harga Tindakan
     $(document).on('click', '.add-btn-harga', function() {
+        $('.form-harga-detail').removeClass('was-validated');
         $('#modal-harga-tindakan').modal('hide');
         $('#modal-harga-detail').modal('show');
         $('.modal-title').text('Form Tambah Harga Tindakan');
-        clearFormInputFields('.form-harga-detail');
+        $('input[name="kelas_1"]').val('');
+        $('input[name="kelas_2"]').val('');
+        $('input[name="kelas_3"]').val('');
+        $('input[name="kelas_isolasi"]').val('');
+        $('input[name="kelas_intensif"]').val('');
+        $('input[name="kelas_vip"]').val('');
+        $('input[name="kelas_vvip"]').val('');
+        $('select[name="kode_sk "]').val('').trigger('change');
 
-        InitSelect2($('select[name="tarif"]'), {
+        InitSelect2($('select[name="kode_sk"]'), {
             url: "{{ route('master-data.penjamin.select_tarif') }}",
-            dropdownParent: $("#modal-harga-detail")
+            dropdownParent: $("#modal-harga-detail"),
+            initialValue: ''
+
         });
     });
 
@@ -82,7 +92,7 @@
     });
 
 
-    // Save
+    // Save  Tarif
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
@@ -152,6 +162,126 @@
                                 },
                             });
                             $('#modal-tarif-tindakan').modal('hide');
+                        }
+                        form.classList.remove('was-validated');
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 400) {
+                            var errors = xhr.responseJSON.errors;
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: error,
+                                message: xhr.responseJSON.message
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                        } else if (xhr.status == 500) {
+                            $.notify({
+                                icon: 'icon-info-alt',
+                                title: 'error',
+                                message: "Silahkan hubungi IT Rumah Sakit!"
+                            }, {
+                                type: 'danger',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                        }
+                        form.classList.remove('was-validated');
+                    }
+                });
+            }
+            form.classList.add('was-validated');
+        });
+    });
+
+
+    // Save  harga
+    $(document).on('click', '.save-btn-harga', function() {
+        var id1 = $('input[name="id1"]').val();
+        if (id1) {
+            var url = "{{ route('tarif.harga.update', ':id1') }}";
+            url = url.replace(':id1', id1);
+            var type = "PUT";
+        } else {
+            var url = "{{ route('tarif.harga.create') }}";
+            var type = "POST";
+        }
+        var forms = document.getElementsByClassName('form-harga-detail');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (!form.checkValidity()) {
+                form.querySelector(".form-control:invalid").focus();
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $.ajax({
+                    type: type,
+                    url: url,
+                    dataType: "json",
+                    data: $('.form-harga-detail').serialize(),
+                    beforeSend: function() {
+                        $('.save-btn-harga').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                        ).attr('disabled', 'disabled');
+                    },
+                    complete: function() {
+                        $('.save-btn-harga').html(
+                                '<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
+                    },
+                    success: function(res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Success',
+                                message: res.message
+                            }, {
+                                type: 'success',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-harga-detail').modal('hide');
+                            $table1.bootstrapTable('refresh');
+                        } else {
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Warning',
+                                message: res.message
+                            }, {
+                                type: 'warning',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                            $('#modal-harga-detail').modal('hide');
                         }
                         form.classList.remove('was-validated');
                     },
@@ -367,44 +497,44 @@
                         sortable: true,
                     },
                     {
-                        field: 'kelas1',
+                        field: 'kelas_1',
                         sortable: true,
                     },
                     {
-                        field: 'kelas2',
+                        field: 'kelas_2',
                         sortable: true,
                     },
                     {
-                        field: 'kelas3',
+                        field: 'kelas_3',
                         sortable: true,
                     },
                     {
-                        field: 'kelasintensif',
+                        field: 'kelas_intensif',
                         sortable: true,
                     },
                     {
-                        field: 'kelasisolasi',
+                        field: 'kelas_isolasi',
                         sortable: true,
                     },
                     {
-                        field: 'kelasvip',
+                        field: 'kelas_vip',
                         sortable: true,
                     },
                     {
-                        field: 'kelasvvip',
+                        field: 'kelas_vvip',
                         sortable: true,
                     },
-                    // {
-                    //     width: '5%',
-                    //     title: 'ACTIONS',
-                    //     field: 'action',
-                    //     align: 'center',
-                    //     valign: 'middle',
-                    //     sortable: true,
-                    //     clickToSelect: false,
-                    //     events: window.operateEvents1,
-                    //     formatter: actionsFunction1
-                    // }
+                    {
+                        width: '5%',
+                        title: 'ACTIONS',
+                        field: 'action',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        clickToSelect: false,
+                        events: window.operateEvents1,
+                        formatter: actionsFunction1
+                    }
                 ]
             ],
             responseHandler: function(data) {
@@ -428,11 +558,24 @@
         ].join("");
     }
 
+    function actionsFunction1(value, row, index) {
+        return [
+            '<div class="dropdown icon-dropdown">',
+            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+            '<i class="icon-more-alt"></i>',
+            '</button>',
+            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+            '<a class="dropdown-item btn-edit1" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
+            '<a class="dropdown-item btn-delete1" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            '</div>',
+            '</div>',
+        ].join("");
+    }
+
     // Handle events button actions
     window.operateEvents = {
         'click .btn-info': function(e, value, row, index) {
             $('#modal-harga-tindakan').modal('show');
-
             $('.modal-title').text('Form Harga Tindakan');
             $('input[name="id"]').val(row.id);
             $('input[name="kode_tarif"]').val(row.kode_tarif);
@@ -550,6 +693,95 @@
                         }
                     }).done(function() {
                         $table.bootstrapTable('refresh');
+                    });
+
+                }
+            })
+        }
+    }
+
+    window.operateEvents1 = {
+        'click .btn-edit1': function(e, value, row, index) {
+            $('.form-harga-detail').removeClass('was-validated');
+            $('#modal-harga-tindakan').modal('hide');
+            $('#modal-harga-detail').modal('show');
+            $('.modal-title').text('Form Edit Harga Tindakan');
+            $('input[name="id1"]').val(row.id1);
+            $('input[name="kelas_1"]').val(row.kelas_1);
+            $('input[name="kelas_2"]').val(row.kelas_2);
+            $('input[name="kelas_3"]').val(row.kelas_3);
+            $('input[name="kelas_isolasi"]').val(row.kelas_isolasi);
+            $('input[name="kelas_intensif"]').val(row.kelas_intensif);
+            $('input[name="kelas_vip"]').val(row.kelas_vip);
+            $('input[name="kelas_vvip"]').val(row.kelas_vvip);
+
+            InitSelect2($('select[name="kode_sk"]'), {
+                url: "{{ route('master-data.penjamin.select_tarif') }}",
+                dropdownParent: $("#modal-harga-detail"),
+                initialValue: row.kode_sk
+            });
+
+        },
+        'click .btn-delete1': function(e, value, row, index) {
+            var url = "{{ route('tarif.harga.delete', ':id1') }}";
+            url = url.replace(':id1', row.id1);
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Anda yakin ingin menghapus data ini?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function(res, status, xhr) {
+                            if (xhr.status == 200 && res.success == true) {
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Success',
+                                    message: res.message
+                                }, {
+                                    type: 'success',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
+                            } else {
+                                $.notify({
+                                    icon: 'fa fa-check',
+                                    title: 'Warning',
+                                    message: res.message
+                                }, {
+                                    type: 'warning',
+                                    allow_dismiss: true,
+                                    delay: 2000,
+                                    showProgressbar: true,
+                                    timer: 300,
+                                    z_index: 1127,
+                                    animate: {
+                                        enter: 'animated fadeInDown',
+                                        exit: 'animated fadeOutUp'
+                                    },
+                                });
+                            }
+                        }
+                    }).done(function() {
+                        $table1.bootstrapTable('refresh');
                     });
 
                 }

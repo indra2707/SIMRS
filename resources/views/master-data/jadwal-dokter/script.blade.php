@@ -6,7 +6,6 @@
         theme: "bootstrap-5",
         dropdownParent: $("#modal-jadwal"),
         allowClear: true
-
     });
 
 
@@ -343,7 +342,7 @@
     window.operateEvents = {
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-jadwal').modal('show');
-            $('.modal-title').text('Form Edit coa');
+            $('.modal-title').text('Form Edit Jadwal Dokter');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('select[name="hari"]').val(row.hari).trigger('change');

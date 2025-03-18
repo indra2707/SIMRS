@@ -92,9 +92,9 @@
                                         <div class="mb-2 row">
                                             <label class="col-sm-3 col-form-label" for="nik">NIK</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control form-control-sm ktp-number" id="nik"
-                                                    name="nik" placeholder="NIK..." title="Nomor Induk Kependudukan"
-                                                    required>
+                                                <input type="text" class="form-control form-control-sm ktp-number"
+                                                    id="nik" name="nik" placeholder="NIK..."
+                                                    title="Nomor Induk Kependudukan" required>
                                             </div>
                                         </div>
                                         {{-- Jenis Kelamin --}}
@@ -121,7 +121,7 @@
                                                 Petugas</label>
                                             <div class="col-sm-9">
                                                 <select class="form-select form-control" name="status_petugas"
-                                                    data-placeholder="---- Pilih Status Petugas ----" required>
+                                                    data-placeholder="---- Pilih Status Petugas ----">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -132,7 +132,7 @@
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control form-control-sm phone-number"
                                                     id="no_hp" name="no_hp" placeholder="+62 xxx xxx xxxx"
-                                                    title="Nomor Handphone" required>
+                                                    title="Nomor Handphone">
                                             </div>
                                         </div>
                                         {{-- Alamat --}}
@@ -172,8 +172,7 @@
                                             <label class="col-sm-3 col-form-label" for="kode_bpjs">Kode BPJS</label>
                                             <div class="col-sm-9">
                                                 <input type="text" class="form-control form-control-sm" id="kode_bpjs"
-                                                    name="kode_bpjs" placeholder="Kode BPJS..." title="Kode BPJS"
-                                                    required>
+                                                    name="kode_bpjs" placeholder="Kode BPJS..." title="Kode BPJS">
                                             </div>
                                         </div>
                                         {{-- Kategori --}}

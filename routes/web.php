@@ -142,6 +142,8 @@ Route::group(['middleware' => 'loggedin'], function () {
          Route::get('/index-harga', [HargaTindakanController::class, 'index'])->name('tarif.harga.index');
          Route::get('/harga-tindakan/view', [HargaTindakanController::class, 'views'])->name('tarif.harga.view');
          Route::post('/harga-tindakan/store', [HargaTindakanController::class, 'store'])->name('tarif.harga.create');
+         Route::put('/harga-tindakan/update//{id}', [HargaTindakanController::class, 'update'])->name('tarif.harga.update');
+         Route::delete('/harga-tindakan/delete/{id}', [HargaTindakanController::class, 'destroy'])->name('tarif.harga.delete');
     });
 
     // Router Controller Global

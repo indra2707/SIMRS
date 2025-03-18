@@ -485,9 +485,12 @@
 
     function actionsFunction1(value, row, index) {
         return [
-            '<button class="btn btn-danger btn-sm btn-delete1">',
-            '<span class="fa fa-trash"></span>',
-            '</button>',
+            // '<button class="btn btn-danger btn-sm btn-delete1">',
+            // '<span class="fa fa-trash"></span>',
+            // '</button>',
+
+            '<a class="btn-delete1" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i></a></a>',
+
         ].join("");
     }
 
