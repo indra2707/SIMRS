@@ -5,7 +5,6 @@
         theme: "bootstrap-5",
         dropdownParent: $("#modal-tarif-tindakan"),
         allowClear: true
-
     });
 
     var $table = $('#table_tindakan_tarif');
@@ -17,37 +16,6 @@
         $('#modal-tarif-tindakan').modal('show');
         $('.modal-title').text('Form Tambah Tarif Tindakan');
         clearFormInputFields('.form-tarif-tindakan');
-        // $('input[name="id"]').val('');
-        // $('input[name="tindakan"]').val('');
-        // $('input[name="cito"]').val('30');
-        // $('select[name="coa_ri"]').val('').trigger('change');
-        // $('select[name="coa_rj"]').val('').trigger('change');
-        // $('select[name="reduksi_ri"]').val('').trigger('change');
-        // $('select[name="reduksi_rj"]').val('').trigger('change');
-        // $('select[name="onsite"]').val('').trigger('change');
-        // $('select[name="insite"]').val('').trigger('change');
-        // $('select[name="kategori"]').val('').trigger('change');
-
-        InitSelect2($('select[name="coa_pendapatan_rj"]'), {
-            url: "{{ route('master-data.coa.select') }}",
-            dropdownParent: $("#modal-tarif-tindakan"),
-            initialValue: ""
-        });
-
-        InitSelect2($('select[name="coa_pendapatan_ri"]'), {
-            url: "{{ route('master-data.coa.select1') }}",
-            dropdownParent: $("#modal-tarif-tindakan")
-        });
-
-        InitSelect2($('select[name="coa_reduksi_rj"]'), {
-            url: "{{ route('master-data.coa.select2') }}",
-            dropdownParent: $("#modal-tarif-tindakan")
-        });
-
-        InitSelect2($('select[name="coa_reduksi_ri"]'), {
-            url: "{{ route('master-data.coa.select3') }}",
-            dropdownParent: $("#modal-tarif-tindakan")
-        });
 
         // var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
         // url = url.replace(':id', $('input[name="kode_tarif"]').val());
@@ -58,6 +26,42 @@
         //     "JSON"
         // );
 
+        InitSelect2($("select[name='coa_pendapatan_rj']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='coa_pendapatan_ri']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='coa_reduksi_rj']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='coa_reduksi_ri']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='coa_mcu_insite']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
+        InitSelect2($("select[name='coa_mcu_onsite']"), {
+            url: "{{ route('get-select-coa') }}",
+            dropdownParent: $("#modal-tarif-tindakan"),
+            initialValue: ''
+        });
+
     });
 
     // Open Modal Harga Tindakan
@@ -65,11 +69,7 @@
         $('#modal-harga-tindakan').modal('hide');
         $('#modal-harga-detail').modal('show');
         $('.modal-title').text('Form Tambah Harga Tindakan');
-        // clearFormInputFields('.form-harga-detail');
-
-        // $('input[name="id"]').val('');
-        // $('select[name="tarif"]').val('').trigger('change');
-        // $('.form-harga-detail').removeClass('was-validated');
+        clearFormInputFields('.form-harga-detail');
 
         InitSelect2($('select[name="tarif"]'), {
             url: "{{ route('master-data.penjamin.select_tarif') }}",
@@ -420,7 +420,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info</a></a>',
+            '<a class="dropdown-item btn-info" href="javascript:void(0)"><i class="fa fa-list text-success"></i> Info</a></a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
             '</div>',
@@ -450,21 +450,45 @@
             $('input[name="kode_tarif"]').val(row.kode_tarif);
             $('input[name="tindakan"]').val(row.tindakan);
             $('input[name="cito"]').val(row.cito);
-            $('input[name="status"]').prop('checked', row.status === '1');
+            // $('input[name="status"]').prop('checked', row.status === '1');
             $('select[name="kategori"]').val(row.kategori).trigger('change');
-            // $('select[name="coa_pendapatan_rj"]').val(row.coa_pendapatan_rj).trigger('change');
 
-            InitSelect2($('select[name="coa_pendapatan_rj"]'), {
-                url: "{{ route('master-data.coa.select') }}",
+
+            InitSelect2($("select[name='coa_pendapatan_rj']"), {
+                url: "{{ route('get-select-coa') }}",
                 dropdownParent: $("#modal-tarif-tindakan"),
                 initialValue: row.coa_pendapatan_rj
             });
 
-            $('select[name="coa_pendapatan_ri"]').val(row.coa_pendapatan_ri).trigger('change');
-            $('select[name="coa_reduksi_rj"]').val(row.coa_reduksi_rj).trigger('change');
-            $('select[name="coa_reduksi_ri"]').val(row.coa_reduksi_ri).trigger('change');
-            $('select[name="coa_mcu_onsite"]').val(row.coa_mcu_onsite).trigger('change');
-            $('select[name="coa_mcu_insite"]').val(row.coa_mcu_insite).trigger('change');
+            InitSelect2($("select[name='coa_pendapatan_ri']"), {
+                url: "{{ route('get-select-coa') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_pendapatan_ri
+            });
+
+            InitSelect2($("select[name='coa_reduksi_rj']"), {
+                url: "{{ route('get-select-coa') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_reduksi_rj
+            });
+
+            InitSelect2($("select[name='coa_reduksi_ri']"), {
+                url: "{{ route('get-select-coa') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_reduksi_ri
+            });
+
+            InitSelect2($("select[name='coa_mcu_insite']"), {
+                url: "{{ route('get-select-coa') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_mcu_insite
+            });
+
+            InitSelect2($("select[name='coa_mcu_onsite']"), {
+                url: "{{ route('get-select-coa') }}",
+                dropdownParent: $("#modal-tarif-tindakan"),
+                initialValue: row.coa_mcu_onsite
+            });
         },
         'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('tarif.tindakan.delete', ':id') }}";

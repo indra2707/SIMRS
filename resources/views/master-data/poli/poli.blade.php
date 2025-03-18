@@ -181,12 +181,12 @@
                                 <ul class="nav nav-tabs border-tab nav-primary" id="info-tab" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="info-home-tab" data-bs-toggle="tab"
-                                            href="#info-home" role="tab" aria-controls="info-home"
+                                            href="javascript:void(0)"" role="tab" aria-controls="info-home"
                                             aria-selected="true"><i class="icofont icofont-bed-patient"></i>Tindakan</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" id="profile-info-tab" data-bs-toggle="tab"
-                                            href="#info-profile" role="tab" aria-controls="info-profile"
+                                            href="javascript:void(0)" role="tab" aria-controls="info-profile"
                                             aria-selected="false"><i class="icofont icofont-capsule"></i>Obat & BHMP</a>
                                     </li>
                                 </ul>
@@ -206,6 +206,7 @@
                                                     data-buttons-class="primary" data-toggle="table">
                                                     <thead class="text-bold text-white text-uppercase text-center">
                                                         <tr>
+                                                            <th class="f-light">Kode</th>
                                                             <th class="f-light">Nama Tindakan</th>
                                                             <th class="f-light">Status</th>
                                                             <th>Action</th>
@@ -278,8 +279,9 @@
                         <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="nama">Tindakan</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="tindakan" type="text"
-                                    placeholder="Nama Tindakan..." required>
+                                <select class="form-select form-control" id="tindakan" name="tindakan"
+                                    data-placeholder="---- Pilih ----">
+                                </select>
                             </div>
                         </div>
                         {{-- Satus --}}

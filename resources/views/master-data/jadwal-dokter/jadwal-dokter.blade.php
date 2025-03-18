@@ -33,12 +33,14 @@
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
                                 <table id="table_coa" class="table table-hover" data-buttons-class="primary"
-                                data-toggle="table">
-                                <thead class="text-bold text-white text-uppercase text-center">
+                                    data-toggle="table">
+                                    <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
+                                            <th class="f-light">kode Poli</th>
                                             <th class="f-light">Poliklinik</th>
                                             <th class="f-light">Kode Dokter</th>
                                             <th class="f-light">Nama Dokter</th>
+                                            <th class="f-light">Spesialis</th>
                                             <th class="f-light">Hari</th>
                                             <th class="f-light">Jam</th>
                                             <th class="f-light">Kouta</th>
@@ -75,8 +77,7 @@
                         <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="kode_poli">Layanan</label>
                             <div class="col-sm-10">
-                                <select class="form-select form-control js-select-2" id="kode_poli" name="kode_poli"
-                                    data-url="{{ route('master-data.poli.select') }}"
+                                <select class="form-select form-control" id="kode_poli" name="kode_poli"
                                     data-placeholder="---- Pilih Salah Satu ----" required></select>
                             </div>
                         </div>
@@ -99,20 +100,10 @@
                         </div>
 
                         {{-- Dokter --}}
-                        {{-- <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Dokter</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="kode_dokter" type="text"
-                                    placeholder="Dokter..." required>
-                            </div>
-                        </div> --}}
-
-                        {{-- Dokter --}}
                         <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="kode_poli">Dokter</label>
                             <div class="col-sm-10">
-                                <select class="form-select form-control js-select-2" id="kode_dokter" name="kode_dokter"
-                                    data-url="{{ route('master-data.petugas.select') }}"
+                                <select class="form-select form-control" id="kode_dokter" name="kode_dokter"
                                     data-placeholder="---- Pilih Salah Satu ----" required></select>
                             </div>
                         </div>
@@ -123,8 +114,8 @@
                                 <div class="mb-21 row">
                                     <label class="col-sm-4 col-form-label" for="nama">Waktu Mulai</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control form-control-sm" id="mulai" name="mulai" type="time"
-                                            placeholder="mulai..." required>
+                                        <input class="form-control form-control-sm" id="mulai" name="mulai"
+                                            type="time" placeholder="mulai..." required>
                                     </div>
                                 </div>
                             </div>
@@ -133,19 +124,19 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-4 col-form-label" for="nama">Waktu Selasai</label>
                                     <div class="col-sm-8">
-                                        <input class="form-control form-control-sm" id="akhir" name="akhir" type="time"
-                                            placeholder="Selesai..." required>
+                                        <input class="form-control form-control-sm" id="akhir" name="akhir"
+                                            type="time" placeholder="Selesai..." required>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                         {{-- Estimasi --}}
-                         <div class="mb-2 row">
+                        {{-- Estimasi --}}
+                        <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="nama">Estimasi</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" id="estimasi" name="estimasi" type="number"
-                                    placeholder="Batas Waktu Sesi per Pasien (dalam menit)" required>
+                                <input class="form-control form-control-sm" id="estimasi" name="estimasi"
+                                    type="number" placeholder="Batas Waktu Sesi per Pasien (dalam menit)" required>
                             </div>
                         </div>
 
@@ -159,15 +150,15 @@
                         </div>
 
                         {{-- Satus --}}
-                        <div class="media mb-2">
+                        {{-- <div class="media mb-2">
                             <label class="col-sm-2 col-form-label m-r-10">Status</label>
                             <div class="media-body switch-sm icon-state">
                                 <label class="switch">
-                                    <input class="form-control" name="status" type="checkbox" checked>
+                                    <input class="form-control" id="status" name="status" type="checkbox" checked>
                                     <span class="switch-state"></span>
                                 </label>
                             </div>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">

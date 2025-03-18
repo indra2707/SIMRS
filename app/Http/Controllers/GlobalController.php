@@ -48,6 +48,8 @@ class GlobalController extends Controller
         }
     }
 
+
+    // select spesialis
     public function optionsSelectSpesialis(Request $request)
     {
         if ($request->values != "") {
@@ -56,7 +58,7 @@ class GlobalController extends Controller
                 ['id', '=', $request->values],
                 ['nama', 'like', "%$request->search%"]
             ];
-        }else{
+        } else {
             $where = [
                 ['status', '=', '1'],
                 ['nama', 'like', "%$request->search%"]
@@ -70,6 +72,124 @@ class GlobalController extends Controller
         foreach ($query as $key => $value) {
             $data[$key]['id']   = $value->id;
             $data[$key]['text'] = $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // select petugas
+    public function optionsSelectPetugas(Request $request)
+    {
+        if ($request->values != "") {
+            $where = [
+                ['status', '=', '1'],
+                ['id', '=', $request->values],
+                ['nama', 'like', "%$request->search%"]
+            ];
+        } else {
+            $where = [
+                ['status', '=', '1'],
+                ['nama', 'like', "%$request->search%"]
+            ];
+        }
+        $query = DB::table('petugas')
+            ->where($where)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+
+    // select poli
+    public function optionsSelectPoli(Request $request)
+    {
+        if ($request->values != "") {
+            $where = [
+                ['status', '=', '1'],
+                ['id', '=', $request->values],
+                ['nama', 'like', "%$request->search%"]
+            ];
+        } else {
+            $where = [
+                ['status', '=', '1'],
+                ['nama', 'like', "%$request->search%"]
+            ];
+        }
+        $query = DB::table('polis')
+            ->where($where)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+     // Store COA
+     public function optionsSelectCoa(Request $request)
+     {
+         if ($request->value != null) {
+             $query = DB::table('coas')
+             ->where('status', '1')
+             ->where('id', '=', $request->value)
+             ->where('kategori', 'Tindakan')
+             ->get();
+         }else{
+             $query = DB::table('coas')
+             ->where('status', '1')
+             ->where('kategori', 'Tindakan')
+             ->where('nama', 'like', "%$request->search%")
+             ->where('kode', 'like', "%$request->search%")
+             ->get();
+         }
+
+
+         $data = [];
+         foreach ($query as $key => $value) {
+             $data[$key]['id']   = $value->id;
+             $data[$key]['text'] = $value->kode .'-'. $value->nama;
+         }
+         return response()->json([
+             'data' => $data
+         ], 200);
+     }
+
+
+     // select Tindakan
+    public function optionsSelectTindakan(Request $request)
+    {
+        if ($request->values != "") {
+            $where = [
+                ['status', '=', '1'],
+                ['id', '=', $request->values],
+                ['tindakan', 'like', "%$request->search%"]
+            ];
+        } else {
+            $where = [
+                ['status', '=', '1'],
+                ['tindakan', 'like', "%$request->search%"]
+            ];
+        }
+        $query = DB::table('tarif_tindakans')
+            ->where($where)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id']   = $value->id;
+            $data[$key]['text'] = $value->tindakan;
         }
         return response()->json([
             'data' => $data
