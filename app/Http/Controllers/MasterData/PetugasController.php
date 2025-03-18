@@ -15,8 +15,8 @@ class PetugasController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Petugas',
-            'menuTitle' => 'Master Data',
+            'title'        => 'Petugas',
+            'menuTitle'    => 'Master Data',
             'menuSubtitle' => 'Petugas',
         ];
         return view('master-data.petugas.petugas', $data);
@@ -26,7 +26,7 @@ class PetugasController extends Controller
     public function views()
     {
         $query = Petugas::all();
-        $data = [];
+        $data  = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id'               => $value->id,
@@ -59,65 +59,6 @@ class PetugasController extends Controller
         if (!is_dir('uploads/images/profil/')) {
             mkdir('uploads/images/profil/', 0777, true);
         }
-        $filename = NULL;
-        $path = NULL;
-        if ($request->has('profil')) {
-            $file = $request->file('profil');
-            $extension = $file->getClientOriginalExtension();
-            $filename = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
-            $path = 'uploads/images/profil/';
-            $file->move($path, $filename);
-        }
-        $query = Petugas::create([
-            'id'               => $request->id,
-            'kode_petugas'     => $request->kode_petugas,
-            'nama'             => $request->nama,
-            'nik'              => str_replace(' ', '', $request->nik),
-            'jenis_kelamin'    => $request->jenis_kelamin == 'on' ? 'L' : 'P',
-            'status_petugas'   => $request->status_petugas,
-            'no_hp'            => str_replace(' ', '', $request->no_hp),
-            'alamat'           => $request->alamat,
-            'kode_bpjs'        => $request->kode_bpjs,
-            'kategori'         => $request->kategori,
-            'no_sip'           => $request->no_sip,
-            'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
-            'kode_spesialis'   => $request->spesialis,
-            'tindakan_konsul'  => $request->tindakan_konsul,
-            'tindakan_visite'  => $request->tindakan_visite,
-            'foto'             => $filename,
-            'status'           => '1',
-        ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Ditambahkan.',
-            ], status: 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Ditambahkan.',
-            ], status: 400);
-        }
-    }
-
-    // Update
-    public function update(Request $request, $id)
-    {
-        if (!is_dir('uploads/images/profil/')) {
-            mkdir('uploads/images/profil/', 0777, true);
-        }
-        $filename = NULL;
-        $path = NULL;
-        if ($request->has('profil')) {
-            $file = $request->file('profil');
-            $extension = $file->getClientOriginalExtension();
-            $filename = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
-            $path = 'uploads/images/profil/';
-            $file->move($path, $filename);
-        }
-
         $dataValues = [
             'kode_petugas'     => $request->kode_petugas,
             'nama'             => $request->nama,
@@ -133,29 +74,80 @@ class PetugasController extends Controller
             'kode_spesialis'   => $request->spesialis,
             'tindakan_konsul'  => $request->tindakan_konsul,
             'tindakan_visite'  => $request->tindakan_visite,
-            'foto'             => $filename,
+            'status'           => '1',
         ];
 
-        // Cek Foto Kosong atau Tidak di database
-        $query = Petugas::where('id', $id)->first();
-        if ($query->foto != $filename) {
-            $file = $path . $query->foto;
-            if (file_exists($file)) {
-                unlink($file);
-            }
+        $file = $request->file('profil');
+        if ($file != null) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $path      = 'uploads/images/profil/';
+            $file->move($path, $filename);
+            $dataValues['foto'] = $filename;
         }
+        $query = Petugas::create($dataValues);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data'    => [],
+                'message' => 'Data Berhasil Ditambahkan.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data'    => [],
+                'message' => 'Data Gagal Ditambahkan.',
+            ], status: 400);
+        }
+    }
 
+    // Update
+    public function update(Request $request, $id)
+    {
+        $dataValues = [
+            'kode_petugas'     => $request->kode_petugas,
+            'nama'             => $request->nama,
+            'nik'              => str_replace(' ', '', $request->nik),
+            'jenis_kelamin'    => $request->jenis_kelamin == 'on' ? 'L' : 'P',
+            'status_petugas'   => $request->status_petugas,
+            'no_hp'            => str_replace(' ', '', $request->no_hp),
+            'alamat'           => $request->alamat,
+            'kode_bpjs'        => $request->kode_bpjs,
+            'kategori'         => $request->kategori,
+            'no_sip'           => $request->no_sip,
+            'masa_berlaku_sip' => convertDmyToYmd($request->masa_berlaku_sip),
+            'kode_spesialis'   => $request->spesialis,
+            'tindakan_konsul'  => $request->tindakan_konsul,
+            'tindakan_visite'  => $request->tindakan_visite,
+        ];
+
+        $file = $request->file('profil');
+        if ($file != null) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = 'Profile_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $path      = 'uploads/images/profil/';
+            $file->move($path, $filename);
+
+            // Hapus Foto Lama
+            $data = Petugas::where('id', $id)->first();
+            if ($data->foto != null) {
+                if (file_exists($path)) {
+                    unlink($path . $data->foto);
+                }
+            }
+            $dataValues['foto'] = $filename;
+        }
         $query = Petugas::where('id', $id)->update($dataValues);
         if ($query) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Diubah.',
             ], status: 400);
         }
@@ -163,44 +155,36 @@ class PetugasController extends Controller
     // Update Signature
     public function update_signature(Request $request, $id)
     {
-        //    make dir images
         if (!is_dir('uploads/images/signature/')) {
             mkdir('uploads/images/signature/', 0777, true);
         }
-
-        if ($request->has('signed') && $request->signed != "") {
-            // Cek Signature Kosong atau Tidak di database
-            $query = Petugas::where('id', $id)->first();
-            $file_name ="";
-            if ($query->signatures != null) {
-                $image_parts = explode(";base64,", $request->signed);
-                $image_type_aux = explode("image/", $image_parts[0]);
-                $image_type = $image_type_aux[1];
-                $image_base64 = base64_decode($image_parts[1]);
-                $file_name = 'Signature' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $image_type;
-                $path = 'uploads/images/signature/';
-                file_put_contents($path . $file_name, $image_base64);
-                $file = $path . $query->signatures;
-                if (file_exists($file)) {
-                    unlink($file);
-                }
-                $dataValues = [
-                    'signatures' => $file_name
-                ];
-                $query = Petugas::where('id', $id)->update($dataValues);
-            }
+        $query     = Petugas::where('id', $id)->first();
+        if ($query->signatures != null && file_exists('uploads/images/signature/' . $query->signatures)) {
+            unlink('uploads/images/signature/' . $query->signatures);
         }
-
+        if ($request->signed != null) {
+            $image_parts    = explode(";base64,", $request->signed);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type     = $image_type_aux[1];
+            $image_base64   = base64_decode($image_parts[1]);
+            $file_name      = 'Signature_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $image_type;
+            $path           = 'uploads/images/signature/';
+            file_put_contents($path . $file_name, $image_base64);
+        }
+        $dataValues = [
+            'signatures' => $file_name
+        ];
+        $query = Petugas::where('id', $id)->update($dataValues);
         if ($query) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Diubah.',
             ], status: 400);
         }
@@ -209,31 +193,26 @@ class PetugasController extends Controller
     // Delete
     public function destroy($id)
     {
-        // Delete Images
-        $pathProfile = 'uploads/images/profil/';
-        $pathSignature = 'uploads/images/signature/';
         $query = Petugas::where('id', $id)->first();
-        $fileProfile = $pathProfile . $query->foto;
-        $fileProSignature = $pathSignature . $query->signatures;
+        if ($query->foto != null && file_exists('uploads/images/profil/' . $query->foto)) {
+            unlink('uploads/images/profil/' . $query->foto);
+        }
 
-        if ($query->foto != null || $query->signatures != null || $query->foto != "" || $query->signatures != "") {
-            if (file_exists($fileProfile) && file_exists($fileProSignature)) {
-                unlink($fileProfile);
-                unlink($fileProSignature);
-            }
+        if ($query->signatures != null && file_exists('uploads/images/signature/' . $query->signatures)) {
+            unlink('uploads/images/signature/' . $query->signatures);
         }
 
         $query = Petugas::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
         } else {
             return response()->json([
                 'success' => false,
-                'data' => [],
+                'data'    => [],
                 'message' => 'Data Gagal Dihapus.',
             ], status: 400);
         }
