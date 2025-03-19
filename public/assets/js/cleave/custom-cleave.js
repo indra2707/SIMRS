@@ -61,7 +61,7 @@ function InitCleaveJs(element, options) {
             var ele = new Cleave(element, {
                 numeral: true,
                 prefix: "Rp ",
-                signBeforePrefix: $(this).val() < 0,
+                // signBeforePrefix: $(this).val() < 0,
             });
             break;
         default:

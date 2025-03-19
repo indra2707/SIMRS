@@ -37,13 +37,13 @@ class HargaTindakanController extends Controller
                 'kode_tarif'        => $value->kode_tarif,
                 'kode_sk'           => $value->kode_sk,
                 'sk'                => $value->sk,
-                'kelas_1'           => number_format($value->kelas_1, 2, ',', '.'),
-                'kelas_2'           => number_format($value->kelas_2, 2, ',', '.'),
-                'kelas_3'           => number_format($value->kelas_3, 2, ',', '.'),
-                'kelas_isolasi'     => number_format($value->kelas_isolasi, 2, ',', '.'),
-                'kelas_intensif'    => number_format($value->kelas_intensif, 2, ',', '.'),
-                'kelas_vip'         => number_format($value->kelas_vip, 2, ',', '.'),
-                'kelas_vvip'        => number_format($value->kelas_vvip, 2, ',', '.'),
+                'kelas_1'           => number_format($value->kelas_1, 2, '.', ','),
+                'kelas_2'           => number_format($value->kelas_2, 2, '.', ','),
+                'kelas_3'           => number_format($value->kelas_3, 2, '.', ','),
+                'kelas_isolasi'     => number_format($value->kelas_isolasi, 2, '.', ','),
+                'kelas_intensif'    => number_format($value->kelas_intensif, 2, '.', ','),
+                'kelas_vip'         => number_format($value->kelas_vip, 2, '.', ','),
+                'kelas_vvip'        => number_format($value->kelas_vvip, 2, '.', ','),
             ];
         }
         return response()->json($data, 200);

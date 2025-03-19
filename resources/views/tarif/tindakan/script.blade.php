@@ -707,13 +707,41 @@
             $('#modal-harga-detail').modal('show');
             $('.modal-title').text('Form Edit Harga Tindakan');
             $('input[name="id1"]').val(row.id1);
-            $('input[name="kelas_1"]').val(row.kelas_1);
-            $('input[name="kelas_2"]').val(row.kelas_2);
-            $('input[name="kelas_3"]').val(row.kelas_3);
-            $('input[name="kelas_isolasi"]').val(row.kelas_isolasi);
-            $('input[name="kelas_intensif"]').val(row.kelas_intensif);
-            $('input[name="kelas_vip"]').val(row.kelas_vip);
-            $('input[name="kelas_vvip"]').val(row.kelas_vvip);
+
+            InitCleaveJs($("input[name='kelas_1']"), {
+                type: 'rupiah',
+                initValue: row.kelas_1
+            });
+
+            InitCleaveJs($("input[name='kelas_2']"), {
+                type: 'rupiah',
+                initValue: row.kelas_2
+            });
+
+            InitCleaveJs($("input[name='kelas_3']"), {
+                type: 'rupiah',
+                initValue: row.kelas_3
+            });
+
+            InitCleaveJs($("input[name='kelas_isolasi']"), {
+                type: 'rupiah',
+                initValue: row.kelas_isolasi
+            });
+
+            InitCleaveJs($("input[name='kelas_intensif']"), {
+                type: 'rupiah',
+                initValue: row.kelas_intensif
+            });
+
+            InitCleaveJs($("input[name='kelas_vip']"), {
+                type: 'rupiah',
+                initValue: row.kelas_vip
+            });
+
+            InitCleaveJs($("input[name='kelas_vvip']"), {
+                type: 'rupiah',
+                initValue: row.kelas_vvip
+            });
 
             InitSelect2($('select[name="kode_sk"]'), {
                 url: "{{ route('master-data.penjamin.select_tarif') }}",
