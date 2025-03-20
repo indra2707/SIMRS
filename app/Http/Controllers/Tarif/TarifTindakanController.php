@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tarif;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tarif\Harga_tindakans;
 use App\Models\Tarif\Tarif_tindakan;
 use Illuminate\Http\Request;
 
@@ -51,7 +52,7 @@ class TarifTindakanController extends Controller
             'tindakan'          => $request->tindakan,
             'kategori'          => $request->kategori,
             'cito'              => $request->cito,
-            'status'            => $request->status == 'on' ? '1' : '0',
+            // 'status'            => $request->status == 'on' ? '1' : '0',
             'coa_pendapatan_rj' => $request->coa_pendapatan_rj,
             'coa_pendapatan_ri' => $request->coa_pendapatan_ri,
             'coa_reduksi_rj'    => $request->coa_reduksi_rj,
@@ -130,7 +131,10 @@ class TarifTindakanController extends Controller
     // Delete
     public function destroy($id)
     {
+        $query1 = Tarif_tindakan::where('id', $id)->first();
+        $query = Harga_tindakans::where('kode_tarif', $query1->kode_tarif)->delete();
         $query = Tarif_tindakan::where('id', $id)->delete();
+
         if ($query) {
             return response()->json([
                 'success' => true,

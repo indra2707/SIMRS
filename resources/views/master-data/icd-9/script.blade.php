@@ -60,7 +60,9 @@
                         if (xhr.status == 400) {
                             Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
-                            Alert('info', "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!");
+                            Alert('info',
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
                         }
                         form.classList.remove('was-validated');
                     }
@@ -155,39 +157,9 @@
             error: function(xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
+                    Alert('danger', res.message);
                 } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
+                    Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                 }
             },
             responseHandler: function(data) {
@@ -245,39 +217,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warnig', res.message);
                             }
                         }
                     }).done(function() {
@@ -303,78 +245,18 @@
                 },
                 success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Success',
-                            message: res.message
-                        }, {
-                            type: 'success',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('success', res.message);
                     } else {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Warning',
-                            message: res.message
-                        }, {
-                            type: 'warning',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('warnig', res.message);
                     }
                     $table.bootstrapTable('refresh');
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: error,
-                            message: xhr.responseJSON.message
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('danger', res.message);
                     } else if (xhr.status == 500) {
-                        $.notify({
-                            icon: 'icon-info-alt',
-                            title: 'error',
-                            message: "Silahkan hubungi IT Rumah Sakit!"
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('warnig', "Silahkan hubungi IT Rumah Sakit!");
                     }
                 }
             });

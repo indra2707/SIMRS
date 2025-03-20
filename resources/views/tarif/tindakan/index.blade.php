@@ -65,62 +65,69 @@
                 <div class="modal-body">
                     <form class="form-wizard form-tarif-tindakan needs-validation" novalidate="" autocomplete="off">
                         @csrf
-                        <div class="row">
-                            <div class="mb-2 row">
-                                <div class="col-sm-10">
-                                    <input type="hidden" name="id">
-                                </div>
-                            </div>
 
-                            {{-- Kode --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="kode">Kode Tindakan</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control form-control-sm" name="kode_tarif" type="text">
-                                </div>
-                            </div>
+                        <div class="mb-2 row">
+                            <input type="hidden" name="id">
+                        </div>
+                        <div class="kanban-item">
+                            <a class="kanban-box p-1 col-sm-12" href="javascript:void(0)" data-bs-original-title=""
+                                title="">
+                                <div class="form-group row my-0 g-lg-2 col-md-12">
+                                    <div class="col-md-12">
+                                        {{-- Kode --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-2 col-form-label" for="kode">Kode Tindakan</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control form-control-sm" name="kode_tarif"
+                                                    type="text">
+                                            </div>
+                                        </div>
 
-                            {{-- Nama --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Nama Tindakan</label>
-                                <div class="col-sm-10">
-                                    <input class="form-control form-control-sm" name="tindakan" type="text"
-                                        placeholder="Nama Tindakan..." required>
-                                </div>
-                            </div>
-                            {{-- Kategori --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="kategori">Kategori</label>
-                                <div class="col-sm-10">
-                                    <select class="form-select form-control select2" name="kategori" required>
-                                        <option></option>
-                                        <option value="Tindakan">Tindakan</option>
-                                        <option value="Konsultasi">Konsultasi</option>
-                                        <option value="Sewa Alat">Sewa Alat</option>
-                                        <option value="Kamar Bedah">Kamar Bedah</option>
-                                        <option value="Cathlab">Cathlab</option>
-                                        <option value="Radiologi">Radiologi</option>
-                                        <option value="Laboratorium">Laboratorium</option>
-                                        <option value="Akomodasi">Akomodasi</option>
-                                        <option value="Paket">Paket</option>
-                                    </select>
-                                </div>
-                            </div>
-                            {{-- Nilai Cito --}}
-                            <div class="mb-2 row">
-                                <label class="col-sm-2 col-form-label" for="nama">Nilai Cito</label>
-                                <div class="col-sm-2">
-                                    <div class="input-group input-group-sm">
-                                        <input class="form-control numInput" type="text" name="cito" id="nilai_cito"
-                                            placeholder="Nilai Cito..." title="Satuan persen"
-                                            onkeypress='validateNumber(event)'>
-                                        <span class="input-group-text">%</span>
+                                        {{-- Nama --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-2 col-form-label" for="nama">Nama Tindakan</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control form-control-sm" name="tindakan" type="text"
+                                                    placeholder="Nama Tindakan..." required>
+                                            </div>
+                                        </div>
+                                        {{-- Kategori --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-2 col-form-label" for="kategori">Kategori</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-select form-control select2" name="kategori" required>
+                                                    <option></option>
+                                                    <option value="Tindakan">Tindakan</option>
+                                                    <option value="Konsultasi">Konsultasi</option>
+                                                    <option value="Sewa Alat">Sewa Alat</option>
+                                                    <option value="Kamar Bedah">Kamar Bedah</option>
+                                                    <option value="Cathlab">Cathlab</option>
+                                                    <option value="Radiologi">Radiologi</option>
+                                                    <option value="Laboratorium">Laboratorium</option>
+                                                    <option value="Akomodasi">Akomodasi</option>
+                                                    <option value="Paket">Paket</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        {{-- Nilai Cito --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-2 col-form-label" for="nama">Nilai Cito</label>
+                                            <div class="col-sm-2">
+                                                <div class="input-group input-group-sm">
+                                                    <input class="form-control numInput" type="text" name="cito"
+                                                        id="nilai_cito" placeholder="Nilai Cito..." title="Satuan persen"
+                                                        onkeypress='validateNumber(event)'>
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
+                        </div>
 
-                            {{-- Satus --}}
-                            {{-- <div class="media mb-2">
+                        {{-- Satus --}}
+                        {{-- <div class="media mb-2">
                                 <label class="col-sm-2 col-form-label m-r-10">Status</label>
                                 <div class="media-body switch-sm icon-state">
                                     <label class="switch">
@@ -132,83 +139,79 @@
 
 
 
-                            {{-- COA --}}
-                            <div class="kanban-item">
-                                <a class="kanban-box p-1 col-sm-11" href="javascript:void(0)" data-bs-original-title=""
-                                    title="">
-                                    <span class="kanban-title">Mapping COA</span><br><br>
-                                    <div class="d-flex">
-                                        <div class="m-checkbox-inline">
+                        {{-- COA --}}
+                        <div class="kanban-item">
+                            <a class="kanban-box p-1 col-sm-12" href="javascript:void(0)" data-bs-original-title=""
+                                title="">
+                                <span class="kanban-title">Mapping COA</span><br><br>
+                                <div class="d-flex">
+                                    <div class="m-checkbox-inline">
+                                    </div>
+                                </div>
+
+                                <div class="form-group row my-0 g-lg-2 col-md-12">
+                                    <div class="col-md-6">
+                                        {{-- COA RAWAT JALAN --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="coa_rj">COA RJ</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_pendapatan_rj"
+                                                    name="coa_pendapatan_rj" data-placeholder="---- Pilih ----">
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        {{-- COA RAWAT iNAP --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="coa_ri">COA RI</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_pendapatan_ri"
+                                                    name="coa_pendapatan_ri" data-placeholder="---- Pilih ----"></select>
+                                            </div>
+                                        </div>
+
+                                        {{-- COA MCU INSITE --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="insite">MCU Insite</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_mcu_insite"
+                                                    name="coa_mcu_insite" data-placeholder="---- Pilih ----"></select>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="form-group row my-0 g-lg-2 col-md-12">
-                                        <div class="col-md-4">
-                                            {{-- COA RAWAT JALAN --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="coa_rj">COA RJ</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_pendapatan_rj"
-                                                        name="coa_pendapatan_rj" data-placeholder="---- Pilih ----">
-                                                    </select>
-                                                </div>
-                                            </div>
-
-                                            {{-- COA RAWAT iNAP --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="coa_ri">COA RI</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_pendapatan_ri"
-                                                        name="coa_pendapatan_ri"
-                                                        data-placeholder="---- Pilih ----"></select>
-                                                </div>
+                                    <div class="col-md-6">
+                                        {{-- COA REDUKSI RJ --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="reduksi_rj">Reduksi RJ</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_reduksi_rj"
+                                                    name="coa_reduksi_rj" data-placeholder="---- Pilih ----"></select>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            {{-- COA REDUKSI RJ --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="reduksi_rj">Reduksi RJ</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_reduksi_rj"
-                                                        name="coa_reduksi_rj" data-placeholder="---- Pilih ----"></select>
-                                                </div>
-                                            </div>
-
-                                            {{-- COA REDUKSI RI --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="reduksi_ri">Reduksi RI</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_reduksi_ri"
-                                                        name="coa_reduksi_ri" data-placeholder="---- Pilih ----"></select>
-                                                </div>
+                                        {{-- COA REDUKSI RI --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="reduksi_ri">Reduksi RI</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_reduksi_ri"
+                                                    name="coa_reduksi_ri" data-placeholder="---- Pilih ----"></select>
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4">
-                                            {{-- COA MCU INSITE --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="insite">MCU Insite</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_mcu_insite"
-                                                        name="coa_mcu_insite" data-placeholder="---- Pilih ----"></select>
-                                                </div>
-                                            </div>
-
-                                            {{-- MCU ONSITE --}}
-                                            <div class="mb-2 row">
-                                                <label class="col-sm-4 col-form-label" for="onsite">MCU Onsite</label>
-                                                <div class=" col-sm-7">
-                                                    <select class="form-select form-control" id="coa_mcu_onsite"
-                                                        name="coa_mcu_onsite" data-placeholder="---- Pilih ----"></select>
-                                                </div>
+                                        {{-- MCU ONSITE --}}
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-3 col-form-label" for="onsite">MCU Onsite</label>
+                                            <div class=" col-sm-9">
+                                                <select class="form-select form-control" id="coa_mcu_onsite"
+                                                    name="coa_mcu_onsite" data-placeholder="---- Pilih ----"></select>
                                             </div>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
-
+                                </div>
+                            </a>
                         </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">
