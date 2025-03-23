@@ -70,6 +70,7 @@
         $('#modal-harga-tindakan').modal('hide');
         $('#modal-harga-detail').modal('show');
         $('.modal-title').text('Form Tambah Harga Tindakan');
+        $('input[name="id1"]').val('');
         $('input[name="kelas_1"]').val('');
         $('input[name="kelas_2"]').val('');
         $('input[name="kelas_3"]').val('');
@@ -126,41 +127,11 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-tarif-tindakan').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('Warning', res.message);
                             $('#modal-tarif-tindakan').modal('hide');
                         }
                         form.classList.remove('was-validated');
@@ -168,39 +139,9 @@
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
                             var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('danger', res.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                         }
                         form.classList.remove('was-validated');
                     }
@@ -246,41 +187,11 @@
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-harga-detail').modal('hide');
                             $table1.bootstrapTable('refresh');
                         } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('warning', res.message);
                             $('#modal-harga-detail').modal('hide');
                         }
                         form.classList.remove('was-validated');
@@ -288,39 +199,9 @@
                     error: function(xhr, status, error) {
                         if (xhr.status == 400) {
                             var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('danger', res.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                         }
                         form.classList.remove('was-validated');
                     }
@@ -422,39 +303,9 @@
             error: function(xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
-                    $.notify({
-                        icon: 'fa fa-check',
-                        title: error,
-                        message: xhr.responseJSON.message
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
+                    Alert('danger', res.message);
                 } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: 'icon-info-alt',
-                        title: 'error',
-                        message: "Silahkan hubungi IT Rumah Sakit!"
-                    }, {
-                        type: 'danger',
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: 'animated fadeInDown',
-                            exit: 'animated fadeOutUp'
-                        },
-                    });
+                    Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                 }
             },
             responseHandler: function(data) {
@@ -656,39 +507,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
                     }).done(function() {
@@ -706,6 +527,7 @@
             $('#modal-harga-tindakan').modal('hide');
             $('#modal-harga-detail').modal('show');
             $('.modal-title').text('Form Edit Harga Tindakan');
+
             $('input[name="id1"]').val(row.id1);
 
             InitCleaveJs($("input[name='kelas_1']"), {
@@ -773,39 +595,9 @@
                         },
                         success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
                     }).done(function() {
@@ -831,78 +623,18 @@
                 },
                 success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Success',
-                            message: res.message
-                        }, {
-                            type: 'success',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('success', res.message);
                     } else {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Warning',
-                            message: res.message
-                        }, {
-                            type: 'warning',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('warning', res.message);
                     }
                     $table.bootstrapTable('refresh');
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: error,
-                            message: xhr.responseJSON.message
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('danger', res.message);
                     } else if (xhr.status == 500) {
-                        $.notify({
-                            icon: 'icon-info-alt',
-                            title: 'error',
-                            message: "Silahkan hubungi IT Rumah Sakit!"
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                     }
                 }
             });

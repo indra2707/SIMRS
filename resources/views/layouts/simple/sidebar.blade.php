@@ -55,6 +55,7 @@
                             <li><a href="{{ route('dashboard-05') }}">Social</a></li>
                         </ul>
                     </li>
+
                     {{-- USER --}}
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <a class="sidebar-link sidebar-title" href="#">
@@ -70,6 +71,18 @@
                             <li><a href="{{ route('admin.user') }}">User</a></li>
                         </ul>
                     </li>
+
+                    {{-- Pasien --}}
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            class="sidebar-link sidebar-title link-nav">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-user') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="#"></use>
+                            </svg><span>Pasien</span></a>
+                    </li>
+
                     {{-- Master Data --}}
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <a class="sidebar-link sidebar-title {{ Request::is('master-data*') ? 'active' : '' }}"

@@ -36,7 +36,7 @@
     // }, 1000);
 
     // Open Modal
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function() {
         $('.form-icd10').removeClass('was-validated');
         $('#modal-icd10').modal('show');
         $('.modal-title').text('Form Tambah ICD-10');
@@ -48,7 +48,7 @@
     });
 
     // Save
-    $(document).on('click', '.save-btn', function () {
+    $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('master-data.icd-10.update', ':id') }}";
@@ -59,7 +59,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-icd10');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -70,30 +70,18 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-icd10').serialize(),
-                    beforeSend: function () {
-                        $('.save-btn').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>').attr('disabled', 'disabled');
+                    beforeSend: function() {
+                        $('.save-btn').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                        ).attr('disabled', 'disabled');
                     },
-                    complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+                    complete: function() {
+                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Success',
-                                message: res.message
-                            }, {
-                                type: 'success',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('success', res.message);
                             $('#modal-icd10').modal('hide');
                             $table.bootstrapTable('refresh');
                         } else {
@@ -117,42 +105,12 @@
                         }
                         form.classList.remove('was-validated');
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         if (xhr.status == 400) {
                             var errors = xhr.responseJSON.errors;
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: error,
-                                message: xhr.responseJSON.message
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('danger', res.message);
                         } else if (xhr.status == 500) {
-                            $.notify({
-                                icon: 'icon-info-alt',
-                                title: 'error',
-                                message: "Silahkan hubungi IT Rumah Sakit!"
-                            }, {
-                                type: 'danger',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
+                            Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                         }
                         form.classList.remove('was-validated');
                     }
@@ -163,7 +121,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -219,11 +177,12 @@
                         field: 'status',
                         sortable: true,
                         events: window.operateChange,
-                        formatter: function (value, row, index) {
+                        formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row.status === '1' ? 'checked' : '') + '>',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
                                 '<span class="switch-state"></span>',
                                 '</label>',
                                 '</div>'
@@ -243,7 +202,7 @@
                     }
                 ]
             ],
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
                     $.notify({
@@ -281,7 +240,7 @@
                     });
                 }
             },
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             }
         });
@@ -304,7 +263,7 @@
 
     // Handle events button actions
     window.operateEvents = {
-        'click .btn-edit': function (e, value, row, index) {
+        'click .btn-edit': function(e, value, row, index) {
             $('#modal-icd10').modal('show');
             $('.modal-title').text('Form Edit ICD-10');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -313,7 +272,7 @@
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
         },
-        'click .btn-delete': function (e, value, row, index) {
+        'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('master-data.icd-10.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -334,44 +293,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Success',
-                                    message: res.message
-                                }, {
-                                    type: 'success',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('success', res.message);
                             } else {
-                                $.notify({
-                                    icon: 'fa fa-check',
-                                    title: 'Warning',
-                                    message: res.message
-                                }, {
-                                    type: 'warning',
-                                    allow_dismiss: true,
-                                    delay: 2000,
-                                    showProgressbar: true,
-                                    timer: 300,
-                                    z_index: 1127,
-                                    animate: {
-                                        enter: 'animated fadeInDown',
-                                        exit: 'animated fadeOutUp'
-                                    },
-                                });
+                                Alert('warning', res.message);
                             }
                         }
-                    }).done(function () {
+                    }).done(function() {
                         $table.bootstrapTable('refresh');
                     });
 
@@ -382,7 +311,7 @@
 
     // Window operateChange Status
     window.operateChange = {
-        'click .update-status': function (e, value, row, index) {
+        'click .update-status': function(e, value, row, index) {
             var url = "{{ route('master-data.icd-10.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -392,80 +321,20 @@
                     status: e.target.checked ? 1 : 0,
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
+                success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Success',
-                            message: res.message
-                        }, {
-                            type: 'success',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('success', res.message);
                     } else {
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: 'Warning',
-                            message: res.message
-                        }, {
-                            type: 'warning',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('warnig', res.message);
                     }
                     $table.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: error,
-                            message: xhr.responseJSON.message
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('danger', res.message);
                     } else if (xhr.status == 500) {
-                        $.notify({
-                            icon: 'icon-info-alt',
-                            title: 'error',
-                            message: "Silahkan hubungi IT Rumah Sakit!"
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
+                        Alert('info', "Silahkan hubungi IT Rumah Sakit!");
                     }
                 }
             });
