@@ -28,7 +28,7 @@
 			<div class="media">
 			  <div class="media-body">
 				<div class="greeting-user">
-				  <h4 class="f-w-600">Welcome to cuba</h4>
+				  <h3 class="f-w-600">Welcome to {{ Session::get('nama_lengkap') }}</h3>
 				  <p>Here whats happing in your account today</p>
 				  <div class="whatsnew-btn"><a class="btn btn-outline-white">Whats New !</a></div>
 				</div>
@@ -62,7 +62,7 @@
 		  </div>
 		</div>
 	  </div>
-	  <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
+	  <!-- <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
 		<div class="row">
 		  <div class="col-xl-12">
 			<div class="card widget-1">
@@ -532,11 +532,11 @@
 				<div class="d-flex align-items-center">
 				  <h5 class="mb-0 font-primary f-18 me-1">$239,098</h5><span class="f-light f-w-500">(Budget)</span>
 				</div>
-			  </div>
-			</div>
-		  </div>
+				</div>
+			</div> -->
+		  <!-- </div>
 		</div>
-	  </div>
+	  </div> -->
 	</div>
   </div>
     <script type="text/javascript">

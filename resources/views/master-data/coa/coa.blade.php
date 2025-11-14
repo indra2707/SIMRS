@@ -80,7 +80,7 @@
                         <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="nama">Nama COA</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama COA..."
+                                <input class="form-control form-control-sm" name="nama" type="text" placeholder="Nama COA..." minlength="3"
                                     required>
                             </div>
                         </div>

@@ -18,7 +18,9 @@
         clearFormInputFields('.form-tarif-tindakan');
 
         // var url = "{{ route('generate-kode-tarif-tindakan', ':id') }}";
-        // url = url.replace(':id', $('input[name="kode_tarif"]').val());
+        // url = url.replace(':id');
+        // console.warn($('input[name="kode_tarif"]').val());
+
         // $.get(url,
         //     function(data, textStatus, jqXHR) {
         //         $('input[name="kode_tarif"]').val(data['data']).attr('readonly', true);

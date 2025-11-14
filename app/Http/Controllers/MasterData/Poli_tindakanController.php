@@ -47,6 +47,7 @@ class Poli_tindakanController extends Controller
         }
         return response()->json($data, 200);
     }
+    
     // Store
     public function store(Request $request)
     {

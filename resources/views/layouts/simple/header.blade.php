@@ -205,8 +205,8 @@
                     <div class="media profile-media">
                         <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
                         <div class="media-body">
-                            <span>{{ Session::get('username') }}</span>
-                            <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+                            <span>{{ Session::get('nama_lengkap') }}</span>
+                            <p class="mb-0 font-roboto">{{ Session::get('nama_role') }} <i class="middle fa fa-angle-down"></i></p>
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">

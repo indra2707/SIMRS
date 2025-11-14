@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-     // Index
-     public function index()
-     {
-         return view('apps.user');
-     }
+    // Index
+    public function index()
+    {
+        return view('dashboard.index');
+    }
 }

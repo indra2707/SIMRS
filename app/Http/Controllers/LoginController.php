@@ -24,7 +24,12 @@ class LoginController extends Controller
         if (Session::get('LoginStatus')) {
             return redirect()->route('home');
         } else {
-            $usernameCheck = User::where('username', $request->username);
+            // $usernameCheck = User::where('username', $request->username);
+
+            $usernameCheck = User::join('tbl_rolls', 'tbl_rolls.id', '=', 'users.role')
+                ->select('users.*', 'tbl_rolls.nama as nama_role', 'tbl_rolls.menu as menu')
+                ->where('users.username', $request->username);
+
             if ($usernameCheck->exists()) {
                 if (Auth::attempt(['username' => $request->username, 'password' => $request->password], $request->remember)) {
                     if ($usernameCheck->first()->status == 'aktif') {
@@ -35,12 +40,28 @@ class LoginController extends Controller
                             setcookie('username', "");
                             setcookie('password', "");
                         }
-                        $adminData = User::where('username', $request->username)->first();
+                        // $adminData = User::where('username', $request->username)->first();
+                        $adminData = User::join('tbl_rolls', 'tbl_rolls.id', '=', 'users.role')
+                            ->select('users.*', 'tbl_rolls.nama as nama_role', 'tbl_rolls.menu as menu')
+                            ->where('users.username', $request->username)->first();
+
+                        // --- Pastikan menu valid array ---
+                        $menu_array = [];
+                        if (!empty($adminData->menu)) {
+                            $decoded = json_decode($adminData->menu, true);
+                            if (is_array($decoded)) {
+                                $menu_array = $decoded;
+                            }
+                        }
+
                         Session::put('LoginStatus', value: true);
                         Session::put('role', $adminData->role);
                         Session::put('username', $adminData->username);
-                        Session::put('fullname', $adminData->name);
+                        Session::put('nama_lengkap', $adminData->nama_lengkap);
                         Session::put('email', $adminData->email);
+                        Session::put('nama_role', $adminData->nama_role);
+                        Session::put('menu', $menu_array);
+
                         return response()->json([
                             'success' => true,
                             'data' => [],

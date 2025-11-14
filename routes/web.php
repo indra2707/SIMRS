@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
-
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Tarif\TarifTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\User\UsersController;
+use App\Http\Controllers\User\RollsController;
 
-
+use App\Http\Controllers\MasterData\PasienController;
 use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\CoaController;
 use App\Http\Controllers\MasterData\Icd10Controller;
@@ -22,7 +22,14 @@ use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\Poli_obatController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\PoliController;
+use App\Http\Controllers\MasterData\AsetController;
+use App\Http\Controllers\MasterData\KalibrasiController;
+use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\KondisiAsetController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
+use App\Http\Controllers\MasterData\MutasiController;
+use App\http\Controllers\MasterData\KelompokAsetController;
+use App\Http\Controllers\MasterData\CustomerController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -39,7 +46,6 @@ Route::group(['middleware' => 'loggedin'], function () {
     })->name('/');
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/user', [UserController::class, 'index'])->name('admin.user');
 
     Route::prefix('master-data')->group(function () {
         // ICD-9
@@ -119,7 +125,92 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Tarif Tindakan
         Route::get('/tarif-tindakan', [TarifTindakanController::class, 'index'])->name('master-data.tarif-tindakan');
         Route::get('/tarif-tindakan/form-tarif-baru', [TarifTindakanController::class, 'form_tarif'])->name('master-data.tarif-tindakan.form');
+        // PASIEN
+        Route::get('/pasien', [PasienController::class, 'index'])->name('master-data.pasien');
+        Route::get('/pasien/view', [PasienController::class, 'views'])->name('master-data.pasien.view');
+        Route::post('/pasien/store', [PasienController::class, 'store'])->name('master-data.pasien.create');
+        Route::post('/pasien/update-status/{id}', [PasienController::class, 'updateStatus'])->name('master-data.pasien.update-status');
+        Route::put('/pasien/update/{id}', [PasienController::class, 'update'])->name('master-data.pasien.update');
+        Route::delete('/pasien/delete/{id}', [PasienController::class, 'destroy'])->name('master-data.pasien.delete');
+
+        // Asset
+        Route::get('/aset', [AsetController::class, 'index'])->name('master-data.aset');
+        Route::get('/aset/view', [AsetController::class, 'views'])->name('master-data.aset.view');
+        Route::post('/aset/store', [AsetController::class, 'store'])->name('master-data.aset.create');
+        Route::put('/aset/update/{id}', [AsetController::class, 'update'])->name('master-data.aset.update');
+        Route::delete('/aset/delete/{id}', [AsetController::class, 'destroy'])->name('master-data.aset.delete');
+        Route::post('/aset/update-status/{id}', [AsetController::class, 'updateStatus'])->name('master-data.aset.update-status');
+        Route::get('/aset/view_mutasi', [AsetController::class, 'views_mutasi'])->name('master-data.aset.view_mutasi');
+
+        // Lokasi
+        Route::get('/lokasi', [LokasiController::class, 'index'])->name('master-data.lokasi');
+        Route::get('/lokasi/view', [LokasiController::class, 'views'])->name('master-data.lokasi.view');
+        Route::post('/lokasi/store', [LokasiController::class, 'store'])->name('master-data.lokasi.create');
+        Route::put('/lokasi/update/{id}', [LokasiController::class, 'update'])->name('master-data.lokasi.update');
+        Route::delete('/lokasi/delete/{id}', [LokasiController::class, 'destroy'])->name('master-data.lokasi.delete');
+        Route::post('/lokasi/update-status/{id}', [LokasiController::class, 'updateStatus'])->name('master-data.lokasi.update-status');
+
+        // Kalibrasi
+        Route::get('/kalibrasi', [KalibrasiController::class, 'index'])->name('master-data.kalibrasi');
+        Route::get('/kalibrasi/view', [KalibrasiController::class, 'views'])->name('master-data.kalibrasi.view');
+        Route::post('/kalibrasi/store', [KalibrasiController::class, 'store'])->name('master-data.kalibrasi.create');
+        Route::put('/kalibrasi/update/{id}', [KalibrasiController::class, 'update'])->name('master-data.kalibrasi.update');
+        Route::delete('/kalibrasi/delete/{id}', [KalibrasiController::class, 'destroy'])->name('master-data.kalibrasi.delete');
+        Route::post('/kalibrasi/update-status/{id}', [KalibrasiController::class, 'updateStatus'])->name('master-data.kalibrasi.update-status');
+
+        // Kondisi Asset
+        Route::get('/kondisi-aset', [KondisiAsetController::class, 'index'])->name('master-data.kondisi-aset');
+        Route::get('/kondisi-aset/view', [KondisiAsetController::class, 'views'])->name('master-data.kondisi-aset.view');
+        Route::post('/kondisi-aset/store', [KondisiAsetController::class, 'store'])->name('master-data.kondisi-aset.create');
+        Route::put('/kondisi-aset/update/{id}', [KondisiAsetController::class, 'update'])->name('master-data.kondisi-aset.update');
+        Route::delete('/kondisi-aset/delete/{id}', [KondisiAsetController::class, 'destroy'])->name('master-data.kondisi-aset.delete');
+        Route::post('/kondisi-aset/update-status/{id}', [KondisiAsetController::class, 'updateStatus'])->name('master-data.kondisi-aset.update-status');
+
+        // Mutasi
+        Route::get('/mutasi', [MutasiController::class, 'index'])->name('master-data.mutasi');
+        Route::get('/mutasi/view', [MutasiController::class, 'views'])->name('master-data.mutasi.view');
+        Route::post('/mutasi/store', [MutasiController::class, 'store'])->name('master-data.mutasi.create');
+        Route::put('/mutasi/update/{id}', [MutasiController::class, 'update'])->name('master-data.mutasi.update');
+        Route::delete('/mutasi/delete/{id}', [MutasiController::class, 'destroy'])->name('master-data.mutasi.delete');
+        Route::post('/mutasi/update-status/{id}', [MutasiController::class, 'updateStatus'])->name('master-data.mutasi.update-status');
+        Route::get('/mutasi/detail/{id}', [MutasiController::class, 'getDetailAset'])->name('master-data.mutasi.detail');
+
+        // Kelompok Asset
+        Route::get('/kelompok-aset', [KelompokAsetController::class, 'index'])->name('master-data.kelompok-aset');
+        Route::get('/kelompok-aset/view', [KelompokAsetController::class, 'views'])->name('master-data.kelompok-aset.view');
+        Route::post('/kelompok-aset/store', [KelompokAsetController::class, 'store'])->name('master-data.kelompok-aset.create');
+        Route::put('/kelompok-aset/update/{id}', [KelompokAsetController::class, 'update'])->name('master-data.kelompok-aset.update');
+        Route::delete('/kelompok-aset/delete/{id}', [KelompokAsetController::class, 'destroy'])->name('master-data.kelompok-aset.delete');
+        Route::post('/kelompok-aset/update-status/{id}', [KelompokAsetController::class, 'updateStatus'])->name('master-data.kelompok-aset.update-status');
+
+        // Kelompok customer
+        Route::get('/customer', [CustomerController::class, 'index'])->name('master-data.customer');
+        Route::get('/customer/view', [CustomerController::class, 'views'])->name('master-data.customer.view');
+        Route::post('/customer/store', [CustomerController::class, 'store'])->name('master-data.customer.create');
+        Route::put('/customer/update/{id}', [CustomerController::class, 'update'])->name('master-data.customer.update');
+        Route::delete('/customer/delete/{id}', [CustomerController::class, 'destroy'])->name('master-data.customer.delete');
+        Route::post('/customer/update-status/{id}', [CustomerController::class, 'updateStatus'])->name('master-data.customer.update-status');
     });
+
+    Route::prefix('user')->group(function () {
+        // User
+        Route::get('/user', [UsersController::class, 'index'])->name('user.user');
+        Route::get('/user/view', [UsersController::class, 'views'])->name('user.user.view');
+        Route::post('/user/store', [UsersController::class, 'store'])->name('user.user.create');
+        Route::put('/user/update/{id}', [UsersController::class, 'update'])->name('user.user.update');
+        Route::delete('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.user.delete');
+        Route::post('/user/update-status/{id}', [UsersController::class, 'updateStatus'])->name('user.user.update-status');
+
+        //Rolls
+        Route::get('/roll', [RollsController::class, 'index'])->name('user.roll');
+        Route::get('/roll/view', [RollsController::class, 'views'])->name('user.roll.view');
+        Route::post('/roll/store', [RollsController::class, 'store'])->name('user.roll.create');
+        Route::put('/roll/update/{id}', [RollsController::class, 'update'])->name('user.roll.update');
+        Route::put('/roll/update-menu/{id}', [RollsController::class, 'updateMenu'])->name('user.roll.update-menu');
+        Route::delete('/roll/delete/{id}', [RollsController::class, 'destroy'])->name('user.roll.delete');
+        Route::post('/roll/update-status/{id}', [RollsController::class, 'updateStatus'])->name('user.roll.update-status');
+    });
+
     // Tarif
     Route::prefix('tarif')->group(function () {
         // SK Tarif
@@ -135,15 +226,15 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/tarif-tindakan/view', [TarifTindakanController::class, 'views'])->name('tarif.tindakan.view');
         Route::post('/tarif-tindakan/store', [TarifTindakanController::class, 'store'])->name('tarif.tindakan.create');
         Route::post('/tarif/update-status/{id}', [TarifTindakanController::class, 'updateStatus'])->name('tarif.tarif.update-status');
-        Route::put('/tarif-tindakan/update//{id}', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
+        Route::put('/tarif-tindakan/update/{id}', [TarifTindakanController::class, 'update'])->name('tarif.tindakan.update');
         Route::delete('/tarif-tindakan/delete/{id}', [TarifTindakanController::class, 'destroy'])->name('tarif.tindakan.delete');
 
-         // Harga Tindakan
-         Route::get('/index-harga', [HargaTindakanController::class, 'index'])->name('tarif.harga.index');
-         Route::get('/harga-tindakan/view', [HargaTindakanController::class, 'views'])->name('tarif.harga.view');
-         Route::post('/harga-tindakan/store', [HargaTindakanController::class, 'store'])->name('tarif.harga.create');
-         Route::put('/harga-tindakan/update//{id}', [HargaTindakanController::class, 'update'])->name('tarif.harga.update');
-         Route::delete('/harga-tindakan/delete/{id}', [HargaTindakanController::class, 'destroy'])->name('tarif.harga.delete');
+        // Harga Tindakan
+        Route::get('/index-harga', [HargaTindakanController::class, 'index'])->name('tarif.harga.index');
+        Route::get('/harga-tindakan/view', [HargaTindakanController::class, 'views'])->name('tarif.harga.view');
+        Route::post('/harga-tindakan/store', [HargaTindakanController::class, 'store'])->name('tarif.harga.create');
+        Route::put('/harga-tindakan/update//{id}', [HargaTindakanController::class, 'update'])->name('tarif.harga.update');
+        Route::delete('/harga-tindakan/delete/{id}', [HargaTindakanController::class, 'destroy'])->name('tarif.harga.delete');
     });
 
     // Router Controller Global
@@ -164,6 +255,20 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/generate-kode-tarif-tindakan/{id}', [GlobalController::class, 'generateKodeTarifTindakan'])->name('generate-kode-tarif-tindakan');
         // Update Status
         Route::post('/update-status/{id}', [GlobalController::class, 'updateStatus'])->name('get-select-update-status');
+
+
+        // Vendor
+        Route::get('/get-select-roll', [GlobalController::class, 'optionsSelectRoll'])->name('get-select-roll');
+        // Aset
+        Route::get('/get-select-aset', [GlobalController::class, 'optionsSelectAset'])->name('get-select-aset');
+        // lokasi
+        Route::get('/get-select-lokasi', [GlobalController::class, 'optionsSelectLokasi'])->name('get-select-lokasi');
+        // kondisi aset
+        Route::get('/get-select-kondisi-aset', [GlobalController::class, 'optionsSelectKondisiAset'])->name('get-select-kondisi-aset');
+        // Kelompok aset
+        Route::get('/get-select-kelompok-aset', [GlobalController::class, 'optionsSelectKelompokAset'])->name('get-select-kelompok-aset');
+        // Vendor
+        Route::get('/get-select-vendor', [GlobalController::class, 'optionsSelectVendor'])->name('get-select-vendor');
 
     });
 });

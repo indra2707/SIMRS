@@ -44,10 +44,9 @@
     // Save
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
-        var kode = $('input[name="kode"]').val();
-        if (id && kode) {
-            var url = "{{ route('master-data.penjamin.update', ':id', ':kode') }}";
-            url = url.replace(':id', id, ':kode', kode);
+        if (id) {
+            var url = "{{ route('master-data.penjamin.update', ':id') }}";
+            url = url.replace(':id', id);
             var type = "PUT";
         } else {
             var url = "{{ route('master-data.penjamin.create') }}";
@@ -208,8 +207,8 @@
             $('input[name="email"]').val(row.email);
             $('input[name="tarif"]').val(row.tarif);
             $('input[name="telpon"]').val(row.telpon);
+            $('input[name="margin"]').val(row.margin);
             $('textarea[name="alamat"]').val(row.alamat);
-            $('select[name="margin"]').val(row.margin).trigger('change');
             $('select[name="coa"]').val(row.coa).trigger('change');
             $('input[name="status"]').prop('checked', row.status === '1');
 

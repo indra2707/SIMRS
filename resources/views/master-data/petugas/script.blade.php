@@ -136,12 +136,12 @@
         });
 
         InitSelect2($("select[name='tindakan_konsul']"), {
-            url: "{{ route('get-select-spesialis') }}",
+            url: "{{ route('get-select-tindakan') }}",
             dropdownParent: $("#modal-petugas"),
             initialValue: ""
         });
         InitSelect2($("select[name='tindakan_visite']"), {
-            url: "{{ route('get-select-spesialis') }}",
+            url: "{{ route('get-select-tindakan') }}",
             dropdownParent: $("#modal-petugas"),
             initialValue: ""
         });
