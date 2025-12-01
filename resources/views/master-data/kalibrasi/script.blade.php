@@ -310,11 +310,17 @@
                 $("#Tidak Laik").prop("checked", true);
             }
 
-            InitSelect2($("select[name='kode_aset']"), {
+            // Init Select2 aset
+            let selectAset = $("select[name='kode_aset']");
+            InitSelect2(selectAset, {
                 url: "{{ route('get-select-aset') }}",
-                dropdownParent: $("#modal-kalibrasi"),
-                initialValue: row.id_aset
+                dropdownParent: $("#modal-mutasi")
             });
+
+            // Set nilai awal aset
+            let asetText = `${row.nama_aset} - ${row.no_aset} - ${row.no_sn}`;
+            let optAset = new Option(asetText, row.id_aset, true, true);
+            selectAset.append(optAset).trigger("change");
             
         },
         'click .btn-delete': function(e, value, row, index) {
