@@ -80,7 +80,7 @@
             if (selected.lokasi_name !== undefined) {
                 $('#lokasi_lama').val(selected.lokasi_name || selected.id_lokasi || '');
                 $('#id_lokasi_lama').val(selected.id_lokasi || '');
-                $('#nama_aset').val(selected.nama_aset || '');
+                $('#nama_aset').val(selected.nama || '');
                 $('#no_sn').val(selected.no_sn || '');
                 return;
             }
@@ -92,7 +92,7 @@
                 type: 'GET',
                 success: function (res) {
                     $('#lokasi_lama').val(res.id_lokasi || '');
-                    $('#nama_aset').val(res.nama_aset || '');
+                    $('#nama_aset').val(res.nama || '');
                     $('#no_sn').val(res.no_sn || '');
                 },
                 error: function (err) {
