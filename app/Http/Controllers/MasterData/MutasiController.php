@@ -30,7 +30,7 @@ class MutasiController extends Controller
             ->join('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_mutasis.id_lokasi')
             ->join('tbl_lokasis as tbl_lokasis_new', 'tbl_lokasis_new.id', '=', 'tbl_mutasis.id_lokasi_new')
             ->join('tbl_kondisis', 'tbl_kondisis.id', '=', 'tbl_mutasis.id_kondisi')
-            ->select('tbl_mutasis.*', 'tbl_asets.no_aset as no_aset', 'tbl_asets.nama as nama_aset','tbl_asets.no_aset as no_aset', 'tbl_asets.no_sn as no_sn', 'tbl_kondisis.nama as nama_kondisi', 'tbl_lokasis.nama as nama_lokasi_asal', 'tbl_lokasis_new.nama as nama_lokasi_tujuan')
+            ->select('tbl_mutasis.*', 'tbl_asets.no_aset as no_aset', 'tbl_asets.nama as nama_aset', 'tbl_asets.no_aset as no_aset', 'tbl_asets.no_sn as no_sn', 'tbl_kondisis.nama as nama_kondisi', 'tbl_lokasis.nama as nama_lokasi_asal', 'tbl_lokasis_new.nama as nama_lokasi_tujuan')
             ->get();
 
         // $query = Mutasis::all();
@@ -60,79 +60,88 @@ class MutasiController extends Controller
     // Store
     public function store(Request $request)
     {
-        $query = Mutasis::create([
-            'id_aset' => $request->kode_aset,
-            'tgl_mutasi' => convertDmyToYmd($request->tgl_mutasi),
-            'id_lokasi' => $request->id_lokasi_lama,
-            'id_lokasi_new' => $request->kode_lokasi,
-            'id_kondisi' => $request->kode_kondisi_aset,
-            'keterangan' => $request->keterangan,
-        ]);
+        DB::beginTransaction();
 
-        $queryAset = DB::table('tbl_asets')
-            ->where('id', $request->kode_aset)
-            ->update([
-                'id_lokasi' => $request->kode_lokasi,
+        try {
+
+            // Create mutasi
+            $mutasi = Mutasis::create([
+                'id_aset' => $request->kode_aset,
+                'tgl_mutasi' => convertDmyToYmd($request->tgl_mutasi),
+                'id_lokasi' => $request->id_lokasi_lama,
+                'id_lokasi_new' => $request->kode_lokasi,
                 'id_kondisi' => $request->kode_kondisi_aset,
+                'keterangan' => $request->keterangan,
             ]);
 
-        if ($query && $queryAset) {
+            // Update kondisi & lokasi aset
+            DB::table('tbl_asets')
+                ->where('id', $request->kode_aset)
+                ->update([
+                    'id_lokasi' => $request->kode_lokasi,
+                    'id_kondisi' => $request->kode_kondisi_aset,
+                ]);
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
-                'data' => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], 200);
-        } else {
+
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Ditambahkan.',
-            ], 400);
+                'message' => 'Data Gagal Ditambahkan. Error: ' . $e->getMessage(),
+            ], 500);
         }
     }
 
     // Update
     public function update(Request $request, $id)
-{
-    DB::beginTransaction();
+    {
+        DB::beginTransaction();
 
-    try {
+        try {
 
-        // Update tabel mutasi
-        Mutasis::where('id', $id)->update([
-            'id_aset'          => $request->kode_aset,
-            'tgl_mutasi'       => convertDmyToYmd($request->tgl_mutasi),
-            'id_lokasi'        => $request->id_lokasi_lama,
-            'id_lokasi_new'    => $request->kode_lokasi,
-            'id_kondisi'       => $request->kode_kondisi_aset,
-            'keterangan'       => $request->keterangan,
-        ]);
-
-        // Update lokasi & kondisi aset
-        DB::table('tbl_asets')
-            ->where('id', $request->kode_aset)
-            ->update([
-                'id_lokasi'   => $request->kode_lokasi,
-                'id_kondisi'  => $request->kode_kondisi_aset,
+            // Update tabel mutasi
+            Mutasis::where('id', $id)->update([
+                'id_aset' => $request->kode_aset,
+                'tgl_mutasi' => convertDmyToYmd($request->tgl_mutasi),
+                'id_lokasi' => $request->id_lokasi_lama,
+                'id_lokasi_new' => $request->kode_lokasi,
+                'id_kondisi' => $request->kode_kondisi_aset,
+                'keterangan' => $request->keterangan,
             ]);
 
-        DB::commit();
+            // Update lokasi & kondisi aset
+            DB::table('tbl_asets')
+                ->where('id', $request->kode_aset)
+                ->update([
+                    'id_lokasi' => $request->kode_lokasi,
+                    'id_kondisi' => $request->kode_kondisi_aset,
+                ]);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Berhasil Diubah.',
-        ], 200);
+            DB::commit();
 
-    } catch (\Throwable $e) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Berhasil Diubah.',
+            ], 200);
 
-        DB::rollBack();
+        } catch (\Throwable $e) {
 
-        return response()->json([
-            'success' => false,
-            'message' => 'Data Gagal Diubah. Error: ' . $e->getMessage(),
-        ], 500);
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Gagal Diubah. Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
-}
 
     // Delete
     public function destroy($id)

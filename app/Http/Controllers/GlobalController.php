@@ -227,35 +227,35 @@ class GlobalController extends Controller
     // }
 
 
-    // GlobalController.php
-public function optionsSelectAset(Request $request)
-{
-    $search = $request->search;
+      // select aset
+    public function optionsSelectAset(Request $request)
+    {
+        $search = $request->search;
 
-    $query = DB::table('tbl_asets')
-        ->leftJoin('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_asets.id_lokasi')
-        ->where('tbl_asets.status', '1')
-        ->where('tbl_asets.kategori', 'Alkes')
-        ->when($search, function ($q) use ($search) {
-            $q->where(function ($q2) use ($search) {
-                $q2->where('tbl_asets.nama', 'like', "%{$search}%")
-                   ->orWhere('tbl_asets.no_aset', 'like', "%{$search}%")
-                   ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
-            });
-        })
-        ->select(
-            'tbl_asets.id',
-            DB::raw("CONCAT(tbl_asets.nama, ' - ', tbl_asets.no_aset, ' - ', tbl_asets.no_sn) as text"),
-            'tbl_asets.no_sn',
-            'tbl_asets.id_lokasi',
-            'tbl_lokasis.nama as lokasi_name'
-        )
-        ->limit(10)
-        ->get();
+        $query = DB::table('tbl_asets')
+            ->leftJoin('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_asets.id_lokasi')
+            ->where('tbl_asets.status', '1')
+            ->where('tbl_asets.kategori', 'Alkes')
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('tbl_asets.nama', 'like', "%{$search}%")
+                        ->orWhere('tbl_asets.no_aset', 'like', "%{$search}%")
+                        ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
+                });
+            })
+            ->select(
+                'tbl_asets.id',
+                DB::raw("CONCAT(tbl_asets.nama, ' - ', tbl_asets.no_aset, ' - ', tbl_asets.no_sn) as text"),
+                'tbl_asets.no_sn',
+                'tbl_asets.id_lokasi',
+                'tbl_lokasis.nama as lokasi_name'
+            )
+            ->limit(10)
+            ->get();
 
-    // return as array of objects (id, text, plus extra fields)
-    return response()->json(['data' => $query], 200);
-}
+        // return as array of objects (id, text, plus extra fields)
+        return response()->json(['data' => $query], 200);
+    }
 
 
 

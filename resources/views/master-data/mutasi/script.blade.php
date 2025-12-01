@@ -27,10 +27,11 @@
         $("select[name='kode_aset']").val('').trigger('change');
 
 
-        // InitSelect2($("select[name='kode_aset']"), {
-        //     url: "{{ route('get-select-aset') }}",
-        //     dropdownParent: $("#modal-mutasi")
-        // });
+        InitSelect2($("select[name='kode_aset']"), {
+            url: "{{ route('get-select-aset') }}",
+            dropdownParent: $("#modal-mutasi")
+        });
+
 
         InitSelect2($("select[name='kode_kondisi_aset']"), {
             url: "{{ route('get-select-kondisi-aset') }}",
@@ -360,13 +361,20 @@
             $('input[name="tgl_mutasi"]').val(row.tgl_mutasi);
             $('textarea[name="keterangan"]').val(row.keterangan);
             $('#lokasi_lama').val(row.nama_lokasi_asal);
-            $('#id_lokasi_lama').val(row.id_lokasi);  
+            $('#id_lokasi_lama').val(row.id_lokasi);
 
-            InitSelect2($("select[name='kode_aset']"), {
+
+            // Init Select2 aset
+            let selectAset = $("select[name='kode_aset']");
+            InitSelect2(selectAset, {
                 url: "{{ route('get-select-aset') }}",
-                dropdownParent: $("#modal-mutasi"),
-                initialValue: row.id_aset
+                dropdownParent: $("#modal-mutasi")
             });
+
+            // Set nilai awal aset
+            let asetText = `${row.nama_aset} - ${row.no_aset} - ${row.no_sn}`;
+            let optAset = new Option(asetText, row.id_aset, true, true);
+            selectAset.append(optAset).trigger("change");
 
             InitSelect2($("select[name='kode_kondisi_aset']"), {
                 url: "{{ route('get-select-kondisi-aset') }}",
