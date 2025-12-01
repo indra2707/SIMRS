@@ -39,6 +39,7 @@
                                             <th class="f-light">ID</th>
                                             <th class="f-light">Tgl Mutasi</th>
                                             <th class="f-light">ID Asset</th>
+                                            <th class="f-light">No Asset</th>
                                             <th class="f-light">Nama</th>
                                             <th class="f-light">No. SN</th>
                                             <th class="f-light">ID Lokasi Asal</th>

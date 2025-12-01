@@ -30,7 +30,7 @@ class MutasiController extends Controller
             ->join('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_mutasis.id_lokasi')
             ->join('tbl_lokasis as tbl_lokasis_new', 'tbl_lokasis_new.id', '=', 'tbl_mutasis.id_lokasi_new')
             ->join('tbl_kondisis', 'tbl_kondisis.id', '=', 'tbl_mutasis.id_kondisi')
-            ->select('tbl_mutasis.*', 'tbl_asets.no_aset as no_aset', 'tbl_asets.nama as nama_aset', 'tbl_asets.no_sn as no_sn', 'tbl_kondisis.nama as nama_kondisi', 'tbl_lokasis.nama as nama_lokasi_asal', 'tbl_lokasis_new.nama as nama_lokasi_tujuan')
+            ->select('tbl_mutasis.*', 'tbl_asets.no_aset as no_aset', 'tbl_asets.nama as nama_aset','tbl_asets.no_aset as no_aset', 'tbl_asets.no_sn as no_sn', 'tbl_kondisis.nama as nama_kondisi', 'tbl_lokasis.nama as nama_lokasi_asal', 'tbl_lokasis_new.nama as nama_lokasi_tujuan')
             ->get();
 
         // $query = Mutasis::all();
@@ -40,6 +40,7 @@ class MutasiController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'id_aset' => $value->id_aset,
+                'no_aset' => $value->no_aset,
                 'nama_aset' => $value->nama_aset,
                 'no_sn' => $value->no_sn,
                 'tgl_mutasi' => convertYmdToDmy($value->tgl_mutasi),

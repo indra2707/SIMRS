@@ -226,6 +226,11 @@
                     },
                     {
                         width: '350%',
+                        field: 'no_aset',
+                        sortable: true,
+                    },
+                    {
+                        width: '350%',
                         field: 'nama_aset',
                         sortable: true,
                     },
