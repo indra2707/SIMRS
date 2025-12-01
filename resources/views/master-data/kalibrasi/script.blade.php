@@ -11,7 +11,7 @@
     var $table = $('#table_kalibrasi');
 
     // Open Modal
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-kalibrasi').removeClass('was-validated');
         $('#modal-kalibrasi').modal('show');
         $('.modal-title').text('Form Tambah Kalibrasi');
@@ -21,6 +21,9 @@
         $("select[name='kode_aset']").val('').trigger('change');
         $('input[name="status"]').prop('checked', false);
         $('input[name="aktif"]').prop('checked', true);
+        $('input[name="no_sn"]').val('');
+        $('input[name="nama_aset"]').val('');
+        $('input[name="lokasi_name"]').val('');
 
         InitSelect2($("select[name='kode_aset']"), {
             url: "{{ route('get-select-aset') }}",
@@ -29,8 +32,40 @@
 
     });
 
+    // ketika user memilih aset
+    $('#kode_aset').on('select2:select', function (e) {
+        var selected = e.params.data; // ini berisi objek yang dikembalikan di processResults
+        var asetId = selected.id;
+
+        // Cara 1: gunakan data yang sudah ada dari results (jika kamu menyertakan nama)
+        if (selected.nama !== undefined) {
+            $('#nama_aset').val(selected.nama  || '');
+            $('#no_sn').val(selected.no_sn  || '');
+            $('#lokasi_name').val(selected.lokasi_name  || '');
+            return;
+        }
+
+        // Cara 2: fallback -> ambil detail via AJAX
+        var url = "{{ route('master-data.mutasi.detail', ':id') }}".replace(':id', asetId);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (res) {
+                $('#nama_aset').val(res.nama || '');
+                $('#no_sn').val(res.no_sn || '');
+                $('#lokasi_name').val(res.lokasi_name || '');
+            },
+            error: function (err) {
+                console.error(err);
+                $('#nama_aset').val('');
+                $('#no_sn').val('');
+                $('#lokasi_name').val('');
+            }
+        });
+    });
+
     // Save
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('master-data.kalibrasi.update', ':id') }}";
@@ -41,7 +76,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-kalibrasi');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -52,17 +87,17 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-kalibrasi').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
-                         if (xhr.status == 200 && res.success == true) {
+                    success: function (res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-kalibrasi').modal('hide');
                             $table.bootstrapTable('refresh');
@@ -87,7 +122,7 @@
                         }
                         form.classList.remove('was-validated');
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
@@ -104,7 +139,7 @@
     });
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -182,11 +217,11 @@
                         sortable: true,
                         // visible: false,
                     },
-                     {
+                    {
                         width: '200%',
                         align: 'center',
                         valign: 'middle',
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             let buttons = '';  // Tombol yang akan ditampilkan
 
                             // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
@@ -194,7 +229,7 @@
                                 buttons += `
                                     <button class="btn btn-pill btn-xs btn-success action-btn">${row.selisih_hari} Hari</button>
                                 `;
-                            }else if (row.selisih_hari >= 90) {
+                            } else if (row.selisih_hari >= 90) {
                                 buttons += `
                                     <button class="btn btn-pill btn-xs btn-warning action-btn">${row.selisih_hari} Hari</button>
                                 `;
@@ -212,7 +247,7 @@
                         field: 'aktif',
                         sortable: true,
                         events: window.updateStatusKalibrasi,
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
@@ -237,7 +272,7 @@
                     }
                 ]
             ],
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
                     $.notify({
@@ -275,7 +310,7 @@
                     });
                 }
             },
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             }
         });
@@ -297,12 +332,15 @@
 
     // Handle events button actions
     window.operateEvents = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-kalibrasi').modal('show');
             $('.modal-title').text('Form Edit Kalibrasi');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="tgl_kalibrasi"]').val(row.tgl_kalibrasi);
+            $('input[name="no_sn"]').val(row.no_sn);
+            $('input[name="nama_aset"]').val(row.nama_aset);
+            $('input[name="lokasi_name"]').val(row.nama_lokasi);
 
             if (row.status === 'Laik') {
                 $("#Laik").prop("checked", true);
@@ -314,16 +352,16 @@
             let selectAset = $("select[name='kode_aset']");
             InitSelect2(selectAset, {
                 url: "{{ route('get-select-aset') }}",
-                dropdownParent: $("#modal-mutasi")
+                dropdownParent: $("#modal-kalibrasi")
             });
 
             // Set nilai awal aset
-            let asetText = `${row.nama_aset} - ${row.no_aset} - ${row.no_sn}`;
+            let asetText = `${row.no_aset} - ${row.nama_aset}`;
             let optAset = new Option(asetText, row.id_aset, true, true);
             selectAset.append(optAset).trigger("change");
-            
+
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('master-data.kalibrasi.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -336,7 +374,7 @@
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Ya, Hapus!',
                 cancelButtonText: 'Batal',
-           }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
                         url: url,
@@ -344,14 +382,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $table.bootstrapTable('refresh');
                     });
 
@@ -363,7 +401,7 @@
 
     // Window operateChange Status kalibrasi
     window.updateStatusKalibrasi = {
-        'click .update-status': function(e, value, row, index) {
+        'click .update-status': function (e, value, row, index) {
             var url = "{{ route('master-data.kalibrasi.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -374,15 +412,15 @@
                     table: 'tbl_kalibrasi',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(res, status, xhr) {
+                success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
                         Alert('warning', res.message);
                     }
-                 $table.bootstrapTable('refresh');
+                    $table.bootstrapTable('refresh');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
@@ -394,5 +432,5 @@
             });
         }
     }
-   
+
 </script>

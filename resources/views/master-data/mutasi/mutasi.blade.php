@@ -90,27 +90,49 @@
                                     </div>
                                 </div>
 
-                                {{-- Nama Asset --}}
+                                {{-- Nomor Asset --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="kode_aset">Nama Asset</label>
+                                    <label class="col-sm-2 col-form-label" for="kode_aset">Nomor Asset</label>
                                     <div class="col-sm-10">
-                                       <select id="kode_aset" name="kode_aset" class="form-select form-control" required data-placeholder="---- Pilih Salah Satu ----"></select>
+                                        <select id="kode_aset" name="kode_aset" class="form-select form-control" required
+                                            data-placeholder="---- Pilih Salah Satu ----"></select>
                                     </div>
                                 </div>
 
-                                 {{-- id Lokasi Lama --}}
+                                {{-- id Lokasi Lama --}}
                                 <!-- <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="lokasi_lama">Id Lokasi Lama</label>
-                                    <div class="col-sm-10"> -->
-                                        <input class="form-control" id="id_lokasi_lama" name="id_lokasi_lama" type="hidden" placeholder="id Lokasi Lama..." readonly>
-                                    <!-- </div>
-                                </div> -->
+                                        <label class="col-sm-2 col-form-label" for="lokasi_lama">Id Lokasi Lama</label>
+                                        <div class="col-sm-10"> -->
+                                <input class="form-control" id="id_lokasi_lama" name="id_lokasi_lama" type="hidden"
+                                    placeholder="id Lokasi Lama..." readonly>
+                                <!-- </div>
+                                    </div> -->
 
-                                 {{-- Lokasi Lama --}}
+                                {{-- Nama Aset --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama_aset">Nama Asset</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="nama_aset" name="nama_aset" type="text"
+                                            placeholder="Nama Asset..." readonly>
+                                    </div>
+                                </div>
+
+
+                                {{-- No SN --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="no_sn">No SN</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="no_sn" name="no_sn" type="text"
+                                            placeholder="No SN..." readonly>
+                                    </div>
+                                </div>
+
+                                {{-- Lokasi Lama --}}
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="lokasi_lama">Lokasi Lama</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" id="lokasi_lama" name="lokasi_lama" type="text" placeholder="Lokasi Lama..." readonly>
+                                        <input class="form-control" id="lokasi_lama" name="lokasi_lama" type="text"
+                                            placeholder="Lokasi Lama..." readonly>
                                     </div>
                                 </div>
 

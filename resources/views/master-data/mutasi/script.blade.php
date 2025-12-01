@@ -25,6 +25,8 @@
         $("select[name='kode_lokasi']").val('').trigger('change');
         $("select[name='kode_kondisi_aset']").val('').trigger('change');
         $("select[name='kode_aset']").val('').trigger('change');
+        $('#nama_aset').val('');
+        $('#no_sn').val('');
 
 
         InitSelect2($("select[name='kode_aset']"), {
@@ -78,6 +80,8 @@
             if (selected.lokasi_name !== undefined) {
                 $('#lokasi_lama').val(selected.lokasi_name || selected.id_lokasi || '');
                 $('#id_lokasi_lama').val(selected.id_lokasi || '');
+                $('#nama_aset').val(selected.nama_aset || '');
+                $('#no_sn').val(selected.no_sn || '');
                 return;
             }
 
@@ -88,10 +92,14 @@
                 type: 'GET',
                 success: function (res) {
                     $('#lokasi_lama').val(res.id_lokasi || '');
+                    $('#nama_aset').val(res.nama_aset || '');
+                    $('#no_sn').val(res.no_sn || '');
                 },
                 error: function (err) {
                     console.error(err);
                     $('#lokasi_lama').val('');
+                    $('#nama_aset').val('');
+                    $('#no_sn').val('');
                 }
             });
         });
@@ -362,7 +370,8 @@
             $('textarea[name="keterangan"]').val(row.keterangan);
             $('#lokasi_lama').val(row.nama_lokasi_asal);
             $('#id_lokasi_lama').val(row.id_lokasi);
-
+            $('#nama_aset').val(row.nama_aset);
+            $('#no_sn').val(row.no_sn);
 
             // Init Select2 aset
             let selectAset = $("select[name='kode_aset']");
@@ -372,7 +381,8 @@
             });
 
             // Set nilai awal aset
-            let asetText = `${row.nama_aset} - ${row.no_aset} - ${row.no_sn}`;
+            // let asetText = `${row.nama_aset} - ${row.no_aset} - ${row.no_sn}`;
+            let asetText = `${row.no_aset} - ${row.nama_aset}`;
             let optAset = new Option(asetText, row.id_aset, true, true);
             selectAset.append(optAset).trigger("change");
 

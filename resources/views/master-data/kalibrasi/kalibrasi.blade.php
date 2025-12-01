@@ -78,56 +78,84 @@
 
                         <div class="form-group row my-0 g-lg-2 col-md-12">
                             <div class="col-md-12">
-                                {{-- Nama Asset --}}
+                                {{-- Nomor Asset --}}
                                 <div class="mb-2 row">
-                                    <label class="col-sm-2 col-form-label" for="kode_aset">Nama Asset</label>
+                                    <label class="col-sm-2 col-form-label" for="kode_aset">Nomor Asset</label>
                                     <div class="col-sm-10">
                                         <select class="form-select form-control" id="kode_aset" name="kode_aset"
                                             data-placeholder="---- Pilih Salah Satu ----" required></select>
                                     </div>
-                                </div>                                         
+                                </div>
 
-                        {{-- Tanggal Kalibrasi --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="tgl_kalibrasi">Tgl Kalibrasi</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control js-datepicker digits" name="tgl_kalibrasi"
-                                    type="text" placeholder="Tanggal Kalibrasi..." data-language="en" required>
-                            </div>
-                        </div>
+                                {{-- Nama Aset --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="nama_aset">Nama Asset</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="nama_aset" name="nama_aset" type="text"
+                                            placeholder="Nama Asset..." readonly>
+                                    </div>
+                                </div>
 
-                         {{-- Status --}}
-                                        <div class="mb-2 row">
-                                            <label class="col-sm-2 col-form-label">Status</label>
-                                            <div class="col-sm-8 row">
-                                                <div
-                                                    class="form-check radio radio-primary d-flex justify-content-center align-items-center col-md-2">
-                                                    <input class="form-check-input" id="Laik" type="radio"
-                                                        name="status" required value="Laik">
-                                                    <label class="form-check-label" for="Laik">Laik</label>
-                                                </div>
-                                                <div
-                                                    class="form-check radio radio-primary d-flex justify-content-center align-items-center col-md-2">
-                                                    <input class="form-check-input" id="Tidak Laik" type="radio"
-                                                        name="status" required value="Tidak Laik">
-                                                    <label class="form-check-label" for="Tidak Laik">Tidak Laik</label>
-                                                </div>
-                                            </div>
+
+                                {{-- No SN --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="no_sn">No SN</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="no_sn" name="no_sn" type="text"
+                                            placeholder="No SN..." readonly>
+                                    </div>
+                                </div>
+
+                                {{-- Lokasi --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="lokasi_name">Lokasi</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" id="lokasi_name" name="lokasi_name" type="text"
+                                            placeholder="Lokasi..." readonly>
+                                    </div>
+                                </div>
+
+                                {{-- Tanggal Kalibrasi --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label" for="tgl_kalibrasi">Tgl Kalibrasi</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control form-control js-datepicker digits" name="tgl_kalibrasi"
+                                            type="text" placeholder="Tanggal Kalibrasi..." data-language="en" required>
+                                    </div>
+                                </div>
+
+                                {{-- Status --}}
+                                <div class="mb-2 row">
+                                    <label class="col-sm-2 col-form-label">Status</label>
+                                    <div class="col-sm-8 row">
+                                        <div
+                                            class="form-check radio radio-primary d-flex justify-content-center align-items-center col-md-2">
+                                            <input class="form-check-input" id="Laik" type="radio" name="status" required
+                                                value="Laik">
+                                            <label class="form-check-label" for="Laik">Laik</label>
                                         </div>
-                        
+                                        <div
+                                            class="form-check radio radio-primary d-flex justify-content-center align-items-center col-md-2">
+                                            <input class="form-check-input" id="Tidak Laik" type="radio" name="status"
+                                                required value="Tidak Laik">
+                                            <label class="form-check-label" for="Tidak Laik">Tidak Laik</label>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            {{-- Aktif --}}
-                        <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10">Aktif</label>
-                            <div class="media-body switch-sm icon-state">
-                                <label class="switch">
-                                    <input class="form-control" name="aktif" type="checkbox" checked>
-                                    <span class="switch-state"></span>
-                                </label>
+
+                                {{-- Aktif --}}
+                                <div class="media mb-2">
+                                    <label class="col-sm-2 col-form-label m-r-10">Aktif</label>
+                                    <div class="media-body switch-sm icon-state">
+                                        <label class="switch">
+                                            <input class="form-control" name="aktif" type="checkbox" checked>
+                                            <span class="switch-state"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
-
-                         </div>
                         </div>
                     </form>
                 </div>

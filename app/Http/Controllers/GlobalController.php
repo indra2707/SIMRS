@@ -195,38 +195,6 @@ class GlobalController extends Controller
         ], 200);
     }
 
-
-
-    // select aset
-    // public function optionsSelectAset(Request $request)
-    // {
-    //     $query = DB::table('tbl_asets')
-    //         ->where('status', '=', '1')
-    //         ->where('kategori', '=', 'Alkes')
-    //         ->when($request->values != '', function ($q) use ($request) {
-    //             $q->where('id', '=', $request->values);
-    //         })
-    //         ->where(function ($q) use ($request) {
-    //             $search = $request->search;
-    //             $q->where('nama', 'like', "%$search%")
-    //                 ->orWhere('no_aset', 'like', "%$search%")
-    //                 ->orWhere('no_sn', 'like', "%$search%");
-    //             // Tambah kolom lain jika dibutuhkan
-    //         })
-    //         ->limit(5)
-    //         ->get();
-
-    //     $data = [];
-    //     foreach ($query as $key => $value) {
-    //         $data[$key]['id'] = $value->id;
-    //         $data[$key]['text'] = $value->nama . ' - ' . $value->no_aset . ' - ' . $value->no_sn. ' - ' . $value->id_lokasi;
-    //     }
-    //     return response()->json([
-    //         'data' => $data
-    //     ], 200);
-    // }
-
-
       // select aset
     public function optionsSelectAset(Request $request)
     {
@@ -239,13 +207,15 @@ class GlobalController extends Controller
             ->when($search, function ($q) use ($search) {
                 $q->where(function ($q2) use ($search) {
                     $q2->where('tbl_asets.nama', 'like', "%{$search}%")
-                        ->orWhere('tbl_asets.no_aset', 'like', "%{$search}%")
-                        ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
+                        ->orWhere('tbl_asets.no_aset', 'like', "%{$search}%");
+                        // ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
                 });
             })
             ->select(
                 'tbl_asets.id',
-                DB::raw("CONCAT(tbl_asets.nama, ' - ', tbl_asets.no_aset, ' - ', tbl_asets.no_sn) as text"),
+                DB::raw("CONCAT(tbl_asets.no_aset, ' - ', tbl_asets.nama) as text"),
+                'tbl_asets.no_sn', 
+                'tbl_asets.nama',
                 'tbl_asets.no_sn',
                 'tbl_asets.id_lokasi',
                 'tbl_lokasis.nama as lokasi_name'
