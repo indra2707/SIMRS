@@ -93,37 +93,46 @@ class MutasiController extends Controller
 
     // Update
     public function update(Request $request, $id)
-    {
-        $query = Mutasis::where('id', $id)->update([
-            'id_aset' => $request->kode_aset,
-            'tgl_mutasi' => convertDmyToYmd($request->tgl_mutasi),
-            'id_lokasi' => $request->id_lokasi_lama,
-            'id_lokasi_new' => $request->kode_lokasi,
-            'id_kondisi' => $request->kode_kondisi_aset,
-            'keterangan' => $request->keterangan,
+{
+    DB::beginTransaction();
+
+    try {
+
+        // Update tabel mutasi
+        Mutasis::where('id', $id)->update([
+            'id_aset'          => $request->kode_aset,
+            'tgl_mutasi'       => convertDmyToYmd($request->tgl_mutasi),
+            'id_lokasi'        => $request->id_lokasi_lama,
+            'id_lokasi_new'    => $request->kode_lokasi,
+            'id_kondisi'       => $request->kode_kondisi_aset,
+            'keterangan'       => $request->keterangan,
         ]);
 
-        $queryAset = DB::table('tbl_asets')
+        // Update lokasi & kondisi aset
+        DB::table('tbl_asets')
             ->where('id', $request->kode_aset)
             ->update([
-                'id_lokasi' => $request->kode_lokasi,
-                'id_kondisi' => $request->kode_kondisi_aset,
+                'id_lokasi'   => $request->kode_lokasi,
+                'id_kondisi'  => $request->kode_kondisi_aset,
             ]);
 
-        if ($query && $queryAset) {
-            return response()->json([
-                'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Diubah.',
-            ], status: 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Diubah.',
-            ], status: 400);
-        }
+        DB::commit();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Diubah.',
+        ], 200);
+
+    } catch (\Throwable $e) {
+
+        DB::rollBack();
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Data Gagal Diubah. Error: ' . $e->getMessage(),
+        ], 500);
     }
+}
 
     // Delete
     public function destroy($id)
