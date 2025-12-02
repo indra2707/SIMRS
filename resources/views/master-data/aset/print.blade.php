@@ -16,7 +16,7 @@
             font-size: 10px;
             background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bgaset.png'))) }}");
      
-            background-size: 380px auto;
+            background-size: 370px auto;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
