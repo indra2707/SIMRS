@@ -15,7 +15,6 @@
             font-family: Arial, sans-serif;
             font-size: 10px;
             background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bgaset.png'))) }}");
-     
             background-size: 370px auto;
             background-repeat: no-repeat;
             background-position: center;
@@ -104,8 +103,8 @@
                     Bln/Thn <br><br>{{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
                 </td>
 
-                <!-- <td align="center" valign="top" rowspan="3"  style="border: 1px solid #000; width: 0px;">
-                </td> -->
+                <td align="center" valign="top" rowspan="3"  style="border: 1px solid #000; width: 0px;">
+                </td>
             </tr>
 
             <tr>
