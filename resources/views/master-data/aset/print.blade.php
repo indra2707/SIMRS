@@ -15,16 +15,21 @@
             font-family: Arial, sans-serif;
             font-size: 10px;
             /* diperkecil */
+            background: url('public/assets/images/ihc/bgaset.jpeg') no-repeat center center;
+            background-size: cover;
         }
 
         .label-container {
             width: 90%;
-            max-height: 100%;
+            max-height: 200%;
             overflow: hidden;
             /* cegah halaman kedua */
             padding: 15px;
             padding-right: 30px;
             /* jarak kanan */
+
+            /* background: #34a308ff; Hijau muda */
+
         }
 
         .header-title {
@@ -53,36 +58,51 @@
 </head>
 
 <body>
-
     <div class="label-container">
-
         <br><br>
         <div class="header-title">ASET TETAP PERTAMEDIKA - IHC</div>
-
+        <img src="{{ asset('../public/assets/images/ihc/bgaset.jpeg') }}" alt="" >
         <table width="98%" cellpadding="3" cellspacing="0" border="0">
             <tr>
                 <td align="left" valign="middle" width="70">Unit Usaha</td>
                 <td align="center" valign="middle" width="3">:</td>
-                <td align="left" valign="middle" style="border-bottom: 1px solid #000;">RSOJ Pertamina Royal
+                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">RSOJ Pertamina Royal
                     Biringkanaya</td>
             </tr>
 
             <tr>
                 <td align="left" valign="middle">No. Aset</td>
                 <td align="center" valign="middle">:</td>
-                <td align="left" valign="middle" style="border-bottom: 1px solid #000;">{{ $aset->no_aset }}</td>
+                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">{{ $aset->no_aset }}
+                </td>
             </tr>
 
             <tr>
                 <td align="left" valign="middle">No. Manufacture</td>
                 <td align="center" valign="middle">:</td>
-                <td align="left" valign="middle" style="border-bottom: 1px solid #000;">{{ $aset->no_sn }}</td>
+                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">{{ $aset->no_sn }}
+                </td>
             </tr>
 
             <tr>
                 <td align="left" valign="middle">Deskripsi</td>
                 <td align="center" valign="middle">:</td>
-                <td align="left" valign="middle" style="border-bottom: 1px solid #000;">{{ $aset->nama }}</td>
+                <td align="left" valign="middle" style="border-bottom: 1px solid #000; width: 145px;">{{ $aset->nama }}
+                </td>
+
+
+                <!-- Kolom Paraf -->
+                <td align="center" valign="top" rowspan="3" style="border: 1px solid #000; width: 30px;">
+                    Paraf
+                </td>
+
+                <!-- Kolom Tanggal -->
+                <td align="center" valign="top" rowspan="3" style="border: 1px solid #000; width: 30px;">
+                    Bln/Thn <br><br>{{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
+                </td>
+
+                <!-- <td align="center" valign="top" rowspan="3"  style="border: 1px solid #000; width: 0px;">
+                </td> -->
             </tr>
 
             <tr>
@@ -98,12 +118,6 @@
             </tr>
 
         </table>
-
-
-    
-
-
-
     </div>
 
 </body>
