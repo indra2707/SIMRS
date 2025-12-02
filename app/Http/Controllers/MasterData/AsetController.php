@@ -274,7 +274,7 @@ class AsetController extends Controller
 
         $html = view('master-data.aset.print', $data)->render();
 
-        $width = 6 * 28.3464567;   // 170 pt
+        $width = 5.5 * 28.3464567;   // 170 pt
         $height = 10 * 28.3464567; // 283 pt
 
         $dompdf = new Dompdf();

@@ -14,9 +14,13 @@
             padding: 0;
             font-family: Arial, sans-serif;
             font-size: 10px;
+            background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bgaset.png'))) }}");
+     
+            background-size: 380px auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
             /* diperkecil */
-            background: url('public/assets/images/ihc/bgaset.jpeg') no-repeat center center;
-            background-size: cover;
         }
 
         .label-container {
@@ -61,7 +65,6 @@
     <div class="label-container">
         <br><br>
         <div class="header-title">ASET TETAP PERTAMEDIKA - IHC</div>
-        <img src="{{ asset('../public/assets/images/ihc/bgaset.jpeg') }}" alt="" >
         <table width="98%" cellpadding="3" cellspacing="0" border="0">
             <tr>
                 <td align="left" valign="middle" width="70">Unit Usaha</td>
