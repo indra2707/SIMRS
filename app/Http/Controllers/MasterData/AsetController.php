@@ -7,6 +7,7 @@ use App\Models\MaterData\Asets;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 
 
 class AsetController extends Controller
@@ -55,19 +56,19 @@ class AsetController extends Controller
             $kelompok_bulan = (float) ($value->kelompok_bulan ?? 0);
             $harga = (float) ($value->harga ?? 0);
 
-            $penyusutan_per_bulan = $kelompok_bulan > 0 ? $harga / $kelompok_bulan: 0;
+            $penyusutan_per_bulan = $kelompok_bulan > 0 ? $harga / $kelompok_bulan : 0;
 
             $sisa_umur = max($value->kelompok_bulan - $selisih_bulan, 0);
             $penyusutan = ($sisa_umur <= 0) ? 0 : $penyusutan_per_bulan;
 
-            if($value->kelompok_bulan > $selisih_bulan) {
-                $akumulasi_penyusutan =$selisih_bulan * $penyusutan_per_bulan;
+            if ($value->kelompok_bulan > $selisih_bulan) {
+                $akumulasi_penyusutan = $selisih_bulan * $penyusutan_per_bulan;
                 $nilai_buku = $value->harga - $akumulasi_penyusutan;
-            }else{
+            } else {
                 $akumulasi_penyusutan = 0;
                 $nilai_buku = 0;
             }
-            
+
 
             $data[] = [
                 'id' => $value->id,
@@ -240,5 +241,52 @@ class AsetController extends Controller
                 'data' => [],
             ], status: 400);
         }
+    }
+
+    public function print($id)
+    {
+        // $aset = Asets::find($id);
+
+        $aset = Asets::query()
+            ->join('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_asets.id_lokasi')
+            ->join('tbl_kondisis', 'tbl_kondisis.id', '=', 'tbl_asets.id_kondisi')
+            ->join('tbl_kelompok', 'tbl_kelompok.id', '=', 'tbl_asets.id_kelompok')
+            ->join('tbl_vendors', 'tbl_vendors.id', '=', 'tbl_asets.id_vendor')
+            ->select(
+                'tbl_asets.*',
+                'tbl_lokasis.nama as nama_lokasi',
+                'tbl_kondisis.nama as nama_kondisi',
+                'tbl_kelompok.nama as nama_kelompok',
+                'tbl_kelompok.bulan as kelompok_bulan',
+                'tbl_vendors.nama as nama_vendor'
+            )
+            ->where('tbl_asets.id', $id)
+            ->first();
+
+        if (!$aset) {
+            return abort(404, 'Aset tidak ditemukan.');
+        }
+
+        $data = [
+            'title' => 'Print Preview Aset',
+            'aset' => $aset
+        ];
+
+        $html = view('master-data.aset.print', $data)->render();
+
+        $width = 6 * 28.3464567;   // 170 pt
+        $height = 10 * 28.3464567; // 283 pt
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+
+        // Custom paper size (10 cm × 6 cm)
+        $dompdf->setPaper([0, 0, $height, $width], 'portrait');
+
+        $dompdf->render();
+
+        return $dompdf->stream('preview-aset.pdf', [
+            "Attachment" => false
+        ]);
     }
 }

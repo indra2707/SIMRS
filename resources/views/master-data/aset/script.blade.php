@@ -430,6 +430,7 @@
             '<a class="dropdown-item btn-infos" href="javascript:void(0)"><i class="fa fa-list text-info"></i> Info Mutasi</a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
             '</div>',
             '</div>',
         ].join("");
@@ -441,6 +442,12 @@
             $('#modal-info-mutasi').modal('show');
             initTableMutasi(row.id);
             $('.modal-title').text('Info Data Mutasi');
+
+        },
+        'click .btn-print': function (e, value, row, index) {
+            var url = "{{ route('master-data.aset.print', ':id') }}";
+            url = url.replace(':id', row.id);
+            window.open(url, '_blank');
 
         },
         'click .btn-edit': function (e, value, row, index) {
