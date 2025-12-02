@@ -68,21 +68,21 @@
             <tr>
                 <td align="left" valign="middle" width="70">Unit Usaha</td>
                 <td align="center" valign="middle" width="3">:</td>
-                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">RSOJ Pertamina Royal
+                <td align="left" valign="middle" colspan="3" style="border-bottom: 1px solid #000;">RSOJ Pertamina Royal
                     Biringkanaya</td>
             </tr>
 
             <tr>
                 <td align="left" valign="middle">No. Aset</td>
                 <td align="center" valign="middle">:</td>
-                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">{{ $aset->no_aset }}
+                <td align="left" valign="middle" colspan="3" style="border-bottom: 1px solid #000;">{{ $aset->no_aset }}
                 </td>
             </tr>
 
             <tr>
                 <td align="left" valign="middle">No. Manufacture</td>
                 <td align="center" valign="middle">:</td>
-                <td align="left" valign="middle" colspan="5" style="border-bottom: 1px solid #000;">{{ $aset->no_sn }}
+                <td align="left" valign="middle" colspan="3" style="border-bottom: 1px solid #000;">{{ $aset->no_sn }}
                 </td>
             </tr>
 
@@ -103,8 +103,6 @@
                     Bln/Thn <br><br>{{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
                 </td>
 
-                <td align="center" valign="top" rowspan="3"  style="border: 1px solid #000; width: 0px;">
-                </td>
             </tr>
 
             <tr>
