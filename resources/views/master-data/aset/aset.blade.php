@@ -29,6 +29,11 @@
                             <span class="fa fa-plus"></span>
                             <span> Tambah</span>
                         </button>
+
+                        <button class="btn btn-success print-all-btn">
+                            <span class="fa fa-print"></span>
+                            <span> Print All</span>
+                        </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
