@@ -224,6 +224,24 @@
                                                     value="Kalibrasi Alat Kesehatan"> Kalibrasi Alat Kesehatan</label></li>
                                     </ul>
                                 </li>
+                                <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"><b> Helpdesk</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]"
+                                                    value="Helpdesk"> Helpdesk</label></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"><b> SDM</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]"
+                                                    value="SDM"> SDM</label></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </form>
