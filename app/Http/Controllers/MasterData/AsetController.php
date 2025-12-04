@@ -285,8 +285,42 @@ class AsetController extends Controller
 
         $dompdf->render();
 
-        return $dompdf->stream('preview-aset.pdf', [
+        return $dompdf->stream($aset->no_aset . '.pdf', [
             "Attachment" => false
         ]);
     }
+
+    //print all aset
+    public function printAll()
+    {
+        $asets = Asets::query()
+            ->join('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_asets.id_lokasi')
+            ->join('tbl_kondisis', 'tbl_kondisis.id', '=', 'tbl_asets.id_kondisi')
+            ->join('tbl_kelompok', 'tbl_kelompok.id', '=', 'tbl_asets.id_kelompok')
+            ->join('tbl_vendors', 'tbl_vendors.id', '=', 'tbl_asets.id_vendor')
+            ->select(
+                'tbl_asets.*',
+                'tbl_lokasis.nama as nama_lokasi',
+                'tbl_kondisis.nama as nama_kondisi',
+                'tbl_kelompok.nama as nama_kelompok',
+                'tbl_kelompok.bulan as kelompok_bulan',
+                'tbl_vendors.nama as nama_vendor'
+            )
+            ->limit(10)
+            ->get();
+
+        $html = view('master-data.aset.print-all', [
+            'asets' => $asets
+        ])->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream('preview-all-aset.pdf', [
+            "Attachment" => false
+        ]);
+    }
+
 }

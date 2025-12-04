@@ -12,6 +12,12 @@
     var $tableAset = $('#table_aset');
     var $tableInfoMutasi = $('#table-info-mutasi');
 
+    //print all aset
+    $(document).on('click', '.print-all-btn', function () {
+        var url = "{{ route('master-data.aset.print-all') }}";
+        window.open(url, '_blank');
+    });
+
     // Open Modal Aset
     $(document).on('click', '.add-btn', function () {
         $('.form-aset').removeClass('was-validated');

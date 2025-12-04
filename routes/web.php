@@ -171,6 +171,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/aset/update-status/{id}', [AsetController::class, 'updateStatus'])->name('master-data.aset.update-status');
         Route::get('/aset/view_mutasi', [AsetController::class, 'views_mutasi'])->name('master-data.aset.view_mutasi');
         Route::get('/aset/print/{id}', [AsetController::class, 'print'])->name('master-data.aset.print');
+        Route::get('/aset/print-all', [AsetController::class, 'printAll'])->name('master-data.aset.print-all');
 
         // Lokasi
         Route::get('/lokasi', [LokasiController::class, 'index'])->name('master-data.lokasi');
