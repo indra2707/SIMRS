@@ -305,7 +305,7 @@ class AsetController extends Controller
                 'tbl_kelompok.nama as nama_kelompok',
                 'tbl_kelompok.bulan as kelompok_bulan',
                 'tbl_vendors.nama as nama_vendor'
-            )
+            )->limit(10)
             ->get();
 
         $html = view('master-data.aset.print-all', [
