@@ -229,8 +229,8 @@
                                         <input type="checkbox" class="parent"><b> Helpdesk</b>
                                     </label>
                                     <ul class="nested">
-                                        <li><label><input type="checkbox" name="permissions[]"
-                                                    value="Helpdesk"> Helpdesk</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Helpdesk">
+                                                Helpdesk</label></li>
                                     </ul>
                                 </li>
                                 <li>
@@ -238,8 +238,7 @@
                                         <input type="checkbox" class="parent"><b> SDM</b>
                                     </label>
                                     <ul class="nested">
-                                        <li><label><input type="checkbox" name="permissions[]"
-                                                    value="SDM"> SDM</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="SDM"> SDM</label></li>
                                     </ul>
                                 </li>
                             </ul>
