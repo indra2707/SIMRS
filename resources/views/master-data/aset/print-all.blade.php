@@ -144,7 +144,7 @@
 
                 {{-- KOLOM 2 --}}
                 <td class="outer-cell">
-                    <div class="label-box"><br><br>
+                    <!-- <div class="label-box"><br><br>
                         <div class="header-title">ASET TETAP PERTAMEDIKA - IHC</div>
 
                         <table class="inner">
@@ -201,7 +201,8 @@
                                 </td>
                             </tr>
                         </table>
-                    </div>
+                    </div> -->
+                </td>
             </tr>
         @endforeach
     </table>
