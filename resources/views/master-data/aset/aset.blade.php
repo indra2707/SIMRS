@@ -41,6 +41,7 @@
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
+                                            <th class="f-light">#</th>
                                             <th class="f-light">No</th>
                                             <th class="f-light">Jenis</th>
                                             <th class="f-light">Nama</th>
@@ -53,7 +54,7 @@
                                             <th class="f-light">Harga</th>
                                             <th class="f-light">Nama Lokasi</th>
                                             <th class="f-light">Nama Kondisi</th>
-                                             <th class="f-light">Vendor</th>
+                                            <th class="f-light">Vendor</th>
                                             <th class="f-light">Umur</th>
                                             <th class="f-light">Batas Umur</th>
                                             <th class="f-light">Sisa Umur</th>
@@ -203,9 +204,8 @@
                                 <div class="mb-2 row">
                                     <label class="col-sm-2 col-form-label" for="id_vendor">Vendor</label>
                                     <div class="col-sm-10">
-                                        <select class="form-select form-control" id="id_vendor"
-                                            name="id_vendor" data-placeholder="---- Pilih Salah Satu ----"
-                                            required></select>
+                                        <select class="form-select form-control" id="id_vendor" name="id_vendor"
+                                            data-placeholder="---- Pilih Salah Satu ----" required></select>
                                     </div>
                                 </div>
                                 {{-- Satus --}}
@@ -261,9 +261,9 @@
                     </table>
                 </div>
                 <!-- <div class="modal-footer">
-                                <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                                    <span class="fa fa-times"></span> Batal</button>
-                            </div> -->
+                                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                                        <span class="fa fa-times"></span> Batal</button>
+                                </div> -->
             </div>
         </div>
     </div>

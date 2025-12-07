@@ -12,11 +12,6 @@
     var $tableAset = $('#table_aset');
     var $tableInfoMutasi = $('#table-info-mutasi');
 
-    //print all aset
-    $(document).on('click', '.print-all-btn', function () {
-        var url = "{{ route('master-data.aset.print-all') }}";
-        window.open(url, '_blank');
-    });
 
     // Open Modal Aset
     $(document).on('click', '.add-btn', function () {
@@ -136,12 +131,18 @@
         $tableAset.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
+            idField: 'id',
+            uniqueId: 'id',
+            sidePagination: 'client',
+            maintainSelected: true,
+            pagination: true,
             search: true,
             showColumns: true,
             showPaginationSwitch: true,
             showToggle: true,
             showExport: true,
             pagination: true,
+            maintainSelected: true,
             pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
@@ -154,163 +155,173 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.aset.view') }}",
             columns: [
-                [{
-                    width: '100%',
-                    field: 'no_aset',
-                    sortable: true,
-                },
-                {
-                    width: '100%',
-                    field: 'jenis',
-                    sortable: true,
-                    visible: false,
-                },
-                {
-                    field: 'nama',
-                    sortable: true,
-                },
-                {
-                    width: '200%',
-                    field: 'merek',
-                    sortable: true,
-                },
-                {
-                    width: '200%',
-                    field: 'tipe',
-                    sortable: true,
-                    visible: false,
-                },
-                {
-                    width: '150%',
-                    field: 'no_sn',
-                    sortable: true,
-                },
-                {
-                    width: '100%',
-                    field: 'tahun',
-                    sortable: true,
-                },
-                {
-                    width: '100%',
-                    field: 'kategori',
-                    sortable: true,
-                    visible: false,
-                },
-                {
-                    width: '100%',
-                    field: 'nama_kelompok',
-                    sortable: true,
-                },
-                {
-                    width: '150%',
-                    field: 'harga',
-                    sortable: true,
-                    align: 'right',
-                },
-                // {
-                //     width: '200%',
-                //     field: 'id_lokasi',
-                //     sortable: true,
-                //     visible: false,
-                // },
-                {
-                    width: '200%',
-                    field: 'nama_lokasi',
-                    sortable: true,
-                    visible: false,
-                },
-                // {
-                //     width: '200%',
-                //     field: 'id_kondisi',
-                //     sortable: true,
-                //     visible: false,
-                // },
-                {
-                    width: '200%',
-                    field: 'nama_kondisi',
-                    sortable: true,
-                    visible: false,
-                },
-                {
-                    width: '200%',
-                    field: 'nama_vendor',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'selisih_bulan',
-                    sortable: true,
-                    align: 'center',
-                    // visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'kelompok_bulan',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'sisa_umur',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'penyusutan',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'akumulasi_penyusutan',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '20%',
-                    field: 'nilai_buku',
-                    sortable: true,
-                    align: 'center',
-                    visible: false,
-                },
-                {
-                    width: '5%',
-                    field: 'status',
-                    sortable: true,
-                    events: window.updateStatusAset,
-                    formatter: function (value, row, index) {
-                        return [
-                            '<div class="media-body text-center switch-sm icon-state">',
-                            '<label class="switch">',
-                            '<input type="checkbox" class="update-status" ' + (row.status ===
-                                '1' ? 'checked' : '') + '>',
-                            '<span class="switch-state"></span>',
-                            '</label>',
-                            '</div>'
-                        ].join("");
+                [
+                    {
+                        field: 'state',
+                        checkbox: true,
+                        align: 'center',
+                        valign: 'middle'
                     }
-                },
-                {
-                    width: '5%',
-                    field: 'action',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    clickToSelect: false,
-                    events: window.eventsAset,
-                    formatter: actionsFunctionAset
-                }
+                    , {
+                        width: '100%',
+                        field: 'no_aset',
+                        sortable: true,
+                    },
+                    {
+                        width: '100%',
+                        field: 'jenis',
+                        sortable: true,
+                        visible: false,
+                    },
+                    {
+                        field: 'nama',
+                        sortable: true,
+                    },
+                    {
+                        width: '200%',
+                        field: 'merek',
+                        sortable: true,
+                    },
+                    {
+                        width: '200%',
+                        field: 'tipe',
+                        sortable: true,
+                        visible: false,
+                    },
+                    {
+                        width: '150%',
+                        field: 'no_sn',
+                        sortable: true,
+                    },
+                    {
+                        width: '100%',
+                        field: 'tahun',
+                        sortable: true,
+                    },
+                    {
+                        width: '100%',
+                        field: 'kategori',
+                        sortable: true,
+                        visible: false,
+                    },
+                    {
+                        width: '100%',
+                        field: 'nama_kelompok',
+                        sortable: true,
+                    },
+                    {
+                        width: '150%',
+                        field: 'harga',
+                        sortable: true,
+                        align: 'right',
+                    },
+                    // {
+                    //     width: '200%',
+                    //     field: 'id_lokasi',
+                    //     sortable: true,
+                    //     visible: false,
+                    // },
+                    {
+                        width: '200%',
+                        field: 'nama_lokasi',
+                        sortable: true,
+                        visible: false,
+                    },
+                    // {
+                    //     width: '200%',
+                    //     field: 'id_kondisi',
+                    //     sortable: true,
+                    //     visible: false,
+                    // },
+                    {
+                        width: '200%',
+                        field: 'nama_kondisi',
+                        sortable: true,
+                        visible: false,
+                    },
+                    {
+                        width: '200%',
+                        field: 'nama_vendor',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'selisih_bulan',
+                        sortable: true,
+                        align: 'center',
+                        // visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'kelompok_bulan',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'sisa_umur',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'penyusutan',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'akumulasi_penyusutan',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '20%',
+                        field: 'nilai_buku',
+                        sortable: true,
+                        align: 'center',
+                        visible: false,
+                    },
+                    {
+                        width: '5%',
+                        field: 'status',
+                        sortable: true,
+                        events: window.updateStatusAset,
+                        formatter: function (value, row, index) {
+                            return [
+                                '<div class="media-body text-center switch-sm icon-state">',
+                                '<label class="switch">',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
+                                '<span class="switch-state"></span>',
+                                '</label>',
+                                '</div>'
+                            ].join("");
+                        }
+                    },
+                    {
+                        width: '5%',
+                        field: 'action',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        clickToSelect: false,
+                        events: window.eventsAset,
+                        formatter: actionsFunctionAset
+                    }
                 ]
             ],
-            responseHandler: function (data) {
-                return data;
+            responseHandler: function (res) {
+                return {
+                    total: res.total,
+                    rows: res.rows
+                };
             }
         });
     }
@@ -424,6 +435,31 @@
             }
         });
     }
+
+
+    //print all aset
+    $(document).on('click', '.print-all-btn', function () {
+
+        let rows = $tableAset.bootstrapTable('getSelections');
+
+        if (rows.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Pilih data aset terlebih dahulu',
+            });
+            return;
+        }
+
+        let ids = rows.map(row => row.id);
+
+        console.log(ids); // ✅ sekarang muncul
+
+        let url = "{{ route('master-data.aset.print-all') }}?ids=" + ids.join(',');
+        window.open(url, '_blank');
+
+    });
+
 
 
     function actionsFunctionAset(value, row, index) {

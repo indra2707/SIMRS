@@ -141,11 +141,6 @@
 
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                        <span class="fa fa-times"></span> Batal</button>
-
-                </div>
             </div>
         </div>
     </div>

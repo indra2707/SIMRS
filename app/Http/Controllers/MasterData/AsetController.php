@@ -98,7 +98,10 @@ class AsetController extends Controller
                 'nilai_buku' => number_format($nilai_buku, 0, '.', ','),
             ];
         }
-        return response()->json($data, 200);
+        return response()->json([
+            'total' => count($data),
+            'rows' => $data
+        ]);
     }
 
 
@@ -291,13 +294,16 @@ class AsetController extends Controller
     }
 
     //print all aset
-    public function printAll()
+    public function printAll(Request $request)
     {
+        $ids = explode(',', $request->ids);
+
         $asets = Asets::query()
             ->join('tbl_lokasis', 'tbl_lokasis.id', '=', 'tbl_asets.id_lokasi')
             ->join('tbl_kondisis', 'tbl_kondisis.id', '=', 'tbl_asets.id_kondisi')
             ->join('tbl_kelompok', 'tbl_kelompok.id', '=', 'tbl_asets.id_kelompok')
             ->join('tbl_vendors', 'tbl_vendors.id', '=', 'tbl_asets.id_vendor')
+            ->whereIn('tbl_asets.id', $ids)
             ->select(
                 'tbl_asets.*',
                 'tbl_lokasis.nama as nama_lokasi',
@@ -305,19 +311,17 @@ class AsetController extends Controller
                 'tbl_kelompok.nama as nama_kelompok',
                 'tbl_kelompok.bulan as kelompok_bulan',
                 'tbl_vendors.nama as nama_vendor'
-            )->limit(10)
+            )
             ->get();
 
-        $html = view('master-data.aset.print-all', [
-            'asets' => $asets
-        ])->render();
+        $html = view('master-data.aset.print-all', compact('asets'))->render();
 
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream('preview-all-aset.pdf', [
+        return $dompdf->stream('preview-aset-terpilih.pdf', [
             "Attachment" => false
         ]);
     }
