@@ -274,7 +274,7 @@
 
 
     @include('help-desk.admin.script')
-    
+
 
     <!-- Ganti bagian JavaScript Chat dengan ini -->
     <script>
@@ -369,7 +369,7 @@
 
             // Render Single Message (untuk append realtime)
             function renderSingleMessage(msg) {
-                var isAdmin = msg.sender_type === 'admin';
+                var isAdmin = msg.sender_type === 'superadmin';
                 var time = new Date(msg.created_at).toLocaleTimeString('id-ID', {
                     hour: '2-digit',
                     minute: '2-digit'

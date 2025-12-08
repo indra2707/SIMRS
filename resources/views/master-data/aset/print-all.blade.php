@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,50 +9,63 @@
         @page {
             margin: 10px;
         }
+
         body {
             font-family: Arial, sans-serif;
             font-size: 9.4px;
             margin: 0;
             padding: 0;
         }
+
         table.outer-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 10px 8px;
             /* jarak antara kotak */
         }
+
         td.outer-cell {
             width: 50%;
             vertical-align: top;
         }
+
         .label-box {
             border: 0px solid #000;
             padding: 16px;
             height: 170px;
             /* tinggi disamakan */
             box-sizing: border-box;
-            background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bgaset.png'))) }}");
+
+
+
+
+
             background-size: 370px auto;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
         }
+
         .header-title {
             text-align: center;
             font-weight: bold;
             font-size: 13px;
             margin-bottom: 6px;
         }
+
         table.inner {
             width: 100%;
             border-collapse: collapse;
         }
+
         td {
             padding: 1px 0;
         }
+
         .label-col {
             width: 70px;
         }
+
         .box-small {
             border: 1px solid #000;
             width: 30px;
@@ -62,14 +76,18 @@
         }
     </style>
 </head>
+
 <body>
+
+
     <table class="outer-table">
         @foreach ($asets->chunk(2) as $chunk)
             <tr>
                 @foreach ($chunk as $asset)
                     {{-- KOLOM --}}
                     <td class="outer-cell">
-                        <div class="label-box"><br><br>
+                        <div class="label-box">
+                            <br><br>
                             <div class="header-title">ASET TETAP PERTAMEDIKA - IHC</div>
 
                             <table class="inner">
@@ -137,4 +155,5 @@
         @endforeach
     </table>
 </body>
+
 </html>

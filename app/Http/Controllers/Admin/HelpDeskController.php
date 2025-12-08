@@ -32,15 +32,16 @@ class HelpDeskController extends Controller
                 'id' => $value->id,
                 // 'nama_lengkap' => $value->kode,
                 // 'username' => $value->kategori,
-                'nama_lengkap' => $value->user->nama_lengkap,
-                'username' => $value->user->username,
-                'department' => $value->user->department->nama,
-                'keterangan' => $value->keterangan,
-                'tanggal' => $value->tanggal,
-                'status' => $value->status,
+                'nama_lengkap' => $value->user->nama_lengkap ?? '-',
+                'username' => $value->user->username ?? '-',
+                'department' => $value->user->department->nama ?? '-',
+                'keterangan' => $value->keterangan ?? '-',
+                'tanggal' => $value->tanggal ?? '-',
+                'status' => $value->status ?? '-',
                 'created_at' => $value->created_at,
             ];
         }
+
         return response()->json($data, 200);
     }
 

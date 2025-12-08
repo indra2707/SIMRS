@@ -51,9 +51,9 @@ class HelpDeskController extends Controller
                 'id' => $value->id,
                 // 'kode' => $value->kode,
                 // 'kategori' => $value->kategori,
-                'keterangan' => $value->keterangan,
-                'tanggal' => $value->tanggal,
-                'status' => $value->status,
+                'keterangan' => $value->keterangan ?? '-',
+                'tanggal' => $value->tanggal ?? '-',
+                'status' => $value->status ?? '-',
                 'created_at' => $value->created_at,
             ];
         }
