@@ -190,6 +190,7 @@ class AsetController extends Controller
             'id_kondisi' => $request->kode_kondisi_aset,
             'id_kelompok' => $request->kode_kelompok_aset,
             'id_vendor' => $request->id_vendor,
+            'jenis' => $request->jenis,
         ]);
         if ($query) {
             return response()->json([
