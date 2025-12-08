@@ -436,10 +436,8 @@
         });
     }
 
-
     //print all aset
     $(document).on('click', '.print-all-btn', function () {
-
         let rows = $tableAset.bootstrapTable('getSelections');
 
         if (rows.length === 0) {
@@ -453,13 +451,12 @@
 
         let ids = rows.map(row => row.id);
 
-        console.log(ids); // ✅ sekarang muncul
+        console.log(ids);
 
         let url = "{{ route('master-data.aset.print-all') }}?ids=" + ids.join(',');
         window.open(url, '_blank');
 
     });
-
 
 
     function actionsFunctionAset(value, row, index) {
