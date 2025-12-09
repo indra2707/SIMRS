@@ -229,7 +229,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td align="left" valign="middle" class="label-col">No. Aset</td>
+                                        <td align="left" valign="middle" class="label-col">No. Inventaris</td>
                                         <td align="center" valign="middle" class="separator">:</td>
                                         <td align="left" valign="middle" colspan="3" class="value-cell">
                                             {{ $aset->no_aset }}

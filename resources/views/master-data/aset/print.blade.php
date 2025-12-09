@@ -145,7 +145,7 @@
                 </tr>
 
                 <tr>
-                    <td align="left" valign="middle" style="color: white;font-weight: bold">No. Aset</td>
+                    <td align="left" valign="middle" style="color: white;font-weight: bold">No. Inventaris</td>
                     <td align="center" valign="middle" style="color: white;font-weight: bold">:</td>
                     <td align="left" valign="middle" colspan="3" style="border-bottom: 1px solid #3c04bd;background-color: white;font-weight: bold">
                         {{ $aset->no_aset }}
