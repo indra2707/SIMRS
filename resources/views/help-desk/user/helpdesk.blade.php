@@ -621,7 +621,7 @@
     </script>
 
     <!-- Initialize Laravel Echo (Pusher/Reverb) -->
-    <script>
+    {{-- <script>
         if (typeof window.Echo === 'undefined') {
             window.Echo = new Echo({
                 broadcaster: 'pusher',
@@ -635,7 +635,7 @@
 
             console.log('✅ Laravel Echo initialized');
         }
-    </script>
+    </script> --}}
 
     <!-- Pastikan Laravel Echo sudah di-initialize (tambahkan jika belum ada) -->
 
