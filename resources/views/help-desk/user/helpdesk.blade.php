@@ -277,18 +277,26 @@
             var currentHelpdeskId = null;
             var chatChannel = null;
 
-            // ========== CHAT FUNCTIONALITY ==========
+            // ✅ Get current user info
+            var currentUserId = parseInt("{{ auth()->user()->id }}");
+            var currentUsername = "{{ auth()->user()->username }}";
 
-            // Open Chat Modal ketika tombol chat diklik
+            console.log('🟢 User Chat Initialized', {
+                userId: currentUserId,
+                username: currentUsername
+            });
+
+            // ========== OPEN CHAT MODAL ==========
             $(document).on('click', '.btn-chat', function() {
                 var helpdeskId = $(this).data('helpdesk-id');
+
                 if (!helpdeskId) {
-                    console.error('Helpdesk ID tidak ditemukan');
+                    console.error('❌ Helpdesk ID not found');
                     return;
                 }
 
                 currentHelpdeskId = helpdeskId;
-                console.log('Opening chat for ticket:', helpdeskId);
+                console.log('📂 Opening chat for ticket:', helpdeskId);
 
                 loadTicketInfo(helpdeskId);
                 loadChatMessages(helpdeskId);
@@ -297,9 +305,9 @@
                 $('#chatModal').modal('show');
             });
 
-            // Load Ticket Info dari table row
+            // ========== LOAD TICKET INFO ==========
             function loadTicketInfo(helpdeskId) {
-                // Cari data dari table bootstrap
+                // Load dari Bootstrap Table
                 var rowData = $('#table_helpdesk').bootstrapTable('getRowByUniqueId', helpdeskId);
 
                 if (rowData) {
@@ -324,7 +332,7 @@
                     }
                     $('#ticket-status').html(statusBadge);
 
-                    // Format created date
+                    // Format date
                     if (rowData.created_at) {
                         var date = new Date(rowData.created_at);
                         $('#ticket-created').text(date.toLocaleString('id-ID'));
@@ -332,7 +340,7 @@
                 }
             }
 
-            // Load Chat Messages
+            // ========== LOAD CHAT MESSAGES ==========
             function loadChatMessages(helpdeskId) {
                 $.ajax({
                     url: '/user/chat/' + helpdeskId,
@@ -341,24 +349,25 @@
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success: function(messages) {
-                        console.log('Messages loaded:', messages.length, 'messages');
+                        console.log('✅ Messages loaded:', messages.length, 'messages');
                         renderMessages(messages);
                         scrollToBottom();
                     },
                     error: function(xhr) {
-                        console.error('Failed to load messages:', xhr);
+                        console.error('❌ Failed to load messages:', xhr);
                         $('.chat-history ul').html(
-                            '<li class="text-center text-danger py-4">Failed to load messages</li>');
+                            '<li class="text-center text-danger py-4">Failed to load messages</li>'
+                        );
                     }
                 });
             }
 
-            // Render Messages
+            // ========== RENDER MESSAGES ==========
             function renderMessages(messages) {
                 var html = '';
 
                 if (!messages || messages.length === 0) {
-                    html = '<li class="text-center text-muted py-4">No messages yet. Start the conversation!</li>';
+                    html = '<li class="text-center text-muted py-4">Belum ada pesan. Mulai percakapan!</li>';
                 } else {
                     messages.forEach(function(msg) {
                         html += renderSingleMessage(msg);
@@ -368,9 +377,16 @@
                 $('.chat-history ul').html(html);
             }
 
-            // Render Single Message
+            // ========== RENDER SINGLE MESSAGE ==========
             function renderSingleMessage(msg) {
-                var isUser = msg.sender_type === 'user';
+                var messageUserId = parseInt(msg.user_id);
+                var isMe = messageUserId === currentUserId;
+
+                // Get sender info
+                var senderName = msg.display_name || msg.user?.nama_lengkap || msg.user?.username || msg
+                    .sender_type || 'Support';
+                var isAdmin = msg.is_admin || (msg.user && msg.user.role !== 'user');
+
                 var time = new Date(msg.created_at).toLocaleTimeString('id-ID', {
                     hour: '2-digit',
                     minute: '2-digit'
@@ -378,11 +394,11 @@
 
                 var html = '';
 
-                if (isUser) {
-                    // User message (kanan - biru)
+                if (isMe) {
+                    // User's message (kanan - biru)
                     html = `
                 <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 5px;">
+                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
                         <div class="message-data text-end mb-1">
                             <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
                         </div>
@@ -390,13 +406,29 @@
                     </div>
                 </li>
             `;
-                } else {
-                    // Admin message (kiri - hijau)
+                } else if (isAdmin) {
+                    // Admin/Support message (kiri - hijau)
                     html = `
                 <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 5px;">
+                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
                         <div class="message-data mb-1">
-                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">Support Team • ${time}</span>
+                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
+                                ${senderName} • ${time}
+                            </span>
+                        </div>
+                        ${escapeHtml(msg.message)}
+                    </div>
+                </li>
+            `;
+                } else {
+                    // Other user message (kiri - abu-abu) - jarang terjadi
+                    html = `
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                        <div class="message-data mb-1">
+                            <span class="message-data-time" style="color: #999; font-size: 11px;">
+                                ${senderName} • ${time}
+                            </span>
                         </div>
                         ${escapeHtml(msg.message)}
                     </div>
@@ -407,7 +439,7 @@
                 return html;
             }
 
-            // Escape HTML untuk keamanan
+            // ========== ESCAPE HTML ==========
             function escapeHtml(text) {
                 var map = {
                     '&': '&amp;',
@@ -421,35 +453,32 @@
                 });
             }
 
-            // Send Message ketika tombol diklik
+            // ========== SEND MESSAGE ==========
             $(document).on('click', '#send-chat-btn', function() {
                 sendMessage();
             });
 
-            // Send Message ketika Enter ditekan
             $(document).on('keypress', '#input-box', function(e) {
-                if (e.which === 13) { // Enter key
+                if (e.which === 13 && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
                 }
             });
 
-            // Function untuk mengirim pesan
             function sendMessage() {
                 var message = $('#input-box').val().trim();
 
                 if (!message) {
-                    console.log('Message is empty');
                     return;
                 }
 
                 if (!currentHelpdeskId) {
-                    console.error('No helpdesk ID set');
-                    Alert('error', 'ID Helpdesk tidak valid');
+                    console.error('❌ No helpdesk ID set');
+                    alert('ID Helpdesk tidak valid');
                     return;
                 }
 
-                console.log('Sending message:', message);
+                console.log('📤 Sending message:', message);
 
                 $.ajax({
                     url: '/user/chat/' + currentHelpdeskId + '/send',
@@ -462,21 +491,24 @@
                         $('#send-chat-btn').prop('disabled', true);
                     },
                     success: function(response) {
-                        console.log('Message sent:', response);
+                        console.log('✅ Message sent:', response);
 
                         if (response.success) {
                             $('#input-box').val(''); // Clear input
 
-                            // Tambahkan pesan langsung ke UI
+                            // Append message to UI
                             if (response.data) {
                                 appendMessage(response.data);
+                            } else {
+                                console.warn('⚠️ No data in response, reloading...');
+                                loadChatMessages(currentHelpdeskId);
                             }
                         } else {
-                            Alert('error', response.message || 'Gagal mengirim pesan');
+                            alert(response.message || 'Gagal mengirim pesan');
                         }
                     },
                     error: function(xhr) {
-                        console.error('Send message error:', xhr);
+                        console.error('❌ Send message error:', xhr);
 
                         var errorMessage = 'Gagal mengirim pesan';
                         try {
@@ -488,7 +520,7 @@
                             errorMessage = 'Error: ' + xhr.status;
                         }
 
-                        Alert('error', errorMessage);
+                        alert(errorMessage);
                     },
                     complete: function() {
                         $('#send-chat-btn').prop('disabled', false);
@@ -497,150 +529,117 @@
                 });
             }
 
-            // Append new message (untuk realtime)
+            // ========== APPEND MESSAGE ==========
             function appendMessage(message) {
-                // Cek apakah pesan sudah ada (avoid duplicate)
+                // Check duplicate
                 if ($('.chat-history ul li[data-message-id="' + message.id + '"]').length > 0) {
-                    console.log('Message already exists, skipping');
+                    console.log('⚠️ Message already exists');
                     return;
                 }
+
+                console.log('📝 Appending message:', message.id);
 
                 var html = renderSingleMessage(message);
                 $('.chat-history ul').append(html);
                 scrollToBottom();
 
-                // Play sound jika pesan dari admin
-                if (message.sender_type === 'admin') {
+                // Play sound if from admin
+                if (message.is_admin) {
                     playNotificationSound();
                 }
             }
 
-            // Scroll to bottom
+            // ========== SCROLL TO BOTTOM ==========
             function scrollToBottom() {
                 setTimeout(function() {
                     var chatBox = $('.chat-history');
-                    chatBox.animate({
-                        scrollTop: chatBox[0].scrollHeight
-                    }, 300);
+                    if (chatBox.length) {
+                        chatBox.animate({
+                            scrollTop: chatBox[0].scrollHeight
+                        }, 300);
+                    }
                 }, 100);
             }
 
-            // Initialize Laravel Echo untuk REALTIME CHAT
-            // Replace bagian initChatChannel di JavaScript user dengan ini:
-
-            // Initialize Laravel Echo untuk REALTIME CHAT
+            // ========== INITIALIZE ECHO CHANNEL ==========
             function initChatChannel(helpdeskId) {
-                // Leave previous channel jika ada
+                // Leave previous channel
                 if (chatChannel) {
-                    console.log('🔴 Leaving previous channel:', chatChannel);
+                    console.log('⬅️ Leaving channel:', chatChannel);
                     window.Echo.leave(chatChannel);
                 }
 
                 chatChannel = 'chat.' + helpdeskId;
                 console.log('🟢 USER JOINING CHANNEL:', chatChannel);
-                console.log('🟢 Echo instance:', window.Echo);
 
                 // Subscribe to channel
-                var channel = window.Echo.channel(chatChannel);
+                window.Echo.channel(chatChannel)
+                    .listen('.MessageSent', function(e) {
+                        console.log('🔔 NEW MESSAGE RECEIVED:', e);
 
-                console.log('🟢 Channel object:', channel);
-
-                channel.listen('.MessageSent', function(e) {
-                        console.log('🔔 NEW MESSAGE RECEIVED (REALTIME):', e);
-                        console.log('🔔 Message details:', {
-                            id: e.message.id,
-                            sender_type: e.message.sender_type,
-                            message: e.message.message,
-                            created_at: e.message.created_at
-                        });
-
-                        // Update status indicator
-                        if (e.message.sender_type === 'admin') {
-                            console.log('✅ Message from ADMIN detected');
-                            $('#support-status').html('<span class="text-success">● Active</span>');
-                        } else {
-                            console.log('✅ Message from USER detected');
-                        }
-
-                        // Append new message
                         if (e.message) {
-                            console.log('📝 Appending message to UI...');
                             appendMessage(e.message);
+
+                            // Update status indicator if from admin
+                            if (e.message.is_admin) {
+                                $('#support-status').html('<span class="text-success">● Active</span>');
+                            }
                         }
-                    })
-                    .error(function(error) {
-                        console.error('❌ Echo channel error:', error);
                     });
 
-                // Listen to all events for debugging
-                channel.listenToAll((event, data) => {
-                    console.log('📡 All events:', event, data);
-                });
-
-                console.log('✅ Echo channel initialized for USER');
-
-                // Test connection
-                setTimeout(function() {
-                    console.log('🔍 Checking channel subscription...');
-                    console.log('🔍 Current channels:', window.Echo.connector.channels);
-                }, 2000);
+                console.log('✅ Echo channel initialized');
             }
 
-            // Juga tambahkan ini di bagian atas script untuk monitoring Echo connection
-            window.Echo.connector.pusher.connection.bind('connected', function() {
-                console.log('✅ Pusher Connected!');
-            });
-
-            window.Echo.connector.pusher.connection.bind('disconnected', function() {
-                console.log('❌ Pusher Disconnected!');
-            });
-
-            window.Echo.connector.pusher.connection.bind('error', function(err) {
-                console.error('❌ Pusher Error:', err);
-            });
-
-            // Log semua channel subscriptions
-            window.Echo.connector.pusher.bind_global(function(eventName, data) {
-                console.log('📡 Global Pusher Event:', eventName, data);
-            });
-
-            // Clean up when modal closed
+            // ========== CLEAN UP ON MODAL CLOSE ==========
             $('#chatModal').on('hidden.bs.modal', function() {
-                console.log('Chat modal closed');
+                console.log('❌ Chat modal closed');
 
-                // Leave Echo channel
                 if (chatChannel) {
                     window.Echo.leave(chatChannel);
                     chatChannel = null;
-                    console.log('Left chat channel');
                 }
 
-                // Reset
                 currentHelpdeskId = null;
                 $('.chat-history ul').html('');
                 $('#input-box').val('');
-                $('#support-status').text('Online');
             });
 
-            // Notification sound
+            // ========== NOTIFICATION SOUND ==========
             function playNotificationSound() {
                 try {
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
-                    );
+                        );
                     audio.play().catch(function(e) {
-                        console.log('Cannot play sound:', e);
+                        console.log('🔇 Cannot play sound:', e);
                     });
                 } catch (e) {
-                    console.log('Audio error:', e);
+                    console.log('🔇 Audio error:', e);
                 }
             }
         });
     </script>
 
+    <!-- Initialize Laravel Echo (Pusher/Reverb) -->
+    <script>
+        if (typeof window.Echo === 'undefined') {
+            window.Echo = new Echo({
+                broadcaster: 'pusher',
+                key: 'local',
+                wsHost: 'simrs.local',
+                wsPort: 6001,
+                forceTLS: false,
+                encrypted: false,
+                disableStats: true
+            });
+
+            console.log('✅ Laravel Echo initialized');
+        }
+    </script>
+
     <!-- Pastikan Laravel Echo sudah di-initialize (tambahkan jika belum ada) -->
 
-    <script>
+    {{-- <script>
         // Initialize Echo hanya sekali di halaman
         if (typeof window.Echo === 'undefined') {
             window.Echo = new Echo({
@@ -653,5 +652,5 @@
                 disableStats: true
             });
         }
-    </script>
+    </script> --}}
 @endsection

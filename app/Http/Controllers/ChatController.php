@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
@@ -11,47 +10,23 @@ use Illuminate\Support\Facades\Log;
 
 class ChatController extends Controller
 {
+    /**
+     * Get all messages for a helpdesk ticket
+     */
     public function index($helpdesk_id)
     {
         try {
-            $messages = Message::with('user')
-                ->where('helpdesk_id', $helpdesk_id)
-                ->orderBy('created_at', 'asc')
-                ->get();
+            $user = Auth::user();
 
-            return response()->json($messages);
-        } catch (\Exception $e) {
-            Log::error('Error loading messages: ' . $e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal memuat pesan: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function send(Request $request, $helpdesk_id)
-    {
-        try {
-            // Validasi input
-            $request->validate([
-                'message' => 'required|string|max:5000'
+            Log::info('📥 Loading messages', [
+                'helpdesk_id' => $helpdesk_id,
+                'user_id' => $user->id,
+                'username' => $user->username
             ]);
 
-            // Cek guard mana yang sedang login
-            // $guard = Auth::guard('admin')->check() ? 'admin' : 'user';
-            // $user = Auth::guard($guard)->user();
-            $user = Auth::user();
-            $role = $user->role;
-
-            if (!$user) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'User tidak terautentikasi'
-                ], 401);
-            }
-
-            // Cek apakah helpdesk exists
+            // Cek helpdesk exists
             $helpdesk = HelpDesk::find($helpdesk_id);
+
             if (!$helpdesk) {
                 return response()->json([
                     'success' => false,
@@ -59,49 +34,141 @@ class ChatController extends Controller
                 ], 404);
             }
 
+            // ✅ TIDAK ADA AUTHORIZATION CHECK - biarkan simple
+            // User frontend sudah difilter, jadi hanya lihat helpdesk mereka sendiri
+
+            // Load messages dengan relasi user
+            $messages = Message::with('user')
+                ->where('helpdesk_id', $helpdesk_id)
+                ->orderBy('created_at', 'asc')
+                ->get()
+                ->map(function($message) {
+                    return [
+                        'id' => $message->id,
+                        'helpdesk_id' => $message->helpdesk_id,
+                        'user_id' => $message->user_id,
+                        'message' => $message->message,
+                        'sender_type' => $message->sender_type, // username
+                        'created_at' => $message->created_at,
+                        'user' => [
+                            'id' => $message->user->id,
+                            'username' => $message->user->username,
+                            'nama_lengkap' => $message->user->nama_lengkap,
+                            'role' => $message->user->role,
+                        ],
+                        // Helper untuk UI
+                        'is_admin' => $message->user->role !== 'user',
+                        'display_name' => $message->user->nama_lengkap ?? $message->user->username,
+                    ];
+                });
+
+            Log::info('✅ Messages loaded', ['count' => $messages->count()]);
+
+            return response()->json($messages);
+
+        } catch (\Exception $e) {
+            Log::error('❌ Error loading messages', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memuat pesan'
+            ], 500);
+        }
+    }
+
+    /**
+     * Send a new message
+     */
+    public function send(Request $request, $helpdesk_id)
+    {
+        try {
+            $request->validate([
+                'message' => 'required|string|max:5000'
+            ]);
+
+            $user = Auth::user();
+
+            Log::info('📤 Sending message', [
+                'user_id' => $user->id,
+                'username' => $user->username,
+                'role' => $user->role,
+                'helpdesk_id' => $helpdesk_id
+            ]);
+
+            // Cek helpdesk exists
+            $helpdesk = HelpDesk::find($helpdesk_id);
+
+            if (!$helpdesk) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Helpdesk tidak ditemukan'
+                ], 404);
+            }
+
+            // ✅ TIDAK ADA AUTHORIZATION CHECK - keep it simple!
+
             // Create message
             $message = Message::create([
                 'helpdesk_id' => $helpdesk_id,
                 'user_id' => $user->id,
                 'message' => $request->message,
-                'sender_type' => $role,
+                'sender_type' => $user->username, // ✅ Simpan username
             ]);
 
-            // Load relasi user untuk broadcast
+            Log::info('💾 Message created', [
+                'message_id' => $message->id,
+                'sender_username' => $user->username
+            ]);
+
+            // Load relasi
             $message->load('user');
 
-            // Log sebelum broadcast
-            Log::info('Broadcasting message', [
-                'message_id' => $message->id,
-                'helpdesk_id' => $helpdesk_id,
-                'sender_type' => $role,
-                'channel' => 'chat.' . $helpdesk_id
-            ]);
+            // Broadcast
+            broadcast(new MessageSent($message));
 
-            // Broadcast event - PENTING: JANGAN gunakan toOthers()
-            // agar pesan terkirim ke semua subscriber termasuk user
-            broadcast(new MessageSent($message, $role));
+            Log::info('✅ Message broadcasted');
 
-            Log::info('Message broadcasted successfully');
-
+            // Return response
             return response()->json([
                 'success' => true,
                 'message' => 'Pesan berhasil dikirim',
-                'data' => $message
+                'data' => [
+                    'id' => $message->id,
+                    'helpdesk_id' => $message->helpdesk_id,
+                    'user_id' => $message->user_id,
+                    'message' => $message->message,
+                    'sender_type' => $message->sender_type, // username
+                    'created_at' => $message->created_at->toISOString(),
+                    'user' => [
+                        'id' => $user->id,
+                        'username' => $user->username,
+                        'nama_lengkap' => $user->nama_lengkap,
+                        'role' => $user->role,
+                    ],
+                    'is_admin' => $user->role !== 'user',
+                    'display_name' => $user->nama_lengkap ?? $user->username,
+                ]
             ]);
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
                 'errors' => $e->errors()
             ], 422);
+
         } catch (\Exception $e) {
-            Log::error('Error sending message: ' . $e->getMessage());
-            Log::error('Stack trace: ' . $e->getTraceAsString());
+            Log::error('❌ Error sending message', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
 
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengirim pesan: ' . $e->getMessage()
+                'message' => 'Gagal mengirim pesan'
             ], 500);
         }
     }

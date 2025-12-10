@@ -393,8 +393,8 @@
 <script>
     window.Echo = new Echo({
         broadcaster: 'pusher',
-        key: 'local', // sesuaikan dengan PUSHER_APP_KEY
-        wsHost: 'simrs.local', // domain laragon custom
+        key: 'local',
+        wsHost: window.location.hostname,
         wsPort: 6001, // sesuai config
         forceTLS: false,
         encrypted: false,

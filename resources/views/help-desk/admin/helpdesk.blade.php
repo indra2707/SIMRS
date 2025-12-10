@@ -277,7 +277,7 @@
 
 
     <!-- Ganti bagian JavaScript Chat dengan ini -->
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             var currentHelpdeskId = null;
             var chatChannel = null;
@@ -340,17 +340,19 @@
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
-                    success: function(messages) {
-                        console.log('Messages loaded:', messages.length, 'messages');
-                        renderMessages(messages);
+                    success: function(response) {
+                        console.log('Messages loaded:', response.messages.length, 'messages');
+                        renderMessages(response.messages);
                         scrollToBottom();
                     },
                     error: function(xhr) {
-                        console.error('Failed to load messages:', xhr);
-                        Alert('error', 'Gagal memuat pesan chat');
+                        console.error('🔥 ERROR STATUS:', xhr.status);
+                        console.error('🔥 ERROR TEXT:', xhr.statusText);
+                        console.error('🔥 SERVER RESPONSE:', xhr.responseText);
                     }
                 });
             }
+
 
             // Render Messages
             function renderMessages(messages) {
@@ -369,7 +371,8 @@
 
             // Render Single Message (untuk append realtime)
             function renderSingleMessage(msg) {
-                var isAdmin = msg.sender_type === 'superadmin';
+                var currentUserId = "{{ auth()->user()->id }}";
+                var isMe = msg.user_id === currentUserId;
                 var time = new Date(msg.created_at).toLocaleTimeString('id-ID', {
                     hour: '2-digit',
                     minute: '2-digit'
@@ -377,7 +380,7 @@
 
                 var html = '';
 
-                if (isAdmin) {
+                if (isMe) {
                     // Admin message (kanan - biru)
                     html = `
                 <li class="clearfix" data-message-id="${msg.id}">
@@ -601,7 +604,7 @@
                 try {
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
-                        );
+                    );
                     audio.play().catch(function(e) {
                         console.log('Cannot play sound:', e);
                     });
@@ -610,8 +613,334 @@
                 }
             }
         });
-    </script>
+    </script> --}}
+    <script>
+        $(document).ready(function() {
+            var currentHelpdeskId = null;
+            var chatChannel = null;
 
+            // ✅ PERBAIKAN: Konversi ke number
+            var currentUserId = parseInt("{{ auth()->user()->id }}");
+            var currentUserRole = "{{ auth()->user()->role }}";
+
+            console.log('Current User ID:', currentUserId, 'Role:', currentUserRole);
+
+            // ========== CHAT FUNCTIONALITY ==========
+
+            // Open Chat Modal
+            $(document).on('click', '.btn-chat', function() {
+                var helpdeskId = $(this).data('helpdesk-id');
+                if (!helpdeskId) {
+                    console.error('Helpdesk ID tidak ditemukan');
+                    return;
+                }
+
+                currentHelpdeskId = helpdeskId;
+                console.log('Opening chat for helpdesk ID:', helpdeskId);
+
+                // Load data
+                loadHelpdeskInfo(helpdeskId);
+                loadChatMessages(helpdeskId);
+                initChatChannel(helpdeskId);
+
+                // Show modal
+                $('#chatModal').modal('show');
+            });
+
+            // Load Helpdesk Info
+            function loadHelpdeskInfo(helpdeskId) {
+                $.ajax({
+                    url: '/admin/helpdesk/info/' + helpdeskId,
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    success: function(data) {
+                        console.log('Helpdesk info loaded:', data);
+
+                        // Update header
+                        $('.chat-header .about .name').text(data.nama_lengkap || 'Unknown User');
+                        $('.chat-header .about .status').text(data.department || '-');
+
+                        // Update sidebar
+                        $('#sidebar-user-name').text(data.nama_lengkap || 'Unknown User');
+                        $('#sidebar-department').text(data.department || '-');
+                        $('#sidebar-status').text(data.status || 'active');
+                        $('#sidebar-keterangan').text(data.keterangan || '-');
+                    },
+                    error: function(xhr) {
+                        console.error('Failed to load helpdesk info:', xhr);
+                        alert('Gagal memuat informasi helpdesk');
+                    }
+                });
+            }
+
+            // Load Chat Messages
+            function loadChatMessages(helpdeskId) {
+                $.ajax({
+                    url: '/admin/chat/' + helpdeskId,
+                    type: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        console.log('Messages loaded:', response.messages.length, 'messages');
+                        renderMessages(response.messages);
+                        scrollToBottom();
+                    },
+                    error: function(xhr) {
+                        console.error('🔥 ERROR STATUS:', xhr.status);
+                        console.error('🔥 ERROR TEXT:', xhr.statusText);
+                        console.error('🔥 SERVER RESPONSE:', xhr.responseText);
+                    }
+                });
+            }
+
+            // Render Messages
+            function renderMessages(messages) {
+                var html = '';
+
+                if (!messages || messages.length === 0) {
+                    html = '<li class="text-center text-muted py-4">Belum ada pesan. Mulai percakapan!</li>';
+                } else {
+                    messages.forEach(function(msg) {
+                        html += renderSingleMessage(msg);
+                    });
+                }
+
+                $('.chat-history ul').html(html);
+            }
+
+            // ✅ PERBAIKAN: Render Single Message (tanpa guard, pakai role)
+            function renderSingleMessage(msg) {
+                // Konversi msg.user_id ke number juga
+                var messageUserId = parseInt(msg.user_id);
+
+                // Cek apakah pesan dari user yang sedang login
+                // Dulu: cek berdasarkan guard
+                // Sekarang: cek berdasarkan user_id saja (karena hanya 1 guard)
+                var isMe = messageUserId === currentUserId;
+
+                console.log('Rendering message:', {
+                    messageId: msg.id,
+                    messageUserId: messageUserId,
+                    currentUserId: currentUserId,
+                    isMe: isMe,
+                    senderType: msg.sender_type,
+                    currentUserRole: currentUserRole
+                });
+
+                var time = new Date(msg.created_at).toLocaleTimeString('id-ID', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                var html = '';
+
+                if (isMe) {
+                    // Admin message (kanan - biru)
+                    html = `
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 5px;">
+                        <div class="message-data text-end mb-1">
+                            <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">${time}</span>
+                        </div>
+                        <div style="text-align: left;">${escapeHtml(msg.message)}</div>
+                    </div>
+                </li>
+            `;
+                } else {
+                    // User message (kiri - abu-abu)
+                    html = `
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 5px;">
+                        <div class="message-data mb-1">
+                            <span class="message-data-time" style="color: #999; font-size: 11px;">${time}</span>
+                        </div>
+                        ${escapeHtml(msg.message)}
+                    </div>
+                </li>
+            `;
+                }
+
+                return html;
+            }
+
+            // Escape HTML
+            function escapeHtml(text) {
+                var map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, function(m) {
+                    return map[m];
+                });
+            }
+
+            // Send Message
+            $(document).on('click', '#send-chat-btn', function() {
+                sendMessage();
+            });
+
+            $(document).on('keypress', '#input-box', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                var message = $('#input-box').val().trim();
+
+                if (!message) {
+                    console.log('Message is empty');
+                    return;
+                }
+
+                if (!currentHelpdeskId) {
+                    console.error('No helpdesk ID set');
+                    alert('ID Helpdesk tidak valid');
+                    return;
+                }
+
+                console.log('Sending message:', message);
+
+                $.ajax({
+                    url: '/admin/chat/' + currentHelpdeskId + '/send',
+                    type: 'POST',
+                    data: {
+                        message: message,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    beforeSend: function() {
+                        $('#send-chat-btn').prop('disabled', true);
+                    },
+                    success: function(response) {
+                        console.log('✅ Message sent successfully:', response);
+
+                        if (response.success) {
+                            $('#input-box').val(''); // Clear input
+
+                            // ✅ Tambahkan pesan langsung ke UI (optimistic update)
+                            if (response.data) {
+                                console.log('Appending message to UI:', response.data);
+                                appendMessage(response.data);
+                            }
+                        } else {
+                            alert(response.message || 'Gagal mengirim pesan');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('❌ Send message error:', xhr);
+                        var errorMessage = 'Gagal mengirim pesan';
+
+                        try {
+                            var response = JSON.parse(xhr.responseText);
+                            if (response.message) {
+                                errorMessage = response.message;
+                            }
+                        } catch (e) {
+                            errorMessage = 'Error: ' + xhr.status;
+                        }
+
+                        alert(errorMessage);
+                    },
+                    complete: function() {
+                        $('#send-chat-btn').prop('disabled', false);
+                        $('#input-box').focus();
+                    }
+                });
+            }
+
+            // ✅ PERBAIKAN: Append new message to chat
+            function appendMessage(message) {
+                // Cek apakah pesan sudah ada (avoid duplicate)
+                if ($('.chat-history ul li[data-message-id="' + message.id + '"]').length > 0) {
+                    console.log('⚠️ Message already exists, skipping:', message.id);
+                    return;
+                }
+
+                console.log('📝 Appending new message:', message);
+
+                var html = renderSingleMessage(message);
+                $('.chat-history ul').append(html);
+                scrollToBottom();
+
+                // Play sound notification (optional)
+                playNotificationSound();
+            }
+
+            // Scroll to bottom
+            function scrollToBottom() {
+                setTimeout(function() {
+                    var chatBox = $('.chat-history');
+                    chatBox.animate({
+                        scrollTop: chatBox[0].scrollHeight
+                    }, 300);
+                }, 100);
+            }
+
+            // ✅ PERBAIKAN: Initialize Laravel Echo untuk REALTIME CHAT
+            function initChatChannel(helpdeskId) {
+                // Leave previous channel
+                if (chatChannel) {
+                    console.log('⬅️ Leaving previous channel:', chatChannel);
+                    window.Echo.leave(chatChannel);
+                }
+
+                chatChannel = 'chat.' + helpdeskId;
+                console.log('🔴 JOINING CHANNEL:', chatChannel);
+
+                // Subscribe to channel
+                window.Echo.channel(chatChannel)
+                    .listen('.MessageSent', function(e) {
+                        console.log('🔔 NEW MESSAGE RECEIVED (REALTIME):', e);
+
+                        // Append new message
+                        if (e.message) {
+                            appendMessage(e.message);
+                        }
+                    });
+
+                console.log('✅ Echo channel initialized for:', chatChannel);
+            }
+
+            // Clean up when modal closed
+            $('#chatModal').on('hidden.bs.modal', function() {
+                console.log('❌ Chat modal closed');
+
+                // Leave Echo channel
+                if (chatChannel) {
+                    window.Echo.leave(chatChannel);
+                    chatChannel = null;
+                    console.log('⬅️ Left chat channel');
+                }
+
+                // Reset
+                currentHelpdeskId = null;
+                $('.chat-history ul').html('');
+                $('#input-box').val('');
+                $('.chat-header .about .name').text('Loading...');
+            });
+
+            // Notification sound
+            function playNotificationSound() {
+                try {
+                    var audio = new Audio(
+                        'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
+                    );
+                    audio.play().catch(function(e) {
+                        console.log('🔇 Cannot play sound:', e);
+                    });
+                } catch (e) {
+                    console.log('🔇 Audio error:', e);
+                }
+            }
+        });
+    </script>
     <!-- Tambahkan indikator visual untuk debugging -->
     <style>
         .chat-header .about .name .font-primary {
