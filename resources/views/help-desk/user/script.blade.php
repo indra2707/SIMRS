@@ -323,9 +323,9 @@
 <script>
     window.Echo = new Echo({
         broadcaster: "pusher",
-        key: "local", // sama dengan config PUSHER_APP_KEY
-        wsHost: "simrs.local", // domain laragon custom
-        wsPort: 6001, // port websocket
+        key: "local",
+        wsHost: window.location.hostname,
+        wsPort: 6001, 
         forceTLS: false,
         encrypted: false,
         disableStats: true,

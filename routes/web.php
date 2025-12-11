@@ -32,7 +32,8 @@ use App\http\Controllers\MasterData\KelompokAsetController;
 use App\Http\Controllers\MasterData\CustomerController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 use App\Http\Controllers\User\HelpDeskController;
-use App\Http\Controllers\Admin\ChatController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\SdmController;
 
 // Login/Logout Route Middleware
@@ -43,19 +44,34 @@ Route::group(['middleware' => 'login.check'], function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 // ADMIN HELPDESK
-Route::get('help-desk', [AdminHelpDeskController::class, 'index'])->name('admin.helpdesk');
-Route::get('help-desk/views', [AdminHelpDeskController::class, 'views'])->name('admin.helpdesk-views');
-Route::get('help-desk/edit/{helpDesk}', [AdminHelpDeskController::class, 'edit'])->name('admin.helpdesk-edit');
-Route::put('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'update'])->name('admin.helpdesk-update');
-Route::post('help-desk/update-status/{helpDesk}', [AdminHelpDeskController::class, 'updateStatus'])->name('admin.helpdesk-update-status');
-Route::delete('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'destroy'])->name('admin.helpdesk-destroy');
-Route::get('helpdesk/info/{id}', [AdminHelpDeskController::class, 'getHelpdeskInfo'])->name('admin.helpdesk-info');
+Route::prefix('admin')->middleware(['auth'])->group(function() {
+    // Admin Helpdesk
+    Route::get('help-desk', [AdminHelpDeskController::class, 'index'])->name('admin.helpdesk');
+    Route::get('help-desk/views', [AdminHelpDeskController::class, 'views'])->name('admin.helpdesk-views');
+    Route::get('help-desk/edit/{helpDesk}', [AdminHelpDeskController::class, 'edit'])->name('admin.helpdesk-edit');
+    Route::put('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'update'])->name('admin.helpdesk-update');
+    Route::post('help-desk/update-status/{helpDesk}', [AdminHelpDeskController::class, 'updateStatus'])->name('admin.helpdesk-update-status');
+    Route::delete('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'destroy'])->name('admin.helpdesk-destroy');
+
+    // Admin - Info & Chat (HARUS DALAM PREFIX ADMIN!)
+    Route::get('helpdesk/info/{id}', [AdminHelpDeskController::class, 'getHelpdeskInfo'])->name('admin.helpdesk-info');
+    Route::get('chat/{helpdeskId}', [AdminChatController::class, 'index'])->name('admin.chat');
+    Route::post('chat/{helpdeskId}/send', [AdminChatController::class, 'send'])->name('admin.chat-send');
+});
 
 // USER HELPDESK
 Route::get('user/help-desk', [HelpDeskController::class, 'index'])->name('user.helpdesk');
 Route::post('user/help-desk/add', [HelpDeskController::class, 'store'])->name('user.helpdesk-store');
 Route::get('user/help-desk/views', [HelpDeskController::class, 'views'])->name('user.helpdesk-views');
 Route::delete('user/help-desk/{helpDesk}', [HelpDeskController::class, 'destroy'])->name('user.helpdesk-delete');
+
+// USER CHAT
+Route::get('user/chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
+Route::post('user/chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
+
+
+
+
 
 // SDM
 Route::get('sdm', [SdmController::class, 'index'])->name('sdm');
@@ -65,8 +81,6 @@ Route::get('sdm/users/add', [SdmController::class, 'store'])->name('sdm.create')
 Route::get('sdm/destroy/{id}', [SdmController::class, 'destroy'])->name('sdm.delete');
 Route::get('sdm/updateStatus/{id}', [SdmController::class, 'updateStatus'])->name('sdm.update-status');
 
-Route::get('chat/{helpdeskId}', [ChatController::class, 'index'])->name('chat');
-Route::post('chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('chat-send');
 
 // Logged In Route Middleware
 Route::group(['middleware' => 'loggedin'], function () {

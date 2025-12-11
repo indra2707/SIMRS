@@ -15,18 +15,19 @@ class MessageSent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $senderType;
+    // public $senderType;
 
-    public function __construct(Message $message, $senderType)
+    // public function __construct(Message $message, $senderType)
+    public function __construct(Message $message)
     {
         $this->message = $message->load('user');
-        $this->senderType = $senderType;
+        // $this->senderType = $senderType;
 
         // Log untuk debugging
         Log::info('MessageSent Event Created', [
             'message_id' => $message->id,
             'helpdesk_id' => $message->helpdesk_id,
-            'sender_type' => $senderType,
+            'sender_type' => $message->senderType,
             'channel' => 'chat.' . $message->helpdesk_id
         ]);
     }
@@ -36,12 +37,12 @@ class MessageSent implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
-        $channel = 'chat.' . $this->message->helpdesk_id;
+        // $channel = 'chat.' . $this->message->helpdesk_id;
 
-        Log::info('Broadcasting on channel: ' . $channel);
+        // Log::info('Broadcasting on channel: ' . $channel);
 
         // PENTING: Gunakan public Channel, bukan private
-        return new Channel($channel);
+       return new Channel('chat.' . $this->message->helpdesk_id);
     }
 
     /**
@@ -71,7 +72,7 @@ class MessageSent implements ShouldBroadcastNow
                     'nama_lengkap' => $this->message->user->nama_lengkap ?? 'Unknown',
                 ]
             ],
-            'sender_type' => $this->senderType
+            // 'sender_type' => $this->senderType
         ];
     }
 }
