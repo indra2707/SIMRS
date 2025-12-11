@@ -16,13 +16,13 @@
         }
 
         /* .select2-container--bootstrap-5 .select2-selection__rendered {
-                    font-size: 18px;
-                }
+                        font-size: 18px;
+                    }
 
-                .select2-container--bootstrap-5 .select2-selection__placeholder {
-                    font-size: 15px !important;
-                    opacity: 1;
-                } */
+                    .select2-container--bootstrap-5 .select2-selection__placeholder {
+                        font-size: 15px !important;
+                        opacity: 1;
+                    } */
     </style>
 
 @endsection
@@ -113,9 +113,8 @@
                         <!-- Eselon -->
                         <label for="eselon" class="col-form-label col-sm-2">Eselon</label>
                         <div class="col-sm-10">
-                            <select class="form-select select2" name="eselon" required>
-                                <option></option>
-                            </select>
+                            <select class="form-select form-control" id="id_vendor" name="id_vendor"
+                                data-placeholder="---- Pilih Salah Satu ----" required></select>
                         </div>
 
                         <!-- Form -->
@@ -166,7 +165,8 @@
                         <label class="col-form-label col-sm-2">Biaya Ditanggung Oleh</label>
                         <div class="col-sm-4">
                             <div class="btn-group biaya-group" role="group">
-                                <button type="button" class="btn btn-outline-primary active" data-value="Perusahaan">Perusahaan</button>
+                                <button type="button" class="btn btn-outline-primary active"
+                                    data-value="Perusahaan">Perusahaan</button>
                                 <button type="button" class="btn btn-outline-primary" data-value="Pribadi">Pribadi</button>
                             </div>
                         </div>
@@ -234,11 +234,13 @@
                                 data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
-                                        <th data-field="id" data-visible="false" data-width='2%' data-align="center" class="f-light">ID</th>
+                                        <th data-field="id" data-visible="false" data-width='2%' data-align="center"
+                                            class="f-light">ID</th>
                                         <th data-field="field_id" data-visible="false" class="f-light">ID_EMPLOYEE</th>
                                         <th data-field="field_nip" data-align="center" class="f-light">NIP</th>
                                         <th data-field="field_employee" class="f-light">Nama</th>
-                                        <th data-width='2%' data-formatter="actionFormatter" data-align="center" class="f-light">#</th>
+                                        <th data-width='2%' data-formatter="actionFormatter" data-align="center"
+                                            class="f-light">#</th>
                                     </tr>
                                 </thead>
                             </table>
