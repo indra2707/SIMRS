@@ -234,11 +234,11 @@
                                 data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
-                                        <th data-field="id" data-visible="false" data-width='2%' data-align="center">ID</th>
-                                        <th data-field="field_id" data-visible="false">ID_EMPLOYEE</th>
-                                        <th data-field="field_nip" data-align="center">NIP</th>
-                                        <th data-field="field_employee">Nama</th>
-                                        <th data-width='2%' data-formatter="actionFormatter" data-align="center">#</th>
+                                        <th data-field="id" data-visible="false" data-width='2%' data-align="center" class="f-light">ID</th>
+                                        <th data-field="field_id" data-visible="false" class="f-light">ID_EMPLOYEE</th>
+                                        <th data-field="field_nip" data-align="center" class="f-light">NIP</th>
+                                        <th data-field="field_employee" class="f-light">Nama</th>
+                                        <th data-width='2%' data-formatter="actionFormatter" data-align="center" class="f-light">#</th>
                                     </tr>
                                 </thead>
                             </table>
