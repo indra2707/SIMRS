@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('penempatan')->nullable();
             $table->string('lokasi_kerja')->nullable();
             $table->string('nomor_pekerja')->nullable();
-            $table->string('nama_pekerja')->nullable();
+            $table->string('nama_pekerja') ;    
             $table->string('jenis_kelamin')->nullable();
             $table->string('agama')->nullable();
             $table->string('nik')->nullable();
@@ -83,7 +83,7 @@ return new class extends Migration
 
             // Username
             $table->string('temp_username')->nullable();
-            $table->string('username')->nullable(); 
+            $table->string('username')->nullable();
         });
     }
 

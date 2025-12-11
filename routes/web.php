@@ -34,7 +34,7 @@ use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 use App\Http\Controllers\User\HelpDeskController;
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\SdmController;
+use App\Http\Controllers\Sdm\PegawaiController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -45,7 +45,6 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 // ADMIN HELPDESK
 Route::prefix('admin')->middleware(['auth'])->group(function () {
-    // Admin Helpdesk
     Route::get('help-desk', [AdminHelpDeskController::class, 'index'])->name('admin.helpdesk');
     Route::get('help-desk/views', [AdminHelpDeskController::class, 'views'])->name('admin.helpdesk-views');
     Route::get('help-desk/edit/{helpDesk}', [AdminHelpDeskController::class, 'edit'])->name('admin.helpdesk-edit');
@@ -58,8 +57,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('chat/{helpdeskId}/send', [AdminChatController::class, 'send'])->name('admin.chat-send');
 });
 
+// USER HELPDESK
 Route::prefix('user')->middleware(['auth'])->group(function () {
-    // USER HELPDESK
     Route::get('help-desk', [HelpDeskController::class, 'index'])->name('user.helpdesk');
     Route::post('help-desk/add', [HelpDeskController::class, 'store'])->name('user.helpdesk-store');
     Route::get('help-desk/views', [HelpDeskController::class, 'views'])->name('user.helpdesk-views');
@@ -75,12 +74,12 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
 
 
 // SDM
-Route::get('sdm', [SdmController::class, 'index'])->name('sdm');
-Route::get('sdm/views', [SdmController::class, 'views'])->name('sdm.view');
-Route::get('sdm/update/{id}', [SdmController::class, 'update'])->name('sdm.update');
-Route::get('sdm/users/add', [SdmController::class, 'store'])->name('sdm.create');
-Route::get('sdm/destroy/{id}', [SdmController::class, 'destroy'])->name('sdm.delete');
-Route::get('sdm/updateStatus/{id}', [SdmController::class, 'updateStatus'])->name('sdm.update-status');
+Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');
+Route::get('sdm/views', [PegawaiController::class, 'views'])->name('pegawai-view');
+Route::PUT('sdm/update/{id}', [PegawaiController::class, 'update'])->name('pegawai-update');
+Route::POST('sdm/users/add', [PegawaiController::class, 'store'])->name('pegawai-store');
+Route::get('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
+Route::get('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
 
 
 // Logged In Route Middleware

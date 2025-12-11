@@ -26,7 +26,7 @@ class HelpDeskController extends Controller
     {
         $query = HelpDesk::all();
 
-        $data = [];
+        $data = []; 
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
