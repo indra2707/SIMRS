@@ -8,8 +8,11 @@ use App\Http\Controllers\Tarif\SKTarifController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\RollsController;
+
+use App\Http\Controllers\Sdm\SpdsController;
 
 use App\Http\Controllers\MasterData\PasienController;
 use App\Http\Controllers\MasterData\Icd9Controller;
@@ -68,9 +71,6 @@ Route::delete('user/help-desk/{helpDesk}', [HelpDeskController::class, 'destroy'
 // USER CHAT
 Route::get('user/chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
 Route::post('user/chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
-
-
-
 
 
 // SDM
@@ -237,10 +237,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/customer/update-status/{id}', [CustomerController::class, 'updateStatus'])->name('master-data.customer.update-status');
     });
 
+    // User Management
     Route::prefix('user')->group(function () {
-
-
-
         // User
         Route::get('/user', [UsersController::class, 'index'])->name('user.user');
         Route::get('/user/view', [UsersController::class, 'views'])->name('user.user.view');
@@ -257,6 +255,18 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/roll/update-menu/{id}', [RollsController::class, 'updateMenu'])->name('user.roll.update-menu');
         Route::delete('/roll/delete/{id}', [RollsController::class, 'destroy'])->name('user.roll.delete');
         Route::post('/roll/update-status/{id}', [RollsController::class, 'updateStatus'])->name('user.roll.update-status');
+    });
+
+    // SDM
+    Route::prefix('sdm')->group(function () {
+        // SPD
+        Route::get('/spd', [SpdsController::class, 'index'])->name('sdm.spd');
+        Route::get('/spd/view', [SpdsController::class, 'views'])->name('sdm.spd.view');
+        Route::post('/spd/store', [SpdsController::class, 'store'])->name('sdm.spd.create');
+        Route::put('/spd/update/{id}', [SpdsController::class, 'update'])->name('sdm.spd.update');
+        Route::delete('/spd/delete/{id}', [SpdsController::class, 'destroy'])->name('sdm.spd.delete');
+        Route::post('/spd/update-status/{id}', [SpdsController::class, 'updateStatus'])->name('sdm.spd.update-status');
+
     });
 
     // Tarif

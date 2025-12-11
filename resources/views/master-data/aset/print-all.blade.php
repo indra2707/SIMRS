@@ -65,7 +65,7 @@
         }
 
         table.inner-aset .label-col {
-            width: 70px;
+            width: 80px;
         }
 
         table.inner-aset .box-small {
@@ -78,9 +78,10 @@
         }
 
         table.inner-aset .label-col {
-            width: 70px;
+            width: 80px;
             font-weight: bold;
         }
+
         table.inner-aset .separator {
             width: 3px;
             /* color: white; */
@@ -89,22 +90,24 @@
         }
 
         table.inner-aset .value-cell {
-            border-bottom: 1px solid ;
+            border-bottom: 1px solid;
             /* background-color: white; */
             font-weight: bold;
         }
 
         table.inner-aset .box-small {
-            border: 1px solid ;
+            border: 1px solid;
             width: 30px;
             /* background-color: white; */
             text-align: center;
             vertical-align: top;
         }
-          table.inner-aset td {
+
+        table.inner-aset td {
             padding: 3px;
         }
-         table.inner-aset .value-cell {
+
+        table.inner-aset .value-cell {
             border-bottom: 1px solid #000;
             /* background-color: white; */
             font-weight: bold;
@@ -121,7 +124,7 @@
         }
 
         table.inner-inventaris .label-col {
-            width: 70px;
+            width: 80px;
             color: white;
             font-weight: bold;
         }
@@ -165,7 +168,7 @@
                                     <tr>
                                         <td class="label-col">Unit Usaha</td>
                                         <td>:</td>
-                                        <td colspan="3" style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td colspan="3" style="border-bottom:1px solid #000;" class="value-cell">
                                             RSOJ Pertamina Royal Biringkanaya
                                         </td>
                                     </tr>
@@ -173,7 +176,7 @@
                                     <tr>
                                         <td class="label-col">No. Aset</td>
                                         <td>:</td>
-                                        <td colspan="3" style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td colspan="3" style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->no_aset }}
                                         </td>
                                     </tr>
@@ -181,7 +184,7 @@
                                     <tr>
                                         <td class="label-col">No. Manufacture</td>
                                         <td>:</td>
-                                        <td colspan="3" style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td colspan="3" style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->no_sn }}
                                         </td>
                                     </tr>
@@ -189,11 +192,11 @@
                                     <tr>
                                         <td class="label-col">Deskripsi</td>
                                         <td>:</td>
-                                        <td style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->nama }}
                                         </td>
-                                        <td rowspan="3" class="box-small"class="value-cell">Paraf</td>
-                                        <td rowspan="3" class="box-small"class="value-cell">
+                                        <td rowspan="3" class="box-small" class="value-cell">Paraf</td>
+                                        <td rowspan="3" class="box-small" class="value-cell">
                                             Bln/Thn<br><br>
                                             {{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
                                         </td>
@@ -202,7 +205,7 @@
                                     <tr>
                                         <td class="label-col">Lokasi</td>
                                         <td>:</td>
-                                        <td style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->nama_lokasi }}
                                         </td>
                                     </tr>
@@ -210,7 +213,7 @@
                                     <tr>
                                         <td class="label-col">Kondisi</td>
                                         <td>:</td>
-                                        <td style="border-bottom:1px solid #000;"class="value-cell">
+                                        <td style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->nama_kondisi }}
                                         </td>
                                     </tr>
@@ -237,7 +240,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td align="left" valign="middle" class="label-col">No. Manufacture</td>
+                                        <td align="left" class="label-col">No. Manufacture</td>
                                         <td align="center" valign="middle" class="separator">:</td>
                                         <td align="left" valign="middle" colspan="3" class="value-cell">
                                             {{ $aset->no_sn }}
