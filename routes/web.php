@@ -44,7 +44,7 @@ Route::group(['middleware' => 'login.check'], function () {
 Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
 
 // ADMIN HELPDESK
-Route::prefix('admin')->middleware(['auth'])->group(function() {
+Route::prefix('admin')->middleware(['auth'])->group(function () {
     // Admin Helpdesk
     Route::get('help-desk', [AdminHelpDeskController::class, 'index'])->name('admin.helpdesk');
     Route::get('help-desk/views', [AdminHelpDeskController::class, 'views'])->name('admin.helpdesk-views');
@@ -53,21 +53,22 @@ Route::prefix('admin')->middleware(['auth'])->group(function() {
     Route::post('help-desk/update-status/{helpDesk}', [AdminHelpDeskController::class, 'updateStatus'])->name('admin.helpdesk-update-status');
     Route::delete('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'destroy'])->name('admin.helpdesk-destroy');
 
-    // Admin - Info & Chat (HARUS DALAM PREFIX ADMIN!)
     Route::get('helpdesk/info/{id}', [AdminHelpDeskController::class, 'getHelpdeskInfo'])->name('admin.helpdesk-info');
     Route::get('chat/{helpdeskId}', [AdminChatController::class, 'index'])->name('admin.chat');
     Route::post('chat/{helpdeskId}/send', [AdminChatController::class, 'send'])->name('admin.chat-send');
 });
 
-// USER HELPDESK
-Route::get('user/help-desk', [HelpDeskController::class, 'index'])->name('user.helpdesk');
-Route::post('user/help-desk/add', [HelpDeskController::class, 'store'])->name('user.helpdesk-store');
-Route::get('user/help-desk/views', [HelpDeskController::class, 'views'])->name('user.helpdesk-views');
-Route::delete('user/help-desk/{helpDesk}', [HelpDeskController::class, 'destroy'])->name('user.helpdesk-delete');
+Route::prefix('user')->middleware(['auth'])->group(function () {
+    // USER HELPDESK
+    Route::get('help-desk', [HelpDeskController::class, 'index'])->name('user.helpdesk');
+    Route::post('help-desk/add', [HelpDeskController::class, 'store'])->name('user.helpdesk-store');
+    Route::get('help-desk/views', [HelpDeskController::class, 'views'])->name('user.helpdesk-views');
+    Route::delete('help-desk/{helpDesk}', [HelpDeskController::class, 'destroy'])->name('user.helpdesk-delete');
 
-// USER CHAT
-Route::get('user/chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
-Route::post('user/chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
+    // USER CHAT
+    Route::get('chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
+    Route::post('chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
+});
 
 
 
