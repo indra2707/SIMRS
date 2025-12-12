@@ -78,7 +78,7 @@ Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');
 Route::get('sdm/views', [PegawaiController::class, 'views'])->name('pegawai-view');
 Route::PUT('sdm/update/{id}', [PegawaiController::class, 'update'])->name('pegawai-update');
 Route::POST('sdm/users/add', [PegawaiController::class, 'store'])->name('pegawai-store');
-Route::get('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
+Route::delete('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
 Route::get('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
 
 

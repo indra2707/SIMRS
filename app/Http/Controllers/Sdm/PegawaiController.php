@@ -178,9 +178,9 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $item = Pegawai::find($id);
+        $pegawai = Pegawai::find($id);
 
-        if (!$item) {
+        if (!$pegawai) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan',
@@ -189,12 +189,12 @@ class PegawaiController extends Controller
 
         $validated = $this->validateData($request);
 
-        $item->update($validated);
+        $pegawai->update($validated);
 
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil diperbarui',
-            'data' => $item,
+            'data' => $pegawai,
         ]);
     }
 

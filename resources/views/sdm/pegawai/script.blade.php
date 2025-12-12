@@ -8,18 +8,11 @@
         // Reset validasi
         $('.form-pegawai').removeClass('was-validated');
 
-        // Tampilkan modal
         $('#modal-pegawai').modal('show');
-
-        // Judul modal
         $('.modal-title').text('Form Tambah Pegawai');
-
-        // Tombol simpan
         $('.save-btn')
             .html('<span class="fa fa-check"></span> Simpan')
             .removeAttr('disabled');
-
-        // Reset semua field sesuai kolom tabel pekerja
         let fields = [
             'anak_perusahaan',
             'rumah_sakit',
@@ -70,13 +63,13 @@
             'masa_berlaku_sip',
             'nomor_sikp',
             'masa_berlaku_sikp',
-            'file_sk_pengangkatan',
-            'file_sk_terakhir',
-            'file_foto',
-            'file_ktp',
-            'file_kk',
-            'file_rekening',
-            'file_cv'
+            // 'file_sk_pengangkatan',
+            // 'file_sk_terakhir',
+            // 'file_foto',
+            // 'file_ktp',
+            // 'file_kk',
+            // 'file_rekening',
+            // 'file_cv'
         ];
 
         // Loop reset input text
@@ -84,16 +77,9 @@
             $('input[name="' + name + '"]').val('');
             $('textarea[name="' + name + '"]').val('');
         });
-
-        // Reset semua select
         $('select').prop('selectedIndex', 0);
-
-        // Reset checkbox STR seumur hidup khusus
         $('input[name="str_seumur_hidup"]').prop('checked', false);
-
-        // Reset file input (jika ada)
         $('input[type="file"]').val('');
-
     });
 
 
@@ -115,6 +101,7 @@
                 event.preventDefault();
                 event.stopPropagation();
             } else {
+                console.log('Form data:', $('.form-pegawai').serialize());
                 $.ajax({
                     type: type,
                     url: url,
@@ -226,7 +213,7 @@
                     title: 'Anak Perusahaan',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'rumah_sakit',
@@ -239,7 +226,6 @@
                     title: 'No SK Struktur',
                     sortable: true,
                     width: 120,
-                    visible: true
                 },
                 {
                     field: 'jabatan',
@@ -252,7 +238,7 @@
                     title: 'Penempatan',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'lokasi_kerja',
@@ -274,7 +260,6 @@
                     title: 'Agama',
                     sortable: true,
                     width: 100,
-                    visible: true
                 },
                 {
                     field: 'nik',
@@ -287,7 +272,7 @@
                     title: 'Status Nikah',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'golongan_darah',
@@ -302,7 +287,7 @@
                     title: 'Disabilitas',
                     sortable: true,
                     width: 100,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'tanggal_lahir_formatted',
@@ -317,7 +302,8 @@
                     field: 'golongan_upah',
                     title: 'Gol. Upah',
                     sortable: true,
-                    width: 100
+                    width: 100,
+                    visible: false
                 },
                 {
                     field: 'status_kepegawaian',
@@ -330,21 +316,21 @@
                     title: 'TMT Status',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'tmt_pwtt_formatted',
                     title: 'TMT PWTT',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'tmt_pwt_formatted',
                     title: 'TMT PWT',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'masa_kerja',
@@ -365,42 +351,42 @@
                     title: 'Fungsi',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'sub_fungsi',
                     title: 'Sub Fungsi',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'tmt_jabatan_formatted',
                     title: 'TMT Jabatan',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'tmt_golongan_upah_formatted',
                     title: 'TMT Gol. Upah',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'penyetaraan_jabatan_ap',
                     title: 'Penyetaraan Jabatan AP',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'penyetaraan_golongan_upah_ap',
                     title: 'Penyetaraan Gol. Upah AP',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== BANKING INFO ==========
@@ -409,21 +395,21 @@
                     title: 'Bank',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_rekening',
                     title: 'No. Rekening',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nama_rekening',
                     title: 'Nama Rekening',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== INSURANCE & TAX ==========
@@ -432,21 +418,21 @@
                     title: 'No. BPJS TK',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_bpjskesehatan',
                     title: 'No. BPJS Kesehatan',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_npwp',
                     title: 'No. NPWP',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== CONTACT INFO ==========
@@ -468,28 +454,28 @@
                     title: 'Email Dinas',
                     sortable: true,
                     width: 180,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_kontak_darurat',
                     title: 'Kontak Darurat',
                     sortable: true,
                     width: 130,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nama_kontak_darurat',
                     title: 'Nama Kontak Darurat',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'hubungan_kontak_darurat',
                     title: 'Hubungan Kontak',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== ADDRESS INFO ==========
@@ -505,14 +491,14 @@
                     title: 'Alamat NPWP',
                     sortable: true,
                     width: 200,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'alamat_domisili',
                     title: 'Alamat Domisili',
                     sortable: true,
                     width: 200,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== PROFESSIONAL LICENSES ==========
@@ -521,56 +507,56 @@
                     title: 'No. STR',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'str_seumur_hidup',
                     title: 'STR Seumur Hidup',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'masa_berlaku_str_formatted',
                     title: 'Masa Berlaku STR',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_sip',
                     title: 'No. SIP',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'masa_berlaku_sip_formatted',
                     title: 'Masa Berlaku SIP',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'asuransi_profesi',
                     title: 'Asuransi Profesi',
                     sortable: true,
                     width: 130,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'nomor_polis',
                     title: 'No. Polis',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'masa_berlaku_asuransi_formatted',
                     title: 'Masa Berlaku Asuransi',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== EDUCATION ==========
@@ -585,42 +571,42 @@
                     title: 'Diploma',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'pend_s1',
                     title: 'S1',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'pend_s2',
                     title: 'S2',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'pend_s3',
                     title: 'S3',
                     sortable: true,
                     width: 150,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'kampus_terakhir',
                     title: 'Kampus Terakhir',
                     sortable: true,
                     width: 180,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'keterangan',
                     title: 'Keterangan',
                     sortable: true,
                     width: 200,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== SYSTEM INFO ==========
@@ -629,35 +615,35 @@
                     title: 'Input By',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'input_date_formatted',
                     title: 'Input Date',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'update_by',
                     title: 'Update By',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'update_date_formatted',
                     title: 'Update Date',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'username',
                     title: 'Username',
                     sortable: true,
                     width: 120,
-                    visible: true
+                    visible: false
                 },
 
                 // ========== ACTIONS ==========
@@ -668,7 +654,7 @@
                     valign: 'middle',
                     sortable: true,
                     clickToSelect: true,
-                    events: window.eventsSdm,
+                    events: window.eventsPegawai,
                     formatter: actionsFunctionPegawai
                 }
             ],
@@ -712,21 +698,146 @@
     // Handle events button actions
     window.eventsPegawai = {
         'click .btn-edit': function(e, value, row, index) {
+            console.log('✅ Edit button clicked!', row);
+
+            // Reset validasi
+            $('.form-pegawai').removeClass('was-validated');
+
+            // Tampilkan modal
             $('#modal-pegawai').modal('show');
+
+            // Judul modal
             $('.modal-title').text('Form Edit Pegawai');
-            $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+
+            // Tombol simpan
+            $('.save-btn')
+                .html('<span class="fa fa-check"></span> Update')
+                .removeAttr('disabled');
+
+            // Set ID untuk update
             $('input[name="id"]').val(row.id);
-            $('input[name="nama"]').val(row.nama);
-            $('input[name="status"]').prop('checked', row.status === '1');
+
+            // ============================================
+            // DATA PERUSAHAAN
+            // ============================================
+            $('input[name="anak_perusahaan"]').val(row.anak_perusahaan || '');
+            $('input[name="rumah_sakit"]').val(row.rumah_sakit || '');
+            $('input[name="nomor_sk_struktur"]').val(row.nomor_sk_struktur || '');
+            $('input[name="jabatan"]').val(row.jabatan || '');
+            $('input[name="penempatan"]').val(row.penempatan || '');
+            $('input[name="lokasi_kerja"]').val(row.lokasi_kerja || '');
+
+            // ============================================
+            // DATA PRIBADI
+            // ============================================
+            $('input[name="nomor_pekerja"]').val(row.nomor_pekerja || '');
+            $('input[name="nama_pekerja"]').val(row.nama_pekerja || '');
+            $('select[name="jenis_kelamin"]').val(row.jenis_kelamin || '');
+            $('select[name="agama"]').val(row.agama || '');
+            $('input[name="nik"]').val(row.nik || '');
+            $('select[name="status_pernikahan"]').val(row.status_pernikahan || '');
+            $('select[name="golongan_darah"]').val(row.golongan_darah || '');
+            $('select[name="disabilitas"]').val(row.disabilitas || '');
+            $('input[name="tanggal_lahir"]').val(row.tanggal_lahir || '');
+
+            // ============================================
+            // DATA KEPEGAWAIAN
+            // ============================================
+            $('input[name="golongan_upah"]').val(row.golongan_upah || '');
+            $('input[name="status_kepegawaian"]').val(row.status_kepegawaian || '');
+            $('input[name="tmt_status_kepegawaian"]').val(row.tmt_status_kepegawaian || '');
+            $('input[name="tmt_pwtt"]').val(row.tmt_pwtt || '');
+            $('input[name="tmt_pwt"]').val(row.tmt_pwt || '');
+            $('input[name="masa_kerja"]').val(row.masa_kerja || '');
+            $('input[name="tanggal_akhir_kontrak"]').val(row.tanggal_akhir_kontrak || '');
+
+            // ============================================
+            // FUNGSI & GRADE
+            // ============================================
+            $('input[name="fungsi"]').val(row.fungsi || '');
+            $('input[name="sub_fungsi"]').val(row.sub_fungsi || '');
+            $('input[name="tmt_jabatan"]').val(row.tmt_jabatan || '');
+            $('input[name="tmt_golongan_upah"]').val(row.tmt_golongan_upah || '');
+            $('input[name="penyetaraan_jabatan_ap"]').val(row.penyetaraan_jabatan_ap || '');
+            $('input[name="penyetaraan_golongan_upah_ap"]').val(row.penyetaraan_golongan_upah_ap || '');
+
+            // ============================================
+            // BANKING INFO
+            // ============================================
+            $('input[name="nama_bank"]').val(row.nama_bank || '');
+            $('input[name="nomor_rekening"]').val(row.nomor_rekening || '');
+            $('input[name="nama_rekening"]').val(row.nama_rekening || '');
+
+            // ============================================
+            // INSURANCE & TAX
+            // ============================================
+            $('input[name="nomor_bpjstk"]').val(row.nomor_bpjstk || '');
+            $('input[name="nomor_bpjskesehatan"]').val(row.nomor_bpjskesehatan || '');
+            $('input[name="nomor_npwp"]').val(row.nomor_npwp || '');
+
+            // ============================================
+            // CONTACT INFO
+            // ============================================
+            $('input[name="nomor_hp"]').val(row.nomor_hp || '');
+            $('input[name="email"]').val(row.email || '');
+            $('input[name="email_dinas"]').val(row.email_dinas || '');
+            $('input[name="nomor_kontak_darurat"]').val(row.nomor_kontak_darurat || '');
+            $('input[name="nama_kontak_darurat"]').val(row.nama_kontak_darurat || '');
+            $('input[name="hubungan_kontak_darurat"]').val(row.hubungan_kontak_darurat || '');
+
+            // ============================================
+            // ADDRESS INFO
+            // ============================================
+            $('textarea[name="alamat_ktp"]').val(row.alamat_ktp || '');
+            $('textarea[name="alamat_npwp"]').val(row.alamat_npwp || '');
+            $('textarea[name="alamat_domisili"]').val(row.alamat_domisili || '');
+
+            // ============================================
+            // PROFESSIONAL LICENSES
+            // ============================================
+            $('input[name="nomor_str"]').val(row.nomor_str || '');
+            $('input[name="str_seumur_hidup"]').val(row.str_seumur_hidup || '');
+            $('input[name="masa_berlaku_str"]').val(row.masa_berlaku_str || '');
+            $('input[name="nomor_sip"]').val(row.nomor_sip || '');
+            $('input[name="masa_berlaku_sip"]').val(row.masa_berlaku_sip || '');
+            $('input[name="asuransi_profesi"]').val(row.asuransi_profesi || '');
+            $('input[name="nomor_polis"]').val(row.nomor_polis || '');
+            $('input[name="masa_berlaku_asuransi"]').val(row.masa_berlaku_asuransi || '');
+
+            // ============================================
+            // EDUCATION
+            // ============================================
+            $('input[name="pend_diploma"]').val(row.pend_diploma || '');
+            $('input[name="pend_s1"]').val(row.pend_s1 || '');
+            $('input[name="pend_s2"]').val(row.pend_s2 || '');
+            $('input[name="pend_s3"]').val(row.pend_s3 || '');
+            $('input[name="kampus_terakhir"]').val(row.kampus_terakhir || '');
+            $('input[name="jenjang_pendidikan_terakhir"]').val(row.jenjang_pendidikan_terakhir || '');
+            $('textarea[name="keterangan"]').val(row.keterangan || '');
+
+            // ============================================
+            // SYSTEM INFO
+            // ============================================
+            $('input[name="input_by"]').val(row.input_by || '');
+            $('input[name="input_date"]').val(row.input_date || '');
+            $('input[name="update_by"]').val(row.update_by || '');
+            $('input[name="update_date"]').val(row.update_date || '');
+            $('input[name="temp_username"]').val(row.temp_username || '');
+            $('input[name="username"]').val(row.username || '');
+
+            console.log('Form populated with data for ID:', row.id);
         },
+
         'click .btn-delete': function(e, value, row, index) {
+            console.log('✅ Delete button clicked!', row);
+
             var url = "{{ route('pegawai-delete', ':id') }}";
             url = url.replace(':id', row.id);
+
             Swal.fire({
                 icon: 'warning',
                 title: 'Peringatan',
-                text: 'Anda yakin ingin menghapus data ini?',
-                type: 'warning',
+                text: 'Anda yakin ingin menghapus data pegawai "' + (row.nama_pekerja || 'ini') + '"?',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
@@ -740,21 +851,44 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
+                        beforeSend: function() {
+                            Swal.fire({
+                                title: 'Menghapus...',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading()
+                                }
+                            });
+                        },
                         success: function(res, status, xhr) {
+
+
+
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
+                            setTimeout(() => {
+                                Swal.close();
+                            }, 1500);
+
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Terjadi kesalahan saat menghapus data'
+                            });
+                            console.error('Delete error:', xhr.responseText);
                         }
                     }).done(function() {
                         $tablePegawai.bootstrapTable('refresh');
                     });
-
                 }
-            })
+            });
         }
-    }
+    };
 
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {

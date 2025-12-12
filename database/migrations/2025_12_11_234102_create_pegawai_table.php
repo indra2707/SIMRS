@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pekerja', function (Blueprint $table) {
+        Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
             $table->string('anak_perusahaan')->nullable();
             $table->string('rumah_sakit')->nullable();
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('penempatan')->nullable();
             $table->string('lokasi_kerja')->nullable();
             $table->string('nomor_pekerja')->nullable();
-            $table->string('nama_pekerja') ;    
+            $table->string('nama_pekerja');
             $table->string('jenis_kelamin')->nullable();
             $table->string('agama')->nullable();
             $table->string('nik')->nullable();
@@ -84,6 +84,7 @@ return new class extends Migration
             // Username
             $table->string('temp_username')->nullable();
             $table->string('username')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -92,6 +93,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pekerja');
+        Schema::dropIfExists('pegawai');
     }
 };
