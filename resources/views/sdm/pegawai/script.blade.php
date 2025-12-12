@@ -861,9 +861,6 @@
                             });
                         },
                         success: function(res, status, xhr) {
-
-
-
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {

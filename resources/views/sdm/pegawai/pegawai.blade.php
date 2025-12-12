@@ -1,5 +1,5 @@
 @extends('layouts.simple.master')
-@section('title', 'Form Wizard 3')
+@section('title',  $title)
 
 @section('css')
 @endsection
