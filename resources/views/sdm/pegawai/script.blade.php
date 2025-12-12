@@ -1,4 +1,11 @@
 <script type="text/javascript">
+    $(".select2").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        dropdownParent: $("#modal-pegawai"),
+        allowClear: true
+
+    });
     // Tabel
     var $tablePegawai = $('#table_pegawai');
 
