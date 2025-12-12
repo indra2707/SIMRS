@@ -157,6 +157,10 @@
         @foreach ($asets->chunk(2) as $chunk)
             <tr>
                 @foreach ($chunk as $aset)
+                    @php
+                        $path = public_path('assets/images/ihc/ttd-feny.png');
+                        $ttd = base64_encode(file_get_contents($path));
+                    @endphp
                     <td class="outer-cell">
                         <div class="label-box {{ strtolower($aset->jenis) == 'aset' ? 'bg-aset' : 'bg-inventaris' }}">
                             @if (strtolower($aset->jenis) == 'aset')
@@ -195,6 +199,7 @@
                                         <td style="border-bottom:1px solid #000;" class="value-cell">
                                             {{ $aset->nama }}
                                         </td>
+
                                         <td rowspan="3" class="box-small" class="value-cell">Paraf</td>
                                         <td rowspan="3" class="box-small" class="value-cell">
                                             Bln/Thn<br><br>
@@ -253,9 +258,15 @@
                                         <td align="left" valign="middle" class="value-cell">
                                             {{ $aset->nama }}
                                         </td>
-                                        <td align="center" valign="top" rowspan="3" class="box-small">
-                                            Paraf
+                                       @if ($aset->kategori == 'Alkes')
+                                        <td rowspan="3" class="box-small" class="value-cell">Paraf
+                                            <br><br> <img
+                                                src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/ttd-feny.png'))) }}"
+                                                style="width:20px;">
                                         </td>
+                                        @else
+                                        <td rowspan="3" class="box-small" class="value-cell">Paraf</td>
+                                        @endif
                                         <td align="center" valign="top" rowspan="3" class="box-small">
                                             Bln/Thn<br><br>
                                             {{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
