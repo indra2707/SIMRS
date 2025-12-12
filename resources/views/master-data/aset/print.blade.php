@@ -140,7 +140,7 @@
             </table>
         @else
             <div class="header-title" style="color: white">INVENTARIS RSOJ PERTAMINA ROYAL BIRINGKANAYA</div>
-            <table width="98%" cellpadding="3" cellspacing="0" border="0">
+            <table width="98%" cellpadding="2" cellspacing="0" border="0">
                 <tr>
                     <td align="left" valign="middle" width="70" style="color: white;font-weight: bold">Unit Usaha
                     </td>
