@@ -203,7 +203,7 @@
                                         <td rowspan="3" class="box-small" class="value-cell">Paraf</td>
                                         <td rowspan="3" class="box-small" class="value-cell">
                                             Bln/Thn<br><br>
-                                            {{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
+                                            <!-- {{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }} -->
                                         </td>
                                     </tr>
 

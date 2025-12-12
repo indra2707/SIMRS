@@ -86,7 +86,7 @@
                         <!-- Nomor Surat -->
                         <label for="surat" class="col-form-label col-sm-2">Nomor Surat</label>
                         <div class="col-sm-10">
-                            <input type="text" id="surat" name="surat" class="form-control" required>
+                            <input type="text" id="surat" name="surat" class="form-control" placeholder="No Surat..." required>
                         </div>
 
                         <!-- Pegawai -->

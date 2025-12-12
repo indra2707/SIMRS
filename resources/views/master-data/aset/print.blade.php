@@ -17,10 +17,8 @@
 
             @if ($aset->jenis == 'Aset')
                 background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bgaset.png'))) }}");
-            @else
-                background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bginventaris.jpg'))) }}");
-            @endif
-            background-size: 370px auto;
+            @else background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bginventaris.jpg'))) }}");
+            @endif background-size: 370px auto;
             background-repeat: no-repeat;
             background-position: center;
             background-attachment: fixed;
@@ -108,17 +106,15 @@
                         {{ $aset->nama }}
                     </td>
 
-
-
                     <!-- Kolom Paraf -->
                     <td align="center" valign="top" rowspan="3" style="border: 1px solid #000; width: 30px;">
                         Paraf
-
                     </td>
 
                     <!-- Kolom Tanggal -->
                     <td align="center" valign="top" rowspan="3" style="border: 1px solid #000; width: 30px;">
-                        Bln/Thn <br><br>{{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }}
+                        Bln/Thn <br><br>
+                        <!-- {{ \Carbon\Carbon::parse($aset->tahun)->format('m/Y') }} -->
                     </td>
 
                 </tr>
@@ -188,7 +184,7 @@
                             <br>
                             <img src="data:image/png;base64,{{ $ttd }}" style="width:20px; ">
                         </td>
-                        @else
+                    @else
                         <td align="center" valign="top" rowspan="3"
                             style="border: 1px solid #3c04bd; width: 30px;background-color: white">
                             Paraf
@@ -208,7 +204,8 @@
                     <td align="center" valign="middle" style="color: white;font-weight: bold">:</td>
                     <td align="left" valign="middle"
                         style="border-bottom: 1px solid #3c04bd;background-color: white;font-weight: bold">
-                        {{ $aset->nama_lokasi }}</td>
+                        {{ $aset->nama_lokasi }}
+                    </td>
                 </tr>
 
                 <tr>
@@ -216,7 +213,8 @@
                     <td align="center" valign="middle" style="color: white;font-weight: bold">:</td>
                     <td align="left" valign="middle"
                         style="border-bottom: 1px solid #3c04bd;background-color: white;font-weight: bold">
-                        {{ $aset->nama_kondisi }}</td>
+                        {{ $aset->nama_kondisi }}
+                    </td>
                 </tr>
 
             </table>
