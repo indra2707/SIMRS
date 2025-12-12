@@ -130,6 +130,7 @@ class PegawaiController extends Controller
                 'update_date_formatted' => $value->update_date ? \Carbon\Carbon::parse($value->update_date)->format('d M Y') : '-',
                 'temp_username' => $value->temp_username ?? '-',
                 'username' => $value->username ?? '-',
+
             ];
         }
 
@@ -143,7 +144,13 @@ class PegawaiController extends Controller
     public function store(Request $request)
     {
         $validated = $this->validateData($request);
+        if ($request->hasFile('foto')) {
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/pegawai'), $filename);
 
+            $validated['foto'] = $filename;
+        }
         $data = Pegawai::create($validated);
 
         return response()->json([
@@ -188,6 +195,20 @@ class PegawaiController extends Controller
         }
 
         $validated = $this->validateData($request);
+        if ($request->hasFile('foto')) {
+
+
+            if ($pegawai->foto && file_exists(public_path('uploads/pegawai/' . $pegawai->foto))) {
+                unlink(public_path('uploads/pegawai/' . $pegawai->foto));
+            }
+
+            $file = $request->file('foto');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/pegawai'), $filename);
+
+            $validated['foto'] = $filename;
+        }
+
 
         $pegawai->update($validated);
 
@@ -211,7 +232,9 @@ class PegawaiController extends Controller
                 'message' => 'Data tidak ditemukan',
             ], 404);
         }
-
+        if ($item->foto && file_exists(public_path('uploads/pegawai/'.$item->foto))) {
+        unlink(public_path('uploads/pegawai/'.$item->foto));
+    }
         $item->delete();
 
         return response()->json([
@@ -306,6 +329,7 @@ class PegawaiController extends Controller
 
             'temp_username' => 'nullable|string',
             'username' => 'nullable|string',
+            'foto' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
     }
 }

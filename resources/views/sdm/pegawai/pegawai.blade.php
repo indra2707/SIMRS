@@ -1,5 +1,5 @@
 @extends('layouts.simple.master')
-@section('title',  $title)
+@section('title', $title)
 
 @section('css')
 @endsection
@@ -126,7 +126,7 @@
 
                         <form class="f1 form-pegawai" id="form-pegawai" method="post">
                             @csrf
-                             <input type="hidden" name="id" value="">
+                            <input type="hidden" name="id" value="">
                             <!-- ===================== STEP HEADER ===================== -->
                             <div class="f1-steps">
                                 <div class="f1-progress">
@@ -205,8 +205,8 @@
                                         <label>Jenis Kelamin</label>
                                         <select class="form-select form-control select2" name="jenis_kelamin">
                                             <option value=""></option>
-                                            <option value="Laki-laki" >Laki-laki</option>
-                                            <option value="Perempuan" >Perempuan</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
                                         </select>
                                     </div>
 
@@ -230,7 +230,8 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label for="status_pernikahan">Status Pernikahan</label>
-                                        <select class="form-select form-control select2" id="status_pernikahan" name="status_pernikahan">
+                                        <select class="form-select form-control select2" id="status_pernikahan"
+                                            name="status_pernikahan">
                                             <option value=""></option>
                                             <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Menikah">Menikah</option>
@@ -241,7 +242,8 @@
                                     <div class="col-md-4 mb-2">
                                         <div class="mb-2">
                                             <label for="golongan_darah">Golongan Darah</label>
-                                            <select class="form-select form-control select2" id="golongan_darah" name="golongan_darah">
+                                            <select class="form-select form-control select2" id="golongan_darah"
+                                                name="golongan_darah">
                                                 <option value=""></option>
                                                 <option value="A">A</option>
                                                 <option value="B">B</option>
@@ -253,7 +255,8 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label for="disabilitas">Disabilitas</label>
-                                        <select class="form-select form-control select2" id="disabilitas" name="disabilitas">
+                                        <select class="form-select form-control select2" id="disabilitas"
+                                            name="disabilitas">
                                             <option value="">Pilih</option>
                                             <option value="Tidak">Tidak</option>
                                             <option value="Ya">Ya</option>
@@ -527,11 +530,29 @@
                                 <h5 class="mb-3">System Info</h5>
                                 <div class="row">
 
-                                    {{-- <div class="col-md-4 mb-2">
-                                        <label>Input By</label>
-                                        <input class="form-control" name="input_by">
+                                    <div class="col-md-4 mb-2">
+                                        <div class="mb-2 row">
+                                            <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
+                                            <div class="col-sm-10">
+                                                <div id="AvatarFileUpload">
+                                                    <!-- Image Preview Wrapper -->
+                                                    <div class="selected-image-holder">
+                                                        <img src="" alt="AvatarInput" id="previews">
+                                                    </div>
+                                                    <!-- Image Preview Wrapper -->
+                                                    <!-- Browse Image to Upload Wrapper -->
+                                                    <div class="avatar-selector">
+                                                      <input type="file" id="foto" name="foto">
+                                                        <a href="#" class="avatar-selector-btn">
+                                                            <i class="icofont icofont-pencil-alt-5"></i>
+                                                        </a>
+                                                    </div>
+                                                    <!-- Browse Image to Upload Wrapper -->
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
+                                    {{--
                                     <div class="col-md-4 mb-2">
                                         <label>Input Date</label>
                                         <input type="date" class="form-control" name="input_date">
