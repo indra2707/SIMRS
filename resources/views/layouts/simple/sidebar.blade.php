@@ -194,7 +194,7 @@
                         @endif
                     @endif
 
-                    SDM
+
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
@@ -245,23 +245,7 @@
                         </li>
 
 
-                        {{-- -SDM --}}
-                        {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                            <a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
-                                </svg>
-                                <span>SDM</span>
-                            </a>
-                            <ul class="sidebar-submenu">
-                                <li><a href="{{ route('pegawai') }}">Data Pegawai</a></li>
-                                <li><a href="#">Surat Perjalanan Dinas</a></li>
-                                <li><a href="#">Rincian SPD</a></li>
-                            </ul>
-                        </li> --}}
+
 
 
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
