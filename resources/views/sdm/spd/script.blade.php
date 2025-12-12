@@ -53,16 +53,13 @@
         $('input[name="btn-group"]').val('');
         $('select[name="pegawai"]').val('').trigger('change');
         $('select[name="pelaksanaan"]').val('').trigger('change');
-        $('select[name="id_vendor"]').val('').trigger('change');
         $('select[name="asal"]').val('').trigger('change');
         $('select[name="tujuan"]').val('').trigger('change');
-
 
         InitSelect2($("select[name='id_vendor']"), {
             url: "{{ route('get-select-vendor') }}",
             dropdownParent: $("#modal-spd")
         });
-
 
         //  RESET BTN-GROUP
         // $('.biaya-group button').removeClass('active').attr('aria-pressed', false);

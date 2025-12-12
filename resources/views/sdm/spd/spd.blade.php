@@ -110,13 +110,6 @@
                             </select>
                         </div>
 
-                        <!-- Eselon -->
-                        <label for="eselon" class="col-form-label col-sm-2">Eselon</label>
-                        <div class="col-sm-10">
-                            <select class="form-select form-control" id="id_vendor" name="id_vendor"
-                                data-placeholder="---- Pilih Salah Satu ----" required></select>
-                        </div>
-
                         <!-- Form -->
                         <label for="asal" class="col-form-label col-sm-2">Kota Asal</label>
                         <div class="col-sm-4">
