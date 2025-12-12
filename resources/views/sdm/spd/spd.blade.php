@@ -14,15 +14,6 @@
             display: flex;
             align-items: center;
         }
-
-        /* .select2-container--bootstrap-5 .select2-selection__rendered {
-                        font-size: 18px;
-                    }
-
-                    .select2-container--bootstrap-5 .select2-selection__placeholder {
-                        font-size: 15px !important;
-                        opacity: 1;
-                    } */
     </style>
 
 @endsection
@@ -113,7 +104,7 @@
                         <!-- Form -->
                         <label for="asal" class="col-form-label col-sm-2">Kota Asal</label>
                         <div class="col-sm-4">
-                            <select class="form-select select2" name="asal" required>
+                            <select class="form-select select2" name="asal" data-placeholder="---- Pilih Salah Satu ----" required>
                                 <option></option>
                             </select>
                         </div>
@@ -121,7 +112,7 @@
                         <!-- To -->
                         <label for="tujuan" class="col-form-label col-sm-2">Kota Tujuan</label>
                         <div class="col-sm-4">
-                            <select class="form-select select2" name="tujuan" required>
+                            <select class="form-select select2" name="tujuan" data-placeholder="---- Pilih Salah Satu ----" required>
                                 <option></option>
                             </select>
                         </div>

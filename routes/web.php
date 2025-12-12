@@ -331,6 +331,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-aset', [GlobalController::class, 'optionsSelectAset'])->name('get-select-aset');
         // lokasi
         Route::get('/get-select-lokasi', [GlobalController::class, 'optionsSelectLokasi'])->name('get-select-lokasi');
+        // Kota
+        Route::get('/get-select-kota', [GlobalController::class, 'optionsSelectKota'])->name('get-select-kota');
         // kondisi aset
         Route::get('/get-select-kondisi-aset', [GlobalController::class, 'optionsSelectKondisiAset'])->name('get-select-kondisi-aset');
         // Kelompok aset

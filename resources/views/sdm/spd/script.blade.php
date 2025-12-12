@@ -57,8 +57,13 @@
         $('select[name="asal"]').val('').trigger('change');
         $('select[name="tujuan"]').val('').trigger('change');
 
-        InitSelect2($("select[name='id_vendor']"), {
-            url: "{{ route('get-select-vendor') }}",
+        InitSelect2($("select[name='asal']"), {
+            url: "{{ route('get-select-kota') }}",
+            dropdownParent: $("#modal-spd")
+        });
+
+        InitSelect2($("select[name='tujuan']"), {
+            url: "{{ route('get-select-kota') }}",
             dropdownParent: $("#modal-spd")
         });
 

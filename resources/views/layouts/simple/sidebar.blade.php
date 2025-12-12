@@ -144,6 +144,7 @@
                                 @if (in_array('Vendor', $aksesMenu))
                                     <li><a href="{{ route('master-data.customer') }}">Vendor</a></li>
                                 @endif
+                                <li><a href="{{ route('master-data.kota') }}">Kota</a></li>
                             </ul>
                         </li>
                     @endif

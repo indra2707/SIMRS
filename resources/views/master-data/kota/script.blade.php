@@ -1,12 +1,12 @@
 <script type="text/javascript">
     // Tabel
-    var $tableSdm = $('#table_sdm');
+    var $tableKota = $('#table_kota');
 
-    // Open Modal sdm
+    // Open Modal Kota
     $(document).on('click', '.add-btn', function() {
-        $('.form-sdm').removeClass('was-validated');
-        $('#modal-sdm').modal('show');
-        $('.modal-title').text('Form Tambah sdm');
+        $('.form-kota').removeClass('was-validated');
+        $('#modal-kota').modal('show');
+        $('.modal-title').text('Form Tambah Kota');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="nama"]').val('');
@@ -17,14 +17,14 @@
     $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('sdm.update', ':id') }}";
+            var url = "{{ route('master-data.kota.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('sdm.create') }}";
+            var url = "{{ route('master-data.kota.create') }}";
             var type = "POST";
         }
-        var forms = document.getElementsByClassName('form-sdm');
+        var forms = document.getElementsByClassName('form-kota');
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
@@ -35,7 +35,7 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-sdm').serialize(),
+                    data: $('.form-kota').serialize(),
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -48,8 +48,8 @@
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
-                            $('#modal-sdm').modal('hide');
-                            $tableSdm.bootstrapTable('refresh');
+                            $('#modal-kota').modal('hide');
+                            $tableKota.bootstrapTable('refresh');
                         } else {
                             $.notify({
                                 icon: 'fa fa-check',
@@ -82,9 +82,9 @@
     });
 
 
-    // Table sdm
+    // Table Kota
     function initTable() {
-        $tableSdm.bootstrapTable('destroy').bootstrapTable({
+        $tableKota.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
             search: true,
@@ -103,7 +103,7 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('sdm.view') }}",
+            url: "{{ route('master-data.kota.view') }}",
             columns: [
                 [
                     {
@@ -114,7 +114,7 @@
                         width: '100%',
                         field: 'status',
                         sortable: true,
-                        events: window.updateStatusSdm,
+                        events: window.updateStatusKota,
                         formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
@@ -134,8 +134,8 @@
                         valign: 'middle',
                         sortable: true,
                         clickToSelect: false,
-                        events: window.eventsSdm,
-                        formatter: actionsFunctionSdm
+                        events: window.eventsKota,
+                        formatter: actionsFunctionKota
                     }
                 ]
             ],
@@ -146,7 +146,7 @@
     }
 
 
-    function actionsFunctionSdm(value, row, index) {
+    function actionsFunctionKota(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
@@ -161,17 +161,17 @@
     }
 
     // Handle events button actions
-    window.eventsSdm = {
+    window.eventsKota = {
         'click .btn-edit': function(e, value, row, index) {
-            $('#modal-sdm').modal('show');
-            $('.modal-title').text('Form Edit sdm');
+            $('#modal-kota').modal('show');
+            $('.modal-title').text('Form Edit Kota');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
         },
         'click .btn-delete': function(e, value, row, index) {
-            var url = "{{ route('sdm.delete', ':id') }}";
+            var url = "{{ route('master-data.kota.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -199,7 +199,7 @@
                             }
                         }
                     }).done(function() {
-                        $tableSdm.bootstrapTable('refresh');
+                        $tableKota.bootstrapTable('refresh');
                     });
 
                 }
@@ -207,17 +207,17 @@
         }
     }
 
-    // Window operateChange Status sdm
-    window.updateStatusSdm = {
+    // Window operateChange Status Kota
+    window.updateStatusKota = {
         'click .update-status': function(e, value, row, index) {
-            var url = "{{ route('sdm.update-status', ':id') }}";
+            var url = "{{ route('master-data.kota.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,
                 type: "POST",
                 data: {
                     status: e.target.checked ? 1 : 0,
-                    table: 'tbl_sdms',
+                    table: 'tbl_kota',
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(res, status, xhr) {
@@ -226,7 +226,7 @@
                     } else {
                         Alert('warning', res.message);
                     }
-                    $tableSdm.bootstrapTable('refresh');
+                    $tableKota.bootstrapTable('refresh');
                 },
                 error: function(xhr, status, error) {
                     if (xhr.status == 400) {
