@@ -86,7 +86,7 @@
                         <!-- Nomor Surat -->
                         <label for="surat" class="col-form-label col-sm-2">Nomor Surat</label>
                         <div class="col-sm-10">
-                            <input type="text" id="surat" name="surat" class="form-control" readonly />
+                            <input type="text" id="surat" name="surat" class="form-control" required>
                         </div>
 
                         <!-- Pegawai -->
@@ -127,7 +127,7 @@
                         </div>
 
                         <!-- Antara Tanggal -->
-                        <label for="form_end_date" class="col-form-label col-sm-2">Antara Tanggal Cuti</label>
+                        <label for="form_end_date" class="col-form-label col-sm-2">Antara Tanggal</label>
                         <div class="col-sm-4">
                             <input type="text" name="form_end_date" id="form_end_date"
                                 class="form-control js-daterangepicker digits" placeholder="dd/mm/yyyy - dd/mm/yyyy"

@@ -207,7 +207,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('pegawai') }}">Data Pegawai</a></li>
-                            <li><a href="#">Surat Perjalanan Dinas</a></li>
+                            <li><a href="{{ route('sdm.spd') }}">Surat Perjalanan Dinas</a></li>
                             <li><a href="#">Rincian SPD</a></li>
                         </ul>
                     </li>
