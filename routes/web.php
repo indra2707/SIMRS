@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\RollsController;
 
-use App\Http\Controllers\Sdm\SpdsController;
 
 use App\Http\Controllers\MasterData\PasienController;
 use App\Http\Controllers\MasterData\Icd9Controller;
@@ -28,6 +27,7 @@ use App\Http\Controllers\MasterData\PoliController;
 use App\Http\Controllers\MasterData\AsetController;
 use App\Http\Controllers\MasterData\KalibrasiController;
 use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\KotaController;
 use App\Http\Controllers\MasterData\KondisiAsetController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\MasterData\MutasiController;
@@ -37,7 +37,9 @@ use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 use App\Http\Controllers\User\HelpDeskController;
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\ChatController;
+
 use App\Http\Controllers\Sdm\PegawaiController;
+use App\Http\Controllers\Sdm\SpdsController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -194,6 +196,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/lokasi/update/{id}', [LokasiController::class, 'update'])->name('master-data.lokasi.update');
         Route::delete('/lokasi/delete/{id}', [LokasiController::class, 'destroy'])->name('master-data.lokasi.delete');
         Route::post('/lokasi/update-status/{id}', [LokasiController::class, 'updateStatus'])->name('master-data.lokasi.update-status');
+
+        // Kota
+        Route::get('/kota', [KotaController::class, 'index'])->name('master-data.kota');
+        Route::get('/kota/view', [KotaController::class, 'views'])->name('master-data.kota.view');
+        Route::post('/kota/store', [KotaController::class, 'store'])->name('master-data.kota.create');
+        Route::put('/kota/update/{id}', [KotaController::class, 'update'])->name('master-data.kota.update');
+        Route::delete('/kota/delete/{id}', [KotaController::class, 'destroy'])->name('master-data.kota.delete');
+        Route::post('/kota/update-status/{id}', [KotaController::class, 'updateStatus'])->name('master-data.kota.update-status');
 
         // Kalibrasi
         Route::get('/kalibrasi', [KalibrasiController::class, 'index'])->name('master-data.kalibrasi');

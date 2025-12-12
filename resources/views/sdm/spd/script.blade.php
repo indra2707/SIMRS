@@ -22,6 +22,7 @@
         multipleDates: true,
         multipleDatesSeparator: ' - ',
         autoClose: true,
+        toggleSelected: false
     });
 
     //btn btn-group
