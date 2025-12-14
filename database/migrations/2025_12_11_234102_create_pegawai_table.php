@@ -84,7 +84,7 @@ return new class extends Migration
             // Username
             $table->string('temp_username')->nullable();
             $table->string('username')->nullable();
-            $table->file('foto')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }
