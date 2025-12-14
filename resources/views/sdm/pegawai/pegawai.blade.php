@@ -265,7 +265,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Tanggal Lahir</label>
-                                        <input type="date" class="form-control" name="tanggal_lahir">
+                                        <input type="date" class="form-control js-datepicker digits" placeholder="Tanggal Lahir" name="tanggal_lahir">
                                     </div>
 
                                 </div>
@@ -297,17 +297,17 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Status Kepegawaian</label>
-                                        <input type="date" class="form-control" name="tmt_status_kepegawaian">
+                                        <input type="date" class="form-control js-datepicker digits" placeholder="TMT Status Kepegawian" name="tmt_status_kepegawaian">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT PWTT</label>
-                                        <input type="date" class="form-control" name="tmt_pwtt">
+                                        <input type="date" class="form-control js-datepicker digits" name="tmt_pwtt" placeholder="TMT PWTT">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT PWT</label>
-                                        <input type="date" class="form-control" name="tmt_pwt">
+                                        <input type="date" class="form-control js-datepicker digits" name="tmt_pwt" placeholder="TMT PWT">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -322,12 +322,12 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Jabatan</label>
-                                        <input type="date" class="form-control" name="tmt_jabatan">
+                                        <input type="date" class="form-control js-datepicker digits" name="tmt_jabatan" placeholder="TMT Jabatan">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Golongan Upah</label>
-                                        <input type="date" class="form-control" name="tmt_golongan_upah">
+                                        <input type="date" class="form-control js-datepicker digits" name="tmt_golongan_upah" placeholder="TMT Golongan Upah">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -342,7 +342,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Tanggal Akhir Kontrak</label>
-                                        <input type="date" class="form-control" name="tanggal_akhir_kontrak">
+                                        <input type="date" class="form-control js-datepicker digits" name="tanggal_akhir_kontrak" placeholder="Tanggal Akhir Kontrak">
                                     </div>
 
                                 </div>
@@ -359,7 +359,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Nomor Kontak Darurat</label>
-                                        <input class="form-control" name="nomor_kontak_darurat">
+                                        <input class="form-control" name="nomor_kontak_darurat" >
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -429,7 +429,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku STR</label>
-                                        <input type="date" class="form-control" name="masa_berlaku_str">
+                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_str" placeholder="Masa Berlaku STR">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -439,7 +439,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku SIP</label>
-                                        <input type="date" class="form-control" name="masa_berlaku_sip">
+                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_sip" placeholder="Masa Berlaku SIP">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -454,7 +454,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku Asuransi</label>
-                                        <input type="date" class="form-control" name="masa_berlaku_asuransi">
+                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_asuransi" placeholder="Masa Berlaku Asuransi">
                                     </div>
 
                                 </div>
@@ -552,21 +552,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {{--
-                                    <div class="col-md-4 mb-2">
-                                        <label>Input Date</label>
-                                        <input type="date" class="form-control" name="input_date">
-                                    </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Update By</label>
-                                        <input class="form-control" name="update_by">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Update Date</label>
-                                        <input type="date" class="form-control" name="update_date">
-                                    </div> --}}
 
                                     <div class="col-md-4 mb-2">
                                         <label>Temp Username</label>
