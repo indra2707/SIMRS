@@ -7,6 +7,9 @@ use App\Models\Sdm\Spds;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB as Db;
+use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class SpdsController extends Controller
 {
@@ -46,12 +49,12 @@ class SpdsController extends Controller
                 'id_pegawai' => $value->id_pegawai,
                 'pelaksanaan' => $value->pelaksanaan,
                 'nama_pegawai' => $value->nama_pegawai,
-                'id_kota1' => $value -> id_kota1,
-                'id_kota2' => $value -> id_kota2,
+                'id_kota1' => $value->id_kota1,
+                'id_kota2' => $value->id_kota2,
                 'nama_kota1' => $value->nama_kota1,
                 'nama_kota2' => $value->nama_kota2,
                 'tgl_awal' => $value->tgl_awal,
-                'tgl_akhir' =>$value->tgl_akhir,
+                'tgl_akhir' => $value->tgl_akhir,
                 'tgl_masuk' => Carbon::parse($value->tgl_masuk)->format('d/m/Y'),
                 'kendaraan' => $value->kendaraan,
                 'ditanggung' => $value->ditanggung,
@@ -71,38 +74,58 @@ class SpdsController extends Controller
     // Simpan
     public function store(Request $request)
     {
-        $query = Spds::create([
-            'no_surat' => $request->no_surat,
-            'id_pegawai' => $request->id_pegawai,
-            'pelaksanaan' => $request->pelaksanaan,
-            'id_kota1' => $request->id_kota1,
-            'id_kota2' => $request->id_kota2,
-            'tgl_awal' => $request->tgl_awal,
-            'tgl_akhir' => $request->tgl_akhir,
-            'tgl_masuk' => Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d'),
-            'kendaraan' => $request->kendaraan,
-            'ditanggung' => $request->ditanggung,
-            'hak_cuti' => $request->hak_cuti,
-            'cuti_lalu' => $request->cuti_lalu,
-            'jatuh_tempo' => $request->jatuh_tempo,
-            'panjar_cuti' => $request->panjar_cuti,
-            'keterangan' => $request->keterangan,
-            'id_pimpinan' => $request->id_pimpinan,
-            'pengikut1' => $request->pengikut,
-            'status' => 'Draft'
-        ]);
-        if ($query) {
+        DB::beginTransaction();
+
+        try {
+            // simpan ke tabel spds
+            $spd = Spds::create([
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'pelaksanaan' => $request->pelaksanaan,
+                'id_kota1' => $request->id_kota1,
+                'id_kota2' => $request->id_kota2,
+                'tgl_awal' => $request->tgl_awal,
+                'tgl_akhir' => $request->tgl_akhir,
+                'tgl_masuk' => Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d'),
+                'kendaraan' => $request->kendaraan,
+                'ditanggung' => $request->ditanggung,
+                'hak_cuti' => $request->hak_cuti,
+                'cuti_lalu' => $request->cuti_lalu,
+                'jatuh_tempo' => $request->jatuh_tempo,
+                'panjar_cuti' => $request->panjar_cuti,
+                'keterangan' => $request->keterangan,
+                'id_pimpinan' => $request->id_pimpinan,
+                'pengikut' => $request->pengikut1,
+                'status' => 'Draft',
+                'created_by' => Auth::user()->username
+            ]);
+
+            // simpan ke tabel detail
+            DB::table('tbl_spd_details')->insert([
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'status' => 'Draft',
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => Auth::user()->username
+            ]);
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Ditambahkan.',
-            ], status: 200);
-        } else {
+                'data' => $spd,
+                'message' => 'Data berhasil ditambahkan'
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Ditambahkan.',
-            ], status: 400);
+                'message' => 'Data gagal ditambahkan',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -126,8 +149,9 @@ class SpdsController extends Controller
             'panjar_cuti' => $request->panjar_cuti,
             'keterangan' => $request->keterangan,
             'id_pimpinan' => $request->id_pimpinan,
-            'pengikut1' => $request->pengikut,
-            'status' => 'Draft'
+            'pengikut' => $request->pengikut1,
+            'status' => 'Draft',
+            'updated_by' => Auth::user()->username
         ]);
         if ($query) {
             return response()->json([
@@ -145,21 +169,38 @@ class SpdsController extends Controller
     }
 
     // Delete
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $query = Spds::where('id', $id)->delete();
-        if ($query) {
+        DB::beginTransaction();
+
+        try {
+            // hapus tabel utama
+            $deleteSpd = Spds::where('id', $id)->delete();
+
+            // hapus tabel detail
+            $deleteDetail = DB::table('tbl_spd_details')
+                ->where('no_surat', $request->no_surat)
+                ->delete();
+
+            if ($deleteSpd === 0) {
+                throw new \Exception('Data utama tidak ditemukan');
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Dihapus.',
-            ], status: 200);
-        } else {
+                'message' => 'Data berhasil dihapus'
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Dihapus.',
-            ], status: 400);
+                'message' => 'Data gagal dihapus',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -182,5 +223,46 @@ class SpdsController extends Controller
                 'data' => [],
             ], status: 400);
         }
+    }
+
+
+    public function print($id)
+    {
+        $spd = DB::table('tbl_spds')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
+            ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
+            ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+            ->select(
+                'tbl_spds.*',
+                'pegawai.nama_pekerja as nama_pegawai',
+                'tbl_kotas.nama as nama_kota1',
+                'kota2.nama as nama_kota2'
+            )
+            ->where('tbl_spds.id', $id)
+            ->first();
+
+        if (!$spd) {
+            abort(404, 'SPD tidak ditemukan.');
+        }
+
+        $data = [
+            'title' => 'Print Preview SPD',
+            'spd' => $spd
+        ];
+
+        $html = view('sdm.spd.print', $data)->render();
+
+        // Optional: setting Dompdf
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        return $dompdf->stream($spd->no_surat . '.pdf', [
+            'Attachment' => false, // tampil di browser
+        ]);
     }
 }

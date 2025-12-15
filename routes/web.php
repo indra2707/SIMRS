@@ -264,9 +264,9 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/spd', [SpdsController::class, 'index'])->name('sdm.spd');
         Route::get('/spd/view', [SpdsController::class, 'views'])->name('sdm.spd.view');
         Route::post('/spd/store', [SpdsController::class, 'store'])->name('sdm.spd.create');
+        Route::get('/spd/print/{id}', [SpdsController::class, 'print'])->name('sdm.spd.print');
         Route::put('/spd/update/{id}', [SpdsController::class, 'update'])->name('sdm.spd.update');
         Route::delete('/spd/delete/{id}', [SpdsController::class, 'destroy'])->name('sdm.spd.delete');
-        Route::post('/spd/update-status/{id}', [SpdsController::class, 'updateStatus'])->name('sdm.spd.update-status');
 
         // SDM
         Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');

@@ -107,7 +107,7 @@
         $('input[name="tgl_masuk"]').val('');
         $('input[name="tgl_awal"]').val('');
         $('input[name="hak_cuti"]').val('');
-        $('input[name="cutilalu"]').val('');
+        $('input[name="cuti_lalu"]').val('');
         $('input[name="ditanggung"]').val('');
         $('input[name="tgl"]').val('');
         $('input[name="jatuh_tempo"]').val('');
@@ -476,6 +476,8 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+            '<a class="dropdown-item btn-close" href="javascript:void(0)"><i class="fa fa-key text-warning"></i> Close</a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-scondary"></i> Print</a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
@@ -488,7 +490,7 @@
         'click .btn-edit': function (e, value, row, index) {
             $('#modal-spd').modal('show');
             $('.modal-title').text('Form Edit SPD');
-            let pengikutValue = (row.pengikut === 'Tidak Ada') ? '0' : '1';
+            let pengikutValue = (row.pengikut1 === 'Tidak Ada') ? '0' : '1';
             $table_employee.bootstrapTable('removeAll');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
@@ -569,7 +571,8 @@
                         url: url,
                         type: "DELETE",
                         data: {
-                            _token: "{{ csrf_token() }}"
+                            _token: "{{ csrf_token() }}",
+                            no_surat: row.no_surat // menambah data
                         },
                         success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
@@ -584,6 +587,14 @@
 
                 }
             })
+        },
+        'click .btn-close': function (e, value, row, index) {
+            alert('Comming Soon');
+        },
+        'click .btn-print': function (e, value, row, index) {
+            var url = "{{ route('sdm.spd.print', ':id') }}";
+            url = url.replace(':id', row.id);
+            window.open(url, '_blank');
         }
     }
 
