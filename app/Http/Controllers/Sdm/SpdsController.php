@@ -235,6 +235,7 @@ class SpdsController extends Controller
             ->select(
                 'tbl_spds.*',
                 'pegawai.nama_pekerja as nama_pegawai',
+                'pegawai.nomor_pekerja as nomor_pekerja',
                 'tbl_kotas.nama as nama_kota1',
                 'kota2.nama as nama_kota2'
             )
