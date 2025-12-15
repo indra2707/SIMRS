@@ -6,15 +6,24 @@
 <head>
     <meta charset="UTF-8">
     <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 25px;
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             color: #000;
-            /* background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/ihc_default.png'))) }}");
-            background-size: 370px auto;
+            background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/ihc_default.png'))) }}");
+            background-size: cover;
             background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed; */
+            background-position: center center;
+            background-attachment: fixed;
+            /* margin: 0;
+            padding: 0; */
         }
 
         .center {
@@ -80,85 +89,98 @@
 </head>
 
 <body>
+     @php
 
-    <div class="center mt-3">
-        <div class="bold underline" style="font-size:18px; letter-spacing:2px;">SURAT KETERANGAN</div>
-        <div class="bold mt-1">Nomor : {{$spd->no_surat}} </div>
-    </div>
+            $pathPertamedika = public_path('assets/images/ihc/pertamedika.png');
+            $logoPertamedika = base64_encode(file_get_contents($pathPertamedika));
+            $pathText = public_path('assets/images/ihc/logo-text.png');
+            $logoText = base64_encode(file_get_contents($pathPertamedika));
+        @endphp
+    <div class="body">
+        <img src="data:image/png;base64,{{ $logoPertamedika }}" style="width:200px; ">
+        <img src="data:image/png;base64,{{ $logoText }}" style="width:200px; ">
+        <div class="center mt-3">
+            <div class="bold underline" style="font-size:18px; letter-spacing:2px;">SURAT KETERANGAN</div>
+            <div class="bold mt-1">Nomor : {{ $spd->no_surat }} </div>
+        </div>
 
-    <p class="mt-3 bold">Dengan ini mengijinkan / menugaskan :</p>
+        <p class="mt-3 bold">Dengan ini mengijinkan / menugaskan :</p>
 
-    <table class="no-border">
-        <tr>
-            <td class="label">Nama Lengkap</td>
-            <td>: {{$spd->nama_pegawai}} </td>
-        </tr>
-        <tr>
-            <td class="label">Nomor Pekerja</td>
-            <td>: {{$spd->nomor_pekerja}}</td>
-        </tr>
-        <tr>
-            <td class="label">Pangkat / Golongan</td>
-            <td>: - / -</td>
-        </tr>
-        <tr>
-            <td class="label">Jabatan</td>
-            <td>: -</td>
-        </tr>
-        <tr>
-            <td class="label">Eselon</td>
-            <td>: RS Otak & Jantung Pertamina Royal Biringkanaya</td>
-        </tr>
-        <tr>
-            <td class="label">UNTUK MELAKSANAKAN</td>
-            <td>:
-                <span class="checkbox {{ $spd->pelaksanaan == 'PD-DN' ? 'checked' : '' }}"></span> PD-DN &nbsp;&nbsp;&nbsp;
-                <span class="checkbox {{ $spd->pelaksanaan == 'PD-LN' ? 'checked' : '' }}"></span> PD-LN &nbsp;&nbsp;&nbsp;
-                <span class="checkbox {{ $spd->pelaksanaan == 'SIJ' ? 'checked' : '' }}"></span> SIJ &nbsp;&nbsp;&nbsp;
-                <span class="checkbox {{ $spd->pelaksanaan == 'Mutasi' ? 'checked' : '' }}"></span> Mutasi &nbsp;&nbsp;&nbsp;
-                <span class="checkbox {{ $spd->pelaksanaan == 'Cuti' ? 'checked' : '' }}"></span> Cuti &nbsp;
-            </td>
-        </tr>
-    </table>
+        <table class="no-border">
+            <tr>
+                <td class="label">Nama Lengkap</td>
+                <td>: {{ $spd->nama_pegawai }} </td>
+            </tr>
+            <tr>
+                <td class="label">Nomor Pekerja</td>
+                <td>: {{ $spd->nomor_pekerja }}</td>
+            </tr>
+            <tr>
+                <td class="label">Pangkat / Golongan</td>
+                <td>: - / -</td>
+            </tr>
+            <tr>
+                <td class="label">Jabatan</td>
+                <td>: -</td>
+            </tr>
+            <tr>
+                <td class="label">Eselon</td>
+                <td>: RS Otak & Jantung Pertamina Royal Biringkanaya</td>
+            </tr>
+            <tr>
+                <td class="label">UNTUK MELAKSANAKAN</td>
+                <td>:
+                    <span class="checkbox {{ $spd->pelaksanaan == 'PD-DN' ? 'checked' : '' }}"></span> PD-DN
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="checkbox {{ $spd->pelaksanaan == 'PD-LN' ? 'checked' : '' }}"></span> PD-LN
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="checkbox {{ $spd->pelaksanaan == 'SIJ' ? 'checked' : '' }}"></span> SIJ
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="checkbox {{ $spd->pelaksanaan == 'Mutasi' ? 'checked' : '' }}"></span> Mutasi
+                    &nbsp;&nbsp;&nbsp;
+                    <span class="checkbox {{ $spd->pelaksanaan == 'Cuti' ? 'checked' : '' }}"></span> Cuti &nbsp;
+                </td>
+            </tr>
+        </table>
 
-    <table class="no-border mt-2">
-        <tr>
-            <td class="label">Dari / Asal</td>
-            <td>: {{$spd->nama_kota1}}</td>
-            <td class="label">Hak Cuti Tahun ke</td>
-            <td>: {{$spd->hak_cuti}}</td>
-        </tr>
-        <tr>
-            <td class="label">Tempat Tujuan</td>
-            <td>: {{$spd->nama_kota2}}</td>
-            <td class="label">Cuti Yang Lalu</td>
-            <td>: {{$spd->hak_cuti}}</td>
-        </tr>
-        <tr>
-            <td class="label">Terhitung Mulai Tanggal</td>
-            <td>: {{ \Carbon\Carbon::parse($spd->tgl_awal)->translatedFormat('d F Y') }}</td>
-            <td class="label">Panjar Cuti</td>
-            <td>: {{$spd->panjar_cuti}}</td>
-        </tr>
-        <tr>
-            <td class="label">Berangkat / Kembali</td>
-            <td>: {{ \Carbon\Carbon::parse($spd->tgl_akhir)->translatedFormat('d F Y') }}</td>
-            <td class="label">Bekerja Kembali</td>
-            <td>: {{ \Carbon\Carbon::parse($spd->tgl_masuk)->translatedFormat('d F Y') }}</td>
-        </tr>
-        <tr>
-            <td class="label">Berkendaraan</td>
-            <td>: {{$spd->kendaraan}}</td>
-            <td class="label">Due Date Cuti</td>
-            <td>: {{$spd->jatuh_tempo}}</td>
-        </tr>
-        <tr>
-            <td class="label">Biaya Ditanggung Oleh</td>
-            <td colspan="3">: {{$spd->ditanggung}}</td>
-        </tr>
-    </table>
+        <table class="no-border mt-2">
+            <tr>
+                <td class="label">Dari / Asal</td>
+                <td>: {{ $spd->nama_kota1 }}</td>
+                <td class="label">Hak Cuti Tahun ke</td>
+                <td>: {{ $spd->hak_cuti }}</td>
+            </tr>
+            <tr>
+                <td class="label">Tempat Tujuan</td>
+                <td>: {{ $spd->nama_kota2 }}</td>
+                <td class="label">Cuti Yang Lalu</td>
+                <td>: {{ $spd->hak_cuti }}</td>
+            </tr>
+            <tr>
+                <td class="label">Terhitung Mulai Tanggal</td>
+                <td>: {{ \Carbon\Carbon::parse($spd->tgl_awal)->translatedFormat('d F Y') }}</td>
+                <td class="label">Panjar Cuti</td>
+                <td>: {{ $spd->panjar_cuti }}</td>
+            </tr>
+            <tr>
+                <td class="label">Berangkat / Kembali</td>
+                <td>: {{ \Carbon\Carbon::parse($spd->tgl_akhir)->translatedFormat('d F Y') }}</td>
+                <td class="label">Bekerja Kembali</td>
+                <td>: {{ \Carbon\Carbon::parse($spd->tgl_masuk)->translatedFormat('d F Y') }}</td>
+            </tr>
+            <tr>
+                <td class="label">Berkendaraan</td>
+                <td>: {{ $spd->kendaraan }}</td>
+                <td class="label">Due Date Cuti</td>
+                <td>: {{ $spd->jatuh_tempo }}</td>
+            </tr>
+            <tr>
+                <td class="label">Biaya Ditanggung Oleh</td>
+                <td colspan="3">: {{ $spd->ditanggung }}</td>
+            </tr>
+        </table>
 
-    <table class="border">
+    <table class="border mt-3">
         <tr>
             <th colspan="6" align="left">
                 KETERANGAN / KEPERLUAN : {{$spd->keterangan}}<br><br><br>
@@ -171,27 +193,6 @@
             <th width="20%">Jabatan</th>
             <th width="30%" colspan="2">Keterangan</th>
         </tr>
-        <tr>
-            <td align="center">1</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-            <td align="center">2</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2"></td>
-        </tr>
-        <tr>
-           <td align="center">3</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td colspan="2"></td>
-        </tr>
         TEST
         <tr>
             <td colspan="4">
@@ -200,7 +201,7 @@
             </td>
             <td colspan="2" class="center">
                 Menyetujui :<br>
-                <b  style="font-size:11px;">RSOJ Pertamina Royal Biringkanaya</b><br>
+                <b>RSOJ Pertamina Royal Biringkanaya</b><br>
                 TEST<br><br>
                 <img src="TEST" width="75"><br>
                 TEST

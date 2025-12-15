@@ -1,4 +1,7 @@
 <script type="text/javascript">
+    // Tabel
+    var $tablePegawai = $('#table_pegawai');
+
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
         theme: "bootstrap-5",
@@ -6,93 +9,79 @@
         allowClear: true
 
     });
-    // Tabel
-    var $tablePegawai = $('#table_pegawai');
+    var reader = new FileReader();
 
-    // Open Modal Pegawai
-    $(document).on('click', '.add-btn', function() {
+    // Main Wrapper Selector
+    const avatarFileUpload = document.getElementById('AvatarFileUpload');
+    // Preview Wrapper Selector
+    const imageViewer = avatarFileUpload.querySelector('.selected-image-holder>img');
+    // Image Selector button Selector
+    const imageSelector = avatarFileUpload.querySelector('.avatar-selector-btn');
+    // Image Input File Selector - PERBAIKAN: Ganti 'profil' jadi 'foto'
+    const imageInput = avatarFileUpload.querySelector('input[name="foto"]');
 
-        // Reset validasi
-        $('.form-pegawai').removeClass('was-validated');
+    /** Trigger Browsing Image to Upload */
+    imageSelector.addEventListener('click', e => {
+        e.preventDefault()
+        // Trigger Image input click
+        imageInput.click()
+    });
 
-        $('#modal-pegawai').modal('show');
-        $('.modal-title').text('Form Tambah Pegawai');
-        $('.save-btn')
-            .html('<span class="fa fa-check"></span> Simpan')
-            .removeAttr('disabled');
-        let fields = [
-            'anak_perusahaan',
-            'rumah_sakit',
-            'nomor_sk_struktur',
-            'jabatan',
-            'penempatan',
-            'lokasi_kerja',
-            'nomor_pekerja',
-            'nama_pekerja',
-            'jenis_kelamin',
-            'agama',
-            'nik',
-            'status_pernikahan',
-            'golongan_darah',
-            'disabilitas',
-            'tanggal_lahir',
-            'golongan_upah',
-            'status_kepegawaian',
-            'tmt_status_kepegawaian',
-            'tmt_pwtt',
-            'tmt_pwt',
-            'masa_kerja',
-            'fungsi',
-            'sub_fungsi',
-            'tmt_jabatan',
-            'tmt_golongan_upah',
-            'penyetaraan_jabatan_ap',
-            'penyetaraan_golongan_upah_ap',
-            'nama_bank',
-            'nomor_rekening',
-            'nama_rekening',
-            'nomor_bpjstk',
-            'nomor_bpjskesehatan',
-            'nomor_npwp',
-            'nomor_hp',
-            'nomor_kontak_darurat',
-            'nama_kontak_darurat',
-            'hubungan_kontak_darurat',
-            'email',
-            'email_dinas',
-            'alamat_ktp',
-            'alamat_npwp',
-            'alamat_domisili',
-            'nomor_str',
-            'str_seumur_hidup',
-            'masa_berlaku_str',
-            'nomor_sip',
-            'masa_berlaku_sip',
-            'nomor_sikp',
-            'masa_berlaku_sikp',
-            // 'file_sk_pengangkatan',
-            // 'file_sk_terakhir',
-            // 'file_foto',
-            // 'file_ktp',
-            // 'file_kk',
-            // 'file_rekening',
-            // 'file_cv'
-        ];
-
-        // Loop reset input text
-        fields.forEach(function(name) {
-            $('input[name="' + name + '"]').val('');
-            $('textarea[name="' + name + '"]').val('');
-        });
-        $('select').prop('selectedIndex', 0);
-        $('input[name="str_seumur_hidup"]').prop('checked', false);
-        $('input[type="file"]').val('');
+    imageInput.addEventListener('change', e => {
+        // Open File eader
+        reader.onload = function() {
+            // Preview Image
+            imageViewer.src = reader.result;
+        };
+        reader.readAsDataURL(e.target.files[0]);
     });
 
 
-    // Save Asset
-    $(document).on('click', '.save-btn', function() {
+
+    // Open Modal Pegawai
+    $(document).on('click', '.add-btn', function() {
+        $('#modal-pegawai').modal('show');
+        $('.modal-title').text('Form Tambah Pegawai');
+
+        var form = document.querySelector('.form-pegawai');
+
+        // Reset form native
+        if (form) {
+            form.reset();
+            form.classList.remove('was-validated');
+        }
+
+        // Reset khusus
+        $('input[name="id"]').val(''); // Kosongkan ID
+
+        // Reset Select2 (jika ada)
+        $('.select2').each(function() {
+            $(this).val(null).trigger('change');
+        });
+
+        // Reset checkbox/radio ke unchecked
+        $('input[type="checkbox"]').prop('checked', false);
+        $('input[type="radio"]').prop('checked', false);
+
+        // Reset file input & preview
+        $('input[type="file"]').val('');
+        if (typeof imageViewer !== 'undefined') {
+            imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
+        }
+
+        // Reset button state
+        $('.save-btn')
+            .html('<span class="fa fa-check"></span> Simpan')
+            .removeAttr('disabled');
+    });
+
+    // Fungsi untuk konversi tanggal dari DD/MM/YYYY ke YYYY-MM-DD
+
+
+    // Save/update
+    $(document).on('click', '.save-btn', function(e) {
         var id = $('input[name="id"]').val();
+
         if (id) {
             var url = "{{ route('pegawai-update', ':id') }}";
             url = url.replace(':id', id);
@@ -102,18 +91,40 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-pegawai');
+        // var form = forms[0];
         var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-                console.log('Form data:', $('.form-pegawai').serialize());
+                const fileInput = $('#foto')[0],
+                    file = fileInput.files[0],
+                    maxSize = 1 * 1024 * 1024,
+                    allowedTypes = ['image/jpeg', 'image/png',
+                        'image/jpg'
+                    ]; // Example allowed types
+                // Validate file type
+                if (file && !allowedTypes.includes(file.type)) {
+                    Alert('warning',
+                        'Jenis berkas tidak valid. Jenis yang diperbolehkan: JPEG, PNG, JPG.');
+                    return;
+                }
+                // Validate file size
+                if (file && file.size > maxSize) {
+                    Alert('warning', 'Ukuran file melebihi batas maksimal 1 MB');
+                    return;
+                }
+                let myformData = new FormData(form);
                 $.ajax({
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-pegawai').serialize(),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: myformData,
+                    enctype: 'multipart/form-data',
                     beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -154,10 +165,6 @@
         });
     });
 
-    // Page Load Event
-    $(function() {
-        initTable();
-    });
 
 
     // Table Pegawai
@@ -667,22 +674,22 @@
             ],
 
             onLoadSuccess: function(data) {
-                console.log('✅ Data loaded:', data.length, 'records');
+                console.log(' Data loaded:', data.length, 'records');
             },
 
             onLoadError: function(status, xhr) {
-                console.error('❌ Load error:', status);
+                console.error(' Load error:', status);
                 console.error('Response:', xhr.responseText);
             },
 
             responseHandler: function(res) {
-                console.log('📦 Response received:', res);
+                console.log(' Response received:', res);
                 return res; // Return langsung karena sudah array
             }
         });
     }
 
-    // ✅ Call function saat document ready
+    //  Call function saat document ready
     $(document).ready(function() {
         initTable();
     });
@@ -705,7 +712,7 @@
     // Handle events button actions
     window.eventsPegawai = {
         'click .btn-edit': function(e, value, row, index) {
-            console.log('✅ Edit button clicked!', row);
+            console.log('Edit button clicked!', row);
 
             // Reset validasi
             $('.form-pegawai').removeClass('was-validated');
@@ -739,13 +746,18 @@
             // ============================================
             $('input[name="nomor_pekerja"]').val(row.nomor_pekerja || '');
             $('input[name="nama_pekerja"]').val(row.nama_pekerja || '');
-            $('select[name="jenis_kelamin"]').val(row.jenis_kelamin || '');
-            $('select[name="agama"]').val(row.agama || '');
             $('input[name="nik"]').val(row.nik || '');
-            $('select[name="status_pernikahan"]').val(row.status_pernikahan || '');
-            $('select[name="golongan_darah"]').val(row.golongan_darah || '');
-            $('select[name="disabilitas"]').val(row.disabilitas || '');
             $('input[name="tanggal_lahir"]').val(row.tanggal_lahir || '');
+
+            // === Select2 fields ===
+            setTimeout(() => {
+                $('select[name="jenis_kelamin"]').val(row.jenis_kelamin || '').trigger('change');
+                $('select[name="agama"]').val(row.agama || '').trigger('change');
+                $('select[name="status_pernikahan"]').val(row.status_pernikahan || '').trigger(
+                    'change');
+                $('select[name="golongan_darah"]').val(row.golongan_darah || '').trigger('change');
+                $('select[name="disabilitas"]').val(row.disabilitas || '').trigger('change');
+            }, 50); // Delay untuk memastikan modal dan Select2 sudah render
 
             // ============================================
             // DATA KEPEGAWAIAN
@@ -825,12 +837,13 @@
             // ============================================
             // SYSTEM INFO
             // ============================================
-            $('input[name="input_by"]').val(row.input_by || '');
-            $('input[name="input_date"]').val(row.input_date || '');
-            $('input[name="update_by"]').val(row.update_by || '');
-            $('input[name="update_date"]').val(row.update_date || '');
             $('input[name="temp_username"]').val(row.temp_username || '');
             $('input[name="username"]').val(row.username || '');
+            if (row.foto) {
+                $('#previews').attr('src', '/uploads/images/foto-pegawai/' + row.foto).show();
+            } else {
+                $('#previews').attr('src', '').hide();
+            }
 
             console.log('Form populated with data for ID:', row.id);
         },
@@ -894,6 +907,31 @@
         }
     };
 
+
+    function convertToMySQLDate(dateStr) {
+        if (!dateStr) return null;
+        if (dateStr.includes('/')) {
+            const parts = dateStr.split('/');
+            if (parts.length !== 3) return null;
+            return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
+        }
+        return dateStr; // jika sudah YYYY-MM-DD
+    }
+
+    $('.form-pegawai').on('submit', function(e) {
+        const tanggalFields = [
+            'tanggal_lahir', 'tmt_status_kepegawaian', 'tmt_pwtt', 'tmt_pwt',
+            'tanggal_akhir_kontrak', 'tmt_jabatan', 'tmt_golongan_upah',
+            'masa_berlaku_str', 'masa_berlaku_sip', 'masa_berlaku_asuransi'
+        ];
+
+        tanggalFields.forEach(function(field) {
+            const input = $(`input[name="${field}"]`);
+            if (input.length) {
+                input.val(convertToMySQLDate(input.val()));
+            }
+        });
+    });
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
         'click .update-status': function(e, value, row, index) {
@@ -927,4 +965,8 @@
             });
         }
     }
+    // Page Load Event
+    $(function() {
+        initTable();
+    });
 </script>
