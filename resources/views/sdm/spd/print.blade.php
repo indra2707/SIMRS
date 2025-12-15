@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: 11px;
+            font-size: 12px;
             color: #000;
             /* background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/ihc_default.png'))) }}");
             background-size: 370px auto;
@@ -67,8 +67,8 @@
 
         .checkbox {
             display: inline-block;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border: 1px solid #000;
             margin-right: 4px;
         }
@@ -158,7 +158,7 @@
         </tr>
     </table>
 
-    <table class="border mt-3">
+    <table class="border">
         <tr>
             <th colspan="6" align="left">
                 KETERANGAN / KEPERLUAN : {{$spd->keterangan}}<br><br><br>
@@ -171,6 +171,27 @@
             <th width="20%">Jabatan</th>
             <th width="30%" colspan="2">Keterangan</th>
         </tr>
+        <tr>
+            <td align="center">1</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td align="center">2</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+           <td align="center">3</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td colspan="2"></td>
+        </tr>
         TEST
         <tr>
             <td colspan="4">
@@ -179,7 +200,7 @@
             </td>
             <td colspan="2" class="center">
                 Menyetujui :<br>
-                <b>RSOJ Pertamina Royal Biringkanaya</b><br>
+                <b  style="font-size:11px;">RSOJ Pertamina Royal Biringkanaya</b><br>
                 TEST<br><br>
                 <img src="TEST" width="75"><br>
                 TEST

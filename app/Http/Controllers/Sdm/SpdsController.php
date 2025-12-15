@@ -225,7 +225,7 @@ class SpdsController extends Controller
         }
     }
 
-
+    // Print
     public function print($id)
     {
         $spd = DB::table('tbl_spds')
