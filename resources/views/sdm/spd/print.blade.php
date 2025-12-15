@@ -10,7 +10,7 @@
         body {
             height: 100%;
             margin: 0px;
-            padding: 25px;
+            padding: 50px;
         }
 
         body {
@@ -76,10 +76,11 @@
 
         .checkbox {
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 12px;
+            height: 12px;
             border: 1px solid #000;
             margin-right: 4px;
+            vertical-align: middle;
         }
 
         .checked {
@@ -89,19 +90,28 @@
 </head>
 
 <body>
-     @php
+    @php
+        $pathPertamedika = public_path('assets/images/ihc/pertamedika.png');
+        $logoPertamedika = base64_encode(file_get_contents($pathPertamedika));
+        $pathText = public_path('assets/images/ihc/logo_doc.png');
+        $logoText = base64_encode(file_get_contents($pathText));
+    @endphp
 
-            $pathPertamedika = public_path('assets/images/ihc/pertamedika.png');
-            $logoPertamedika = base64_encode(file_get_contents($pathPertamedika));
-            $pathText = public_path('assets/images/ihc/logo-text.png');
-            $logoText = base64_encode(file_get_contents($pathPertamedika));
-        @endphp
+    <table>
+        <tr>
+            <td>
+                <img src="data:image/png;base64,{{ $logoPertamedika }}" style="width:210px; ">
+            </td>
+            <td align="right">
+                <img src="data:image/png;base64,{{ $logoText }}" style="width:180px; ">
+            </td>
+        </tr>
+    </table>
+
     <div class="body">
-        <img src="data:image/png;base64,{{ $logoPertamedika }}" style="width:200px; ">
-        <img src="data:image/png;base64,{{ $logoText }}" style="width:200px; ">
         <div class="center mt-3">
-            <div class="bold underline" style="font-size:18px; letter-spacing:2px;">SURAT KETERANGAN</div>
-            <div class="bold mt-1">Nomor : {{ $spd->no_surat }} </div>
+            <div class="bold underline" style="font-size:18px; letter-spacing:1px;">SURAT KETERANGAN</div>
+            <div class="" style="margin-top:auto; font-size:13px;">Nomor : {{ $spd->no_surat }} </div>
         </div>
 
         <p class="mt-3 bold">Dengan ini mengijinkan / menugaskan :</p>
@@ -180,65 +190,89 @@
             </tr>
         </table>
 
-    <table class="border mt-3">
-        <tr>
-            <th colspan="6" align="left">
-                KETERANGAN / KEPERLUAN : {{$spd->keterangan}}<br><br><br>
-            </th>
-        </tr>
-        <tr>
-            <th width="5%">No</th>
-            <th width="30%">Nama Pengikut</th>
-            <th width="15%">Nopek</th>
-            <th width="20%">Jabatan</th>
-            <th width="30%" colspan="2">Keterangan</th>
-        </tr>
-        TEST
-        <tr>
-            <td colspan="4">
-                PANJAR / LUMPSUM PERJALANAN DINAS<br><br><br><br>
-                Catatan : Batas akhir pertanggungjawaban panjar dinas 1 (satu) minggu setelah kepulangan
-            </td>
-            <td colspan="2" class="center">
-                Menyetujui :<br>
-                <b>RSOJ Pertamina Royal Biringkanaya</b><br>
-                TEST<br><br>
-                <img src="TEST" width="75"><br>
-                TEST
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" rowspan="2" class="center"><br><br>KETERANGAN</td>
-            <td colspan="4" class="center">TUJUAN</td>
-        </tr>
-        <tr>
-            <td class="center">I</td>
-            <td class="center">II</td>
-            <td class="center">III</td>
-            <td class="center">IV</td>
-        </tr>
-        <tr>
-            <td colspan="2">Tanggal Tiba</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="2">Tanggal Kembali</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="2"><br>Tanda Tangan Pejabat yang Dikunjungi<br><br></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-    </table>
+        <table class="border mt-3">
+            <tr>
+                <td colspan="6" align="left">
+                    KETERANGAN / KEPERLUAN : {{$spd->keterangan}}<br><br><br>
+                </td>
+            </tr>
+            <tr>
+                <th width="5%">No</th>
+                <th width="30%">Nama Pengikut</th>
+                <th width="15%">Nopek</th>
+                <th width="20%">Jabatan</th>
+                <th width="30%" colspan="2">Keterangan</th>
+            </tr>
+            <tr>
+                <td align="center">1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td align="center">2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td align="center">3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td colspan="2"></td>
+            </tr>
+            TEST
+            <tr>
+                <td colspan="4">
+                    PANJAR / LUMPSUM PERJALANAN DINAS
+                    <div style="margin-top:auto; font-size:10px;"><br><br><br><br><br><br><br><br><br>
+                        Catatan : Batas akhir pertanggungjawaban panjar dinas 1 (satu) minggu setelah kepulangan
+                    </div>
+                </td>
+                <td colspan="2" class="center">
+                    Menyetujui :<br>
+                    <b style="font-size:11px">RSOJ Pertamina Royal Biringkanaya</b><br>
+                    TEST<br><br>
+                    <img src="TEST" width="75"><br>
+                    TEST
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" rowspan="2" class="center" class="center"
+                    style="height:30px; vertical-align:middle; text-align:center;">KETERANGAN</td>
+                <td colspan="4" class="center">TUJUAN</td>
+            </tr>
+            <tr>
+                <td class="center">I</td>
+                <td class="center">II</td>
+                <td class="center">III</td>
+                <td class="center">IV</td>
+            </tr>
+            <tr>
+                <td colspan="2">Tanggal Tiba</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2">Tanggal Kembali</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="2"><br>Tanda Tangan Pejabat yang Dikunjungi<br><br></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
 
 </body>
 
