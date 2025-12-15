@@ -45,8 +45,13 @@
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th class="f-light">Nama Ruangan</th>
-                                            <th class="f-light">Status</th>
+                                            <th class="f-light">No</th>
+                                            <th class="f-light">Nomor Surat</th>
+                                            <th class="f-light">Nama Pegawai</th>
+                                            <th class="f-light">Pelaksanaan</th>
+                                            <th class="f-light">Kota Asal</th>
+                                            <th class="f-light">Kota Tujuan</th>
+                                            <th class="f-light">Pengikut</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -75,15 +80,17 @@
                         <input type="hidden" name="id">
 
                         <!-- Nomor Surat -->
-                        <label for="surat" class="col-form-label col-sm-2">Nomor Surat</label>
+                        <label for="no_surat" class="col-form-label col-sm-2">Nomor Surat</label>
                         <div class="col-sm-10">
-                            <input type="text" id="surat" name="surat" class="form-control" placeholder="No Surat..." required>
+                            <input type="text" id="no_surat" name="no_surat" class="form-control"
+                                placeholder="Nomor Surat..." required>
                         </div>
 
                         <!-- Pegawai -->
-                        <label for="pegawai" class="col-form-label col-sm-2">Pegawai</label>
+                        <label for="id_pegawai" class="col-form-label col-sm-2">Pegawai</label>
                         <div class="col-sm-10">
-                            <select class="form-select select2" name="pegawai" required>
+                            <select class="form-select select2" name="id_pegawai"
+                                data-placeholder="---- Pilih Salah Satu ----" required>
                                 <option></option>
                             </select>
                         </div>
@@ -102,40 +109,43 @@
                         </div>
 
                         <!-- Form -->
-                        <label for="asal" class="col-form-label col-sm-2">Kota Asal</label>
+                        <label for="id_kota1" class="col-form-label col-sm-2">Kota Asal</label>
                         <div class="col-sm-4">
-                            <select class="form-select select2" name="asal" data-placeholder="---- Pilih Salah Satu ----" required>
+                            <select class="form-select select2" name="id_kota1"
+                                data-placeholder="---- Pilih Salah Satu ----" required>
                                 <option></option>
                             </select>
                         </div>
 
                         <!-- To -->
-                        <label for="tujuan" class="col-form-label col-sm-2">Kota Tujuan</label>
+                        <label for="id_kota2" class="col-form-label col-sm-2">Kota Tujuan</label>
                         <div class="col-sm-4">
-                            <select class="form-select select2" name="tujuan" data-placeholder="---- Pilih Salah Satu ----" required>
+                            <select class="form-select select2" name="id_kota2"
+                                data-placeholder="---- Pilih Salah Satu ----" required>
                                 <option></option>
                             </select>
                         </div>
 
                         <!-- Antara Tanggal -->
-                        <label for="form_end_date" class="col-form-label col-sm-2">Antara Tanggal</label>
+                        <label class="col-form-label col-sm-2">Antara Tanggal</label>
                         <div class="col-sm-4">
-                            <input type="text" name="form_end_date" id="form_end_date"
-                                class="form-control js-daterangepicker digits" placeholder="dd/mm/yyyy - dd/mm/yyyy"
-                                data-language="en" aria-label="Date" required />
+                            <input type="text" class="form-control js-daterangepicker digits"
+                                placeholder="dd/mm/yyyy - dd/mm/yyyy" name="tgl" data-language="en" aria-label="Date" required />
                         </div>
+                        <input type="hidden" name="tgl_awal" id="tgl_awal">
+                        <input type="hidden" name="tgl_akhir" id="tgl_akhir">
 
                         <!-- Tanggal Masuk -->
-                        <label for="tanggal" class="col-form-label col-sm-2">Tanggal Masuk</label>
+                        <label for="tgl_masuk" class="col-form-label col-sm-2">Tanggal Masuk</label>
                         <div class="col-sm-4">
-                            <input type="text" name="tanggal" id="tanggal" class="form-control js-datepicker digits"
+                            <input type="text" name="tgl_masuk" id="tgl_masuk" class="form-control js-datepicker digits"
                                 placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 
                         <!-- Transportasi -->
-                        <label for="drive" class="col-form-label col-sm-2">Transportasi</label>
+                        <label for="kendaraan" class="col-form-label col-sm-2">Transportasi</label>
                         <div class="col-sm-4">
-                            <select class="form-select form-control select2" name="pelaksanaan" required>
+                            <select class="form-select form-control select2" name="kendaraan" required>
                                 <option></option>
                                 <option value="Pesawat">Pesawat</option>
                                 <option value="Kereta">Kereta</option>
@@ -149,23 +159,29 @@
                         <label class="col-form-label col-sm-2">Biaya Ditanggung Oleh</label>
                         <div class="col-sm-4">
                             <div class="btn-group biaya-group" role="group">
-                                <button type="button" class="btn btn-outline-primary active"
-                                    data-value="Perusahaan">Perusahaan</button>
-                                <button type="button" class="btn btn-outline-primary" data-value="Pribadi">Pribadi</button>
+                                <button type="button" class="btn btn-outline-primary active" data-value="Perusahaan">
+                                    Perusahaan
+                                </button>
+                                <button type="button" class="btn btn-outline-primary" data-value="Pribadi">
+                                    Pribadi
+                                </button>
                             </div>
+
+                            <!-- nilai yang dikirim ke server -->
+                            <input type="hidden" name="ditanggung" id="ditanggung" value="Perusahaan">
                         </div>
-                        <input type="hidden" name="biaya_ditanggung" id="biaya_ditanggung">
+
 
                         <!-- Hak Cuti -->
-                        <label for="hakcuti" class="col-form-label col-sm-2">Hak Cuti</label>
+                        <label for="hak_cuti" class="col-form-label col-sm-2">Hak Cuti</label>
                         <div class="col-sm-4">
-                            <input type="text" name="hakcuti" id="hakcuti" class="form-control" placeholder="Hak Cuti..." />
+                            <input type="text" name="hak_cuti" id="hak_cuti" class="form-control" placeholder="Hak Cuti..." />
                         </div>
 
                         <!-- Cuti Lalu -->
-                        <label for="cutilalu" class="col-form-label col-sm-2">Cuti Lalu</label>
+                        <label for="cuti_lalu" class="col-form-label col-sm-2">Cuti Lalu</label>
                         <div class="col-sm-4">
-                            <input type="text" name="cutilalu" id="cutilalu" class="form-control"
+                            <input type="text" name="cuti_lalu" id="cuti_lalu" class="form-control"
                                 placeholder="Cuti Lalu..." />
                         </div>
 
@@ -191,45 +207,46 @@
                         </div>
 
                         <!-- Acc -->
-                        <label for="accepted" class="col-form-label col-sm-2">Menyetujui</label>
+                        <label for="id_pimpinan" class="col-form-label col-sm-2">Menyetujui</label>
                         <div class="col-sm-6 mb-2">
-                            <select class="form-select select2" name="menyetujui" required>
+                            <select class="form-select select2" name="id_pimpinan" data-placeholder="-- Pilih Salah Satu -- "
+                                required>
                                 <option></option>
                             </select>
                         </div>
 
                         <!-- More Employee -->
                         <div class="col-sm-4">
-                            <select class="form-select form-control select2" name="pelaksanaan" required
+                            <select class="form-select form-control select2" name="pengikut1" required
                                 onchange="showMoreOption('hidden_div', this)">
                                 <option></option>
-                                <option value="Satu Orang">Satu Orang</option>
-                                <option value="Lebih Satu Orang">Lebih Satu Orang</option>
+                                <option value="0">Satu Orang</option>
+                                <option value="1">Lebih Satu Orang</option>
                             </select>
                         </div>
 
                         <!-- More Option Table -->
-                        <div id="hidden_div" style="display:none;">
+                        <div id="hidden_div" class="d-none">
                             <div id="toolbar">
-                                <button id="add_row_employee" type="button" class="btn btn-primary btn-sm"><i
-                                        class="fa fa-user-plus"></i> Tambah Orang</button>
+                                <button type="button" class="btn btn-primary btn-sm add-pegawai"><i
+                                        class="fa fa-user-plus"></i> Tambah Pegawai</button>
                             </div>
-                            <table id="tabled_employee" class="table table-striped table-bordered" data-toggle="table"
+                            <table id="table_employee" class="table table-striped table-bordered" data-toggle="table"
                                 data-toolbar="#toolbar">
                                 <thead>
                                     <tr>
                                         <th data-field="id" data-visible="false" data-width='2%' data-align="center"
                                             class="f-light">ID</th>
                                         <th data-field="field_id" data-visible="false" class="f-light">ID_EMPLOYEE</th>
-                                        <th data-field="field_nip" data-align="center" class="f-light">NIP</th>
+                                        <th data-width='200%' data-field="field_nip" data-align="center" class="f-light">NIP
+                                        </th>
                                         <th data-field="field_employee" class="f-light">Nama</th>
-                                        <th data-width='2%' data-formatter="actionFormatter" data-align="center"
+                                        <th data-width='100%' data-formatter="actionFormatter" data-align="center"
                                             class="f-light">#</th>
                                     </tr>
                                 </thead>
                             </table>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -239,6 +256,44 @@
             </div>
         </div>
     </div>
+
+
+    {{-- Modal Form Pegawai --}}
+    <div class="modal" id="modal-pegawai" tabindex="-1" data-bs-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title-pengikut">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="id-pengikut" id="id-pengikut" />
+
+                    <div class="form-group row my-0 g-lg-3">
+                        <!-- Nama Pegawai -->
+                        <label for="pengikut" class="col-form-label col-sm-2">Nama Pegawai</label>
+                        <div class="col-sm-10">
+                            <select id="pengikut" class="form-select select2" name="pengikut"
+                                data-placeholder="---- Pilih Salah Satu ----" required>
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm save-pegawai-btn">
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                        <i class="fa fa-times"></i> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 

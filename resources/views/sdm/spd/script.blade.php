@@ -11,19 +11,68 @@
     // Show More Options
     function showMoreOption(divId, element) {
         document.getElementById(divId).style.display =
-            element.value == 'Lebih Satu Orang' ? 'block' : 'none';
+            element.value == '1' ? 'block' : 'none';
+        $table_employee.bootstrapTable('removeAll');
     }
 
     //date range picker
     $('.js-daterangepicker').datepicker({
-        // language: 'id',
         dateFormat: 'dd/mm/yyyy',
         range: true,
         multipleDates: true,
         multipleDatesSeparator: ' - ',
         autoClose: true,
-        toggleSelected: false
+        toggleSelected: false,
+
+        onSelect: function (formattedDate, date, inst) {
+            // jika belum pilih 2 tanggal, hentikan
+            if (!date || date.length < 2) {
+                return;
+            }
+
+            // date berupa array [startDate, endDate]
+            let start = date[0];
+            let end = date[1];
+
+            // format ke Y-m-d untuk database
+            $('#tgl_awal').val(formatDate(start));
+            $('#tgl_akhir').val(formatDate(end));
+        }
     });
+
+    //button radio biaya ditanggung
+    $('.biaya-group button').on('click', function () {
+        // hapus active dari semua button
+        $('.biaya-group button').removeClass('active');
+
+        // aktifkan button yang diklik
+        $(this).addClass('active');
+
+        // ambil value
+        let value = $(this).data('value');
+
+        // set ke hidden input
+        $('#ditanggung').val(value);
+    });
+
+    // helper format date
+    function formatDate(date) {
+        let d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        let year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    //Helper format untuk tampilan input
+    function formatDateDMY(dateStr) {
+        const [y, m, d] = dateStr.split('-');
+        return `${d}/${m}/${y}`;
+    }
 
     //btn btn-group
     $(document).on('click', '.biaya-group button', function () {
@@ -35,6 +84,16 @@
 
     // Tabel
     var $tableSpd = $('#table_spd');
+    var $table_employee = $('#table_employee');
+
+
+    //tabel pegawai pengikut
+    $table_employee.bootstrapTable({
+        uniqueId: 'id'
+    });
+
+    $('#hidden_div').removeClass('d-none').show();
+    $table_employee.bootstrapTable('resetView');
 
     // Open Modal spd
     $(document).on('click', '.add-btn', function () {
@@ -42,28 +101,44 @@
         $('#modal-spd').modal('show');
         $('.modal-title').text('Form Tambah SPD');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        $table_employee.bootstrapTable('removeAll');
         $('input[name="id"]').val('');
-        $('input[name="nama"]').val('');
-        $('input[name="tanggal"]').val('');
-        $('input[name="form_end_date"]').val('');
-        $('input[name="hakcuti"]').val('');
+        $('input[name="no_surat"]').val('');
+        $('input[name="tgl_masuk"]').val('');
+        $('input[name="tgl_awal"]').val('');
+        $('input[name="hak_cuti"]').val('');
         $('input[name="cutilalu"]').val('');
+        $('input[name="ditanggung"]').val('');
+        $('input[name="tgl"]').val('');
         $('input[name="jatuh_tempo"]').val('');
         $('input[name="panjar_cuti"]').val('');
         $('textarea[name="keterangan"]').val('');
         $('input[name="btn-group"]').val('');
-        $('select[name="pegawai"]').val('').trigger('change');
+        $('select[name="id_pegawai"]').val('').trigger('change');
         $('select[name="pelaksanaan"]').val('').trigger('change');
-        $('select[name="asal"]').val('').trigger('change');
-        $('select[name="tujuan"]').val('').trigger('change');
+        $('select[name="id_kota1"]').val('').trigger('change');
+        $('select[name="id_kota2"]').val('').trigger('change');
+        $('select[name="kendaraan"]').val('').trigger('change');
+        $('select[name="id_pimpinan"]').val('').trigger('change');
+        $('select[name="pengikut1"]').val('').trigger('change');
 
-        InitSelect2($("select[name='asal']"), {
+        InitSelect2($("select[name='id_kota1']"), {
             url: "{{ route('get-select-kota') }}",
             dropdownParent: $("#modal-spd")
         });
 
-        InitSelect2($("select[name='tujuan']"), {
+        InitSelect2($("select[name='id_kota2']"), {
             url: "{{ route('get-select-kota') }}",
+            dropdownParent: $("#modal-spd")
+        });
+
+        InitSelect2($("select[name='id_pegawai']"), {
+            url: "{{ route('get-select-pegawai') }}",
+            dropdownParent: $("#modal-spd")
+        });
+
+        InitSelect2($("select[name='id_pimpinan']"), {
+            url: "{{ route('get-select-pegawai') }}",
             dropdownParent: $("#modal-spd")
         });
 
@@ -72,9 +147,185 @@
         // $('#biaya_ditanggung').val('');
     });
 
-    // Save Asset
+
+    window.actionFormatter = function (value, row, index) {
+        return [
+            '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id + '" data-field_id="' + row.field_id + '">',
+            '<i class="fa fa-edit text-primary"></i>',
+            '</a>  ',
+            '<a class="remove-employee-btn" href="javascript:void(0)" data-id="' + row.id + '">',
+            '<i class="fa fa-trash text-danger"></i>',
+            '</a>'
+        ].join('')
+    };
+
+    //add pegawai
+    $(document).on('click', '.add-pegawai', function () {
+
+        $('#modal-spd').modal('hide');
+        $('#modal-pegawai').modal('show');
+
+        $('.modal-title-pengikut').text('Form Tambah Pengikut');
+        $('#id-pengikut').val('');
+
+        // Reset Select2
+        $('select[name="pengikut"]').val(null).trigger('change');
+
+        InitSelect2($("select[name='pengikut']"), {
+            url: "{{ route('get-select-pegawai') }}",
+            dropdownParent: $("#modal-pegawai")
+        });
+    });
+
+
+    $('#modal-pegawai').on('hidden.bs.modal', function () {
+        $('#modal-spd').modal('show');
+    });
+
+
+    // Save Pegawai
+    $(document).on('click', '.save-pegawai-btn', function () {
+
+        if (!$('#pengikut').data('select2')) {
+            alert('Select pegawai belum siap');
+            return;
+        }
+
+        const selectedValue = $('#pengikut').val();
+
+        if (!selectedValue) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Silakan pilih pegawai terlebih dahulu',
+            });
+            return;
+        }
+
+        const data = $('#pengikut').select2('data');
+
+        if (!data || data.length === 0) {
+            alert('Silakan pilih pegawai terlebih dahulu');
+            return;
+        }
+
+        const selected = data[0];
+
+        const idEmployee = selected.id;
+        const text = selected.text || '';
+
+        let nip = '';
+        let nama = '';
+
+        if (text.includes('-')) {     // Pemisah karakter
+            const split = text.split('-');  // Pemisah karakter
+            nip = split[0].trim();
+            nama = split[1].trim();
+        } else {
+            nama = text;
+        }
+
+        const tableData = $table_employee.bootstrapTable('getData');
+        const idField = $('#id-pengikut').val();
+
+        // Cek duplikat pegawai
+        const isDuplicate = tableData.some(row => {
+            if (idField === '') {
+                return row.field_id == idEmployee;
+            }
+            return row.field_id == idEmployee && row.id != idField;
+        });
+
+        if (isDuplicate) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Pegawai yang dipilih sudah ada dalam daftar pengikut.',
+            });
+            $('#pengikut').select2('open');
+            return;
+        }
+        // ===============================
+
+        if (idField === '') {
+            const newId = Date.now();
+
+            $table_employee.bootstrapTable('append', {
+                id: newId,
+                field_id: idEmployee,
+                field_nip: nip,
+                field_employee: nama
+            });
+
+            //PENTING
+            $('#hidden_div').removeClass('d-none').show();
+            $table_employee.bootstrapTable('resetView');
+
+        } else {
+            const index = $table_employee
+                .bootstrapTable('getData')
+                .findIndex(row => row.id == idField);
+
+            if (index !== -1) {
+                $table_employee.bootstrapTable('updateRow', {
+                    index: index,
+                    row: {
+                        id: idField,
+                        field_id: idEmployee,
+                        field_nip: nip,
+                        field_employee: nama
+                    }
+                });
+            }
+        }
+
+        // console.log($table_employee.bootstrapTable('getData'));
+
+        $('#modal-pegawai').modal('hide');
+        $('#modal-spd').modal('show');
+    });
+
+
+    //hapus pegawai
+    $(document).on('click', '.remove-employee-btn', function () {
+        const id = String($(this).data('id'));
+        $table_employee.bootstrapTable('remove', {
+            field: 'id',
+            values: id
+        })
+    });
+
+    //edit pegawai
+    $(document).on('click', '.edit-employee-btn', function () {
+        const id = String($(this).data('id'));
+        const data = $table_employee.bootstrapTable('getRowByUniqueId', id);
+
+        $('#modal-pegawai').modal('show');
+        $('#modal-spd').modal('hide');
+        $('.modal-title-pengikut').text('Form Edit Pengikut');
+        $('#id-pengikut').val(id);
+
+        // Set the selected value for the select2
+        $('select[name="pengikut"]').val(data.field_id).trigger('change');
+
+        // Reset Select2
+        InitSelect2($("select[name='pengikut']"), {
+            url: "{{ route('get-select-pegawai') }}",
+            dropdownParent: $("#modal-pegawai")
+        });
+    });
+
+
+    // Save spd
     $(document).on('click', '.save-btn', function () {
+
+        if (!$('#ditanggung').val()) {
+            let activeValue = $('.biaya-group button.active').data('value');
+            $('#ditanggung').val(activeValue);
+        }
+
         var id = $('input[name="id"]').val();
+
         if (id) {
             var url = "{{ route('sdm.spd.update', ':id') }}";
             url = url.replace(':id', id);
@@ -166,7 +417,37 @@
             columns: [
                 [
                     {
-                        field: 'nama',
+                        title: 'No',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        width: '5%',
+                        formatter: function (value, row, index) {
+                            return index + 1
+                        }
+                    },
+                    {
+                        field: 'no_surat',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama_pegawai',
+                        sortable: true,
+                    },
+                    {
+                        field: 'pelaksanaan',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama_kota1',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama_kota2',
+                        sortable: true,
+                    },
+                    {
+                        field: 'pengikut1',
                         sortable: true,
                     },
                     {
@@ -207,10 +488,67 @@
         'click .btn-edit': function (e, value, row, index) {
             $('#modal-spd').modal('show');
             $('.modal-title').text('Form Edit SPD');
+            let pengikutValue = (row.pengikut === 'Tidak Ada') ? '0' : '1';
+            $table_employee.bootstrapTable('removeAll');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
-            $('input[name="nama"]').val(row.nama);
-            $('input[name="status"]').prop('checked', row.status === '1');
+            $('input[name="no_surat"]').val(row.no_surat);
+            $('select[name="pelaksanaan"]').val(row.pelaksanaan).trigger('change');
+            $('select[name="kendaraan"]').val(row.kendaraan).trigger('change');
+            $('input[name="tgl_masuk"]').val(row.tgl_masuk);
+            $('input[name="ditanggung"]').val(row.ditanggung);
+            $('input[name="hak_cuti"]').val(row.hak_cuti);
+            $('input[name="cuti_lalu"]').val(row.cuti_lalu);
+            $('input[name="jatuh_tempo"]').val(row.jatuh_tempo);
+            $('input[name="panjar_cuti"]').val(row.panjar_cuti);
+            $('textarea[name="keterangan"]').val(row.keterangan);
+            $('input[name="id_pimpinan"]').val(row.id_pimpinan);
+            $('select[name="pengikut1"]').val(pengikutValue).trigger('change');
+
+            // format tampilan
+            let startDisplay = formatDateDMY(row.tgl_awal);
+            let endDisplay = formatDateDMY(row.tgl_akhir);
+
+            // isi input text
+            $('input[name="tgl"]').val(startDisplay + ' - ' + endDisplay);
+
+            // isi hidden input
+            $('#tgl_awal').val(row.tgl_awal);
+            $('#tgl_akhir').val(row.tgl_akhir);
+
+            // set ke datepicker (WAJIB)
+            $('.js-daterangepicker')
+                .datepicker()
+                .data('datepicker')
+                .selectDate([
+                    new Date(row.tgl_awal),
+                    new Date(row.tgl_akhir)
+                ]);
+
+
+            InitSelect2($("select[name='id_pegawai']"), {
+                url: "{{ route('get-select-pegawai') }}",
+                dropdownParent: $("#modal-spd"),
+                initialValue: row.id_pegawai
+            });
+
+            InitSelect2($("select[name='id_pimpinan']"), {
+                url: "{{ route('get-select-pegawai') }}",
+                dropdownParent: $("#modal-spd"),
+                initialValue: row.id_pimpinan
+            });
+
+            InitSelect2($("select[name='id_kota1']"), {
+                url: "{{ route('get-select-kota') }}",
+                dropdownParent: $("#modal-spd"),
+                initialValue: row.id_kota1
+            });
+
+            InitSelect2($("select[name='id_kota2']"), {
+                url: "{{ route('get-select-kota') }}",
+                dropdownParent: $("#modal-spd"),
+                initialValue: row.id_kota2
+            });
         },
         'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('sdm.spd.delete', ':id') }}";

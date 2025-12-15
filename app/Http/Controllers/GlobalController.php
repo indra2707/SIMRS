@@ -195,7 +195,7 @@ class GlobalController extends Controller
         ], 200);
     }
 
-      // select aset
+    // select aset
     public function optionsSelectAset(Request $request)
     {
         $search = $request->search;
@@ -208,13 +208,13 @@ class GlobalController extends Controller
                 $q->where(function ($q2) use ($search) {
                     $q2->where('tbl_asets.nama', 'like', "%{$search}%")
                         ->orWhere('tbl_asets.no_aset', 'like', "%{$search}%");
-                        // ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
+                    // ->orWhere('tbl_asets.no_sn', 'like', "%{$search}%");
                 });
             })
             ->select(
                 'tbl_asets.id',
                 DB::raw("CONCAT(tbl_asets.no_aset, ' - ', tbl_asets.nama) as text"),
-                'tbl_asets.no_sn', 
+                'tbl_asets.no_sn',
                 'tbl_asets.nama',
                 'tbl_asets.no_sn',
                 'tbl_asets.id_lokasi',
@@ -253,7 +253,6 @@ class GlobalController extends Controller
         ], 200);
     }
 
-
     // select kota
     public function optionsSelectKota(Request $request)
     {
@@ -278,6 +277,39 @@ class GlobalController extends Controller
         return response()->json([
             'data' => $data
         ], 200);
+    }
+
+    // select Pegawai
+    public function optionsSelectPegawai(Request $request)
+    {
+        $search = $request->search ?? '';
+        $values = $request->values ?? '';
+
+        $query = DB::table('pegawai')
+            // filter by selected value (jika ada)
+            ->when(!empty($values), function ($q) use ($values) {
+                $q->where('id', $values);
+            })
+            // search by nama_pekerja
+            ->when(!empty($search), function ($q) use ($search) {
+                $q->where(function ($q2) use ($search) {
+                    $q2->where('nama_pekerja', 'like', "%{$search}%");
+                    $q2->orWhere('nomor_pekerja', 'like', "%{$search}%");
+                });
+            })
+            ->limit(20)
+            ->get();
+
+        // format untuk Select2
+        $data = [];
+        foreach ($query as $item) {
+            $data[] = [
+                'id' => $item->id,
+                'text' => $item->nomor_pekerja.' - '.$item->nama_pekerja,  // kolom yang benar
+            ];
+        }
+
+        return response()->json(['data' => $data], 200);
     }
 
     // select kondisi aset
