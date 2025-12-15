@@ -124,7 +124,7 @@
                 <div class="modal-body">
                     <div class="card">
 
-                        <form class="f1 form-pegawai" id="form-pegawai" method="post">
+                        <form class="f1 form-pegawai" id="form-pegawai" novalidate=">
                             @csrf
                             <input type="hidden" name="id" value="">
                             <!-- ===================== STEP HEADER ===================== -->
@@ -209,7 +209,15 @@
                                             <option value="Perempuan">Perempuan</option>
                                         </select>
                                     </div>
-
+                                    <div class="col-md-4 mb-2">
+                                        <label>Tanggal Lahir</label>
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            placeholder="Tanggal Lahir" name="tanggal_lahir" data-language="en">
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label>NIK</label>
+                                        <input class="form-control" name="nik" maxlength="16">
+                                    </div>
                                     <div class="col-md-4 mb-2">
                                         <label for="agama">Agama</label>
                                         <select class="form-select form-control select2" id="agama" name="agama">
@@ -223,10 +231,6 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>NIK</label>
-                                        <input class="form-control" name="nik" maxlength="16">
-                                    </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label for="status_pernikahan">Status Pernikahan</label>
@@ -253,6 +257,7 @@
                                         </div>
                                     </div>
 
+
                                     <div class="col-md-4 mb-2">
                                         <label for="disabilitas">Disabilitas</label>
                                         <select class="form-select form-control select2" id="disabilitas"
@@ -263,10 +268,6 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Tanggal Lahir</label>
-                                        <input type="date" class="form-control js-datepicker digits" placeholder="Tanggal Lahir" name="tanggal_lahir">
-                                    </div>
 
                                 </div>
 
@@ -297,17 +298,21 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Status Kepegawaian</label>
-                                        <input type="date" class="form-control js-datepicker digits" placeholder="TMT Status Kepegawian" name="tmt_status_kepegawaian">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            placeholder="TMT Status Kepegawian" name="tmt_status_kepegawaian"
+                                            data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT PWTT</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="tmt_pwtt" placeholder="TMT PWTT">
+                                        <input type="text" class="form-control js-datepicker digits" name="tmt_pwtt"
+                                            placeholder="TMT PWTT" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT PWT</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="tmt_pwt" placeholder="TMT PWT">
+                                        <input type="text" class="form-control js-datepicker digits" name="tmt_pwt"
+                                            placeholder="TMT PWT" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -322,12 +327,14 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Jabatan</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="tmt_jabatan" placeholder="TMT Jabatan">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="tmt_jabatan" placeholder="TMT Jabatan" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
                                         <label>TMT Golongan Upah</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="tmt_golongan_upah" placeholder="TMT Golongan Upah">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="tmt_golongan_upah" placeholder="TMT Golongan Upah" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -342,7 +349,9 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Tanggal Akhir Kontrak</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="tanggal_akhir_kontrak" placeholder="Tanggal Akhir Kontrak">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="tanggal_akhir_kontrak" placeholder="Tanggal Akhir Kontrak"
+                                            data-language="en">
                                     </div>
 
                                 </div>
@@ -359,7 +368,7 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Nomor Kontak Darurat</label>
-                                        <input class="form-control" name="nomor_kontak_darurat" >
+                                        <input class="form-control" name="nomor_kontak_darurat">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -429,7 +438,8 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku STR</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_str" placeholder="Masa Berlaku STR">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="masa_berlaku_str" placeholder="Masa Berlaku STR" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -439,7 +449,8 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku SIP</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_sip" placeholder="Masa Berlaku SIP">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="masa_berlaku_sip" placeholder="Masa Berlaku SIP" data-language="en">
                                     </div>
 
                                     <div class="col-md-4 mb-2">
@@ -454,7 +465,9 @@
 
                                     <div class="col-md-4 mb-2">
                                         <label>Masa Berlaku Asuransi</label>
-                                        <input type="date" class="form-control js-datepicker digits" name="masa_berlaku_asuransi" placeholder="Masa Berlaku Asuransi">
+                                        <input type="text" class="form-control js-datepicker digits"
+                                            name="masa_berlaku_asuransi" placeholder="Masa Berlaku Asuransi"
+                                            data-language="en">
                                     </div>
 
                                 </div>
@@ -531,7 +544,6 @@
                                 <div class="row">
 
                                     <div class="col-md-4 mb-2">
-                                        <div class="mb-2 row">
                                             <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
                                             <div class="col-sm-10">
                                                 <div id="AvatarFileUpload">
@@ -542,7 +554,8 @@
                                                     <!-- Image Preview Wrapper -->
                                                     <!-- Browse Image to Upload Wrapper -->
                                                     <div class="avatar-selector">
-                                                      <input type="file" id="foto" name="foto">
+                                                        <input type="file" accept="images/jpg, images/png"
+                                                            id="foto" name="foto">
                                                         <a href="#" class="avatar-selector-btn">
                                                             <i class="icofont icofont-pencil-alt-5"></i>
                                                         </a>
@@ -550,7 +563,6 @@
                                                     <!-- Browse Image to Upload Wrapper -->
                                                 </div>
                                             </div>
-                                        </div>
                                     </div>
 
 
@@ -586,6 +598,9 @@
 @endsection
 
 @section('script')
+<script>
+    
+</script>
     @include('sdm.pegawai.script')
     <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
     <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script>

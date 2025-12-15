@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Sdm;
 use App\Models\Sdm\Pegawai;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\ErrorHandler\Debug;
 
 class PegawaiController extends Controller
 {
@@ -130,39 +132,65 @@ class PegawaiController extends Controller
                 'update_date_formatted' => $value->update_date ? \Carbon\Carbon::parse($value->update_date)->format('d M Y') : '-',
                 'temp_username' => $value->temp_username ?? '-',
                 'username' => $value->username ?? '-',
+                'foto' => $value->foto ?? '-',
 
             ];
         }
 
-        // ✅ TAMBAHKAN INI!
         return response()->json($data);
     }
 
-    /**
-     * Store a newly created resource.
-     */
     public function store(Request $request)
     {
-        $validated = $this->validateData($request);
+        $data = $request->except('foto');
+
+        $dateFields = [
+            'tanggal_lahir',
+            'tmt_status_kepegawaian',
+            'tmt_pwtt',
+            'tmt_pwt',
+            'tmt_jabatan',
+            'tmt_golongan_upah',
+            'masa_berlaku_str',
+            'masa_berlaku_sip',
+            'masa_berlaku_asuransi',
+            'tanggal_akhir_kontrak',
+            'input_date',
+            'update_date',
+        ];
+
+        foreach ($dateFields as $field) {
+            if (!empty($data[$field])) {
+                try {
+                    $data[$field] = Carbon::createFromFormat('d/m/Y', $data[$field])
+                        ->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $data[$field] = null;
+                }
+            }
+        }
+
+        $path = public_path('uploads/images/foto-pegawai');
+        if (!is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+
         if ($request->hasFile('foto')) {
             $file = $request->file('foto');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/pegawai'), $filename);
-
-            $validated['foto'] = $filename;
+            $filename = 'foto-pegawai_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($path, $filename);
+            $data['foto'] = $filename;
         }
-        $data = Pegawai::create($validated);
+
+        $pegawai = Pegawai::create($data);
 
         return response()->json([
             'success' => true,
             'message' => 'Data berhasil dibuat',
-            'data' => $data,
+            'data' => $pegawai,
         ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
         $data = Pegawai::find($id);
@@ -180,12 +208,11 @@ class PegawaiController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource.
-     */
     public function update(Request $request, $id)
     {
         $pegawai = Pegawai::find($id);
+
+        dd($pegawai);
 
         if (!$pegawai) {
             return response()->json([
@@ -194,34 +221,70 @@ class PegawaiController extends Controller
             ], 404);
         }
 
-        $validated = $this->validateData($request);
+        // Ambil semua data kecuali file foto
+        $data = $request->except('foto');
+
+        // Log raw data agar mudah debug
+        Log::info('Data diterima untuk update pegawai:', $data);
+
+        // Field tanggal yang perlu di-convert ke Y-m-d
+        $dateFields = [
+            'tanggal_lahir',
+            'tmt_status_kepegawaian',
+            'tmt_pwtt',
+            'tmt_pwt',
+            'tmt_jabatan',
+            'tmt_golongan_upah',
+            'masa_berlaku_str',
+            'masa_berlaku_sip',
+            'masa_berlaku_asuransi',
+            'tanggal_akhir_kontrak',
+            'input_date',
+            'update_date',
+        ];
+
+        foreach ($dateFields as $field) {
+            if (!empty($data[$field])) {
+                try {
+                    // Gunakan parse agar fleksibel dengan format d/m/Y atau Y-m-d
+                    $data[$field] = Carbon::parse($data[$field])->format('Y-m-d');
+                } catch (\Exception $e) {
+                    \Log::error("Format tanggal salah di field {$field}: " . $data[$field]);
+                    $data[$field] = null;
+                }
+            } else {
+                $data[$field] = null;
+            }
+        }
+
+        // Tangani upload foto
         if ($request->hasFile('foto')) {
+            $path = public_path('uploads/images/foto-pegawai');
 
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
 
-            if ($pegawai->foto && file_exists(public_path('uploads/pegawai/' . $pegawai->foto))) {
-                unlink(public_path('uploads/pegawai/' . $pegawai->foto));
+            if ($pegawai->foto && file_exists($path . '/' . $pegawai->foto)) {
+                unlink($path . '/' . $pegawai->foto);
             }
 
             $file = $request->file('foto');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/pegawai'), $filename);
-
-            $validated['foto'] = $filename;
+            $filename = 'foto-pegawai_' . strtolower(str_replace(' ', '_', $pegawai->nama_pekerja)) . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->move($path, $filename);
+            $data['foto'] = $filename;
         }
 
-
-        $pegawai->update($validated);
+        $pegawai->update($data);
 
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil diperbarui',
+            'message' => 'Data pegawai berhasil diperbarui',
             'data' => $pegawai,
         ]);
     }
 
-    /**
-     * Remove the specified resource.
-     */
+
     public function destroy($id)
     {
         $item = Pegawai::find($id);
@@ -232,9 +295,9 @@ class PegawaiController extends Controller
                 'message' => 'Data tidak ditemukan',
             ], 404);
         }
-        if ($item->foto && file_exists(public_path('uploads/pegawai/'.$item->foto))) {
-        unlink(public_path('uploads/pegawai/'.$item->foto));
-    }
+        if ($item->foto && file_exists(public_path('uploads/pegawai/' . $item->foto))) {
+            unlink(public_path('uploads/pegawai/' . $item->foto));
+        }
         $item->delete();
 
         return response()->json([
@@ -244,10 +307,6 @@ class PegawaiController extends Controller
     }
 
 
-    /**
-     * PRIVATE FUNCTION:
-     * Validasi otomatis semua kolom model
-     */
     private function validateData(Request $request)
     {
         return $request->validate([
@@ -265,19 +324,19 @@ class PegawaiController extends Controller
             'status_pernikahan' => 'nullable|string',
             'golongan_darah' => 'nullable|string',
             'disabilitas' => 'nullable|string',
-            'tanggal_lahir' => 'nullable|date',
+            'tanggal_lahir' => 'nullable',
 
             'golongan_upah' => 'nullable|string',
             'status_kepegawaian' => 'nullable|string',
-            'tmt_status_kepegawaian' => 'nullable|date',
-            'tmt_pwtt' => 'nullable|date',
-            'tmt_pwt' => 'nullable|date',
+            'tmt_status_kepegawaian' => 'nullable',
+            'tmt_pwtt' => 'nullable',
+            'tmt_pwt' => 'nullable',
             'masa_kerja' => 'nullable|string',
 
             'fungsi' => 'nullable|string',
             'sub_fungsi' => 'nullable|string',
-            'tmt_jabatan' => 'nullable|date',
-            'tmt_golongan_upah' => 'nullable|date',
+            'tmt_jabatan' => 'nullable',
+            'tmt_golongan_upah' => 'nullable',
             'penyetaraan_jabatan_ap' => 'nullable|string',
             'penyetaraan_golongan_upah_ap' => 'nullable|string',
 
@@ -302,14 +361,14 @@ class PegawaiController extends Controller
 
             'nomor_str' => 'nullable|string',
             'str_seumur_hidup' => 'nullable|string',
-            'masa_berlaku_str' => 'nullable|date',
+            'masa_berlaku_str' => 'nullable',
 
             'nomor_sip' => 'nullable|string',
-            'masa_berlaku_sip' => 'nullable|date',
+            'masa_berlaku_sip' => 'nullable',
 
             'asuransi_profesi' => 'nullable|string',
             'nomor_polis' => 'nullable|string',
-            'masa_berlaku_asuransi' => 'nullable|date',
+            'masa_berlaku_asuransi' => 'nullable',
 
             'pend_diploma' => 'nullable|string',
             'pend_s1' => 'nullable|string',
@@ -318,18 +377,18 @@ class PegawaiController extends Controller
             'kampus_terakhir' => 'nullable|string',
 
             'keterangan' => 'nullable|string',
-            'tanggal_akhir_kontrak' => 'nullable|date',
+            'tanggal_akhir_kontrak' => 'nullable',
 
             'jenjang_pendidikan_terakhir' => 'nullable|string',
 
             'input_by' => 'nullable|string',
-            'input_date' => 'nullable|date',
+            'input_date' => 'nullable',
             'update_by' => 'nullable|string',
-            'update_date' => 'nullable|date',
+            'update_date' => 'nullable',
 
             'temp_username' => 'nullable|string',
             'username' => 'nullable|string',
-            'foto' => 'nullable|file|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'nullable|file',
         ]);
     }
 }
