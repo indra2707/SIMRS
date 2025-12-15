@@ -6,7 +6,7 @@
 @endsection
 
 @section('style')
-
+ <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/photoswipe.css') }}">
 @endsection
 
 @section('breadcrumb-title')
