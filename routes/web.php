@@ -75,8 +75,6 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
 });
 
 
-
-
 // Logged In Route Middleware
 Route::group(['middleware' => 'loggedin'], function () {
     Route::get('/', function () {

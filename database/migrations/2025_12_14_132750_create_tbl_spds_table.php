@@ -50,7 +50,7 @@ return new class extends Migration
             $table->string('keterangan', 300);
 
             $table->integer('id_pimpinan');
-            $table->enum('pelaksanaan', ['0', '1']);
+            $table->enum('pengikut', ['0', '1']);
 
             $table->enum('status', [
                 'Draft',
