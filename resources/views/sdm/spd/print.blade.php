@@ -203,28 +203,15 @@
                 <th width="20%">Jabatan</th>
                 <th width="30%" colspan="2">Keterangan</th>
             </tr>
-            <tr>
-                <td align="center">1</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <td align="center">2</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-            <tr>
-                <td align="center">3</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td colspan="2"></td>
-            </tr>
-            TEST
+            @for ($i = 1; $i <= 3; $i++)
+                <tr>
+                    <td align="center">{{ $i }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td colspan="2"></td>
+                </tr>
+            @endfor
             <tr>
                 <td colspan="4">
                     PANJAR / LUMPSUM PERJALANAN DINAS
@@ -235,9 +222,9 @@
                 <td colspan="2" class="center">
                     Menyetujui :<br>
                     <b style="font-size:11px">RSOJ Pertamina Royal Biringkanaya</b><br>
-                    TEST<br><br>
-                    <img src="TEST" width="75"><br>
-                    TEST
+                    Direktur<br><br><br><br><br><br>
+                    <!-- <img src="TEST" width="75" ><br> -->
+                    {{ $spd->nama_pimpinan }}
                 </td>
             </tr>
             <tr>

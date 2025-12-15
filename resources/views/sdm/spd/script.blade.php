@@ -315,6 +315,17 @@
         });
     });
 
+    // mengambil data pengikut
+    function getPengikutData() {
+        return $table_employee.bootstrapTable('getData').map(row => {
+            return {
+                id_pegawai: row.field_id,
+                nip: row.field_nip,
+                nama: row.field_employee
+            };
+        });
+    }
+
 
     // Save spd
     $(document).on('click', '.save-btn', function () {
