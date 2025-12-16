@@ -258,7 +258,7 @@
                                 </svg><span>Helpdesk</span></a>
                         </li>
 
-                        {{-- SDM --}}
+                        {{-- SDM
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
@@ -275,7 +275,7 @@
                                 <li><a href="#">Rincian SPD</a></li>
 
                             </ul>
-                        </li>
+                        </li> --}}
 
 
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
