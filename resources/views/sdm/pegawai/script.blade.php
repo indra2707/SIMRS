@@ -168,7 +168,7 @@
                             });
                             form.classList.remove('was-validated');
                         }
-                    },  
+                    },
                 });
             }
             form.classList.add('was-validated');
@@ -849,10 +849,11 @@
             // ============================================
             $('input[name="temp_username"]').val(row.temp_username || '');
             $('input[name="username"]').val(row.username || '');
+            imageInput.value = '';
             if (row.foto) {
-                $('#previews').attr('src', '/uploads/images/foto-pegawai/' + row.foto).show();
+                imageViewer.src = "{{ asset('/uploads/images/foto-pegawai') }}" + '/' + row.foto;
             } else {
-                $('#previews').attr('src', '').hide();
+                imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
             }
 
             console.log('Form populated with data for ID:', row.id);
