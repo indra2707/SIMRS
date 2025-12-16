@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Symfony\Component\ErrorHandler\Debug;
+use Illuminate\Support\Facades\Validator;
 
 class PegawaiController extends Controller
 {
@@ -21,7 +22,6 @@ class PegawaiController extends Controller
             'title' => 'Pegawai',
             'menuTitle' => 'SDM',
             'menuSubtitle' => 'Pegawai',
-
         ];
 
         return view('sdm.pegawai.pegawai', $data);
@@ -133,7 +133,6 @@ class PegawaiController extends Controller
                 'temp_username' => $value->temp_username ?? '-',
                 'username' => $value->username ?? '-',
                 'foto' => $value->foto ?? '-',
-
             ];
         }
 
@@ -142,53 +141,120 @@ class PegawaiController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->except('foto');
+        // Validasi input
+        $dataValues = [
+            'anak_perusahaan'               => $request->anak_perusahaan,
+            'rumah_sakit'                   => $request->rumah_sakit,
+            'nomor_sk_struktur'             => $request->nomor_sk_struktur,
+            'jabatan'                       => $request->jabatan,
+            'penempatan'                    => $request->penempatan,
+            'lokasi_kerja'                  => $request->lokasi_kerja,
 
-        $dateFields = [
-            'tanggal_lahir',
-            'tmt_status_kepegawaian',
-            'tmt_pwtt',
-            'tmt_pwt',
-            'tmt_jabatan',
-            'tmt_golongan_upah',
-            'masa_berlaku_str',
-            'masa_berlaku_sip',
-            'masa_berlaku_asuransi',
-            'tanggal_akhir_kontrak',
-            'input_date',
-            'update_date',
+            'nomor_pekerja'                 => $request->nomor_pekerja,
+            'nama_pekerja'                  => $request->nama_pekerja, // FIELD REQUIRED
+            'jenis_kelamin'                 => $request->jenis_kelamin,
+            'agama'                         => $request->agama,
+            'nik'                           => $request->nik ? str_replace(' ', '', $request->nik) : null,
+            'status_pernikahan'             => $request->status_pernikahan,
+            'golongan_darah'                => $request->golongan_darah,
+            'disabilitas'                   => $request->disabilitas,
+
+            // DATE
+            'tanggal_lahir'                 => convertDmyToYmd($request->tanggal_lahir),
+
+            'golongan_upah'                 => $request->golongan_upah,
+            'status_kepegawaian'            => $request->status_kepegawaian,
+
+            // DATE
+            'tmt_status_kepegawaian'        => convertDmyToYmd($request->tmt_status_kepegawaian),
+            'tmt_pwtt'                      => convertDmyToYmd($request->tmt_pwtt),
+            'tmt_pwt'                       => convertDmyToYmd($request->tmt_pwt),
+
+            'masa_kerja'                    => $request->masa_kerja,
+            'fungsi'                        => $request->fungsi,
+            'sub_fungsi'                    => $request->sub_fungsi,
+
+            // DATE
+            'tmt_jabatan'                   => convertDmyToYmd($request->tmt_jabatan),
+            'tmt_golongan_upah'             => convertDmyToYmd($request->tmt_golongan_upah),
+
+            'penyetaraan_jabatan_ap'        => $request->penyetaraan_jabatan_ap,
+            'penyetaraan_golongan_upah_ap'  => $request->penyetaraan_golongan_upah_ap,
+
+            'nama_bank'                     => $request->nama_bank,
+            'nomor_rekening'                => $request->nomor_rekening ? str_replace(' ', '', $request->nomor_rekening) : null,
+            'nama_rekening'                 => $request->nama_rekening,
+            'nomor_bpjstk'                  => $request->nomor_bpjstk ? str_replace(' ', '', $request->nomor_bpjstk) : null,
+            'nomor_bpjskesehatan'           => $request->nomor_bpjskesehatan ? str_replace(' ', '', $request->nomor_bpjskesehatan) : null,
+            'nomor_npwp'                    => $request->nomor_npwp ? str_replace(' ', '', $request->nomor_npwp) : null,
+
+            'nomor_hp'                      => $request->nomor_hp ? str_replace(' ', '', $request->nomor_hp) : null,
+            'nomor_kontak_darurat'          => $request->nomor_kontak_darurat ? str_replace(' ', '', $request->nomor_kontak_darurat) : null,
+            'nama_kontak_darurat'           => $request->nama_kontak_darurat,
+            'hubungan_kontak_darurat'       => $request->hubungan_kontak_darurat,
+
+            'email'                         => $request->email,
+            'email_dinas'                   => $request->email_dinas,
+
+            'alamat_ktp'                    => $request->alamat_ktp,
+            'alamat_npwp'                   => $request->alamat_npwp,
+            'alamat_domisili'               => $request->alamat_domisili,
+
+            'nomor_str'                     => $request->nomor_str,
+            'str_seumur_hidup'              => $request->str_seumur_hidup,
+
+            // DATE
+            'masa_berlaku_str'              => convertDmyToYmd($request->masa_berlaku_str),
+
+            'nomor_sip'                     => $request->nomor_sip,
+
+            // DATE
+            'masa_berlaku_sip'              => convertDmyToYmd($request->masa_berlaku_sip),
+
+            'asuransi_profesi'              => $request->asuransi_profesi,
+            'nomor_polis'                   => $request->nomor_polis,
+
+            // DATE
+            'masa_berlaku_asuransi'         => convertDmyToYmd($request->masa_berlaku_asuransi),
+
+            'pend_diploma'                  => $request->pend_diploma,
+            'pend_s1'                       => $request->pend_s1,
+            'pend_s2'                       => $request->pend_s2,
+            'pend_s3'                       => $request->pend_s3,
+            'kampus_terakhir'               => $request->kampus_terakhir,
+
+            'jenjang_pendidikan_terakhir'   => $request->jenjang_pendidikan_terakhir,
+            'keterangan'                    => $request->keterangan,
+
+            // DATE
+            'tanggal_akhir_kontrak'         => convertDmyToYmd($request->tanggal_akhir_kontrak),
+
+            'input_by'                      => auth()->user()->username ?? null,
+            'input_date'                    => now(),
         ];
 
-        foreach ($dateFields as $field) {
-            if (!empty($data[$field])) {
-                try {
-                    $data[$field] = Carbon::createFromFormat('d/m/Y', $data[$field])
-                        ->format('Y-m-d');
-                } catch (\Exception $e) {
-                    $data[$field] = null;
-                }
-            }
-        }
-
-        $path = public_path('uploads/images/foto-pegawai');
-        if (!is_dir($path)) {
-            mkdir($path, 0777, true);
-        }
-
-        if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $filename = 'foto-pegawai_' . time() . '.' . $file->getClientOriginalExtension();
+        $file = $request->file('foto');
+        if ($file != null) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = 'Pegawai_' . strtolower(string: str_replace(' ', '_', $request->nama_pekerja)) . '_' . time() . '.' . $extension;
+            $path      = 'uploads/images/foto-pegawai/';
             $file->move($path, $filename);
-            $data['foto'] = $filename;
+            $dataValues['foto'] = $filename;
         }
-
-        $pegawai = Pegawai::create($data);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil dibuat',
-            'data' => $pegawai,
-        ]);
+        $query = Pegawai::create($dataValues);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data'    => [],
+                'message' => 'Data Berhasil Ditambahkan.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data'    => [],
+                'message' => 'Data Gagal Ditambahkan.',
+            ], status: 400);
+        }
     }
 
     public function show($id)
@@ -210,185 +276,251 @@ class PegawaiController extends Controller
 
     public function update(Request $request, $id)
     {
-        $pegawai = Pegawai::find($id);
+        $dataValues = [
+            'anak_perusahaan'               => $request->anak_perusahaan,
+            'rumah_sakit'                   => $request->rumah_sakit,
+            'nomor_sk_struktur'             => $request->nomor_sk_struktur,
+            'jabatan'                       => $request->jabatan,
+            'penempatan'                    => $request->penempatan,
+            'lokasi_kerja'                  => $request->lokasi_kerja,
 
-        dd($pegawai);
+            'nomor_pekerja'                 => $request->nomor_pekerja,
+            'nama_pekerja'                  => $request->nama_pekerja, // FIELD REQUIRED
+            'jenis_kelamin'                 => $request->jenis_kelamin,
+            'agama'                         => $request->agama,
+            'nik'                           => $request->nik ? str_replace(' ', '', $request->nik) : null,
+            'status_pernikahan'             => $request->status_pernikahan,
+            'golongan_darah'                => $request->golongan_darah,
+            'disabilitas'                   => $request->disabilitas,
 
-        if (!$pegawai) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan',
-            ], 404);
-        }
+            // DATE
+            'tanggal_lahir'                 => convertDmyToYmd($request->tanggal_lahir),
 
-        // Ambil semua data kecuali file foto
-        $data = $request->except('foto');
+            'golongan_upah'                 => $request->golongan_upah,
+            'status_kepegawaian'            => $request->status_kepegawaian,
 
-        // Log raw data agar mudah debug
-        Log::info('Data diterima untuk update pegawai:', $data);
+            // DATE
+            'tmt_status_kepegawaian'        => convertDmyToYmd($request->tmt_status_kepegawaian),
+            'tmt_pwtt'                      => convertDmyToYmd($request->tmt_pwtt),
+            'tmt_pwt'                       => convertDmyToYmd($request->tmt_pwt),
 
-        // Field tanggal yang perlu di-convert ke Y-m-d
-        $dateFields = [
-            'tanggal_lahir',
-            'tmt_status_kepegawaian',
-            'tmt_pwtt',
-            'tmt_pwt',
-            'tmt_jabatan',
-            'tmt_golongan_upah',
-            'masa_berlaku_str',
-            'masa_berlaku_sip',
-            'masa_berlaku_asuransi',
-            'tanggal_akhir_kontrak',
-            'input_date',
-            'update_date',
+            'masa_kerja'                    => $request->masa_kerja,
+            'fungsi'                        => $request->fungsi,
+            'sub_fungsi'                    => $request->sub_fungsi,
+
+            // DATE
+            'tmt_jabatan'                   => convertDmyToYmd($request->tmt_jabatan),
+            'tmt_golongan_upah'             => convertDmyToYmd($request->tmt_golongan_upah),
+
+            'penyetaraan_jabatan_ap'        => $request->penyetaraan_jabatan_ap,
+            'penyetaraan_golongan_upah_ap'  => $request->penyetaraan_golongan_upah_ap,
+
+            'nama_bank'                     => $request->nama_bank,
+            'nomor_rekening'                => $request->nomor_rekening ? str_replace(' ', '', $request->nomor_rekening) : null,
+            'nama_rekening'                 => $request->nama_rekening,
+            'nomor_bpjstk'                  => $request->nomor_bpjstk ? str_replace(' ', '', $request->nomor_bpjstk) : null,
+            'nomor_bpjskesehatan'           => $request->nomor_bpjskesehatan ? str_replace(' ', '', $request->nomor_bpjskesehatan) : null,
+            'nomor_npwp'                    => $request->nomor_npwp ? str_replace(' ', '', $request->nomor_npwp) : null,
+
+            'nomor_hp'                      => $request->nomor_hp ? str_replace(' ', '', $request->nomor_hp) : null,
+            'nomor_kontak_darurat'          => $request->nomor_kontak_darurat ? str_replace(' ', '', $request->nomor_kontak_darurat) : null,
+            'nama_kontak_darurat'           => $request->nama_kontak_darurat,
+            'hubungan_kontak_darurat'       => $request->hubungan_kontak_darurat,
+
+            'email'                         => $request->email,
+            'email_dinas'                   => $request->email_dinas,
+
+            'alamat_ktp'                    => $request->alamat_ktp,
+            'alamat_npwp'                   => $request->alamat_npwp,
+            'alamat_domisili'               => $request->alamat_domisili,
+
+            'nomor_str'                     => $request->nomor_str,
+            'str_seumur_hidup'              => $request->str_seumur_hidup,
+
+            // DATE
+            'masa_berlaku_str'              => convertDmyToYmd($request->masa_berlaku_str),
+
+            'nomor_sip'                     => $request->nomor_sip,
+
+            // DATE
+            'masa_berlaku_sip'              => convertDmyToYmd($request->masa_berlaku_sip),
+
+            'asuransi_profesi'              => $request->asuransi_profesi,
+            'nomor_polis'                   => $request->nomor_polis,
+
+            // DATE
+            'masa_berlaku_asuransi'         => convertDmyToYmd($request->masa_berlaku_asuransi),
+
+            'pend_diploma'                  => $request->pend_diploma,
+            'pend_s1'                       => $request->pend_s1,
+            'pend_s2'                       => $request->pend_s2,
+            'pend_s3'                       => $request->pend_s3,
+            'kampus_terakhir'               => $request->kampus_terakhir,
+
+            'jenjang_pendidikan_terakhir'   => $request->jenjang_pendidikan_terakhir,
+            'keterangan'                    => $request->keterangan,
+
+            // DATE
+            'tanggal_akhir_kontrak'         => convertDmyToYmd($request->tanggal_akhir_kontrak),
+
+            'input_by'                      => auth()->user()->username ?? null,
+            'input_date'                    => now(),
         ];
 
-        foreach ($dateFields as $field) {
-            if (!empty($data[$field])) {
-                try {
-                    // Gunakan parse agar fleksibel dengan format d/m/Y atau Y-m-d
-                    $data[$field] = Carbon::parse($data[$field])->format('Y-m-d');
-                } catch (\Exception $e) {
-                    \Log::error("Format tanggal salah di field {$field}: " . $data[$field]);
-                    $data[$field] = null;
-                }
-            } else {
-                $data[$field] = null;
-            }
-        }
-
-        // Tangani upload foto
-        if ($request->hasFile('foto')) {
-            $path = public_path('uploads/images/foto-pegawai');
-
-            if (!is_dir($path)) {
-                mkdir($path, 0777, true);
-            }
-
-            if ($pegawai->foto && file_exists($path . '/' . $pegawai->foto)) {
-                unlink($path . '/' . $pegawai->foto);
-            }
-
-            $file = $request->file('foto');
-            $filename = 'foto-pegawai_' . strtolower(str_replace(' ', '_', $pegawai->nama_pekerja)) . '_' . time() . '.' . $file->getClientOriginalExtension();
+        $file = $request->file('foto');
+        if ($file != null) {
+            $extension = $file->getClientOriginalExtension();
+            $filename  = 'Pegawai_' . strtolower(string: str_replace(' ', '_', $request->nama)) . '_' . time() . '.' . $extension;
+            $path      = 'uploads/images/foto-pegawai/';
             $file->move($path, $filename);
-            $data['foto'] = $filename;
+
+            // Hapus Foto Lama
+            $data = Pegawai::where('id', $id)->first();
+            if ($data->foto != null) {
+                if (file_exists($path)) {
+                    unlink($path . $data->foto);
+                }
+            }
+            $dataValues['foto'] = $filename;
         }
-
-        $pegawai->update($data);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data pegawai berhasil diperbarui',
-            'data' => $pegawai,
-        ]);
+        $query = Pegawai::where('id', $id)->update($dataValues);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data'    => [],
+                'message' => 'Data Berhasil Diubah.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data'    => [],
+                'message' => 'Data Gagal Diubah.',
+            ], status: 400);
+        }
     }
-
 
     public function destroy($id)
     {
-        $item = Pegawai::find($id);
+        try {
+            $item = Pegawai::find($id);
 
-        if (!$item) {
+            if (!$item) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data tidak ditemukan',
+                ], 404);
+            }
+
+            // Hapus foto jika ada
+            if ($item->foto && file_exists('uploads/images/foto-pegawai/' . $item->foto)) {
+                unlink('uploads/images/foto-pegawai/' . $item->foto);
+            }
+
+            $item->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Data tidak ditemukan',
-            ], 404);
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
         }
-        if ($item->foto && file_exists(public_path('uploads/pegawai/' . $item->foto))) {
-            unlink(public_path('uploads/pegawai/' . $item->foto));
-        }
-        $item->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil dihapus'
-        ]);
     }
 
-
-    private function validateData(Request $request)
+    private function prepareDataValues($request)
     {
-        return $request->validate([
-            'anak_perusahaan' => 'nullable|string',
-            'rumah_sakit' => 'nullable|string',
-            'nomor_sk_struktur' => 'nullable|string',
-            'jabatan' => 'nullable|string',
-            'penempatan' => 'nullable|string',
-            'lokasi_kerja' => 'nullable|string',
-            'nomor_pekerja' => 'nullable|string',
-            'nama_pekerja' => 'required|string|max:255',
-            'jenis_kelamin' => 'nullable|string',
-            'agama' => 'nullable|string',
-            'nik' => 'nullable|string',
-            'status_pernikahan' => 'nullable|string',
-            'golongan_darah' => 'nullable|string',
-            'disabilitas' => 'nullable|string',
-            'tanggal_lahir' => 'nullable',
+        return [
+            'anak_perusahaan'               => $request->anak_perusahaan,
+            'rumah_sakit'                   => $request->rumah_sakit,
+            'nomor_sk_struktur'             => $request->nomor_sk_struktur,
+            'jabatan'                       => $request->jabatan,
+            'penempatan'                    => $request->penempatan,
+            'lokasi_kerja'                  => $request->lokasi_kerja,
 
-            'golongan_upah' => 'nullable|string',
-            'status_kepegawaian' => 'nullable|string',
-            'tmt_status_kepegawaian' => 'nullable',
-            'tmt_pwtt' => 'nullable',
-            'tmt_pwt' => 'nullable',
-            'masa_kerja' => 'nullable|string',
+            'nomor_pekerja'                 => $request->nomor_pekerja,
+            'nama_pekerja'                  => $request->nama_pekerja, // FIELD REQUIRED
+            'jenis_kelamin'                 => $request->jenis_kelamin,
+            'agama'                         => $request->agama,
+            'nik'                           => $request->nik ? str_replace(' ', '', $request->nik) : null,
+            'status_pernikahan'             => $request->status_pernikahan,
+            'golongan_darah'                => $request->golongan_darah,
+            'disabilitas'                   => $request->disabilitas,
 
-            'fungsi' => 'nullable|string',
-            'sub_fungsi' => 'nullable|string',
-            'tmt_jabatan' => 'nullable',
-            'tmt_golongan_upah' => 'nullable',
-            'penyetaraan_jabatan_ap' => 'nullable|string',
-            'penyetaraan_golongan_upah_ap' => 'nullable|string',
+            // DATE
+            'tanggal_lahir'                 => convertDmyToYmd($request->tanggal_lahir),
 
-            'nama_bank' => 'nullable|string',
-            'nomor_rekening' => 'nullable|string',
-            'nama_rekening' => 'nullable|string',
-            'nomor_bpjstk' => 'nullable|string',
-            'nomor_bpjskesehatan' => 'nullable|string',
-            'nomor_npwp' => 'nullable|string',
+            'golongan_upah'                 => $request->golongan_upah,
+            'status_kepegawaian'            => $request->status_kepegawaian,
 
-            'nomor_hp' => 'nullable|string',
-            'nomor_kontak_darurat' => 'nullable|string',
-            'nama_kontak_darurat' => 'nullable|string',
-            'hubungan_kontak_darurat' => 'nullable|string',
+            // DATE
+            'tmt_status_kepegawaian'        => convertDmyToYmd($request->tmt_status_kepegawaian),
+            'tmt_pwtt'                      => convertDmyToYmd($request->tmt_pwtt),
+            'tmt_pwt'                       => convertDmyToYmd($request->tmt_pwt),
 
-            'email' => 'nullable|email',
-            'email_dinas' => 'nullable|string',
+            'masa_kerja'                    => $request->masa_kerja,
+            'fungsi'                        => $request->fungsi,
+            'sub_fungsi'                    => $request->sub_fungsi,
 
-            'alamat_ktp' => 'nullable|string',
-            'alamat_npwp' => 'nullable|string',
-            'alamat_domisili' => 'nullable|string',
+            // DATE
+            'tmt_jabatan'                   => convertDmyToYmd($request->tmt_jabatan),
+            'tmt_golongan_upah'             => convertDmyToYmd($request->tmt_golongan_upah),
 
-            'nomor_str' => 'nullable|string',
-            'str_seumur_hidup' => 'nullable|string',
-            'masa_berlaku_str' => 'nullable',
+            'penyetaraan_jabatan_ap'        => $request->penyetaraan_jabatan_ap,
+            'penyetaraan_golongan_upah_ap'  => $request->penyetaraan_golongan_upah_ap,
 
-            'nomor_sip' => 'nullable|string',
-            'masa_berlaku_sip' => 'nullable',
+            'nama_bank'                     => $request->nama_bank,
+            'nomor_rekening'                => $request->nomor_rekening ? str_replace(' ', '', $request->nomor_rekening) : null,
+            'nama_rekening'                 => $request->nama_rekening,
+            'nomor_bpjstk'                  => $request->nomor_bpjstk ? str_replace(' ', '', $request->nomor_bpjstk) : null,
+            'nomor_bpjskesehatan'           => $request->nomor_bpjskesehatan ? str_replace(' ', '', $request->nomor_bpjskesehatan) : null,
+            'nomor_npwp'                    => $request->nomor_npwp ? str_replace(' ', '', $request->nomor_npwp) : null,
 
-            'asuransi_profesi' => 'nullable|string',
-            'nomor_polis' => 'nullable|string',
-            'masa_berlaku_asuransi' => 'nullable',
+            'nomor_hp'                      => $request->nomor_hp ? str_replace(' ', '', $request->nomor_hp) : null,
+            'nomor_kontak_darurat'          => $request->nomor_kontak_darurat ? str_replace(' ', '', $request->nomor_kontak_darurat) : null,
+            'nama_kontak_darurat'           => $request->nama_kontak_darurat,
+            'hubungan_kontak_darurat'       => $request->hubungan_kontak_darurat,
 
-            'pend_diploma' => 'nullable|string',
-            'pend_s1' => 'nullable|string',
-            'pend_s2' => 'nullable|string',
-            'pend_s3' => 'nullable|string',
-            'kampus_terakhir' => 'nullable|string',
+            'email'                         => $request->email,
+            'email_dinas'                   => $request->email_dinas,
 
-            'keterangan' => 'nullable|string',
-            'tanggal_akhir_kontrak' => 'nullable',
+            'alamat_ktp'                    => $request->alamat_ktp,
+            'alamat_npwp'                   => $request->alamat_npwp,
+            'alamat_domisili'               => $request->alamat_domisili,
 
-            'jenjang_pendidikan_terakhir' => 'nullable|string',
+            'nomor_str'                     => $request->nomor_str,
+            'str_seumur_hidup'              => $request->str_seumur_hidup,
 
-            'input_by' => 'nullable|string',
-            'input_date' => 'nullable',
-            'update_by' => 'nullable|string',
-            'update_date' => 'nullable',
+            // DATE
+            'masa_berlaku_str'              => convertDmyToYmd($request->masa_berlaku_str),
 
-            'temp_username' => 'nullable|string',
-            'username' => 'nullable|string',
-            'foto' => 'nullable|file',
-        ]);
+            'nomor_sip'                     => $request->nomor_sip,
+
+            // DATE
+            'masa_berlaku_sip'              => convertDmyToYmd($request->masa_berlaku_sip),
+
+            'asuransi_profesi'              => $request->asuransi_profesi,
+            'nomor_polis'                   => $request->nomor_polis,
+
+            // DATE
+            'masa_berlaku_asuransi'         => convertDmyToYmd($request->masa_berlaku_asuransi),
+
+            'pend_diploma'                  => $request->pend_diploma,
+            'pend_s1'                       => $request->pend_s1,
+            'pend_s2'                       => $request->pend_s2,
+            'pend_s3'                       => $request->pend_s3,
+            'kampus_terakhir'               => $request->kampus_terakhir,
+
+            'jenjang_pendidikan_terakhir'   => $request->jenjang_pendidikan_terakhir,
+            'keterangan'                    => $request->keterangan,
+
+            // DATE
+            'tanggal_akhir_kontrak'         => convertDmyToYmd($request->tanggal_akhir_kontrak),
+
+            'input_by'                      => auth()->user()->username ?? null,
+            'input_date'                    => now(),
+        ];
     }
 }

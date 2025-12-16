@@ -116,8 +116,18 @@
                     return;
                 }
                 let myformData = new FormData(form);
+                console.log('=== FORM DATA ===');
+                for (let [key, value] of myformData.entries()) {
+                    console.log(key + ':', value);
+                }
+
+                // Pastikan nama_pekerja ada
+                if (!myformData.get('nama_pekerja')) {
+                    Alert('warning', 'Nama pekerja wajib diisi!');
+                    return;
+                }
                 $.ajax({
-                    type: type,
+                    type: "POST",
                     url: url,
                     dataType: "json",
                     processData: false,
@@ -158,7 +168,7 @@
                             });
                             form.classList.remove('was-validated');
                         }
-                    },
+                    },  
                 });
             }
             form.classList.add('was-validated');
@@ -908,30 +918,9 @@
     };
 
 
-    function convertToMySQLDate(dateStr) {
-        if (!dateStr) return null;
-        if (dateStr.includes('/')) {
-            const parts = dateStr.split('/');
-            if (parts.length !== 3) return null;
-            return `${parts[2]}-${parts[1].padStart(2,'0')}-${parts[0].padStart(2,'0')}`;
-        }
-        return dateStr; // jika sudah YYYY-MM-DD
-    }
 
-    $('.form-pegawai').on('submit', function(e) {
-        const tanggalFields = [
-            'tanggal_lahir', 'tmt_status_kepegawaian', 'tmt_pwtt', 'tmt_pwt',
-            'tanggal_akhir_kontrak', 'tmt_jabatan', 'tmt_golongan_upah',
-            'masa_berlaku_str', 'masa_berlaku_sip', 'masa_berlaku_asuransi'
-        ];
 
-        tanggalFields.forEach(function(field) {
-            const input = $(`input[name="${field}"]`);
-            if (input.length) {
-                input.val(convertToMySQLDate(input.val()));
-            }
-        });
-    });
+
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
         'click .update-status': function(e, value, row, index) {
