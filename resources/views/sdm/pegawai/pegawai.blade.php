@@ -124,7 +124,7 @@
                 <div class="modal-body">
                     <div class="card">
 
-                        <form class="f1 form-pegawai" id="form-pegawai" novalidate=">
+                        <form class="f1 form-pegawai" id="form-pegawai" novalidate>
                             @csrf
                             <input type="hidden" name="id" value="">
                             <!-- ===================== STEP HEADER ===================== -->
@@ -599,7 +599,7 @@
 
 @section('script')
 <script>
-    
+
 </script>
     @include('sdm.pegawai.script')
     <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>

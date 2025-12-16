@@ -1,4 +1,17 @@
 <script type="text/javascript">
+    // Disable form validation untuk navigasi step
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cegah browser validasi form secara otomatis
+        var form = document.querySelector('.form-pegawai');
+        if (form) {
+            form.setAttribute('novalidate', 'novalidate');
+        }
+
+        // Hapus semua required kecuali nama_pekerja
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
+            .not('[name="nama_pekerja"]')
+            .removeAttr('required');
+    });
     // Tabel
     var $tablePegawai = $('#table_pegawai');
 
@@ -79,6 +92,8 @@
 
 
     // Save/update
+    // Nonaktifkan validasi HTML5 native
+    $('.form-pegawai').attr('novalidate', 'novalidate');
     $(document).on('click', '.save-btn', function(e) {
         var id = $('input[name="id"]').val();
 
@@ -701,8 +716,81 @@
 
     //  Call function saat document ready
     $(document).ready(function() {
-        initTable();
+    initTable();
+
+    // Paksa nonaktifkan validasi
+    setTimeout(function() {
+        $('.form-pegawai').attr('novalidate', 'novalidate');
+
+        // Hapus semua required kecuali nama_pekerja
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
+            .not('[name="nama_pekerja"]')
+            .each(function() {
+                $(this).removeAttr('required');
+                $(this).prop('required', false);
+            });
+    }, 500);
+
+    // Intercept button next SEBELUM validasi plugin berjalan
+    $(document).on('click', '.btn-next', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        // Hapus validasi visual
+        $('.form-pegawai').removeClass('was-validated');
+        $('.form-control').removeClass('is-invalid');
+
+        // Trigger next step secara manual
+        var $currentFieldset = $(this).closest('fieldset');
+        var $nextFieldset = $currentFieldset.next('fieldset');
+
+        if ($nextFieldset.length) {
+            $currentFieldset.hide();
+            $nextFieldset.show();
+
+            // Update progress bar
+            var stepIndex = $nextFieldset.index('fieldset');
+            var totalSteps = $('fieldset').length;
+            var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+
+            $('.f1-progress-line').css('width', progressPercentage + '%');
+
+            // Update step indicator
+            $('.f1-step').removeClass('active').removeClass('activated');
+            $('.f1-step').eq(stepIndex).addClass('active');
+            $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
+        }
+
+        return false;
     });
+
+    // Handle button previous
+    $(document).on('click', '.btn-previous', function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var $currentFieldset = $(this).closest('fieldset');
+        var $prevFieldset = $currentFieldset.prev('fieldset');
+
+        if ($prevFieldset.length) {
+            $currentFieldset.hide();
+            $prevFieldset.show();
+
+            // Update progress bar
+            var stepIndex = $prevFieldset.index('fieldset');
+            var totalSteps = $('fieldset').length;
+            var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+
+            $('.f1-progress-line').css('width', progressPercentage + '%');
+
+            // Update step indicator
+            $('.f1-step').removeClass('active');
+            $('.f1-step').eq(stepIndex).addClass('active');
+        }
+
+        return false;
+    });
+});
 
 
     function actionsFunctionPegawai(value, row, index) {
