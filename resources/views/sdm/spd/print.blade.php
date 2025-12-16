@@ -241,7 +241,7 @@
                         Catatan : Batas akhir pertanggungjawaban panjar dinas 1 (satu) minggu setelah kepulangan
                     </div>
                 </td>
-                <td colspan="2" class="center">
+                <td colspan="2">
                     Menyetujui :<br>
                     <b style="font-size:11px">RSOJ Pertamina Royal Biringkanaya</b><br>
                     Direktur<br><br><br><br><br><br>

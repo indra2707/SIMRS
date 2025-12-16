@@ -197,7 +197,7 @@ class SpdsController extends Controller
                     'status' => 'Draft',
                     'created_at' => now(),
                     'updated_at' => now(),
-                    'created_by' => Auth::user()->username
+                    'updated_by' => Auth::user()->username
                 ]);
             }
 
@@ -262,16 +262,16 @@ class SpdsController extends Controller
         }
     }
 
-    // update status check
+    // update status
     public function updateStatus(Request $request, $id)
     {
         $query = Spds::where('id', $id)->update([
-            'status' => $request->status,
+            'status' => 'Close',
         ]);
         if ($query) {
             return response()->json([
                 'success' => true,
-                'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
+                'message' => 'Sukses mengubah status menjadi ' . ($request->status === 'Close' ? 'Close' : 'Draft'),
                 'data' => [],
             ], status: 200);
         } else {
@@ -380,8 +380,10 @@ class SpdsController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        return $dompdf->stream($spd->no_surat . '.pdf', [
-            'Attachment' => false, // tampil di browser
+        $filename = preg_replace('/[^A-Za-z0-9\-_.]/', '-', $spd->no_surat) . '.pdf';
+
+        return $dompdf->stream($filename, [
+            'Attachment' => false,
         ]);
     }
 }

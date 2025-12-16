@@ -201,6 +201,8 @@
                                                 Kelompok Asset</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Vendor">
                                                 Vendor</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Kota">
+                                                Kota</label></li>
                                     </ul>
                                 </li>
 
@@ -238,7 +240,12 @@
                                         <input type="checkbox" class="parent"><b> SDM</b>
                                     </label>
                                     <ul class="nested">
-                                        <li><label><input type="checkbox" name="permissions[]" value="SDM"> SDM</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Pegawai">
+                                                Pegawai</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="SPD"> Surat Perjalanan
+                                                Dinas</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Rincian SPD"> Rincian
+                                                SPD</label></li>
                                     </ul>
                                 </li>
                             </ul>

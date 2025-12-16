@@ -52,6 +52,7 @@
                                             <th class="f-light">Kota Asal</th>
                                             <th class="f-light">Kota Tujuan</th>
                                             <th class="f-light">Pengikut</th>
+                                            <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
