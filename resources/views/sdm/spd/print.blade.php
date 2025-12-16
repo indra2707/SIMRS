@@ -193,7 +193,7 @@
         <table class="border mt-3">
             <tr>
                 <td colspan="6" align="left">
-                    KETERANGAN / KEPERLUAN : {{$spd->keterangan}}<br><br><br>
+                    KETERANGAN / KEPERLUAN : {{ $spd->keterangan }}<br><br><br>
                 </td>
             </tr>
             <tr>
@@ -203,15 +203,37 @@
                 <th width="20%">Jabatan</th>
                 <th width="30%" colspan="2">Keterangan</th>
             </tr>
-            @for ($i = 1; $i <= 3; $i++)
-                <tr>
-                    <td align="center">{{ $i }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td colspan="2"></td>
-                </tr>
-            @endfor
+            @if ($pengikut && count($pengikut) > 0)
+                @foreach ($pengikut as $index => $item)
+                    <tr>
+                        <td align="center">{{ $index + 1 }}</td>
+                        <td>{{ $item->nama_pengikut }}</td>
+                        <td>{{ $item->nopek }}</td>
+                        <td>{{ $item->jabatan }}</td>
+                        <td colspan="2"></td>
+                    </tr>
+                @endforeach
+
+                @for ($i = count($pengikut); $i < 3; $i++)
+                    <tr>
+                        <td align="center">{{ $i + 1 }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                @endfor
+            @else
+                @for ($i = 1; $i <= 3; $i++)
+                    <tr>
+                        <td align="center">{{ $i }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2"></td>
+                    </tr>
+                @endfor
+            @endif
             <tr>
                 <td colspan="4">
                     PANJAR / LUMPSUM PERJALANAN DINAS

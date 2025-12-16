@@ -100,15 +100,30 @@ class SpdsController extends Controller
                 'created_by' => Auth::user()->username
             ]);
 
-            // simpan ke tabel detail
-            DB::table('tbl_spd_details')->insert([
-                'no_surat' => $request->no_surat,
-                'id_pegawai' => $request->id_pegawai,
-                'status' => 'Draft',
-                'created_at' => now(),
-                'updated_at' => now(),
-                'created_by' => Auth::user()->username
-            ]);
+
+            $pengikutData = json_decode($request->pengikut_data, true);
+
+            if (!empty($pengikutData) && is_array($pengikutData)) {
+                foreach ($pengikutData as $pengikut) {
+                    DB::table('tbl_spd_details')->insert([
+                        'no_surat' => $request->no_surat,
+                        'id_pegawai' => $pengikut['id_pegawai'],
+                        'status' => 'Draft',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'created_by' => Auth::user()->username
+                    ]);
+                }
+            } else {
+                DB::table('tbl_spd_details')->insert([
+                    'no_surat' => $request->no_surat,
+                    'id_pegawai' => $request->id_pegawai,
+                    'status' => 'Draft',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'created_by' => Auth::user()->username
+                ]);
+            }
 
             DB::commit();
 
@@ -117,7 +132,6 @@ class SpdsController extends Controller
                 'data' => $spd,
                 'message' => 'Data berhasil ditambahkan'
             ], 200);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -132,39 +146,84 @@ class SpdsController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $query = Spds::where('id', $id)->update([
-            'no_surat' => $request->no_surat,
-            'id_pegawai' => $request->id_pegawai,
-            'pelaksanaan' => $request->pelaksanaan,
-            'id_kota1' => $request->id_kota1,
-            'id_kota2' => $request->id_kota2,
-            'tgl_awal' => $request->tgl_awal,
-            'tgl_akhir' => $request->tgl_akhir,
-            'tgl_masuk' => Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d'),
-            'kendaraan' => $request->kendaraan,
-            'ditanggung' => $request->ditanggung,
-            'hak_cuti' => $request->hak_cuti,
-            'cuti_lalu' => $request->cuti_lalu,
-            'jatuh_tempo' => $request->jatuh_tempo,
-            'panjar_cuti' => $request->panjar_cuti,
-            'keterangan' => $request->keterangan,
-            'id_pimpinan' => $request->id_pimpinan,
-            'pengikut' => $request->pengikut1,
-            'status' => 'Draft',
-            'updated_by' => Auth::user()->username
-        ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Diubah.',
-            ], status: 200);
-        } else {
+        DB::beginTransaction();
+
+        try {
+            $query = Spds::where('id', $id)->update([
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'pelaksanaan' => $request->pelaksanaan,
+                'id_kota1' => $request->id_kota1,
+                'id_kota2' => $request->id_kota2,
+                'tgl_awal' => $request->tgl_awal,
+                'tgl_akhir' => $request->tgl_akhir,
+                'tgl_masuk' => Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d'),
+                'kendaraan' => $request->kendaraan,
+                'ditanggung' => $request->ditanggung,
+                'hak_cuti' => $request->hak_cuti,
+                'cuti_lalu' => $request->cuti_lalu,
+                'jatuh_tempo' => $request->jatuh_tempo,
+                'panjar_cuti' => $request->panjar_cuti,
+                'keterangan' => $request->keterangan,
+                'id_pimpinan' => $request->id_pimpinan,
+                'pengikut' => $request->pengikut1,
+                'status' => 'Draft',
+                'updated_by' => Auth::user()->username
+            ]);
+
+
+            DB::table('tbl_spd_details')
+                ->where('no_surat', $request->no_surat)
+                ->delete();
+
+            $pengikutData = json_decode($request->pengikut_data, true);
+
+            if (!empty($pengikutData) && is_array($pengikutData)) {
+                foreach ($pengikutData as $pengikut) {
+                    DB::table('tbl_spd_details')->insert([
+                        'no_surat' => $request->no_surat,
+                        'id_pegawai' => $pengikut['id_pegawai'],
+                        'status' => 'Draft',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'created_by' => Auth::user()->username
+                    ]);
+                }
+            } else {
+                // Jika tidak ada pengikut, simpan data pembuat SPD saja
+                DB::table('tbl_spd_details')->insert([
+                    'no_surat' => $request->no_surat,
+                    'id_pegawai' => $request->id_pegawai,
+                    'status' => 'Draft',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                    'created_by' => Auth::user()->username
+                ]);
+            }
+
+            DB::commit();
+
+            if ($query) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'Data Berhasil Diubah.',
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'data' => [],
+                    'message' => 'Data Gagal Diubah.',
+                ], 400);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Diubah.',
-            ], status: 400);
+                'message' => 'Data gagal diubah',
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -192,7 +251,6 @@ class SpdsController extends Controller
                 'success' => true,
                 'message' => 'Data berhasil dihapus'
             ], 200);
-
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -225,9 +283,51 @@ class SpdsController extends Controller
         }
     }
 
+    public function getPengikut($id)
+    {
+        try {
+            // Ambil no_surat dari tabel spds
+            $spd = Spds::find($id);
+
+            if (!$spd) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'SPD tidak ditemukan',
+                    'data' => []
+                ], 404);
+            }
+
+            // Ambil data pengikut dari tbl_spd_details
+            $pengikut = DB::table('tbl_spd_details')
+                ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+                ->where('tbl_spd_details.no_surat', $spd->no_surat)
+                ->select(
+                    'tbl_spd_details.id',
+                    'tbl_spd_details.id_pegawai',
+                    'pegawai.nomor_pekerja as nip',
+                    'pegawai.nama_pekerja as nama_pegawai'
+                )
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $pengikut,
+                'message' => 'Data pengikut berhasil dimuat'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error mengambil data pengikut',
+                'error' => $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+
     // Print
     public function print($id)
     {
+        // Ambil data SPD header
         $spd = DB::table('tbl_spds')
             ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
             ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
@@ -237,6 +337,7 @@ class SpdsController extends Controller
                 'tbl_spds.*',
                 'pegawai.nama_pekerja as nama_pegawai',
                 'pegawai.nomor_pekerja as nomor_pekerja',
+                'pegawai.jabatan as jabatan_pegawai', // Tambahkan jabatan
                 'tbl_kotas.nama as nama_kota1',
                 'kota2.nama as nama_kota2',
                 'pegawai2.nama_pekerja as nama_pimpinan'
@@ -248,9 +349,24 @@ class SpdsController extends Controller
             abort(404, 'SPD tidak ditemukan.');
         }
 
+        // ==========================================
+        // TAMBAHKAN: Ambil data pengikut
+        // ==========================================
+        $pengikut = DB::table('tbl_spd_details')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+            ->where('tbl_spd_details.no_surat', $spd->no_surat)
+            ->select(
+                'tbl_spd_details.id',
+                'pegawai.nama_pekerja as nama_pengikut',
+                'pegawai.nomor_pekerja as nopek',
+                'pegawai.jabatan as jabatan'
+            )
+            ->get();
+
         $data = [
             'title' => 'Print Preview SPD',
-            'spd' => $spd
+            'spd' => $spd,
+            'pengikut' => $pengikut // Kirim data pengikut ke view
         ];
 
         $html = view('sdm.spd.print', $data)->render();

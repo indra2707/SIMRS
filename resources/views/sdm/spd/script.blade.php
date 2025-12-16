@@ -1,5 +1,4 @@
 <script type="text/javascript">
-
     // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
@@ -24,7 +23,7 @@
         autoClose: true,
         toggleSelected: false,
 
-        onSelect: function (formattedDate, date, inst) {
+        onSelect: function(formattedDate, date, inst) {
             // jika belum pilih 2 tanggal, hentikan
             if (!date || date.length < 2) {
                 return;
@@ -41,7 +40,7 @@
     });
 
     //button radio biaya ditanggung
-    $('.biaya-group button').on('click', function () {
+    $('.biaya-group button').on('click', function() {
         // hapus active dari semua button
         $('.biaya-group button').removeClass('active');
 
@@ -75,7 +74,7 @@
     }
 
     //btn btn-group
-    $(document).on('click', '.biaya-group button', function () {
+    $(document).on('click', '.biaya-group button', function() {
         $(this).addClass('active').attr('aria-pressed', true);
         $(this).siblings().removeClass('active').attr('aria-pressed', false);
 
@@ -96,7 +95,7 @@
     $table_employee.bootstrapTable('resetView');
 
     // Open Modal spd
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function() {
         $('.form-spd').removeClass('was-validated');
         $('#modal-spd').modal('show');
         $('.modal-title').text('Form Tambah SPD');
@@ -148,9 +147,10 @@
     });
 
 
-    window.actionFormatter = function (value, row, index) {
+    window.actionFormatter = function(value, row, index) {
         return [
-            '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id + '" data-field_id="' + row.field_id + '">',
+            '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id +
+            '" data-field_id="' + row.field_id + '">',
             '<i class="fa fa-edit text-primary"></i>',
             '</a>  ',
             '<a class="remove-employee-btn" href="javascript:void(0)" data-id="' + row.id + '">',
@@ -160,7 +160,7 @@
     };
 
     //add pegawai
-    $(document).on('click', '.add-pegawai', function () {
+    $(document).on('click', '.add-pegawai', function() {
 
         $('#modal-spd').modal('hide');
         $('#modal-pegawai').modal('show');
@@ -178,13 +178,13 @@
     });
 
 
-    $('#modal-pegawai').on('hidden.bs.modal', function () {
+    $('#modal-pegawai').on('hidden.bs.modal', function() {
         $('#modal-spd').modal('show');
     });
 
 
     // Save Pegawai
-    $(document).on('click', '.save-pegawai-btn', function () {
+    $(document).on('click', '.save-pegawai-btn', function() {
 
         if (!$('#pengikut').data('select2')) {
             alert('Select pegawai belum siap');
@@ -217,8 +217,8 @@
         let nip = '';
         let nama = '';
 
-        if (text.includes('-')) {     // Pemisah karakter
-            const split = text.split('-');  // Pemisah karakter
+        if (text.includes('-')) { // Pemisah karakter
+            const split = text.split('-'); // Pemisah karakter
             nip = split[0].trim();
             nama = split[1].trim();
         } else {
@@ -287,7 +287,7 @@
 
 
     //hapus pegawai
-    $(document).on('click', '.remove-employee-btn', function () {
+    $(document).on('click', '.remove-employee-btn', function() {
         const id = String($(this).data('id'));
         $table_employee.bootstrapTable('remove', {
             field: 'id',
@@ -296,7 +296,7 @@
     });
 
     //edit pegawai
-    $(document).on('click', '.edit-employee-btn', function () {
+    $(document).on('click', '.edit-employee-btn', function() {
         const id = String($(this).data('id'));
         const data = $table_employee.bootstrapTable('getRowByUniqueId', id);
 
@@ -328,7 +328,7 @@
 
 
     // Save spd
-    $(document).on('click', '.save-btn', function () {
+    $(document).on('click', '.save-btn', function() {
 
         if (!$('#ditanggung').val()) {
             let activeValue = $('.biaya-group button.active').data('value');
@@ -345,28 +345,41 @@
             var url = "{{ route('sdm.spd.create') }}";
             var type = "POST";
         }
+
         var forms = document.getElementsByClassName('form-spd');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
                 event.stopPropagation();
             } else {
+
+                var pengikutData = getPengikutData();
+
+                // Serialize form data
+                var formData = $('.form-spd').serializeArray();
+
+                // Tambahkan data pengikut ke formData
+                formData.push({
+                    name: 'pengikut_data',
+                    value: JSON.stringify(pengikutData)
+                });
+
                 $.ajax({
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-spd').serialize(),
-                    beforeSend: function () {
+                    data: $.param(formData), // Ubah dari serialize() ke param(formData)
+                    beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function () {
+                    complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-spd').modal('hide');
@@ -398,7 +411,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -426,14 +439,13 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('sdm.spd.view') }}",
             columns: [
-                [
-                    {
+                [{
                         title: 'No',
                         align: 'center',
                         valign: 'middle',
                         sortable: true,
                         width: '5%',
-                        formatter: function (value, row, index) {
+                        formatter: function(value, row, index) {
                             return index + 1
                         }
                     },
@@ -473,7 +485,7 @@
                     }
                 ]
             ],
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             }
         });
@@ -498,11 +510,14 @@
 
     // Handle events button actions
     window.eventsSpd = {
-        'click .btn-edit': function (e, value, row, index) {
+        'click .btn-edit': function(e, value, row, index) {
             $('#modal-spd').modal('show');
             $('.modal-title').text('Form Edit SPD');
             let pengikutValue = (row.pengikut1 === 'Tidak Ada') ? '0' : '1';
+
+            // Reset tabel pengikut
             $table_employee.bootstrapTable('removeAll');
+
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="no_surat"]').val(row.no_surat);
@@ -538,7 +553,6 @@
                     new Date(row.tgl_akhir)
                 ]);
 
-
             InitSelect2($("select[name='id_pegawai']"), {
                 url: "{{ route('get-select-pegawai') }}",
                 dropdownParent: $("#modal-spd"),
@@ -562,8 +576,39 @@
                 dropdownParent: $("#modal-spd"),
                 initialValue: row.id_kota2
             });
+
+            // ==========================================
+            // TAMBAHKAN: Load data pengikut dari server
+            // ==========================================
+            if (pengikutValue === '1') {
+                $.ajax({
+                    url: "{{ route('sdm.spd.get-pengikut', ':id') }}".replace(':id', row.id),
+                    type: "GET",
+                    dataType: "json",
+                    success: function(response) {
+                        if (response.success && response.data.length > 0) {
+                            // Loop data pengikut dan tambahkan ke tabel
+                            response.data.forEach(function(pengikut) {
+                                $table_employee.bootstrapTable('append', {
+                                    id: pengikut.id,
+                                    field_id: pengikut.id_pegawai,
+                                    field_nip: pengikut.nip || '',
+                                    field_employee: pengikut.nama_pegawai
+                                });
+                            });
+
+                            // Tampilkan tabel
+                            $('#hidden_div').removeClass('d-none').show();
+                            $table_employee.bootstrapTable('resetView');
+                        }
+                    },
+                    error: function(xhr) {
+                        console.error('Error loading pengikut:', xhr);
+                    }
+                });
+            }
         },
-        'click .btn-delete': function (e, value, row, index) {
+        'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('sdm.spd.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -585,28 +630,27 @@
                             _token: "{{ csrf_token() }}",
                             no_surat: row.no_surat // menambah data
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function () {
+                    }).done(function() {
                         $tableSpd.bootstrapTable('refresh');
                     });
 
                 }
             })
         },
-        'click .btn-close': function (e, value, row, index) {
+        'click .btn-close': function(e, value, row, index) {
             alert('Comming Soon');
         },
-        'click .btn-print': function (e, value, row, index) {
+        'click .btn-print': function(e, value, row, index) {
             var url = "{{ route('sdm.spd.print', ':id') }}";
             url = url.replace(':id', row.id);
             window.open(url, '_blank');
         }
     }
-
 </script>
