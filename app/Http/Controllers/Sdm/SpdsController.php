@@ -227,6 +227,8 @@ class SpdsController extends Controller
         }
     }
 
+
+
     // Delete
     public function destroy(Request $request, $id)
     {
@@ -265,22 +267,23 @@ class SpdsController extends Controller
     // update status
     public function updateStatus(Request $request, $id)
     {
-        $query = Spds::where('id', $id)->update([
-            'status' => 'Close',
-        ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Sukses mengubah status menjadi ' . ($request->status === 'Close' ? 'Close' : 'Draft'),
-                'data' => [],
-            ], status: 200);
-        } else {
+        $spd = Spds::find($id);
+
+        if (!$spd) {
             return response()->json([
                 'success' => false,
-                'message' => 'Gagal mengubah status.',
-                'data' => [],
-            ], status: 400);
+                'message' => 'Data SPD tidak ditemukan'
+            ], 404);
         }
+
+        $spd->status = $request->status;
+        $spd->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status berhasil diubah menjadi ' . $request->status,
+            'data' => []
+        ], 200);
     }
 
     public function getPengikut($id)
