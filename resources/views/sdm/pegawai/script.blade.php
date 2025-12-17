@@ -86,6 +86,7 @@
         $('.save-btn')
             .html('<span class="fa fa-check"></span> Simpan')
             .removeAttr('disabled');
+        resetWizardToFirstStep();
     });
 
     // Fungsi untuk konversi tanggal dari DD/MM/YYYY ke YYYY-MM-DD
@@ -163,6 +164,7 @@
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-pegawai').modal('hide');
+                            resetWizardToFirstStep();
                             $tablePegawai.bootstrapTable('refresh');
                         } else {
                             $.notify({
@@ -716,81 +718,82 @@
 
     //  Call function saat document ready
     $(document).ready(function() {
-    initTable();
+        initTable();
 
-    // Paksa nonaktifkan validasi
-    setTimeout(function() {
-        $('.form-pegawai').attr('novalidate', 'novalidate');
+        // Paksa nonaktifkan validasi
+        setTimeout(function() {
+            $('.form-pegawai').attr('novalidate', 'novalidate');
 
-        // Hapus semua required kecuali nama_pekerja
-        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
-            .not('[name="nama_pekerja"]')
-            .each(function() {
-                $(this).removeAttr('required');
-                $(this).prop('required', false);
-            });
-    }, 500);
+            // Hapus semua required kecuali nama_pekerja
+            $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
+                .not('[name="nama_pekerja"]')
+                .each(function() {
+                    $(this).removeAttr('required');
+                    $(this).prop('required', false);
+                });
+        }, 500);
 
-    // Intercept button next SEBELUM validasi plugin berjalan
-    $(document).on('click', '.btn-next', function(e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+        // Intercept button next SEBELUM validasi plugin berjalan
+        $(document).on('click', '.btn-next', function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
 
-        // Hapus validasi visual
-        $('.form-pegawai').removeClass('was-validated');
-        $('.form-control').removeClass('is-invalid');
+            // Hapus validasi visual
+            $('.form-pegawai').removeClass('was-validated');
+            $('.form-control').removeClass('is-invalid');
 
-        // Trigger next step secara manual
-        var $currentFieldset = $(this).closest('fieldset');
-        var $nextFieldset = $currentFieldset.next('fieldset');
+            // Trigger next step secara manual
+            var $currentFieldset = $(this).closest('fieldset');
+            var $nextFieldset = $currentFieldset.next('fieldset');
 
-        if ($nextFieldset.length) {
-            $currentFieldset.hide();
-            $nextFieldset.show();
+            if ($nextFieldset.length) {
+                $currentFieldset.fadeOut(300, function() {
+                    $nextFieldset.fadeIn(300);
+                });
 
-            // Update progress bar
-            var stepIndex = $nextFieldset.index('fieldset');
-            var totalSteps = $('fieldset').length;
-            var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+                // Update progress bar
+                var stepIndex = $nextFieldset.index('fieldset');
+                var totalSteps = $('fieldset').length;
+                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
 
-            $('.f1-progress-line').css('width', progressPercentage + '%');
+                $('.f1-progress-line').css('width', progressPercentage + '%');
 
-            // Update step indicator
-            $('.f1-step').removeClass('active').removeClass('activated');
-            $('.f1-step').eq(stepIndex).addClass('active');
-            $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
-        }
+                // Update step indicator
+                $('.f1-step').removeClass('active').removeClass('activated');
+                $('.f1-step').eq(stepIndex).addClass('active');
+                $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
+            }
 
-        return false;
+            return false;
+        });
+
+        // Handle button previous
+        $(document).on('click', '.btn-previous', function(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            var $currentFieldset = $(this).closest('fieldset');
+            var $prevFieldset = $currentFieldset.prev('fieldset');
+
+            if ($prevFieldset.length) {
+                $currentFieldset.hide();
+                $prevFieldset.show();
+
+                // Update progress bar
+                var stepIndex = $prevFieldset.index('fieldset');
+                var totalSteps = $('fieldset').length;
+                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+
+                $('.f1-progress-line').css('width', progressPercentage + '%');
+
+                // Update step indicator
+                $('.f1-step').removeClass('active');
+                $('.f1-step').eq(stepIndex).addClass('active');
+            }
+
+            return false;
+        });
     });
-
-    // Handle button previous
-    $(document).on('click', '.btn-previous', function(e) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        var $currentFieldset = $(this).closest('fieldset');
-        var $prevFieldset = $currentFieldset.prev('fieldset');
-
-        if ($prevFieldset.length) {
-            $currentFieldset.hide();
-            $prevFieldset.show();
-
-            // Update progress bar
-            var stepIndex = $prevFieldset.index('fieldset');
-            var totalSteps = $('fieldset').length;
-            var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
-
-            $('.f1-progress-line').css('width', progressPercentage + '%');
-
-            // Update step indicator
-            $('.f1-step').removeClass('active');
-            $('.f1-step').eq(stepIndex).addClass('active');
-        }
-
-        return false;
-    });
-});
 
 
     function actionsFunctionPegawai(value, row, index) {
@@ -817,7 +820,7 @@
 
             // Tampilkan modal
             $('#modal-pegawai').modal('show');
-
+            resetWizardToFirstStep();
             // Judul modal
             $('.modal-title').text('Form Edit Pegawai');
 
@@ -1042,6 +1045,23 @@
                 }
             });
         }
+    }
+    // Fungsi untuk reset wizard ke step 1
+    function resetWizardToFirstStep() {
+        // Sembunyikan semua fieldset
+        $('fieldset').hide();
+
+        // Tampilkan fieldset pertama
+        $('fieldset').first().show();
+
+        // Reset progress bar ke 0%
+        var totalSteps = $('fieldset').length;
+        var progressPercentage = (1 / totalSteps) * 100;
+        $('.f1-progress-line').css('width', progressPercentage + '%');
+
+        // Reset step indicator
+        $('.f1-step').removeClass('active').removeClass('activated');
+        $('.f1-step').first().addClass('active');
     }
     // Page Load Event
     $(function() {
