@@ -40,6 +40,7 @@ use App\Http\Controllers\ChatController;
 
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\SpdsController;
+use App\Http\Controllers\Sdm\Rincian_spdsController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -269,6 +270,11 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/spd/update-status/{id}', [SpdsController::class, 'updateStatus'])->name('sdm.spd.update-status');
         Route::delete('/spd/delete/{id}', [SpdsController::class, 'destroy'])->name('sdm.spd.delete');
         Route::get('/sdm/spd/get-pengikut/{id}', [SpdsController::class, 'getPengikut'])->name('sdm.spd.get-pengikut');
+
+        // Rincian SPD
+        Route::get('/rincian_spd', [Rincian_spdsController::class, 'index'])->name('sdm.rincian_spd');
+        Route::get('/rincian_spd/view', [Rincian_spdsController::class, 'views'])->name('sdm.rincian_spd.view');
+        Route::post('/rincian_spd/update-status/{id}', [Rincian_spdsController::class, 'updateStatus'])->name('sdm.rincian_spd.update-status');
 
         // Pegawai
         Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');

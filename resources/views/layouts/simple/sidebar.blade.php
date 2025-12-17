@@ -224,7 +224,7 @@
                                     <li><a href="{{ route('sdm.spd') }}">Surat Perjalanan Dinas</a></li>
                                 @endif
                                 @if (in_array('Rincian SPD', $aksesMenu))
-                                    <li><a href="#">Rincian SPD</a></li>
+                                    <li><a href="{{ route('sdm.rincian_spd') }}">Rincian SPD</a></li>
                                 @endif
                             </ul>
                         </li>
