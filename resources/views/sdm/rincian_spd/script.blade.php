@@ -17,6 +17,33 @@
         element.prop('readonly', !element.prop('readonly'));
     }
 
+    // ketika user memilih biaya
+    $('#biaya').on('select2:select', function (e) {
+        let selected = e.params.data;
+        let biayaId = selected.id;
+
+        // Ambil langsung dari select2
+        if (selected.harga !== undefined) {
+            $('#harga').val(selected.harga);
+            return;
+        }
+
+        // Fallback AJAX
+        let url = "{{ route('sdm.rincian_spd.detail', ':id') }}".replace(':id', biayaId);
+
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function (res) {
+                $('#harga').val(res.harga || '');
+            },
+            error: function () {
+                $('#harga').val('');
+            }
+        });
+    });
+
+
     // Open Modal Detail
     $(document).on('click', '.add-btn', function () {
         $('.form-detail').removeClass('was-validated');
@@ -45,14 +72,9 @@
     // Save Asset
     $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
-        if (id) {
-            var url = "{{ route('master-data.lokasi.update', ':id') }}";
-            url = url.replace(':id', id);
-            var type = "PUT";
-        } else {
-            var url = "{{ route('master-data.lokasi.create') }}";
-            var type = "POST";
-        }
+        var url = "{{ route('sdm.rincian_spd.update', ':id') }}";
+        url = url.replace(':id', id);
+        var type = "PUT";
         var forms = document.getElementsByClassName('form-rincian');
         var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
@@ -223,7 +245,7 @@
             $('input[name="no_surat"]').val(row.no_surat);
             $('input[name="nama"]').val(row.nama_pegawai);
             $('input[name="panjar"]').val(row.panjar ?? '').val('');
-            $('input[name="tanggal"]').val(row.tanggal ?? '').val('');
+            $('input[name="tanggal"]').val(row.tanggal ?? '');
             $('select[name="jenis"]').val(row.jenis ?? '').trigger('change');
 
             if (row.id_menyetujui) {

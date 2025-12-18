@@ -52,10 +52,10 @@ class Rincian_spdsController extends Controller
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
-                'jenis' => $value-> jenis,
-                'id_menyetujui' =>$value->id_menyetujui,
-                'id_mengajukan' =>$value->id_mengajukan,
-                'panjar' =>$value->panjar,
+                'jenis' => $value->jenis,
+                'id_menyetujui' => $value->id_menyetujui,
+                'id_mengajukan' => $value->id_mengajukan,
+                'panjar' => $value->panjar,
                 'no_surat' => $value->no_surat,
                 'nama_pegawai' => $value->nama_pegawai,
                 'tgl_awal' => Carbon::parse($value->tgl_awal)->format('d M Y'),
@@ -63,9 +63,37 @@ class Rincian_spdsController extends Controller
                 'nama_kota1' => $value->nama_kota1,
                 'nama_kota2' => $value->nama_kota2,
                 'status' => $value->status,
+                'tanggal' => Carbon::parse($value->tanggal)->format('d/m/Y'),
             ];
         }
         return response()->json($data, 200);
+    }
+
+    //update spd detail
+    // Update
+    public function update(Request $request, $id)
+    {
+        $query = Rincian_spds::where('id', $id)->update([
+            'id_mengajukan' => $request->id_mengajukan,
+            'id_menyetujui' => $request->id_menyetujui,
+            'jenis' => $request->jenis,
+            'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
+            'panjar' => $request->panjar,
+            'created_by' => Auth::user()->username,
+        ]);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Diubah.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Diubah.',
+            ], status: 400);
+        }
     }
 
     // update status
@@ -89,4 +117,23 @@ class Rincian_spdsController extends Controller
             ], status: 400);
         }
     }
+
+    // Mengambil data rincian biaya
+    public function getDetailRincianbiaya($id)
+    {
+        $biaya = DB::table('tbl_biaya_spd')
+            ->where('id', $id)
+            ->first();
+
+        if (!$biaya) {
+            return response()->json([
+                'error' => 'Data rincian biaya tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json([
+            'harga' => $biaya->harga_utama, // Mengambil harga
+        ], 200);
+    }
+
 }

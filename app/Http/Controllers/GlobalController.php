@@ -227,6 +227,34 @@ class GlobalController extends Controller
         return response()->json(['data' => $query], 200);
     }
 
+    // select Biaya SPD
+    public function optionsSelectBiaya(Request $request)
+    {
+        $query = DB::table('tbl_biaya_spd')
+            ->where('status', '1')
+            ->when($request->values, function ($q) use ($request) {
+                $q->where('id', $request->values);
+            })
+            ->when($request->search, function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->search . '%');
+            })
+            ->limit(5)
+            ->get();
+
+        $data = [];
+        foreach ($query as $value) {
+            $data[] = [
+                'id' => $value->id,
+                'text' => $value->nama,
+                'harga' => $value->harga_utama, // ✅ FIX
+            ];
+        }
+
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
     // select lokasi
     public function optionsSelectLokasi(Request $request)
     {
@@ -305,7 +333,7 @@ class GlobalController extends Controller
         foreach ($query as $item) {
             $data[] = [
                 'id' => $item->id,
-                'text' => $item->nomor_pekerja.' - '.$item->nama_pekerja,  // kolom yang benar
+                'text' => $item->nomor_pekerja . ' - ' . $item->nama_pekerja,  // kolom yang benar
             ];
         }
 
@@ -364,32 +392,6 @@ class GlobalController extends Controller
         ], 200);
     }
 
-
-    // select Biaya SPD
-    public function optionsSelectBiaya(Request $request)
-    {
-        $query = DB::table('tbl_biaya_spd')
-            ->where('status', '=', '1')
-            ->when($request->values != '', function ($q) use ($request) {
-                $q->where('id', '=', $request->values);
-            })
-            ->where(function ($q) use ($request) {
-                $search = $request->search;
-                $q->where('nama', 'like', "%$search%");
-                // Tambah kolom lain jika dibutuhkan
-            })
-            ->limit(5)
-            ->get();
-
-        $data = [];
-        foreach ($query as $key => $value) {
-            $data[$key]['id'] = $value->id;
-            $data[$key]['text'] = $value->nama;
-        }
-        return response()->json([
-            'data' => $data
-        ], 200);
-    }
 
     // select Vendors
     public function optionsSelectVendor(Request $request)
