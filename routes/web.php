@@ -347,6 +347,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-kelompok-aset', [GlobalController::class, 'optionsSelectKelompokAset'])->name('get-select-kelompok-aset');
         // Vendor
         Route::get('/get-select-vendor', [GlobalController::class, 'optionsSelectVendor'])->name('get-select-vendor');
+        // Biaya SPD
+        Route::get('/get-select-biaya', [GlobalController::class, 'optionsSelectBiaya'])->name('get-select-biaya');
     });
 });
 

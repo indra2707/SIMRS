@@ -88,16 +88,16 @@
                         </div>
 
                         <!-- Nama Mengajukan -->
-                        <label for="mengajukan" class="col-form-label col-sm-1">Mengajukan</label>
+                        <label for="id_mengajukan" class="col-form-label col-sm-1">Mengajukan</label>
                         <div class="col-sm-5">
-                            <select class="form-select form-control select2" id="mengajukan" name="mengajukan"
+                            <select class="form-select form-control select2" id="id_mengajukan" name="id_mengajukan"
                                 data-placeholder="---- Pilih Salah Satu ----" required></select>
                         </div>
 
                         <!-- Nama Menyetujui -->
-                        <label for="menyetujui" class="col-form-label col-sm-1">Menyetujui</label>
+                        <label for="id_menyetujui" class="col-form-label col-sm-1">Menyetujui</label>
                         <div class="col-sm-5">
-                            <select class="form-select form-control select2" id="menyetujui" name="menyetujui"
+                            <select class="form-select form-control select2" id="id_menyetujui" name="id_menyetujui"
                                 data-placeholder="---- Pilih Salah Satu ----" required></select>
                         </div>
 
@@ -112,19 +112,90 @@
                         </div>
 
                         <!-- Tanggal -->
-                        <label for="tgl_masuk" class="col-form-label col-sm-1">Tanggal</label>
+                        <label for="tanggal" class="col-form-label col-sm-1">Tanggal</label>
                         <div class="col-sm-5">
-                            <input type="text" name="tgl_masuk" id="tgl_masuk" class="form-control js-datepicker digits"
+                            <input type="text" name="tanggal" id="tanggal" class="form-control js-datepicker digits"
                                 placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 
-                        <!-- Harga -->
-                        <label for="harga" class="col-form-label col-sm-1">Harga</label>
+                        <!-- panjar -->
+                        <label for="panjar" class="col-form-label col-sm-1">Panjar</label>
                         <div class="col-sm-11">
-                            <input class="form-control form-control rupiah-number" name="harga" type="text"
-                                placeholder="Rp..." readonly>
+                            <input class="form-control form-control rupiah-number" name="panjar" type="text"
+                                placeholder="..." readonly>
+                        </div>
+                    </form><br>
+
+                    <!-- Rincian Detail -->
+                    {{-- Add Button --}}
+                    <button class="btn btn-primary add-btn">
+                        <span class="fa fa-plus"></span>
+                        <span> Tambah Biaya</span>
+                    </button><br><br>
+                    {{-- Table View --}}
+                    <div class="col-sm-12 col-lg-12 col-xl-12">
+                        <div class="table-responsive signal-table">
+                            <table id="table_lokasi" class="table table-hover" data-buttons-class="primary"
+                                data-toggle="table">
+                                <thead class="text-bold text-white text-uppercase text-center">
+                                    <tr>
+                                        <th class="f-light">No</th>
+                                        <th class="f-light">Jenis Biaya</th>
+                                        <th class="f-light">Tarif PJL</th>
+                                        <th class="f-light">Jumlah</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {{-- Modal detail --}}
+    <div class="modal fade" id="modal-detail" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Title</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form class="row g-2 form-detail" autocomplete="off">
+                        @csrf
+
+                        <input type="hidden" name="id">
+
+                        <!-- Lokasi  -->
+                        <label for="biaya" class="col-form-label col-sm-1">Biaya</label>
+                        <div class="col-sm-11">
+                            <select class="form-select form-control" id="biaya" name="biaya"
+                                data-placeholder="---- Pilih Salah Satu ----" required></select>
                         </div>
 
+                        <!-- harga  -->
+                        <label for="harga" class="col-form-label col-sm-1">Harga</label>
+                        <div class="col-sm-5">
+                            <input id="harga" class="form-control" name="harga" type="text" placeholder="Harga..." readonly
+                                ondblclick="onDblClick(this)">
+                        </div>
+
+                        <!-- Jumlah  -->
+                        <label for="jumlah" class="col-form-label col-sm-1">Jumlah</label>
+                        <div class="col-sm-5">
+                            <input class="form-control form-control" name="jumlah" type="number" placeholder="Jumlah..."
+                                required>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -136,6 +207,7 @@
             </div>
         </div>
     </div>
+
 
 @endsection
 

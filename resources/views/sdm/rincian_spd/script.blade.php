@@ -1,16 +1,45 @@
 <script type="text/javascript">
 
-     // With Placeholder
+    // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
         theme: "bootstrap-5",
-        dropdownParent: $("#modal-aset"),
+        dropdownParent: $("#modal-rincian"),
         allowClear: true
-
     });
 
     // Tabel
     var $tableRincian = $('#table_rincian');
+
+    // klik 2x readonly
+    function onDblClick(el) {
+        const element = $(el);
+        element.prop('readonly', !element.prop('readonly'));
+    }
+
+    // Open Modal Detail
+    $(document).on('click', '.add-btn', function () {
+        $('.form-detail').removeClass('was-validated');
+        $('#modal-detail').modal('show');
+        $('#modal-rincian').modal('hide');
+        $('.modal-title').text('Form Tambah Rincian Biaya');
+        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        $('input[name="id"]').val('');
+        $('input[name="harga"]').val('').prop('readonly', true);
+        $('input[name="jumlah"]').val('');
+
+        $('select[name="biaya"]').val('').trigger('change');
+
+        InitSelect2($("select[name='biaya']"), {
+            url: "{{ route('get-select-biaya') }}",
+            dropdownParent: $("#modal-detail")
+        });
+    });
+
+    $('#modal-detail').on('hidden.bs.modal', function () {
+        $('#modal-rincian').modal('show');
+    });
+
 
 
     // Save Asset
@@ -191,7 +220,39 @@
             $('.modal-title').text('Form Rincian');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
-            $('input[name="nama"]').val(row.nama);
+            $('input[name="no_surat"]').val(row.no_surat);
+            $('input[name="nama"]').val(row.nama_pegawai);
+            $('input[name="panjar"]').val(row.panjar ?? '').val('');
+            $('input[name="tanggal"]').val(row.tanggal ?? '').val('');
+            $('select[name="jenis"]').val(row.jenis ?? '').trigger('change');
+
+            if (row.id_menyetujui) {
+                InitSelect2($("select[name='id_menyetujui']"), {
+                    url: "{{ route('get-select-pegawai') }}",
+                    dropdownParent: $("#modal-rincian"),
+                    initialValue: row.id_menyetujui
+                });
+            } else {
+                InitSelect2($("select[name='id_menyetujui']"), {
+                    url: "{{ route('get-select-pegawai') }}",
+                    dropdownParent: $("#modal-rincian")
+                });
+                $('select[name="id_menyetujui"]').val('').trigger('change');
+            }
+
+            if (row.id_menyetujui) {
+                InitSelect2($("select[name='id_mengajukan']"), {
+                    url: "{{ route('get-select-pegawai') }}",
+                    dropdownParent: $("#modal-rincian"),
+                    initialValue: row.id_mengajukan
+                });
+            } else {
+                InitSelect2($("select[name='id_mengajukan']"), {
+                    url: "{{ route('get-select-pegawai') }}",
+                    dropdownParent: $("#modal-rincian")
+                });
+                $('select[name="id_mengajukan"]').val('').trigger('change');
+            }
         },
         'click .btn-tutup': function (e, value, row, index) {
             e.preventDefault();

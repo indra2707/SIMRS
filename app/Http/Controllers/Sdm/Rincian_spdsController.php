@@ -52,6 +52,10 @@ class Rincian_spdsController extends Controller
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
+                'jenis' => $value-> jenis,
+                'id_menyetujui' =>$value->id_menyetujui,
+                'id_mengajukan' =>$value->id_mengajukan,
+                'panjar' =>$value->panjar,
                 'no_surat' => $value->no_surat,
                 'nama_pegawai' => $value->nama_pegawai,
                 'tgl_awal' => Carbon::parse($value->tgl_awal)->format('d M Y'),

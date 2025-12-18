@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('jenis', ['Panjar', 'SP3'])->nullable();
             $table->enum('status', ['Draft', 'Close']);
             $table->decimal('panjar', 10, 0)->nullable();
+            $table->date('tanggal')->nullable();
             $table->timestamp('updated_at')->nullable();
             $table->string('updated_by', 100)->nullable();
             $table->timestamp('created_at')->useCurrent();
