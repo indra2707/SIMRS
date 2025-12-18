@@ -3,7 +3,7 @@
     var $table = $("#table_helpdesk");
 
     // Open Modal
-    $(document).on("click", ".add-btn", function () {
+    $(document).on("click", ".add-btn", function() {
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
@@ -15,9 +15,9 @@
     });
 
     // Save
-    $(document).on("click", ".save-btn", function () {
+    $(document).on("click", ".save-btn", function() {
         var forms = document.getElementsByClassName("form-helpdesk");
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -30,19 +30,19 @@
                     url: url,
                     dataType: "json",
                     data: $(".form-helpdesk").serialize(),
-                    beforeSend: function () {
+                    beforeSend: function() {
                         $(".save-btn")
                             .html(
                                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                             )
                             .attr("disabled", "disabled");
                     },
-                    complete: function () {
+                    complete: function() {
                         $(".save-btn")
                             .html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr("disabled");
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert("success", res.message);
                             $table.bootstrapTable("refresh");
@@ -52,7 +52,7 @@
                         $("#helpdesk-modal").modal("hide");
                         form.classList.remove("was-validated");
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         if (xhr.status == 400) {
                             Alert("error", xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
@@ -70,7 +70,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -97,13 +97,12 @@
             loadingTemplate: loadingTemplate,
             exportTypes: ["json", "csv", "txt", "excel"],
             url: "{{ route('user.helpdesk-views') }}",
-            columns: [
-                {
+            columns: [{
                     field: "id",
                     title: "ID",
                     sortable: true,
                     align: "center",
-                    formatter: function (value, row, index) {
+                    formatter: function(value, row, index) {
                         return index + 1;
                     },
                 },
@@ -117,7 +116,7 @@
                     title: "Tanggal",
                     sortable: true,
                     align: "center",
-                    formatter: function (value, row) {
+                    formatter: function(value, row) {
                         if (!value) return "-";
                         const date = new Date(value);
                         return date.toLocaleDateString("id-ID", {
@@ -132,7 +131,7 @@
                     title: "Status",
                     sortable: true,
                     align: "center",
-                    formatter: function (value, row) {
+                    formatter: function(value, row) {
                         let badgeClass = "";
                         switch (row.status) {
                             case "accept":
@@ -159,7 +158,7 @@
                     title: "Created At",
                     sortable: true,
                     align: "center",
-                    formatter: function (value, row) {
+                    formatter: function(value, row) {
                         if (!row.created_at) return "-";
                         const date = new Date(row.created_at);
                         return date.toLocaleString("id-ID", {
@@ -177,50 +176,44 @@
                     events: window.operateEvents,
                 },
             ],
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 if (xhr.status == 400) {
-                    $.notify(
-                        {
-                            icon: "fa fa-check",
-                            title: error,
-                            message: xhr.responseJSON.message,
+                    $.notify({
+                        icon: "fa fa-check",
+                        title: error,
+                        message: xhr.responseJSON.message,
+                    }, {
+                        type: "danger",
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: "animated fadeInDown",
+                            exit: "animated fadeOutUp",
                         },
-                        {
-                            type: "danger",
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: "animated fadeInDown",
-                                exit: "animated fadeOutUp",
-                            },
-                        }
-                    );
+                    });
                 } else if (xhr.status == 500) {
-                    $.notify(
-                        {
-                            icon: "icon-info-alt",
-                            title: "Error",
-                            message: "Silahkan hubungi IT Rumah Sakit!",
+                    $.notify({
+                        icon: "icon-info-alt",
+                        title: "Error",
+                        message: "Silahkan hubungi IT Rumah Sakit!",
+                    }, {
+                        type: "danger",
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: "animated fadeInDown",
+                            exit: "animated fadeOutUp",
                         },
-                        {
-                            type: "danger",
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: "animated fadeInDown",
-                                exit: "animated fadeOutUp",
-                            },
-                        }
-                    );
+                    });
                 }
             },
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             },
         });
@@ -243,7 +236,7 @@
 
     // Handle events button actions
     window.operateEvents = {
-        "click .btn-delete": function (e, value, row, index) {
+        "click .btn-delete": function(e, value, row, index) {
             var url = "{{ route('user.helpdesk-delete', ':id') }}";
             url = url.replace(":id", row.id);
             Swal.fire({
@@ -264,25 +257,39 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert("success", res.message);
                             } else {
                                 Alert("warnig", res.message);
                             }
                         },
-                    }).done(function () {
+                    }).done(function() {
                         $table.bootstrapTable("refresh");
                     });
                 }
             });
         },
     };
-    $(document).on("click", ".btn-chat", function () {
+    $(document).on("click", ".btn-chat", function() {
         var helpdeskId = $(this).data("helpdesk-id");
         if (!helpdeskId) return;
 
-        // loadChat(helpdeskId); // COMMENT dulu sementara
+        $("#chatOpponentName").text("Loading...");
+        $("#chatTypingStatus").text("");
+
+        $.ajax({
+            url: "/chat/opponent/" + helpdeskId,
+            type: "GET",
+            success: function(res) {
+                $("#chatOpponentFullName").text(res.nama_lengkap);
+                $("#chatOpponentUsername").text(res.username);
+            },
+            error: function() {
+                $("#chatOpponentName").text("Unknown");
+            }
+        });
+
         $("#chatModal").modal("show");
     });
     // Window operateChange Status
@@ -325,7 +332,7 @@
         broadcaster: "pusher",
         key: "local",
         wsHost: window.location.hostname,
-        wsPort: 6001, 
+        wsPort: 6001,
         forceTLS: false,
         encrypted: false,
         disableStats: true,
@@ -337,9 +344,8 @@
         (e) => {
             console.log("Helpdesk diupdate oleh admin:", e);
 
-            $.notify(
-                {
-                    message: `
+            $.notify({
+                message: `
                 <div class="d-flex align-items-start">
                     <i class="fa fa-info-circle text-white me-2 fs-5"></i>
                     <div>
@@ -350,16 +356,14 @@
                     </div>
                 </div>
             `,
-                },
-                {
-                    type: "primary", // ubah sesuai kebutuhan: info, warning, danger
-                    allow_dismiss: true,
-                    delay: 4000,
-                    showProgressbar: true,
-                    timer: 300,
-                    z_index: 1127,
-                }
-            );
+            }, {
+                type: "primary", // ubah sesuai kebutuhan: info, warning, danger
+                allow_dismiss: true,
+                delay: 4000,
+                showProgressbar: true,
+                timer: 300,
+                z_index: 1127,
+            });
 
             // Opsional: refresh tabel user
             $table.bootstrapTable("refresh");

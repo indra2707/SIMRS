@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Events\MessageSent;
@@ -42,7 +43,7 @@ class ChatController extends Controller
                 ->where('helpdesk_id', $helpdesk_id)
                 ->orderBy('created_at', 'asc')
                 ->get()
-                ->map(function($message) {
+                ->map(function ($message) {
                     return [
                         'id' => $message->id,
                         'helpdesk_id' => $message->helpdesk_id,
@@ -65,7 +66,6 @@ class ChatController extends Controller
             Log::info('✅ Messages loaded', ['count' => $messages->count()]);
 
             return response()->json($messages);
-
         } catch (\Exception $e) {
             Log::error('❌ Error loading messages', [
                 'error' => $e->getMessage(),
@@ -152,14 +152,12 @@ class ChatController extends Controller
                     'display_name' => $user->nama_lengkap ?? $user->username,
                 ]
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Validasi gagal',
                 'errors' => $e->errors()
             ], 422);
-
         } catch (\Exception $e) {
             Log::error('❌ Error sending message', [
                 'error' => $e->getMessage(),
@@ -171,5 +169,36 @@ class ChatController extends Controller
                 'message' => 'Gagal mengirim pesan'
             ], 500);
         }
+    }
+
+    public function getOpponentName($helpdeskId)
+    {
+        $opponent = Message::where('helpdesk_id', $helpdeskId)
+            ->where('user_id', '!=', auth()->id())
+            ->join('users', 'users.id', '=', 'messages.user_id')
+            ->select('users.username', 'users.nama_lengkap')
+            ->first();
+
+        // fallback jika belum ada pesan
+        if (!$opponent) {
+            $helpdesk = \App\Models\HelpDesk::with('user')->find($helpdeskId);
+
+            if ($helpdesk && $helpdesk->user) {
+                $opponent = (object) [
+                    'username' => $helpdesk->user->username,
+                    'nama_lengkap' => $helpdesk->user->nama_lengkap,
+                ];
+            } else {
+                $opponent = (object) [
+                    'username' => 'Unknown',
+                    'nama_lengkap' => '',
+                ];
+            }
+        }
+
+        return response()->json([
+            'username' => $opponent->username,
+            'nama_lengkap' => $opponent->nama_lengkap
+        ]);
     }
 }

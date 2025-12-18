@@ -115,8 +115,10 @@
                                             <div class="chat-header clearfix"><img class="rounded-circle"
                                                     src="{{ asset('assets/images/user/8.jpg') }}" alt="">
                                                 <div class="about">
-                                                    <div class="name">Kori Thomas  <span
-                                                            class="font-primary f-12">Typing...</span></div>
+                                                    <div class="name">
+                                                        <div id="chatOpponentFullName"></div>
+                                                        <small class="text-muted" id="chatOpponentUsername"></small>
+                                                    </div>
                                                     <div class="status">Last Seen 3:55 PM</div>
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
@@ -609,7 +611,7 @@
                 try {
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
-                        );
+                    );
                     audio.play().catch(function(e) {
                         console.log('🔇 Cannot play sound:', e);
                     });
