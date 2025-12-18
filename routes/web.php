@@ -73,6 +73,11 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     // USER CHAT
     Route::get('chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
     Route::post('chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
+    Route::get('/chat/{id}', [ChatController::class, 'openChat'])
+    ->middleware('auth');
+    Route::get('/chat/opponent-name/{helpdeskId}', [ChatController::class, 'getOpponentName'])->middleware('auth');
+
+
 });
 
 
