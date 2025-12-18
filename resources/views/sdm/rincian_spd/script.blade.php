@@ -230,7 +230,7 @@
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
-                            $('#modal-lokasi').modal('hide');
+                            $('#modal-detail').modal('hide');
                             $table_detail.bootstrapTable('refresh');
                         } else {
                             $.notify({

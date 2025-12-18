@@ -77,7 +77,7 @@ class Rincian_spdsController extends Controller
             'id_biaya' => $request->biaya,
             'no_surat' => $request->no_surat,
             'id_pegawai' => $request->id_pegawai,
-            'harga' => $request->harga,
+            'harga' => str_replace(['.', ','], '', $request->harga),
             'jumlah' => $request->jumlah,
             'created_by' =>Auth::user()->username,
             'created_at' =>now(),
