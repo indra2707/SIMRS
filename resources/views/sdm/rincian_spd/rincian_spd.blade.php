@@ -175,8 +175,9 @@
                         @csrf
 
                         <input type="hidden" name="id">
+                        <input type="hidden" name="no_surat">
 
-                        <!-- Lokasi  -->
+                        <!-- Biaya  -->
                         <label for="biaya" class="col-form-label col-sm-1">Biaya</label>
                         <div class="col-sm-11">
                             <select class="form-select form-control" id="biaya" name="biaya"
