@@ -74,7 +74,7 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     Route::get('chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
     Route::post('chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
     Route::get('/chat/{id}', [ChatController::class, 'openChat'])
-    ->middleware('auth');
+        ->middleware('auth');
     Route::get('/chat/opponent-name/{helpdeskId}', [ChatController::class, 'getOpponentName'])->middleware('auth');
 
 
@@ -282,6 +282,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/rincian_spd/update-status/{id}', [Rincian_spdsController::class, 'updateStatus'])->name('sdm.rincian_spd.update-status');
         Route::get('/rincian_spd/detail/{id}', [Rincian_spdsController::class, 'getDetailRincianbiaya'])->name('sdm.rincian_spd.detail');
         Route::put('/rincian_spd/update/{id}', [Rincian_spdsController::class, 'update'])->name('sdm.rincian_spd.update');
+
+        Route::post('/rincian_spd/store', [Rincian_spdsController::class, 'store'])->name('sdm.rincian_spd.create');
 
         // Pegawai
         Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');

@@ -135,7 +135,7 @@
                     {{-- Table View --}}
                     <div class="col-sm-12 col-lg-12 col-xl-12">
                         <div class="table-responsive signal-table">
-                            <table id="table_lokasi" class="table table-hover" data-buttons-class="primary"
+                            <table id="table_detail" class="table table-hover" data-buttons-class="primary"
                                 data-toggle="table">
                                 <thead class="text-bold text-white text-uppercase text-center">
                                     <tr>
@@ -176,6 +176,7 @@
 
                         <input type="hidden" name="id">
                         <input type="hidden" name="no_surat">
+                        <input type="hidden" name="id_pegawai">
 
                         <!-- Biaya  -->
                         <label for="biaya" class="col-form-label col-sm-1">Biaya</label>
@@ -202,7 +203,7 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
                         <span class="fa fa-times"></span> Batal</button>
-                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
+                    <button class="btn btn-primary save-detail" type="button"><span class="fa fa-check"></span>
                         Simpan</button>
                 </div>
             </div>

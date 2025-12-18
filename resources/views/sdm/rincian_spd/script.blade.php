@@ -10,6 +10,7 @@
 
     // Tabel
     var $tableRincian = $('#table_rincian');
+    var $table_detail = $('#table_detail');
 
     // klik 2x readonly
     function onDblClick(el) {
@@ -44,32 +45,7 @@
     });
 
 
-    // Open Modal Detail
-    $(document).on('click', '.add-btn', function () {
-        $('.form-detail').removeClass('was-validated');
-        $('#modal-detail').modal('show');
-        $('#modal-rincian').modal('hide');
-        $('.modal-title').text('Form Tambah Rincian Biaya');
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="id"]').val('');
-        $('input[name="harga"]').val('').prop('readonly', true);
-        $('input[name="jumlah"]').val('');
-
-        $('select[name="biaya"]').val('').trigger('change');
-
-        InitSelect2($("select[name='biaya']"), {
-            url: "{{ route('get-select-biaya') }}",
-            dropdownParent: $("#modal-detail")
-        });
-    });
-
-    $('#modal-detail').on('hidden.bs.modal', function () {
-        $('#modal-rincian').modal('show');
-    });
-
-
-
-    // Save Asset
+    // Save Detail biaya
     $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         var url = "{{ route('sdm.rincian_spd.update', ':id') }}";
@@ -219,6 +195,93 @@
         });
     }
 
+    //save rincian biaya spd
+    $(document).on('click', '.save-detail', function() {
+        var id = $('input[name="id"]').val();
+        if (id) {
+            var url = "{{ route('master-data.lokasi.update', ':id') }}";
+            url = url.replace(':id', id);
+            var type = "PUT";
+        } else {
+            var url = "{{ route('sdm.rincian_spd.create') }}";
+            var type = "POST";
+        }
+        var forms = document.getElementsByClassName('form-detail');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (!form.checkValidity()) {
+                form.querySelector(".form-control:invalid").focus();
+                event.preventDefault();
+                event.stopPropagation();
+            } else {
+                $.ajax({
+                    type: type,
+                    url: url,
+                    dataType: "json",
+                    data: $('.form-detail').serialize(),
+                    beforeSend: function() {
+                        $('.save-btn').html(
+                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                        ).attr('disabled', 'disabled');
+                    },
+                    complete: function() {
+                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
+                    },
+                    success: function(res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
+                            Alert('success', res.message);
+                            $('#modal-lokasi').modal('hide');
+                            $table_detail.bootstrapTable('refresh');
+                        } else {
+                            $.notify({
+                                icon: 'fa fa-check',
+                                title: 'Warning',
+                                message: res.message
+                            }, {
+                                type: 'warning',
+                                allow_dismiss: true,
+                                delay: 2000,
+                                showProgressbar: true,
+                                timer: 300,
+                                z_index: 1127,
+                                animate: {
+                                    enter: 'animated fadeInDown',
+                                    exit: 'animated fadeOutUp'
+                                },
+                            });
+                        form.classList.remove('was-validated');
+                    }
+                    },
+                });
+            }
+            form.classList.add('was-validated');
+        });
+    });
+
+
+    // Open Modal Detail
+    $(document).on('click', '.add-btn', function () {
+        $('.form-detail').removeClass('was-validated');
+        $('#modal-detail').modal('show');
+        $('#modal-rincian').modal('hide');
+        $('.modal-title').text('Form Tambah Rincian Biaya');
+        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+
+        $('input[name="id"]').val('');
+        $('input[name="harga"]').val('').prop('readonly', true);
+        $('input[name="jumlah"]').val('');
+        $('select[name="biaya"]').val('').trigger('change');
+
+        InitSelect2($("select[name='biaya']"), {
+            url: "{{ route('get-select-biaya') }}",
+            dropdownParent: $("#modal-detail")
+        });
+    });
+
+    $('#modal-detail').on('hidden.bs.modal', function () {
+        $('#modal-rincian').modal('show');
+    });
+
 
     function actionsFunctionLokasi(value, row, index) {
         return [
@@ -243,6 +306,7 @@
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="no_surat"]').val(row.no_surat);
+            $('input[name="id_pegawai"]').val(row.id_pegawai);
             $('input[name="nama"]').val(row.nama_pegawai);
             $('input[name="panjar"]').val(row.panjar ?? '').val('');
             $('input[name="tanggal"]').val(row.tanggal ?? '');

@@ -53,6 +53,7 @@ class Rincian_spdsController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'jenis' => $value->jenis,
+                'id_pegawai' => $value->id_pegawai,
                 'id_menyetujui' => $value->id_menyetujui,
                 'id_mengajukan' => $value->id_mengajukan,
                 'panjar' => $value->panjar,
@@ -69,7 +70,34 @@ class Rincian_spdsController extends Controller
         return response()->json($data, 200);
     }
 
-    //update spd detail
+    //simpan spd detail
+    public function store(Request $request)
+    {
+        $query = DB::table('tbl_rincian_spd')->insert([
+            'id_biaya' => $request->biaya,
+            'no_surat' => $request->no_surat,
+            'id_pegawai' => $request->id_pegawai,
+            'harga' => $request->harga,
+            'jumlah' => $request->jumlah,
+            'created_by' =>Auth::user()->username,
+            'created_at' =>now(),
+        ]);
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Ditambahkan.',
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'data' => [],
+            'message' => 'Data Gagal Ditambahkan.',
+        ], 400);
+    }
+
     // Update
     public function update(Request $request, $id)
     {
@@ -132,7 +160,7 @@ class Rincian_spdsController extends Controller
         }
 
         return response()->json([
-            'harga' => $biaya->harga_utama, // Mengambil harga
+            'harga' => number_format($biaya->harga_utama, 0, ',', '.'), // Mengambil harga
         ], 200);
     }
 
