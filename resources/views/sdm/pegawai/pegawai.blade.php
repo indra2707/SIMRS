@@ -281,9 +281,17 @@
                                 <h5 class="mb-3">Data Kepegawaian</h5>
                                 <div class="row">
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Golongan Upah</label>
-                                        <input class="form-control" name="golongan_upah">
+                                     <div class="col-md-4 mb-2">
+                                        <div class="mb-2">
+                                            <label for="golongan_upah">Golongan Upah</label>
+                                            <select class="form-select form-control select2" id="golongan_darah"
+                                                name="golongan_upah">
+                                                <option value=""></option>
+                                                <option value="harga_utama">Harga Utama</option>
+                                                <option value="harga_madya">Harga Madya</option>
+                                                <option value="harga_biasa">Harga Biasa</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="col-md-4 mb-2">
