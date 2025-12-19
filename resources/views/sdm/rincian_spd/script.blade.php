@@ -47,7 +47,9 @@
 
     // Save Detail biaya
     $(document).on('click', '.save-btn', function () {
-        var id = $('input[name="id"]').val();
+        var id = $('input[name="id"]').val('');
+        console.log('ID submit:', id); // DEBUG
+
         var url = "{{ route('sdm.rincian_spd.update', ':id') }}";
         url = url.replace(':id', id);
         var type = "PUT";
@@ -201,12 +203,13 @@
         if (!id_pegawai || !no_surat) return;
 
         $table_detail.bootstrapTable('destroy').bootstrapTable({
-            height: 400,
+            height: 300,
             locale: 'en-US',
             // search: true,
             // pagination: true,
             pageSize: 50,
             // showRefresh: true,
+            showFooter: true,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
 
@@ -249,19 +252,33 @@
                     field: 'total',
                     sortable: true,
                     align: 'right',
+                    footerFormatter: function (data) {
+                        let total = 0;
+
+                        data.forEach(function (row) {
+                            let harga = parseFloat(row.harga) || 0;
+                            let jumlah = parseFloat(row.jumlah) || 0;
+                            total += harga * jumlah;
+                        });
+
+                        return total.toLocaleString('id-ID');
+                    },
                     formatter: function (value, row, index) {
                         let harga = parseFloat(row.harga) || 0;
                         let jumlah = parseFloat(row.jumlah) || 0;
                         return (harga * jumlah).toLocaleString('id-ID');
                     }
                 },
-                // {
-                //     field: 'action',
-                //     title: 'Action',
-                //     align: 'center',
-                //     events: window.eventsDetail,
-                //     formatter: actionsFunctionLokasi
-                // }
+                {
+                    width: '100%',
+                    field: 'action',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    clickToSelect: false,
+                    events: window.eventsDetail,
+                    formatter: actionsFunctionDetail
+                },
             ],
 
             responseHandler: function (res) {
@@ -271,12 +288,49 @@
     }
 
 
+    //Mengambil data footer
+    function getTotalTable() {
+        let data = $('#table_detail').bootstrapTable('getData');
+        let total = 0;
+
+        data.forEach(function (row) {
+            let harga = parseFloat(row.harga) || 0;
+            let jumlah = parseFloat(row.jumlah) || 0;
+            total += harga * jumlah;
+        });
+
+        return total;
+    }
+
+    // format Rupiah
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID').format(angka);
+    }
+
+    // onclick select panjar
+    function checkAlert(evt) {
+        const panjarInput = document.getElementById('panjar');
+
+        if (evt.target.value === "Panjar") {
+            let total = getTotalTable();
+            panjarInput.value = formatRupiah(total);
+        } else {
+            panjarInput.value = '0';
+        }
+    }
+
+    //reload data panjar
+    $('#table_detail').on('load-success.bs.table', function () {
+        if ($('#jenis').val() === 'Panjar') {
+            $('#panjar').val(formatRupiah(getTotalTable()));
+        }
+    });
 
     //save rincian biaya spd
     $(document).on('click', '.save-detail', function () {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.lokasi.update', ':id') }}";
+            var url = "{{ route('sdm.rincian_spd.update_detail', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
@@ -359,20 +413,112 @@
         $('#modal-rincian').modal('show');
     });
 
+    //Action Detail
+    function actionsFunctionDetail(value, row1, index) {
+        return `
+        <div class="d-flex justify-content-center align-items-center gap-3">
+            <a class="btn-edit-detail" href="javascript:void(0)">
+                <i class="fa fa-edit text-primary"></i>
+            </a>
+            <a class="btn-delete-detail" href="javascript:void(0)">
+                <i class="fa fa-trash text-danger"></i>
+            </a>
+        </div>`;
+    }
 
+    //Format Rupiah
+    function formatRupiah(angka) {
+        if (!angka) return '';
+        return new Intl.NumberFormat('id-ID').format(angka);
+    }
+
+    //event button detail
+    window.eventsDetail = {
+        'click .btn-edit-detail': function (e, value, row1, index) {
+            $('.form-detail').removeClass('was-validated');
+            $('#modal-detail').modal('show');
+            $('#modal-rincian').modal('hide');
+            $('.modal-title').text('Form Edit Rincian Biaya');
+            $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+
+            $('input[name="no_surat"]').val(row1.no_surat);
+            $('input[name="id_pegawai"]').val(row1.id_pegawai);
+            $('input[name="id"]').val(row1.id_detail);
+            $('input[name="harga"]').val(formatRupiah(row1.harga)).prop('readonly', true);
+            $('input[name="jumlah"]').val(row1.jumlah);
+
+            InitSelect2($("select[name='biaya']"), {
+                url: "{{ route('get-select-biaya') }}",
+                dropdownParent: $("#modal-detail"),
+                initialValue: row1.id_biaya
+            });
+        },
+        'click .btn-delete-detail': function (e, value, row1, index) {
+            var url = "{{ route('sdm.rincian_spd.delete', ':id') }}";
+            url = url.replace(':id', row1.id_detail);
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Anda yakin ingin menghapus data ini?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (res, status, xhr) {
+                            if (xhr.status == 200 && res.success == true) {
+                                Alert('success', res.message);
+                            } else {
+                                Alert('warning', res.message);
+                            }
+                        }
+                    }).done(function () {
+                        $table_detail.bootstrapTable('refresh');
+                    });
+
+                }
+            })
+        }
+    }
+
+
+    //Action Rincian
     function actionsFunctionRincian(value, row, index) {
-        return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
-            '</button>',
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Tambah Biaya</a></a>',
-            '<a class="dropdown-item btn-prinr" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
-            '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-danger"></i> Close</a></a>',
-            '</div>',
-            '</div>',
-        ].join("");
+
+        if (row.status === 'Close') {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                '</button>',
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+                '<a class="dropdown-item btn-prinr" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                '</div>',
+                '</div>',
+            ].join("");
+        } else {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                '</button>',
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+                '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Tambah Biaya</a></a>',
+                '<a class="dropdown-item btn-prinr" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-danger"></i> Close</a></a>',
+                '</div>',
+                '</div>',
+            ].join("");
+        }
     }
 
     // Handle events button actions
@@ -464,9 +610,5 @@
             });
         }
     }
-
-    //detail view
-
-
 
 </script>

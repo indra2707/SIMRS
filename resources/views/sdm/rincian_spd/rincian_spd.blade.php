@@ -71,7 +71,7 @@
                     <form class="row g-2 form-rincian" autocomplete="off">
                         @csrf
 
-                        <input type="hidden" name="id">
+                        <input type="text" name="id">
 
                         <!-- Nomor Surat -->
                         <label for="no_surat" class="col-form-label col-sm-1">Nomor Surat</label>
@@ -104,7 +104,7 @@
                         <!-- Jenis -->
                         <label for="jenis" class="col-form-label col-sm-1">Jenis</label>
                         <div class="col-sm-5">
-                            <select class="form-select form-control select2" name="jenis" required>
+                            <select class="form-select form-control select2" name="jenis" onchange="checkAlert(event)" required>
                                 <option></option>
                                 <option value="Panjar">Panjar</option>
                                 <option value="SP3">SP3</option>
@@ -121,7 +121,7 @@
                         <!-- panjar -->
                         <label for="panjar" class="col-form-label col-sm-1">Panjar</label>
                         <div class="col-sm-11">
-                            <input class="form-control form-control rupiah-number" name="panjar" type="text"
+                            <input class="form-control form-control rupiah-number" id="panjar" name="panjar" type="text"
                                 placeholder="..." readonly>
                         </div>
                     </form><br>
@@ -144,7 +144,7 @@
                                         <th class="f-light">Harga</th>
                                         <th class="f-light">QTY</th>
                                         <th class="f-light">Total</th>
-                                        <th>Action</th>
+                                        <th class="f-light">Action</th>
                                     </tr>
                                 </thead>
                             </table>

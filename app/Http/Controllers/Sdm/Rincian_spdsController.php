@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Rincian_spdsController extends Controller
 {
-    // Index
+    //Index
     public function index()
     {
         $data = [
@@ -78,14 +78,13 @@ class Rincian_spdsController extends Controller
 
             ->select(
                 'tbl_rincian_spd.*',
-                'tbl_biaya_spd.nama as nama_biaya'
+                'tbl_biaya_spd.nama as nama_biaya', 
+                'tbl_rincian_spd.id as id_detail'
             )
 
             ->where('id_pegawai', $request->id_pegawai)
             ->where('no_surat', $request->no_surat)
             ->get();
-
-        
 
         return response()->json([
             'success' => true,
@@ -121,6 +120,36 @@ class Rincian_spdsController extends Controller
         ], 400);
     }
 
+    //update spd detail
+    public function update_detail(Request $request, $id)
+    {
+         $query = DB::table('tbl_rincian_spd')
+         ->where('id', $id)
+         ->update([
+            'id_biaya' => $request->biaya,
+            'no_surat' => $request->no_surat,
+            'id_pegawai' => $request->id_pegawai,
+            'harga' => str_replace(['.', ','], '', $request->harga),
+            'jumlah' => $request->jumlah,
+            'updated_by' => Auth::user()->username,
+            'updated_at' => now(),
+        ]);
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Ditambahkan.',
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'data' => [],
+            'message' => 'Data Gagal Ditambahkan.',
+        ], 400);
+    }
+
     // Update
     public function update(Request $request, $id)
     {
@@ -129,7 +158,7 @@ class Rincian_spdsController extends Controller
             'id_menyetujui' => $request->id_menyetujui,
             'jenis' => $request->jenis,
             'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
-            'panjar' => $request->panjar,
+            'panjar' => str_replace(['.', ','], '', $request->panjar),
             'created_by' => Auth::user()->username,
         ]);
         if ($query) {
@@ -185,6 +214,28 @@ class Rincian_spdsController extends Controller
         return response()->json([
             'harga' => number_format($biaya->harga_utama, 0, ',', '.'), // Mengambil harga
         ], 200);
+    }
+
+    //hapus detail
+    public function destroy($id)
+    {
+        $query = DB::table('tbl_rincian_spd')
+            ->where('id', $id)
+            ->delete();
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Dihapus.',
+            ], 200);
+        }
+
+        return response()->json([
+            'success' => false,
+            'data' => [],
+            'message' => 'Data Gagal Dihapus.',
+        ], 400);
     }
 
 }
