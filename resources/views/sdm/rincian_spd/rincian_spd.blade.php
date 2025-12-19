@@ -141,8 +141,9 @@
                                     <tr>
                                         <th class="f-light">No</th>
                                         <th class="f-light">Jenis Biaya</th>
-                                        <th class="f-light">Tarif PJL</th>
-                                        <th class="f-light">Jumlah</th>
+                                        <th class="f-light">Harga</th>
+                                        <th class="f-light">QTY</th>
+                                        <th class="f-light">Total</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

@@ -70,6 +70,29 @@ class Rincian_spdsController extends Controller
         return response()->json($data, 200);
     }
 
+    //view detail
+    public function views_detail(Request $request)
+    {
+        $data = DB::table('tbl_rincian_spd')
+            ->join('tbl_biaya_spd', 'tbl_biaya_spd.id', '=', 'tbl_rincian_spd.id_biaya')
+
+            ->select(
+                'tbl_rincian_spd.*',
+                'tbl_biaya_spd.nama as nama_biaya'
+            )
+
+            ->where('id_pegawai', $request->id_pegawai)
+            ->where('no_surat', $request->no_surat)
+            ->get();
+
+        
+
+        return response()->json([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
+
     //simpan spd detail
     public function store(Request $request)
     {
@@ -79,8 +102,8 @@ class Rincian_spdsController extends Controller
             'id_pegawai' => $request->id_pegawai,
             'harga' => str_replace(['.', ','], '', $request->harga),
             'jumlah' => $request->jumlah,
-            'created_by' =>Auth::user()->username,
-            'created_at' =>now(),
+            'created_by' => Auth::user()->username,
+            'created_at' => now(),
         ]);
 
         if ($query) {

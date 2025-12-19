@@ -109,7 +109,7 @@
     });
 
 
-    // Table Lokasi
+    // Table Rincian
     function initTable() {
         $tableRincian.bootstrapTable('destroy').bootstrapTable({
             height: 500,
@@ -184,8 +184,8 @@
                         valign: 'middle',
                         sortable: true,
                         clickToSelect: false,
-                        events: window.eventsLokasi,
-                        formatter: actionsFunctionLokasi
+                        events: window.eventsRincian,
+                        formatter: actionsFunctionRincian
                     }
                 ]
             ],
@@ -195,8 +195,85 @@
         });
     }
 
+
+    //Detail table
+    function initTable1(id_pegawai, no_surat) {
+        if (!id_pegawai || !no_surat) return;
+
+        $table_detail.bootstrapTable('destroy').bootstrapTable({
+            height: 400,
+            locale: 'en-US',
+            // search: true,
+            // pagination: true,
+            pageSize: 50,
+            // showRefresh: true,
+            icons: iconsFunction(),
+            loadingTemplate: loadingTemplate,
+
+            url: "{{ route('sdm.rincian_spd.view_detail') }}",
+            queryParams: function (params) {
+                return {
+                    id_pegawai: id_pegawai,
+                    no_surat: no_surat
+                };
+            },
+
+            columns: [
+                {
+                    field: 'no',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        return index + 1;
+                    }
+                },
+                {
+                    field: 'nama_biaya',
+                    sortable: true,
+                },
+                {
+                    field: 'harga',
+                    sortable: true,
+                    align: 'right',
+                    formatter: function (value, row, index) {
+                        if (!value) return;
+                        return parseInt(value).toLocaleString('id-ID');
+                    }
+                },
+                {
+                    field: 'jumlah',
+                    sortable: true,
+                    align: 'center'
+                },
+                {
+                    field: 'total',
+                    sortable: true,
+                    align: 'right',
+                    formatter: function (value, row, index) {
+                        let harga = parseFloat(row.harga) || 0;
+                        let jumlah = parseFloat(row.jumlah) || 0;
+                        return (harga * jumlah).toLocaleString('id-ID');
+                    }
+                },
+                // {
+                //     field: 'action',
+                //     title: 'Action',
+                //     align: 'center',
+                //     events: window.eventsDetail,
+                //     formatter: actionsFunctionLokasi
+                // }
+            ],
+
+            responseHandler: function (res) {
+                return res.data;
+            }
+        });
+    }
+
+
+
     //save rincian biaya spd
-    $(document).on('click', '.save-detail', function() {
+    $(document).on('click', '.save-detail', function () {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('master-data.lokasi.update', ':id') }}";
@@ -207,7 +284,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-detail');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -218,16 +295,16 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-detail').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-detail').modal('hide');
@@ -249,8 +326,8 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                        form.classList.remove('was-validated');
-                    }
+                            form.classList.remove('was-validated');
+                        }
                     },
                 });
             }
@@ -283,7 +360,7 @@
     });
 
 
-    function actionsFunctionLokasi(value, row, index) {
+    function actionsFunctionRincian(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
@@ -299,7 +376,7 @@
     }
 
     // Handle events button actions
-    window.eventsLokasi = {
+    window.eventsRincian = {
         'click .btn-edit': function (e, value, row, index) {
             $('#modal-rincian').modal('show');
             $('.modal-title').text('Form Rincian');
@@ -339,6 +416,10 @@
                 });
                 $('select[name="id_mengajukan"]').val('').trigger('change');
             }
+
+            // load table detail
+            initTable1(row.id_pegawai, row.no_surat);
+
         },
         'click .btn-tutup': function (e, value, row, index) {
             e.preventDefault();
@@ -383,5 +464,9 @@
             });
         }
     }
+
+    //detail view
+
+
 
 </script>
