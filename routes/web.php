@@ -1,46 +1,47 @@
 <?php
 
-use App\Http\Controllers\GlobalController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\Tarif\TarifTindakanController;
-use App\Http\Controllers\Tarif\SKTarifController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
-
-use App\Http\Controllers\User\UsersController;
-use App\Http\Controllers\User\RollsController;
-
-
-use App\Http\Controllers\MasterData\PasienController;
-use App\Http\Controllers\MasterData\Icd9Controller;
-use App\Http\Controllers\MasterData\CoaController;
-use App\Http\Controllers\MasterData\Icd10Controller;
-use App\Http\Controllers\MasterData\Jadwal_dokterController;
-use App\Http\Controllers\MasterData\SpesialisController;
-use App\Http\Controllers\MasterData\PenjaminController;
-use App\Http\Controllers\MasterData\PetugasController;
-use App\Http\Controllers\MasterData\Poli_obatController;
-use App\Http\Controllers\MasterData\Poli_tindakanController;
-use App\Http\Controllers\MasterData\PoliController;
-use App\Http\Controllers\MasterData\AsetController;
-use App\Http\Controllers\MasterData\KalibrasiController;
-use App\Http\Controllers\MasterData\LokasiController;
-use App\Http\Controllers\MasterData\KotaController;
-use App\Http\Controllers\MasterData\KondisiAsetController;
-use App\Http\Controllers\Tarif\HargaTindakanController;
-use App\Http\Controllers\MasterData\MutasiController;
-use App\http\Controllers\MasterData\KelompokAsetController;
-use App\Http\Controllers\MasterData\CustomerController;
-use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
-use App\Http\Controllers\User\HelpDeskController;
-use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\Sdm\SpdsController;
+
+use App\Http\Controllers\User\RollsController;
+use App\Http\Controllers\User\UsersController;
+
 
 use App\Http\Controllers\Sdm\PegawaiController;
-use App\Http\Controllers\Sdm\SpdsController;
+use App\Http\Controllers\Tarif\SKTarifController;
+use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\MasterData\CoaController;
+use App\Http\Controllers\MasterData\AsetController;
+use App\Http\Controllers\MasterData\Icd9Controller;
+use App\Http\Controllers\MasterData\KotaController;
+use App\Http\Controllers\MasterData\PoliController;
+use App\Http\Controllers\MasterData\BiayaController;
+use App\Http\Controllers\MasterData\Icd10Controller;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
+use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\MutasiController;
+use App\Http\Controllers\MasterData\PasienController;
+use App\Http\Controllers\MasterData\PetugasController;
+use App\Http\Controllers\MasterData\CustomerController;
+use App\Http\Controllers\MasterData\PenjaminController;
+use App\Http\Controllers\Tarif\HargaTindakanController;
+use App\Http\Controllers\Tarif\TarifTindakanController;
+use App\Http\Controllers\MasterData\KalibrasiController;
+use App\Http\Controllers\MasterData\Poli_obatController;
+use App\Http\Controllers\MasterData\SpesialisController;
+use App\Http\Controllers\MasterData\KondisiAsetController;
+use App\http\Controllers\MasterData\KelompokAsetController;
+
+use App\Http\Controllers\MasterData\Jadwal_dokterController;
+use App\Http\Controllers\MasterData\Poli_tindakanController;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
+use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -90,6 +91,14 @@ Route::group(['middleware' => 'loggedin'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('master-data')->group(function () {
+        // BIAYA
+        Route::get('/biaya', [BiayaController::class, 'index'])->name('master-data.biaya');
+        Route::get('/biaya/view', [BiayaController::class, 'views'])->name('master-data.biaya.view');
+        Route::post('/biaya/store', [BiayaController::class, 'store'])->name('master-data.biaya.create');
+        Route::post('/biaya/update-status/{id}', [BiayaController::class, 'updateStatus'])->name('master-data.biaya.update-status');
+        Route::put('/biaya/update/{id}', [BiayaController::class, 'update'])->name('master-data.biaya.update');
+        Route::delete('/biaya/delete/{id}', [BiayaController::class, 'destroy'])->name('master-data.biaya.delete');
+
         // ICD-9
         Route::get('/icd-9', [Icd9Controller::class, 'index'])->name('master-data.icd-9');
         Route::get('/icd-9/view', [Icd9Controller::class, 'views'])->name('master-data.icd-9.view');
