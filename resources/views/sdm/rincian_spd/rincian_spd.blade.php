@@ -189,7 +189,7 @@
                         <!-- harga  -->
                         <label for="harga" class="col-form-label col-sm-1">Harga</label>
                         <div class="col-sm-5">
-                            <input id="harga" class="form-control" name="harga" type="text" placeholder="Harga..." readonly
+                            <input id="harga" class="form-control rupiah-number" name="harga" type="text" placeholder="Harga..." readonly
                                 ondblclick="onDblClick(this)">
                         </div>
 

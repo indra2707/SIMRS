@@ -296,7 +296,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/rincian_spd/view_detail', [Rincian_spdsController::class, 'views_detail'])->name('sdm.rincian_spd.view_detail');
         Route::delete('/rincian_spd/delete/{id}', [Rincian_spdsController::class, 'destroy'])->name('sdm.rincian_spd.delete');
         Route::put('/rincian_spd/update-detail/{id}', [Rincian_spdsController::class, 'update_detail'])->name('sdm.rincian_spd.update_detail');
-        
+        Route::get('/rincian_spd/print/{id}', [Rincian_spdsController::class, 'print'])->name('sdm.rincian_spd.print');
+
 
         // Pegawai
         Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');

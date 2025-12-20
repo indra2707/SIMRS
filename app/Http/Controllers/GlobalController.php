@@ -246,7 +246,7 @@ class GlobalController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'text' => $value->nama,
-                'harga' => number_format($value->harga_utama, 0, ',', '.'), // ✅ FIX
+                'harga' =>'Rp'. number_format($value->harga_utama, 0, '.', ','),
             ];
         }
 

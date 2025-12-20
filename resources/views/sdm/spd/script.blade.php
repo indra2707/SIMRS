@@ -799,8 +799,6 @@
                 });
             });
         },
-
-
         'click .btn-print': function(e, value, row, index) {
             var url = "{{ route('sdm.spd.print', ':id') }}";
             url = url.replace(':id', row.id);

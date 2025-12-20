@@ -518,7 +518,7 @@
                 '<i class="icon-more-alt"></i>',
                 '</button>',
                 '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-                '<a class="dropdown-item btn-prinr" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
                 '</div>',
                 '</div>',
             ].join("");
@@ -530,7 +530,7 @@
                 '</button>',
                 '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
                 '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Tambah Biaya</a></a>',
-                '<a class="dropdown-item btn-prinr" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
                 '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-danger"></i> Close</a></a>',
                 '</div>',
                 '</div>',
@@ -625,6 +625,11 @@
                     }
                 });
             });
+        },
+        'click .btn-print': function(e, value, row, index) {
+            var url = "{{ route('sdm.rincian_spd.print', ':id') }}";
+            url = url.replace(':id', row.id);
+            window.open(url, '_blank');
         }
     }
 

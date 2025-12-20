@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB as Db;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Rincian_spdsController extends Controller
 {
@@ -78,7 +80,7 @@ class Rincian_spdsController extends Controller
 
             ->select(
                 'tbl_rincian_spd.*',
-                'tbl_biaya_spd.nama as nama_biaya', 
+                'tbl_biaya_spd.nama as nama_biaya',
                 'tbl_rincian_spd.id as id_detail'
             )
 
@@ -99,7 +101,7 @@ class Rincian_spdsController extends Controller
             'id_biaya' => $request->biaya,
             'no_surat' => $request->no_surat,
             'id_pegawai' => $request->id_pegawai,
-            'harga' => str_replace(['.', ','], '', $request->harga),
+            'harga' => (int) preg_replace('/[^0-9]/', '', $request->harga),
             'jumlah' => $request->jumlah,
             'created_by' => Auth::user()->username,
             'created_at' => now(),
@@ -123,17 +125,17 @@ class Rincian_spdsController extends Controller
     //update spd detail
     public function update_detail(Request $request, $id)
     {
-         $query = DB::table('tbl_rincian_spd')
-         ->where('id', $id)
-         ->update([
-            'id_biaya' => $request->biaya,
-            'no_surat' => $request->no_surat,
-            'id_pegawai' => $request->id_pegawai,
-            'harga' => str_replace(['.', ','], '', $request->harga),
-            'jumlah' => $request->jumlah,
-            'updated_by' => Auth::user()->username,
-            'updated_at' => now(),
-        ]);
+        $query = DB::table('tbl_rincian_spd')
+            ->where('id', $id)
+            ->update([
+                'id_biaya' => $request->biaya,
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'harga' => (int) preg_replace('/[^0-9]/', '', $request->harga),
+                'jumlah' => $request->jumlah,
+                'updated_by' => Auth::user()->username,
+                'updated_at' => now(),
+            ]);
 
         if ($query) {
             return response()->json([
@@ -238,4 +240,66 @@ class Rincian_spdsController extends Controller
         ], 400);
     }
 
+    // Print
+    public function print($id)
+    {
+        // Ambil data SPD header
+        // $spd = DB::table('tbl_spds')
+        //     ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
+        //     ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
+        //     ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+        //     ->leftJoin('pegawai as pegawai2', 'pegawai2.id', '=', 'tbl_spds.id_pimpinan')
+        //     ->select(
+        //         'tbl_spds.*',
+        //         'pegawai.nama_pekerja as nama_pegawai',
+        //         'pegawai.nomor_pekerja as nomor_pekerja',
+        //         'pegawai.jabatan as jabatan_pegawai', // Tambahkan jabatan
+        //         'tbl_kotas.nama as nama_kota1',
+        //         'kota2.nama as nama_kota2',
+        //         'pegawai2.nama_pekerja as nama_pimpinan'
+        //     )
+        //     ->where('tbl_spds.id', $id)
+        //     ->first();
+
+        // if (!$spd) {
+        //     abort(404, 'SPD tidak ditemukan.');
+        // }
+
+        // // ==========================================
+        // // TAMBAHKAN: Ambil data pengikut
+        // // ==========================================
+        // $pengikut = DB::table('tbl_spd_details')
+        //     ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+        //     ->where('tbl_spd_details.no_surat', $spd->no_surat)
+        //     ->select(
+        //         'tbl_spd_details.id',
+        //         'pegawai.nama_pekerja as nama_pengikut',
+        //         'pegawai.nomor_pekerja as nopek',
+        //         'pegawai.jabatan as jabatan'
+        //     )
+        //     ->get();
+
+        // $data = [
+        //     'title' => 'Print Preview SPD',
+        //     'spd' => $spd,
+        //     'pengikut' => $pengikut // Kirim data pengikut ke view
+        // ];
+
+        $html = view('sdm.rincian_spd.print', )->render();
+
+        // Optional: setting Dompdf
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $filename = preg_replace('/[^A-Za-z0-9\-_.]/', '-', 'test') . '.pdf';
+
+        return $dompdf->stream($filename, [
+            'Attachment' => false,
+        ]);
+    }
 }
