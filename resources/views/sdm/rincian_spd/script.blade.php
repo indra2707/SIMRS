@@ -446,7 +446,9 @@
     //Format Rupiah
     function formatRupiah(angka) {
         if (!angka) return '';
-        return new Intl.NumberFormat('id-ID').format(angka);
+        return 'Rp ' + parseInt(angka, 10)
+            .toLocaleString('id-ID')
+            .replace(/\./g, ',');
     }
 
     //event button detail
@@ -626,7 +628,7 @@
                 });
             });
         },
-        'click .btn-print': function(e, value, row, index) {
+        'click .btn-print': function (e, value, row, index) {
             var url = "{{ route('sdm.rincian_spd.print', ':id') }}";
             url = url.replace(':id', row.id);
             window.open(url, '_blank');
