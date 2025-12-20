@@ -47,8 +47,8 @@
 
     // Save Detail biaya
     $(document).on('click', '.save-btn', function () {
-        var id = $('input[name="id"]').val('');
-        console.log('ID submit:', id); // DEBUG
+        var id = $('input[name="id"]').val(); // GET value, jangan SET
+        console.log('ID submit:', id);
 
         var url = "{{ route('sdm.rincian_spd.update', ':id') }}";
         url = url.replace(':id', id);
@@ -296,7 +296,7 @@
         data.forEach(function (row) {
             let harga = parseFloat(row.harga) || 0;
             let jumlah = parseFloat(row.jumlah) || 0;
-            total += harga * jumlah;
+            total += harga * jumlah * 80 / 100;
         });
 
         return total;
@@ -326,9 +326,20 @@
         }
     });
 
+    //reload otomatis input panjar 
+    function updatePanjar() {
+        const panjarInput = document.getElementById('panjar');
+        const selectPanjar = document.getElementById('jenis'); // sesuaikan ID select
+
+        if (selectPanjar && selectPanjar.value === "Panjar") {
+            let total = getTotalTable();
+            panjarInput.value = formatRupiah(total);
+        }
+    }
+
     //save rincian biaya spd
     $(document).on('click', '.save-detail', function () {
-        var id = $('input[name="id"]').val();
+        var id = $('input[name="id_detail"]').val();
         if (id) {
             var url = "{{ route('sdm.rincian_spd.update_detail', ':id') }}";
             url = url.replace(':id', id);
@@ -350,12 +361,12 @@
                     dataType: "json",
                     data: $('.form-detail').serialize(),
                     beforeSend: function () {
-                        $('.save-btn').html(
+                        $('.save-detail').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
                     complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                        $('.save-detail').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
                     success: function (res, status, xhr) {
@@ -363,6 +374,12 @@
                             Alert('success', res.message);
                             $('#modal-detail').modal('hide');
                             $table_detail.bootstrapTable('refresh');
+
+                            // auto hitung ulang panjar
+                            setTimeout(function () {
+                                updatePanjar();
+                            }, 300);
+
                         } else {
                             $.notify({
                                 icon: 'fa fa-check',
@@ -398,7 +415,7 @@
         $('.modal-title').text('Form Tambah Rincian Biaya');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
 
-        $('input[name="id"]').val('');
+        $('input[name="id_detail"]').val('');
         $('input[name="harga"]').val('').prop('readonly', true);
         $('input[name="jumlah"]').val('');
         $('select[name="biaya"]').val('').trigger('change');
@@ -443,7 +460,7 @@
 
             $('input[name="no_surat"]').val(row1.no_surat);
             $('input[name="id_pegawai"]').val(row1.id_pegawai);
-            $('input[name="id"]').val(row1.id_detail);
+            $('input[name="id_detail"]').val(row1.id_detail);
             $('input[name="harga"]').val(formatRupiah(row1.harga)).prop('readonly', true);
             $('input[name="jumlah"]').val(row1.jumlah);
 

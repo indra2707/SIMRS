@@ -71,7 +71,7 @@
                     <form class="row g-2 form-rincian" autocomplete="off">
                         @csrf
 
-                        <input type="text" name="id">
+                        <input type="hidden" name="id">
 
                         <!-- Nomor Surat -->
                         <label for="no_surat" class="col-form-label col-sm-1">Nomor Surat</label>
@@ -104,7 +104,7 @@
                         <!-- Jenis -->
                         <label for="jenis" class="col-form-label col-sm-1">Jenis</label>
                         <div class="col-sm-5">
-                            <select class="form-select form-control select2" name="jenis" onchange="checkAlert(event)" required>
+                            <select class="form-select form-control select2" id="jenis" name="jenis" onchange="checkAlert(event)" required>
                                 <option></option>
                                 <option value="Panjar">Panjar</option>
                                 <option value="SP3">SP3</option>
@@ -175,7 +175,7 @@
                     <form class="row g-2 form-detail" autocomplete="off">
                         @csrf
 
-                        <input type="hidden" name="id">
+                        <input type="hidden" name="id_detail">
                         <input type="hidden" name="no_surat">
                         <input type="hidden" name="id_pegawai">
 
