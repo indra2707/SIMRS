@@ -10,6 +10,9 @@
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="nama"]').val('');
+        $('input[name="harga_utama"]').val('');
+        $('input[name="harga_madya"]').val('');
+        $('input[name="harga_biasa"]').val('');
         $('input[name="status"]').prop('checked', true);
     });
 

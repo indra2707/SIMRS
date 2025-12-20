@@ -54,56 +54,56 @@
     </div>
 
     {{-- Modal Form Biaya --}}
-    <div class="modal fade" id="modal-biaya" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal fade" id="modal-biaya" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Title</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <form class="form-wizard form-biaya" novalidate="" autocomplete="off">
+                    <form class="row g-2 form-biaya" autocomplete="off">
                         @csrf
-                        {{-- Hidden Input --}}
-                        <div class="mb-2 row">
-                            <input type="hidden" name="id">
-                        </div>
-                        {{-- Nama --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Nama Biaya</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control" name="nama" type="text"
-                                    placeholder="Nama biaya..." required>
-                            </div>
-                        </div>
-                        {{-- Nama --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama">Harga</label>
-                            <div class="col-sm-3">
-                                <input class="form-control form-control" name="harga_utama" type="number"
-                                    placeholder="Harga Utama..." required>
-                            </div>
-                            <div class="col-sm-3">
-                                <input class="form-control form-control" name="harga_madya" type="number"
-                                    placeholder="Harga Madya..." required>
-                            </div>
-                            <div class="col-sm-3">
-                                <input class="form-control form-control" name="harga_biasa" type="number"
-                                    placeholder="Harga Biasa..." required>
-                            </div>
+                        <input type="hidden" name="id">
+
+                        <!-- Biaya  -->
+                        <label for="nama" class="col-form-label col-sm-1">Nama Biaya</label>
+                        <div class="col-sm-11">
+                            <input class="form-control form-control" name="nama" type="text" placeholder="Nama Biaya..."
+                                required>
                         </div>
 
-                        {{-- Status --}}
-                        <div class="media mb-2">
-                            <label class="col-sm-2 col-form-label m-r-10">Status</label>
-                            <div class="media-body switch-sm icon-state">
-                                <label class="switch">
-                                    <input class="form-control" name="status" type="checkbox" checked>
-                                    <span class="switch-state"></span>
-                                </label>
-                            </div>
+                        <!-- harga Utama -->
+                        <label for="harga_utama" class="col-form-label col-sm-1">Harga utama</label>
+                        <div class="col-sm-3">
+                            <input id="harga_utama" class="form-control rupiah-number" name="harga_utama" type="text"
+                                placeholder="Rp..." required>
                         </div>
+
+                        <!-- harga Utama -->
+                        <label for="harga_madya" class="col-form-label col-sm-1">Harga Madya</label>
+                        <div class="col-sm-3">
+                            <input id="harga_madya" class="form-control rupiah-number" name="harga_madya" type="text"
+                                placeholder="Rp..." required>
+                        </div>
+
+                        <!-- harga Utama -->
+                        <label for="harga_biasa" class="col-form-label col-sm-1">Harga Biasa</label>
+                        <div class="col-sm-3">
+                            <input id="harga_biasa" class="form-control rupiah-number" name="harga_biasa" type="text"
+                                placeholder="Rp..." required>
+                        </div>
+
+                        <!-- Status -->
+                        <label for="status" class="col-form-label col-sm-1">Status</label>
+                        <div class="col-sm-3 switch-sm icon-state">
+                            <label class="switch">
+                                <input class="form-control" name="status" type="checkbox" checked>
+                                <span class="switch-state"></span>
+                            </label>
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">

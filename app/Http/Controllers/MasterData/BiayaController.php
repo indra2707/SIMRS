@@ -5,10 +5,11 @@ namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use App\Models\MaterData\Biaya;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BiayaController extends Controller
 {
-     public function index()
+    public function index()
     {
         $data = [
             'title' => 'Biaya SPD',
@@ -18,31 +19,33 @@ class BiayaController extends Controller
         return view('master-data.biayaSpd.biaya', $data);
     }
 
-      public function views()
+    public function views()
     {
         $query = Biaya::all();
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id'        => $value->id,
-                'nama'      => $value->nama,
-                'harga_utama'    => $value->harga_utama,
-                'harga_madya'    => $value->harga_madya,
-                'harga_biasa'    => $value->harga_biasa,
-                'status'    => $value->status,
+                'id' => $value->id,
+                'nama' => $value->nama,
+                'harga_utama' => 'Rp ' . number_format($value->harga_utama, 0, '.', ','),
+                'harga_madya' => 'Rp ' . number_format($value->harga_madya, 0, '.', ','),
+                'harga_biasa' => 'Rp ' . number_format($value->harga_biasa, 0, '.', ','),
+                'status' => $value->status,
             ];
         }
         return response()->json($data, 200);
     }
 
-    public function store(Request $request)  {
+    public function store(Request $request)
+    {
 
         $query = Biaya::create([
-            'nama'      => $request->nama,
-            'harga_utama'    => $request->harga_utama,
-            'harga_madya'    => $request->harga_madya,
-            'harga_biasa'    => $request->harga_biasa,
-            'status'    => $request->status == 'on' ? '1' : '0',
+            'nama' => $request->nama,
+            'harga_utama' => preg_replace('/[^0-9]/', '', $request->harga_utama),
+            'harga_madya' => preg_replace('/[^0-9]/', '', $request->harga_madya),
+            'harga_biasa' => preg_replace('/[^0-9]/', '', $request->harga_biasa),
+            'status' => $request->status == 'on' ? '1' : '0',
+            'created_by' => Auth::user()->username,
         ]);
 
         if ($query) {
@@ -60,14 +63,15 @@ class BiayaController extends Controller
         }
     }
 
-    public function update(Request $request, $id)  {
-
+    public function update(Request $request, $id)
+    {
         $query = Biaya::where('id', $id)->update([
-            'nama'      => $request->nama,
-            'harga_utama'    => $request->harga_utama,
-            'harga_madya'    => $request->harga_madya,
-            'harga_biasa'    => $request->harga_biasa,
-            'harga_biasa'    => $request->harga_biasa,
+            'nama' => $request->nama,
+            'harga_utama' => preg_replace('/[^0-9]/', '', $request->harga_utama),
+            'harga_madya' => preg_replace('/[^0-9]/', '', $request->harga_madya),
+            'harga_biasa' => preg_replace('/[^0-9]/', '', $request->harga_biasa),
+            'updated_by' => Auth::user()->username,
+            // 'status' => $request->status,
         ]);
 
         if ($query) {
@@ -85,10 +89,11 @@ class BiayaController extends Controller
         }
     }
 
-    public function updateStatus(Request $request, $id)  {
+    public function updateStatus(Request $request, $id)
+    {
 
         $query = Biaya::where('id', $id)->update([
-            'status'    => $request->status,
+            'status' => $request->status,
         ]);
 
         if ($query) {
@@ -106,7 +111,8 @@ class BiayaController extends Controller
         }
     }
 
-    public function destroy($id)  {
+    public function destroy($id)
+    {
         $query = Biaya::where('id', $id)->delete();
         if ($query) {
             return response()->json([

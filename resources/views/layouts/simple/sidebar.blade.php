@@ -129,7 +129,6 @@
                                     <li><a href="{{ route('master-data.poli') }}">Poliklinik</a></li>
                                     <li><a href="{{ route('master-data.jadwal-dokter') }}">Jadwal Dokter</a></li>
                                     <li><a href="{{ route('master-data.penjamin') }}">Penjamin</a></li>
-                                    <li><a href="{{ route('master-data.biaya') }}">Biaya SPD</a></li>
                                 @endif
                                 @if (in_array('Asset & Inventaris', $aksesMenu))
                                     <li><a href="{{ route('master-data.aset') }}">Asset & Inventaris</a></li>
@@ -148,6 +147,9 @@
                                 @endif
                                 @if (in_array('Kota', $aksesMenu))
                                     <li><a href="{{ route('master-data.kota') }}">Kota</a></li>
+                                @endif
+                                 @if (in_array('Biaya SPD', $aksesMenu))
+                                    <li><a href="{{ route('master-data.biaya') }}">Biaya SPD</a></li>
                                 @endif
                             </ul>
                         </li>

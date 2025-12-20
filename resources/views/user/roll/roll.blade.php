@@ -203,6 +203,8 @@
                                                 Vendor</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Kota">
                                                 Kota</label></li>
+                                         <li><label><input type="checkbox" name="permissions[]" value="Biaya SPD">
+                                                Biaya SPD</label></li>
                                     </ul>
                                 </li>
 
