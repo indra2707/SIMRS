@@ -160,7 +160,7 @@ class Rincian_spdsController extends Controller
             'id_menyetujui' => $request->id_menyetujui,
             'jenis' => $request->jenis,
             'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d'),
-            'panjar' => str_replace(['.', ','], '', $request->panjar),
+            'panjar' => (int) preg_replace('/[^\d]/', '', $request->panjar),
             'created_by' => Auth::user()->username,
         ]);
         if ($query) {
@@ -241,53 +241,56 @@ class Rincian_spdsController extends Controller
     }
 
     // Print
-    public function print($id)
+    public function print(Request $request, $id)
     {
-        // Ambil data SPD header
-        // $spd = DB::table('tbl_spds')
-        //     ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
-        //     ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
-        //     ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
-        //     ->leftJoin('pegawai as pegawai2', 'pegawai2.id', '=', 'tbl_spds.id_pimpinan')
-        //     ->select(
-        //         'tbl_spds.*',
-        //         'pegawai.nama_pekerja as nama_pegawai',
-        //         'pegawai.nomor_pekerja as nomor_pekerja',
-        //         'pegawai.jabatan as jabatan_pegawai', // Tambahkan jabatan
-        //         'tbl_kotas.nama as nama_kota1',
-        //         'kota2.nama as nama_kota2',
-        //         'pegawai2.nama_pekerja as nama_pimpinan'
-        //     )
-        //     ->where('tbl_spds.id', $id)
-        //     ->first();
+        $rincian = DB::table('tbl_spd_details')
+            ->join('tbl_spds', 'tbl_spds.no_surat', '=', 'tbl_spd_details.no_surat')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+            ->join('pegawai as mengajukan', 'mengajukan.id', '=', 'tbl_spd_details.id_mengajukan')
+            ->join('pegawai as menyetujui', 'menyetujui.id', '=', 'tbl_spd_details.id_menyetujui')
+            ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
+            ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+            ->select(
+                'tbl_spd_details.*',
+                'pegawai.nama_pekerja as nama_pegawai',
+                'pegawai.nomor_pekerja as nomor_pekerja',
+                'tbl_spds.tgl_awal',
+                'tbl_spds.tgl_akhir',
+                'tbl_spds.pelaksanaan',
+                'tbl_spds.status as status_spd',
+                'tbl_kotas.nama as nama_kota1',
+                'kota2.nama as nama_kota2',
+                'mengajukan.nama_pekerja as nama_mengajukan',
+                'menyetujui.nama_pekerja as nama_menyetujui'
+            )
+            ->where('tbl_spd_details.id', $id)
+            ->where('tbl_spd_details.no_surat', $request->no_surat)
+            ->where('tbl_spd_details.id_pegawai', $request->id_pegawai)
+            ->first();
 
-        // if (!$spd) {
-        //     abort(404, 'SPD tidak ditemukan.');
-        // }
+        if (!$rincian) {
+            abort(404, 'SPD tidak ditemukan.');
+        }
 
-        // // ==========================================
-        // // TAMBAHKAN: Ambil data pengikut
-        // // ==========================================
-        // $pengikut = DB::table('tbl_spd_details')
-        //     ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
-        //     ->where('tbl_spd_details.no_surat', $spd->no_surat)
-        //     ->select(
-        //         'tbl_spd_details.id',
-        //         'pegawai.nama_pekerja as nama_pengikut',
-        //         'pegawai.nomor_pekerja as nopek',
-        //         'pegawai.jabatan as jabatan'
-        //     )
-        //     ->get();
+        // DATA RINCIAN BIAYA (MULTI DATA)
+        $details = DB::table('tbl_rincian_spd')
+            ->join('tbl_biaya_spd', 'tbl_biaya_spd.id', '=', 'tbl_rincian_spd.id_biaya')
+            ->where('tbl_rincian_spd.id_pegawai', $rincian->id_pegawai)
+            ->where('tbl_rincian_spd.no_surat', $rincian->no_surat)
+            ->select(
+                'tbl_rincian_spd.*',
+                'tbl_biaya_spd.nama as nama_biaya'
+            )
+            ->get();
 
-        // $data = [
-        //     'title' => 'Print Preview SPD',
-        //     'spd' => $spd,
-        //     'pengikut' => $pengikut // Kirim data pengikut ke view
-        // ];
+        // RENDER VIEW KE HTML
+        $html = view('sdm.rincian_spd.print', [
+            'title' => 'Print Preview SPD',
+            'rincian' => $rincian,
+            'details' => $details,
+        ])->render();
 
-        $html = view('sdm.rincian_spd.print', )->render();
-
-        // Optional: setting Dompdf
+        // DOMPDF
         $options = new Options();
         $options->set('isRemoteEnabled', true);
 
@@ -296,10 +299,11 @@ class Rincian_spdsController extends Controller
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
-        $filename = preg_replace('/[^A-Za-z0-9\-_.]/', '-', 'test') . '.pdf';
+        $filename = 'SPD-' . $rincian->no_surat . '.pdf';
 
         return $dompdf->stream($filename, [
-            'Attachment' => false,
+            'Attachment' => false, // preview di browser
         ]);
     }
+
 }

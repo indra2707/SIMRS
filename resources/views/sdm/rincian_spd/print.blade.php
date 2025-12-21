@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
-    <title>Panjar Perjalanan Dinas</title>
     <style>
+        /* @page {
+            margin: 100px;
+        } */
+
+        html,
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 50px;
+        }
+
         body {
             font-family: Arial, Helvetica, sans-serif;
             font-size: 12px;
             line-height: 1.5;
+            background-image: url("data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/images/ihc/bingkai_ihc.png'))) }}");
+            background-size: 98% 100%;
+            background-repeat: no-repeat;
+            background-position: right 0px;
+            background-attachment: fixed;
         }
 
         .title {
             text-align: center;
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 20px;
+            font-weight: 10px;
+            letter-spacing: 0px;
+            margin-bottom: 30px;
         }
 
         .section {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         table {
@@ -35,6 +51,7 @@
         .table-biaya td {
             border: 1px solid #000;
             padding: 5px;
+            height: 0px;
         }
 
         .table-biaya th {
@@ -59,10 +76,19 @@
         }
     </style>
 </head>
+
 <body>
+    @php
+        // $pathPertamedika = public_path('assets/images/ihc/pertamedika.png');
+        // $logoPertamedika = base64_encode(file_get_contents($pathPertamedika));
+        $pathText = public_path('assets/images/ihc/logo_doc.png');
+        $logoText = base64_encode(file_get_contents($pathText));
+    @endphp
+
+    <img src="data:image/png;base64,{{ $logoText }}" style="width:180px;"><br><br>
 
     <div class="title">
-        PANJAR PERJALANAN DINAS DALAM NEGERI
+        <h2>PANJAR PERJALANAN DINAS DALAM NEGERI </h2>
     </div>
 
     <div class="section">
@@ -70,7 +96,7 @@
             <tr>
                 <td width="15%">Kepada</td>
                 <td width="2%">:</td>
-                <td>Vice Director Finance</td>
+                <td><b>Vice Director Finance</b></td>
             </tr>
         </table>
     </div>
@@ -83,26 +109,25 @@
         <tr>
             <td width="20%">Nomor Pekerja</td>
             <td width="2%">:</td>
-            <td> Test </td>
+            <td> {{ $rincian->nomor_pekerja }} </td>
         </tr>
         <tr>
             <td>Nama / Jabatan</td>
             <td>:</td>
-            <td>Test</td>
+            <td>{{ $rincian->nama_pegawai }}</td>
         </tr>
         <tr>
-            <td>Dalam Rangka</td>
+            <td>Tanggal</td>
             <td>:</td>
-            <td>
-               Test
-                s/d
-                Test
+            <td> {{ \Carbon\Carbon::parse($rincian->tgl_awal)->translatedFormat('d F Y') }}
+                s.d
+                {{ \Carbon\Carbon::parse($rincian->tgl_akhir)->translatedFormat('d F Y') }}
             </td>
         </tr>
         <tr>
             <td>Daerah Asal / Tujuan</td>
             <td>:</td>
-            <td>Test</td>
+            <td>{{ $rincian->nama_kota1 }} / {{ $rincian->nama_kota2 }}</td>
         </tr>
     </table>
 
@@ -142,14 +167,17 @@
             </tr>
         </tbody>
     </table>
-        <div class="section">
+    <div class="section">
+        @if ($rincian->jenis === 'Panjar')
             Pertanggungjawaban paling lambat diserahkan ke SDM,
             2 minggu setelah pelaksanaan perjalanan dinas.
             Panjar diberikan maksimal 80%.
-        </div>
+        @endif
+
+    </div>
 
     <div class="section text-right">
-        Makassar, Test
+        Makassar, {{ \Carbon\Carbon::parse($rincian->tanggal)->translatedFormat('d F Y') }}
     </div>
 
     <table class="signature">
@@ -157,18 +185,17 @@
             <td width="60%">
                 Menyetujui,<br>
                 RSOJ Pertamina Royal Biringkanaya<br>
-                Test<br><br>
-                <img src="" width="75"><br>
-                Test
+                <b>Direktur</b><br><br><br><br><br>
+                <b>{{ $rincian->nama_menyetujui }}</b>
             </td>
             <td width="40%">
                 Yang Mengajukan,<br>
-                <b>Test/b><br><br>
-                <img src="Test" width="75"><br>
-                <b>Test</b>
+                <b>VD Human Capital And General Affair</b><br><br><br><br><br><br>
+                <b>{{ $rincian->nama_mengajukan }}</b>
             </td>
         </tr>
     </table>
 
 </body>
+
 </html>

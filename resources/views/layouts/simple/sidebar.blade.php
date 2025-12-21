@@ -107,7 +107,8 @@
                             in_array('Kondisi Asset', $aksesMenu) ||
                             in_array('Kelompok Asset', $aksesMenu) ||
                             in_array('Vendor', $aksesMenu) ||
-                            in_array('Kota', $aksesMenu))
+                            in_array('Kota', $aksesMenu) ||
+                            in_array('Biaya SPD', $aksesMenu)))
 
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">

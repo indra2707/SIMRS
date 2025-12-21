@@ -631,6 +631,10 @@
         'click .btn-print': function (e, value, row, index) {
             var url = "{{ route('sdm.rincian_spd.print', ':id') }}";
             url = url.replace(':id', row.id);
+
+            url += '?no_surat=' + encodeURIComponent(row.no_surat)
+                + '&id_pegawai=' + encodeURIComponent(row.id_pegawai);
+
             window.open(url, '_blank');
         }
     }
