@@ -50,8 +50,8 @@
         .table-biaya th,
         .table-biaya td {
             border: 1px solid #000;
-            padding: 5px;
-            height: 0px;
+            padding: 4px 6px;
+            line-height: 1.2;
         }
 
         .table-biaya th {
@@ -67,12 +67,16 @@
             text-align: center;
         }
 
-        .signature {
-            margin-top: 40px;
-        }
-
-        .signature td {
-            vertical-align: top;
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            /* jarak dari bawah halaman */
+            left: 40px;
+            right: 0;
+            text-align: left;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #000;
         }
     </style>
 </head>
@@ -146,24 +150,42 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $totalBiaya = 0;
+            @endphp
+
+            @foreach ($details as $index => $item)
+                @php
+                    $jumlah = $item->jumlah ?? 0;
+                    $harga = $item->harga ?? 0;
+                    $subtotal = $jumlah * $harga;
+                    $totalBiaya += $subtotal;
+                @endphp
+                <tr>
+                    <td class="text-center">{{ $index + 1 }}</td>
+                    <td>{{ $item->nama_biaya }}</td>
+                    <td class="text-center">{{ $item->jumlah ?? '-' }}</td>
+                    <td class="text-right">
+                        {{ number_format($item->harga, 0, ',', '.') }}
+                    </td>
+                    <td class="text-right">
+                        {{ number_format($subtotal, 0, ',', '.') }}
+                    </td>
+                </tr>
+            @endforeach
             <tr>
-                <td class="text-center">Test</td>
-                <td>Test</td>
-                <td class="text-center">Test</td>
-                <td class="text-right">Test</td>
-                <td class="text-right">Test</td>
+                <td colspan="4" class="text-right"><b>Total Biaya</b></td>
+                <td class="text-right">
+                    <b>{{ number_format($totalBiaya, 0, ',', '.') }}</b>
+                </td>
             </tr>
             <tr>
-                <td colspan="4" class="text-right"><b>TOTAL BIAYA</b></td>
-                <td class="text-right"><b>Test</b></td>
+                <td colspan="4" class="text-right"><b>Panjar yang Diterima</b></td>
+                <td class="text-right"><b>{{ number_format($rincian->panjar, 0, ',', '.') }}</b></td>
             </tr>
             <tr>
-                <td colspan="4" class="text-right"><b>PANJAR YANG DITERIMA</b></td>
-                <td class="text-right">Test</td>
-            </tr>
-            <tr>
-                <td colspan="4" class="text-right"><b>BIAYA YANG DITERIMA</b></td>
-                <td class="text-right">Test</td>
+                <td colspan="4" class="text-right"><b>Biaya yang Diterima</b></td>
+                <td class="text-right"><b>{{ number_format($totalBiaya - $rincian->panjar, 0, ',', '.') }}</b></td>
             </tr>
         </tbody>
     </table>
@@ -196,6 +218,14 @@
         </tr>
     </table>
 
+    <div class="footer">
+        <b>RS Otak & Jantung Pertamina Royal Biringkanaya</b><br>
+        Jl. Pajjaiyyang Sudiang Raya
+        Kecamatan Biringkanaya Kota madya Ujung Pandang
+        Sulawesi Selatan
+        <br>
+        Call Center. (021) 150442 &nbsp;|&nbsp; Telp. (0411) 4821000 &nbsp;|&nbsp; Email: rsoj.prb@ihc.id
+    </div>
 </body>
 
 </html>
