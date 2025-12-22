@@ -86,6 +86,18 @@
         .checked {
             background: #000;
         }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            /* jarak dari bawah halaman */
+            left: 30px;
+            right: 0;
+            text-align: left;
+            font-size: 10px;
+            line-height: 1.4;
+            color: #000;
+        }
     </style>
 </head>
 
@@ -282,6 +294,15 @@
                 <td></td>
             </tr>
         </table>
+
+        <div class="footer">
+            <b>RS Otak & Jantung Pertamina Royal Biringkanaya</b><br>
+            Jl. Pajjaiyyang Sudiang Raya
+            Kecamatan Biringkanaya Kota madya Ujung Pandang
+            Sulawesi Selatan
+            <br>
+            Call Center. (021) 150442 &nbsp;|&nbsp; Telp. (0411) 4821000 &nbsp;|&nbsp; Email: rsoj.prb@ihc.id
+        </div>
 
 </body>
 
