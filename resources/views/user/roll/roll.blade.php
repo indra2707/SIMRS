@@ -230,12 +230,12 @@
                                 </li>
                                 <li>
                                     <label class="caret">
-                                        <input type="checkbox" class="parent"><b> Helpdesk</b>
+                                        <input type="checkbox" name="permissions[]" value="Helpdesk" class="parent"><b> Helpdesk</b>
                                     </label>
                                     <ul class="nested">
-                                        <li><label><input type="checkbox" name="permissions[]" value="List">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Helpdesk.List">
                                                 Helpdesk</label></li>
-                                        <li><label><input type="checkbox" name="permissions[]" value="Approval">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Helpdesk.Approval">
                                                 Approval</label></li>
                                     </ul>
                                 </li>
