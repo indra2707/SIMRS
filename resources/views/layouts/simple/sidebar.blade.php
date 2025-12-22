@@ -149,7 +149,7 @@
                                 @if (in_array('Kota', $aksesMenu))
                                     <li><a href="{{ route('master-data.kota') }}">Kota</a></li>
                                 @endif
-                                 @if (in_array('Biaya SPD', $aksesMenu))
+                                @if (in_array('Biaya SPD', $aksesMenu))
                                     <li><a href="{{ route('master-data.biaya') }}">Biaya SPD</a></li>
                                 @endif
                             </ul>
@@ -184,6 +184,19 @@
                             </a>
                         </li>
                     @endif
+                    @if (in_array('Aprroval', $aksesMenu))
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                class="sidebar-link sidebar-title link-nav" href="{{ route('admin.helpdesk') }}">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-knowledgebase') }}">
+                                    </use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-knowledgebase') }}">
+                                    </use>
+                                </svg><span>Approval</span></a>
+                        </li>
+                    @endif
 
                     {{-- Helpdesk --}}
                     @if (in_array('Helpdesk', $aksesMenu))
@@ -201,6 +214,31 @@
                             </li>
                         @endif
                     @endif
+
+                    @if (in_array('Helpdesk', $aksesMenu))
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
+                                </svg>
+                                <span>Helpdesk</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                @if (in_array('List', $aksesMenu))
+                                    <li><a href="{{ route('user.helpdesk') }}">List</a></li>
+                                @endif
+                                @if (in_array('Approval', $aksesMenu))
+                                    <li><a href="{{ route('admin.helpdesk') }}">Approval</a></li>
+                                @endif
+
+                            </ul>
+                        </li>
+                    @endif
+
+
 
 
 
@@ -249,7 +287,9 @@
                                         href="{{ route('tarif.tindakan.index') }}">Tarif Tindakan</a></li>
                             </ul>
                         </li>
+                        {{-- @if (auth()->user->username == '')
 
+                        @endif --}}
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                                 class="sidebar-link sidebar-title link-nav" href="{{ route('admin.helpdesk') }}">
                                 <svg class="stroke-icon">

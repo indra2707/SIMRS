@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('golongan_darah')->nullable();
             $table->string('disabilitas')->nullable();
             $table->date('tanggal_lahir')->nullable();
-            $table->enum('golongan_upah', ['harga_utama', 'harga_madya', 'harga_biasa'])->default('harga utama')->nullable();
+            $table->enum('golongan_upah', ['harga_utama', 'harga_madya', 'harga_biasa'])->default('harga utama');
             $table->string('status_kepegawaian')->nullable();
             $table->date('tmt_status_kepegawaian')->nullable();
             $table->date('tmt_pwtt')->nullable();

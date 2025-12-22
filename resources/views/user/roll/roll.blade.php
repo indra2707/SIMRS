@@ -233,8 +233,10 @@
                                         <input type="checkbox" class="parent"><b> Helpdesk</b>
                                     </label>
                                     <ul class="nested">
-                                        <li><label><input type="checkbox" name="permissions[]" value="Helpdesk">
+                                        <li><label><input type="checkbox" name="permissions[]" value="List">
                                                 Helpdesk</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Approval">
+                                                Approval</label></li>
                                     </ul>
                                 </li>
                                 <li>
