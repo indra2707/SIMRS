@@ -37,33 +37,42 @@ class HelpDeskController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'HELP DESK',
+            'title' => 'Help Desk',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'HELP DESK',
+            'menuSubtitle' => 'Help Desk',
         ];
         return view('help-desk.user.helpdesk', $data);
     }
 
     //View 
-    public function views()
-    {
-        $query = HelpDesk::where('user_id', Auth()->user()->id)->get();
-        $data = [];
-        foreach ($query as $key => $value) {
-            $data[] = [
-                'id' => $value->id,
-                'tiket' => $value->tiket,
-                'judul_laporan' => $value->judul_laporan,
-                'kategori' => $value->kategori,
-                'prioritas' => $value->prioritas,
-                'keterangan' => $value->keterangan ?? '-',
-                'tanggal' => $value->tanggal ?? '-',
-                'status' => $value->status ?? '-',
-                'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
-            ];
-        }
-        return response()->json($data, 200);
+    public function views(Request $request)
+{
+    $query = HelpDesk::where('user_id', auth()->id());
+
+    // FILTER TANGGAL
+    if ($request->tgl_awal && $request->tgl_akhir) {
+        $query->whereBetween('created_at', [
+            Carbon::parse($request->tgl_awal)->startOfDay(),
+            Carbon::parse($request->tgl_akhir)->endOfDay()
+        ]);
     }
+
+    $data = $query->get()->map(function ($value) {
+        return [
+            'id' => $value->id,
+            'tiket' => $value->tiket,
+            'judul_laporan' => $value->judul_laporan,
+            'kategori' => $value->kategori,
+            'prioritas' => $value->prioritas,
+            'keterangan' => $value->keterangan ?? '-',
+            'tanggal' => $value->tanggal ?? '-',
+            'status' => $value->status ?? '-',
+            'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
+        ];
+    });
+
+    return response()->json($data);
+}
 
     // Simpan
     // public function store(Request $request)
@@ -103,11 +112,8 @@ class HelpDeskController extends Controller
         ]);
 
         $gambar = [];
-
         if ($request->hasFile('lampiran')) {
-
             $path = public_path('uploads/images/help-desk');
-
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0755, true);
             }
@@ -132,14 +138,12 @@ class HelpDeskController extends Controller
         ]);
 
         broadcast(new HelpdeskCreated($helpdesk))->toOthers();
-
         return response()->json([
             'success' => true,
             'message' => 'Berhasil membuat laporan Help Desk',
             'data' => $helpdesk
         ]);
     }
-
 
 
     // Hapus

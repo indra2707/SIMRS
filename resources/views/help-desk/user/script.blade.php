@@ -10,6 +10,63 @@
         allowClear: true
     });
 
+    //tanggal
+    $('.js-daterangepicker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        range: true,
+        multipleDates: true,
+        multipleDatesSeparator: ' - ',
+        autoClose: true,
+        toggleSelected: false,
+
+        onSelect: function (formattedDate, date, inst) {
+            // jika belum pilih 2 tanggal, hentikan
+            if (!date || date.length < 2) {
+                return;
+            }
+
+            // date berupa array [startDate, endDate]
+            let start = date[0];
+            let end = date[1];
+
+            // format ke Y-m-d untuk database
+            $('#tgl_awal').val(formatDate(start));
+            $('#tgl_akhir').val(formatDate(end));
+
+            $table.bootstrapTable("refresh");
+        }
+    });
+
+    let now = new Date();
+    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    let lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    // helper format dd/mm/yyyy (untuk tampilan datepicker)
+    function formatDisplay(date) {
+        let d = String(date.getDate()).padStart(2, '0');
+        let m = String(date.getMonth() + 1).padStart(2, '0');
+        let y = date.getFullYear();
+        return `${d}/${m}/${y}`;
+    }
+
+    // helper format Y-m-d (untuk database)
+    function formatDate(date) {
+        let d = String(date.getDate()).padStart(2, '0');
+        let m = String(date.getMonth() + 1).padStart(2, '0');
+        let y = date.getFullYear();
+        return `${y}-${m}-${d}`;
+    }
+
+    $('.js-daterangepicker').val(
+        formatDisplay(firstDay) + ' - ' + formatDisplay(lastDay)
+    );
+
+    $('#tgl_awal').val(formatDate(firstDay));
+    $('#tgl_akhir').val(formatDate(lastDay));
+
+
+
+
     // onclick upload 
     $('#btn-attach').on('click', function () {
         $('#lampiran').trigger('click');
@@ -38,10 +95,7 @@
             renderPreview(file, fileBuffer.files.length - 1);
         });
 
-        // sinkron ke input
         input.files = fileBuffer.files;
-
-        // reset input supaya bisa upload file yg sama lagi
         input.value = '';
     });
 
@@ -126,8 +180,10 @@
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
-        $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
-        $('#preview-images').empty();
+        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        // $('#preview-images').empty();
+        fileBuffer = new DataTransfer();
+
         $('input[name="id"]').val("");
         $('textarea[name="keterangan"]').val("");
         $('input[name="judul_laporan"]').val("");
@@ -151,15 +207,15 @@
 
         const formData = new FormData();
 
-        // 🔥 ambil semua field NON file
+        // ambil semua field NON file
         $(form).serializeArray().forEach(item => {
             formData.append(item.name, item.value);
         });
 
-        // 🔥 PENTING: ambil file dari buffer
-        Array.from(fileBuffer.files).forEach(file => {
-            formData.append('lampiran[]', file);
-        });
+        // 🔥 AMBIL FILE DARI fileBuffer (INI KUNCINYA)
+        for (let i = 0; i < fileBuffer.files.length; i++) {
+            formData.append("lampiran[]", fileBuffer.files[i]);
+        }
 
         $.ajax({
             type: "POST",
@@ -167,10 +223,22 @@
             data: formData,
             processData: false,
             contentType: false,
+            beforeSend: function () {
+                $('.save-btn').html(
+                    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                ).attr('disabled', 'disabled');
+            },
+            complete: function () {
+                $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                    .removeAttr('disabled');
+            },
             success: function (res) {
                 Alert("success", res.message);
                 $table.bootstrapTable("refresh");
                 $("#helpdesk-modal").modal("hide");
+                form.reset();
+                $("#preview-images").html("");
+                fileBuffer = new DataTransfer(); // 🔥 reset buffer
             },
             error: function (xhr) {
                 Alert("error", xhr.responseJSON?.message || "Upload gagal");
@@ -207,6 +275,18 @@
             loadingTemplate: loadingTemplate,
             exportTypes: ["json", "csv", "txt", "excel"],
             url: "{{ route('user.helpdesk-views') }}",
+
+            queryParams: function (params) {
+                return {
+                    limit: params.limit,
+                    offset: params.offset,
+                    search: params.search,
+
+                    tgl_awal: $('#tgl_awal').val(),
+                    tgl_akhir: $('#tgl_akhir').val()
+                };
+            },
+
             columns: [{
                 field: "id",
                 sortable: true,
