@@ -10,6 +10,7 @@
         allowClear: true
     });
 
+<<<<<<< HEAD
     //tanggal
     $('.js-daterangepicker').datepicker({
         dateFormat: 'dd/mm/yyyy',
@@ -69,12 +70,16 @@
 
     // onclick upload 
     $('#btn-attach').on('click', function () {
+=======
+    // onclick upload
+    $('#btn-attach').on('click', function() {
+>>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
         $('#lampiran').trigger('click');
     });
 
     //upload foto multiple
     let fileBuffer = new DataTransfer();
-    $(document).on('change', 'input[name="lampiran[]"]', function () {
+    $(document).on('change', 'input[name="lampiran[]"]', function() {
         const input = this;
         const newFiles = Array.from(input.files);
 
@@ -96,7 +101,13 @@
         });
 
         input.files = fileBuffer.files;
+<<<<<<< HEAD
         input.value = '';
+=======
+
+        // reset input supaya bisa upload file yg sama lagi
+        // input.value = '';
+>>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
     });
 
 
@@ -104,7 +115,7 @@
     function renderPreview(file, index) {
         const reader = new FileReader();
 
-        reader.onload = function (e) {
+        reader.onload = function(e) {
             $('#preview-images').append(`
             <div class="col-md-2 mb-2" data-index="${index}">
                 <div class="position-relative">
@@ -134,14 +145,14 @@
     }
 
     // LIHAT FOTO
-    $(document).on('click', '.btn-preview', function () {
+    $(document).on('click', '.btn-preview', function() {
         $('#preview-large').attr('src', $(this).data('src'));
         $('#modal-preview-image').modal('show');
         $('#helpdesk-modal').modal('hide');
     });
 
     // HAPUS FOTO
-    $(document).on('click', '.btn-remove', function () {
+    $(document).on('click', '.btn-remove', function() {
 
         const $item = $(this).closest('.col-md-2');
 
@@ -171,12 +182,11 @@
     });
 
     // close modal
-    $('#modal-preview-image').on('hidden.bs.modal', function () {
+    $('#modal-preview-image').on('hidden.bs.modal', function() {
         $('#helpdesk-modal').modal('show');
     });
 
-    // Open Modal
-    $(document).on("click", ".add-btn", function () {
+    $(document).on("click", ".add-btn", function() {
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
@@ -190,23 +200,31 @@
         $('#lampiran').val('');
         $('select[name="kategori"]').val('').trigger('change');
         $('select[name="prioritas"]').val('').trigger('change');
+
+        fileBuffer = new DataTransfer();
     });
 
 
     // Save
-    $(document).on("click", ".save-btn", function (e) {
-        e.preventDefault();
+    $(document).on("click", ".save-btn", function(event) {
+        event.preventDefault(); // Pastikan mencegah submit default
 
-        const form = document.querySelector(".form-helpdesk");
+        var forms = document.getElementsByClassName("form-helpdesk");
 
-        if (!form.checkValidity()) {
-            form.classList.add("was-validated");
-            form.querySelector(":invalid")?.focus();
-            return;
-        }
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            if (!form.checkValidity()) {
+                form.querySelector(".form-control:invalid").focus();
+                event.stopPropagation();
+            } else {
+                var url = "{{ route('user.helpdesk-store') }}";
+                var type = "POST";
 
-        const formData = new FormData();
+                // FormData dari form
+                let myformData = new FormData(form);
+                myformData.delete('lampiran[]');
+                
 
+<<<<<<< HEAD
         // ambil semua field NON file
         $(form).serializeArray().forEach(item => {
             formData.append(item.name, item.value);
@@ -242,13 +260,85 @@
             },
             error: function (xhr) {
                 Alert("error", xhr.responseJSON?.message || "Upload gagal");
+=======
+                // Append file dari fileBuffer
+                if (fileBuffer.files.length > 0) {
+                    console.log('📤 Uploading', fileBuffer.files.length, 'files');
+                    Array.from(fileBuffer.files).forEach((file, index) => {
+                        myformData.append('lampiran[]', file, file.name);
+                        console.log(
+                            `  ${index + 1}. ${file.name} (${(file.size / 1024).toFixed(2)} KB)`
+                        );
+                    });
+                } else {
+                    console.log('No files selected');
+                }
+
+                // Debug FormData
+                console.log('=== FormData Contents ===');
+                for (let pair of myformData.entries()) {
+                    if (pair[1] instanceof File) {
+                        console.log(`${pair[0]} => FILE: ${pair[1].name}`);
+                    } else {
+                        console.log(`${pair[0]} => ${pair[1]}`);
+                    }
+                }
+
+                $.ajax({
+                    type: type,
+                    url: url,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: myformData,
+                    beforeSend: function() {
+                        $(".save-btn")
+                            .html(
+                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                            )
+                            .attr("disabled", "disabled");
+                    },
+                    complete: function() {
+                        $(".save-btn")
+                            .html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr("disabled");
+                    },
+                    success: function(res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
+                            Alert("success", res.message);
+                            $table.bootstrapTable("refresh");
+                        } else {
+                            Alert("warning", res.message);
+                        }
+                        $("#helpdesk-modal").modal("hide");
+                        form.classList.remove("was-validated");
+
+                        // Reset fileBuffer agar bisa upload lagi
+                        fileBuffer = new DataTransfer();
+                        $('#lampiran').val('');
+                        $('#preview-images').empty();
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 400) {
+                            Alert("error", xhr.responseJSON.message);
+                        } else if (xhr.status == 500) {
+                            Alert("info",
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
+                        }
+                        form.classList.remove("was-validated");
+                    },
+                });
+>>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
             }
+            form.classList.add("was-validated");
         });
     });
 
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -288,95 +378,69 @@
             },
 
             columns: [{
-                field: "id",
-                sortable: true,
-                align: "center",
-                formatter: function (value, row, index) {
-                    return index + 1;
+                    field: "id",
+                    sortable: true,
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return index + 1;
+                    },
                 },
-            },
-            {
-                field: "tiket",
-                sortable: true,
-            },
-            {
-                field: "judul_laporan",
-                sortable: true,
-            },
-            {
-                field: "kategori",
-                sortable: true,
-            },
-            {
-                field: "prioritas",
-                sortable: true,
-                align: "center",
-                //  formatter: function (value, row) {
-                //     let badgeClass = "";
-                //     switch (row.prioritas) {
-                //         case "Rendah":
-                //             badgeClass =
-                //                 "badge rounded-pill bg-success fs-9";
-                //             break;
-                //         case "Sedang":
-                //             badgeClass =
-                //                 "badge rounded-pill bg-warning fs-9";
-                //             break;
-                //         case "Tinggi":
-                //             badgeClass =
-                //                 "badge rounded-pill bg-danger fs-9";
-                //             break;
-                //           case "Darurat":
-                //             badgeClass =
-                //                 "badge rounded-pill bg-dark fs-9";
-                //             break;
-                //         default:
-                //             badgeClass = "badge rounded-pill bg-light";
-                //     }
-                //     return `<span class="${badgeClass}">${row.prioritas}</span>`;
-                // },
-                // events: window.operateChange,
-            },
-            {
-                field: "status",
-                sortable: true,
-                align: "center",
-                formatter: function (value, row) {
-                    let badgeClass = "";
-                    switch (row.status) {
-                        case "accept":
-                            badgeClass =
-                                "badge rounded-pill bg-primary fs-9";
-                            break;
-                        case "on-progress":
-                            badgeClass =
-                                "badge rounded-pill bg-warning fs-9";
-                            break;
-                        case "done":
-                            badgeClass =
-                                "badge rounded-pill bg-success fs-9";
-                            break;
-                        default:
-                            badgeClass = "badge rounded-pill bg-light";
-                    }
-                    return `<span class="${badgeClass}">${row.status}</span>`;
+                {
+                    field: "tiket",
+                    sortable: true,
                 },
-                events: window.operateChange,
-            },
-            {
-                field: "created_at",
-                sortable: true,
-                align: "center",
-            },
-            {
-                field: "action",
-                title: "Aksi",
-                align: "center",
-                formatter: actionsFunction,
-                events: window.operateEvents,
-            },
+                {
+                    field: "judul_laporan",
+                    sortable: true,
+                },
+                {
+                    field: "kategori",
+                    sortable: true,
+                },
+                {
+                    field: "prioritas",
+                    sortable: true,
+                },
+                {
+                    field: "status",
+                    sortable: true,
+                    align: "center",
+                    formatter: function(value, row) {
+                        let badgeClass = "";
+                        switch (row.status) {
+                            case "accept":
+                                badgeClass =
+                                    "badge rounded-pill bg-primary fs-9";
+                                break;
+                            case "on-progress":
+                                badgeClass =
+                                    "badge rounded-pill bg-warning fs-9";
+                                break;
+                            case "done":
+                                badgeClass =
+                                    "badge rounded-pill bg-success fs-9";
+                                break;
+                            default:
+                                badgeClass = "badge rounded-pill bg-light";
+                        }
+                        return `<span class="${badgeClass}">${row.status}</span>`;
+                    },
+                    events: window.operateChange,
+                },
+                {
+                    field: "created_at",
+                    sortable: true,
+                    align: "center",
+                },
+                {
+                    field: "action",
+                    title: "Aksi",
+                    align: "center",
+                    formatter: actionsFunction,
+                    events: window.operateEvents,
+                },
             ],
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 if (xhr.status == 400) {
                     $.notify({
                         icon: "fa fa-check",
@@ -413,45 +477,29 @@
                     });
                 }
             },
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             },
         });
     }
 
-
     function actionsFunction(value, row, index) {
-
-        if (row.status === 'accept') {
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-                '<i class="icon-more-alt"></i>',
-                "</button>",
-                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-                "</div>",
-                "</div>",
-            ].join("");
-        } else {
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-                '<i class="icon-more-alt"></i>',
-                "</button>",
-                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-                "</div>",
-                "</div>",
-            ].join("");
-        }
-
+        return [
+            '<div class="dropdown icon-dropdown">',
+            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+            '<i class="icon-more-alt"></i>',
+            "</button>",
+            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+            `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+            "</div>",
+            "</div>",
+        ].join("");
     }
 
     // Handle events button actions
     window.operateEvents = {
-        "click .btn-delete": function (e, value, row, index) {
+        "click .btn-delete": function(e, value, row, index) {
             var url = "{{ route('user.helpdesk-delete', ':id') }}";
             url = url.replace(":id", row.id);
             Swal.fire({
@@ -472,21 +520,21 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert("success", res.message);
                             } else {
                                 Alert("warnig", res.message);
                             }
                         },
-                    }).done(function () {
+                    }).done(function() {
                         $table.bootstrapTable("refresh");
                     });
                 }
             });
         },
     };
-    $(document).on("click", ".btn-chat", function () {
+    $(document).on("click", ".btn-chat", function() {
         var helpdeskId = $(this).data("helpdesk-id");
         if (!helpdeskId) return;
 
@@ -496,11 +544,11 @@
         $.ajax({
             url: "/chat/opponent/" + helpdeskId,
             type: "GET",
-            success: function (res) {
+            success: function(res) {
                 $("#chatOpponentFullName").text(res.nama_lengkap);
                 $("#chatOpponentUsername").text(res.username);
             },
-            error: function () {
+            error: function() {
                 $("#chatOpponentName").text("Unknown");
             }
         });

@@ -117,7 +117,11 @@
                 {
                     field: 'keterangan',
                     title: 'Description',
-                    sortable: true
+                    sortable: true,
+                    formatter: value =>
+                        value && value.length > 50 ?
+                        value.slice(0, 50) + '...' :
+                        value
                 },
                 {
                     field: 'nama_lengkap',
