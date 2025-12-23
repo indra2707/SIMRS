@@ -47,64 +47,33 @@ class HelpDeskController extends Controller
 
     //View 
     public function views(Request $request)
-{
-    $query = HelpDesk::where('user_id', auth()->id());
+    {
+        $query = HelpDesk::where('user_id', auth()->id());
 
-    // FILTER TANGGAL
-    if ($request->tgl_awal && $request->tgl_akhir) {
-        $query->whereBetween('created_at', [
-            Carbon::parse($request->tgl_awal)->startOfDay(),
-            Carbon::parse($request->tgl_akhir)->endOfDay()
-        ]);
+        // FILTER TANGGAL
+        if ($request->tgl_awal && $request->tgl_akhir) {
+            $query->whereBetween('created_at', [
+                Carbon::parse($request->tgl_awal)->startOfDay(),
+                Carbon::parse($request->tgl_akhir)->endOfDay()
+            ]);
+        }
+
+        $data = $query->get()->map(function ($value) {
+            return [
+                'id' => $value->id,
+                'tiket' => $value->tiket,
+                'judul_laporan' => $value->judul_laporan,
+                'kategori' => $value->kategori,
+                'prioritas' => $value->prioritas,
+                'keterangan' => $value->keterangan ?? '-',
+                'tanggal' => $value->tanggal ?? '-',
+                'status' => $value->status ?? '-',
+                'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
+            ];
+        });
+
+        return response()->json($data);
     }
-
-    $data = $query->get()->map(function ($value) {
-        return [
-            'id' => $value->id,
-            'tiket' => $value->tiket,
-            'judul_laporan' => $value->judul_laporan,
-            'kategori' => $value->kategori,
-            'prioritas' => $value->prioritas,
-            'keterangan' => $value->keterangan ?? '-',
-            'tanggal' => $value->tanggal ?? '-',
-            'status' => $value->status ?? '-',
-            'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
-        ];
-    });
-
-    return response()->json($data);
-}
-
-    // Simpan
-    // public function store(Request $request)
-    // {
-    //     try {
-    //         $validated = $request->validate([
-    //             'keterangan' => 'required|string|max:255',
-    //         ]);
-
-    //         $validated['user_id'] = Auth::id();
-    //         $validated['tanggal'] = now();
-
-    //         $helpdesk = HelpDesk::create($validated);
-    //         broadcast(new HelpdeskCreated($helpdesk))->toOthers();
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Berhasil membuat laporan Help Desk.',
-    //             'data' => $helpdesk,
-    //         ]);
-    //     } catch (\Illuminate\Validation\ValidationException $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Validasi gagal: ' . implode(', ', $e->errors()['keterangan'] ?? []),
-    //         ], 400);
-    //     } catch (\Exception $e) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Terjadi kesalahan pada server.',
-    //         ], 500);
-    //     }
-    // }
 
     public function store(Request $request)
     {
