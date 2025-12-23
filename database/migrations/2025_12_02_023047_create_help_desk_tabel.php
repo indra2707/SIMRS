@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('help_desk', function (Blueprint $table) {
+        Schema::create('help_desk_tabel', function (Blueprint $table) {
             $table->id();
             $table->text('keterangan');
             $table->enum('status', ['accept', 'on-progress', 'done'])->default('accept');
@@ -19,11 +19,10 @@ return new class extends Migration
             $table->string('tiket');
             $table->string('judul_laporan');
             $table->enum('kategori', ['IT', 'Medis', 'Teknik']);
-            $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi',  'Darurat']);
-            $table->string('gambar');
+            $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi', 'Darurat']);
+            $table->text('gambar');
             $table->date('tanggal');
             $table->timestamps();
-
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('help_desk');
+        Schema::dropIfExists('help_desk_tabel');
     }
 };

@@ -136,60 +136,48 @@
         $('select[name="prioritas"]').val('').trigger('change');
     });
 
+
     // Save
-    $(document).on("click", ".save-btn", function () {
-        var forms = document.getElementsByClassName("form-helpdesk");
-        var validation = Array.prototype.filter.call(forms, function (form) {
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                var url = "{{ route('user.helpdesk-store') }}";
-                var type = "POST";
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: "json",
-                    data: $(".form-helpdesk").serialize(),
-                    beforeSend: function () {
-                        $(".save-btn")
-                            .html(
-                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                            )
-                            .attr("disabled", "disabled");
-                    },
-                    complete: function () {
-                        $(".save-btn")
-                            .html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr("disabled");
-                    },
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert("success", res.message);
-                            $table.bootstrapTable("refresh");
-                        } else {
-                            Alert("warning", res.message);
-                        }
-                        $("#helpdesk-modal").modal("hide");
-                        form.classList.remove("was-validated");
-                    },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 400) {
-                            Alert("error", xhr.responseJSON.message);
-                        } else if (xhr.status == 500) {
-                            Alert(
-                                "info",
-                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                            );
-                        }
-                        form.classList.remove("was-validated");
-                    },
-                });
-            }
+    $(document).on("click", ".save-btn", function (e) {
+        e.preventDefault();
+
+        const form = document.querySelector(".form-helpdesk");
+
+        if (!form.checkValidity()) {
             form.classList.add("was-validated");
+            form.querySelector(":invalid")?.focus();
+            return;
+        }
+
+        const formData = new FormData();
+
+        // 🔥 ambil semua field NON file
+        $(form).serializeArray().forEach(item => {
+            formData.append(item.name, item.value);
+        });
+
+        // 🔥 PENTING: ambil file dari buffer
+        Array.from(fileBuffer.files).forEach(file => {
+            formData.append('lampiran[]', file);
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "{{ route('user.helpdesk-store') }}",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                Alert("success", res.message);
+                $table.bootstrapTable("refresh");
+                $("#helpdesk-modal").modal("hide");
+            },
+            error: function (xhr) {
+                Alert("error", xhr.responseJSON?.message || "Upload gagal");
+            }
         });
     });
+
 
     // Page Load Event
     $(function () {
@@ -242,6 +230,32 @@
             {
                 field: "prioritas",
                 sortable: true,
+                align: "center",
+                 formatter: function (value, row) {
+                    let badgeClass = "";
+                    switch (row.prioritas) {
+                        case "Rendah":
+                            badgeClass =
+                                "badge rounded-pill bg-success fs-9";
+                            break;
+                        case "Sedang":
+                            badgeClass =
+                                "badge rounded-pill bg-warning fs-9";
+                            break;
+                        case "Tinggi":
+                            badgeClass =
+                                "badge rounded-pill bg-danger fs-9";
+                            break;
+                          case "Darurat":
+                            badgeClass =
+                                "badge rounded-pill bg-dark fs-9";
+                            break;
+                        default:
+                            badgeClass = "badge rounded-pill bg-light";
+                    }
+                    return `<span class="${badgeClass}">${row.prioritas}</span>`;
+                },
+                events: window.operateChange,
             },
             {
                 field: "status",
@@ -325,18 +339,34 @@
         });
     }
 
+
     function actionsFunction(value, row, index) {
-        return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
-            "</button>",
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-            `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            "</div>",
-            "</div>",
-        ].join("");
+
+        if (row.status === 'accept') {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                "</button>",
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+                "</div>",
+                "</div>",
+            ].join("");
+        } else {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                "</button>",
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+                "</div>",
+                "</div>",
+            ].join("");
+        }
+
     }
 
     // Handle events button actions

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use PHPUnit\TextUI\Help;
 use App\Events\HelpdeskCreated;
 
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
+
 class HelpDeskController extends Controller
 {
     // public function index(Request $request)
@@ -95,7 +98,28 @@ class HelpDeskController extends Controller
 
     public function store(Request $request)
     {
-        $data = [
+        $request->validate([
+            'lampiran.*' => 'image|mimes:jpg,jpeg,png|max:5120', // 5MB
+        ]);
+
+        $gambar = [];
+
+        if ($request->hasFile('lampiran')) {
+
+            $path = public_path('uploads/images/help-desk');
+
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0755, true);
+            }
+
+            foreach ($request->file('lampiran') as $file) {
+                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($path, $filename);
+                $gambar[] = $filename;
+            }
+        }
+
+        $helpdesk = HelpDesk::create([
             'user_id' => Auth::id(),
             'tiket' => 'IHC-' . now()->format('YmdHis'),
             'judul_laporan' => $request->judul_laporan,
@@ -104,18 +128,18 @@ class HelpDeskController extends Controller
             'keterangan' => $request->keterangan,
             'status' => 'accept',
             'tanggal' => now(),
-        ];
-
-        $helpdesk = HelpDesk::create($data);
+            'gambar' => $gambar ?: null,
+        ]);
 
         broadcast(new HelpdeskCreated($helpdesk))->toOthers();
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil membuat laporan Help Desk.',
-            'data' => $helpdesk,
+            'message' => 'Berhasil membuat laporan Help Desk',
+            'data' => $helpdesk
         ]);
     }
+
 
 
     // Hapus

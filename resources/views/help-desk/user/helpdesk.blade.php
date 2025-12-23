@@ -75,7 +75,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="row g-2 form-helpdesk" autocomplete="off">
+                    <form class="row g-2 form-helpdesk"  enctype="multipart/form-data" autocomplete="off">
                         @csrf
                         <input type="hidden" name="id">
                         <input id="f1-first-name" type="hidden" value="{{ Auth::user()->username }}" name="f1-first-name">

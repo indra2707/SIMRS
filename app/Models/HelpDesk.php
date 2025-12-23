@@ -23,6 +23,10 @@ class HelpDesk extends Model
         'gambar',
     ];
 
+     protected $casts = [
+        'gambar' => 'array'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -30,6 +34,11 @@ class HelpDesk extends Model
     public function messages()
     {
         return $this->hasMany(Message::class, 'helpdesk_id');
+    }
+
+    public function lampirans()
+    {
+        return $this->hasMany(HelpDeskLampiran::class, 'helpdesk_id');
     }
 
     public function getUnreadCountForUser($userId)
@@ -68,5 +77,5 @@ class HelpDesk extends Model
 
         return $this->getUnreadCountForUser(auth()->id());
     }
-    
+
 }
