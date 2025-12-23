@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PHPUnit\TextUI\Help;
+use Illuminate\Support\Facades\Log;
 use App\Events\HelpdeskCreated;
 
 use Illuminate\Support\Facades\File;
@@ -44,7 +45,7 @@ class HelpDeskController extends Controller
         return view('help-desk.user.helpdesk', $data);
     }
 
-    //View 
+    //View
     public function views()
     {
         $query = HelpDesk::where('user_id', Auth()->user()->id)->get();
@@ -105,7 +106,7 @@ class HelpDeskController extends Controller
         $gambar = [];
 
         if ($request->hasFile('lampiran')) {
-
+            Log::info('Files received: ' . count($request->file('lampiran')));
             $path = public_path('uploads/images/help-desk');
 
             if (!File::exists($path)) {
@@ -113,12 +114,15 @@ class HelpDeskController extends Controller
             }
 
             foreach ($request->file('lampiran') as $file) {
-                $filename = uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move($path, $filename);
-                $gambar[] = $filename;
+                if ($file->isValid()) {
+                    $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move($path, $filename);
+                    $gambar[] = $filename;
+                    Log::info("File uploaded: {$filename}");
+                }
             }
         }
-
+        Log::info('Total files: ' . count($gambar));
         $helpdesk = HelpDesk::create([
             'user_id' => Auth::id(),
             'tiket' => 'IHC-' . now()->format('YmdHis'),
@@ -128,10 +132,16 @@ class HelpDeskController extends Controller
             'keterangan' => $request->keterangan,
             'status' => 'accept',
             'tanggal' => now(),
-            'gambar' => $gambar ?: null,
+            'gambar' => !empty($gambar) ? json_encode($gambar) : null,
         ]);
 
-        broadcast(new HelpdeskCreated($helpdesk))->toOthers();
+        try {
+            broadcast(new HelpdeskCreated($helpdesk))->toOthers();
+        } catch (\Exception $e) {
+            Log::warning('Broadcast failed: ' . $e->getMessage());
+        }
+
+        // broadcast(new HelpdeskCreated($helpdesk))->toOthers();
 
         return response()->json([
             'success' => true,

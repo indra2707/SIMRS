@@ -36,10 +36,10 @@ class HelpDesk extends Model
         return $this->hasMany(Message::class, 'helpdesk_id');
     }
 
-    public function lampirans()
-    {
-        return $this->hasMany(HelpDeskLampiran::class, 'helpdesk_id');
-    }
+    // public function lampirans()
+    // {
+    //     return $this->hasMany(HelpDeskLampiran::class, 'helpdesk_id');
+    // }
 
     public function getUnreadCountForUser($userId)
     {
