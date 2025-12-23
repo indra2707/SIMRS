@@ -13,9 +13,14 @@ class HelpDesk extends Model
 
     protected $fillable = [
         'user_id',
+        'tiket',
+        'judul_laporan',
+        'kategori',
+        'prioritas',
         'keterangan',
         'status',
         'tanggal',
+        'gambar',
     ];
 
     public function user()
@@ -31,7 +36,8 @@ class HelpDesk extends Model
     {
         $user = \App\Models\User::find($userId);
 
-        if (!$user) return 0;
+        if (!$user)
+            return 0;
 
         // Admin/Staff: hitung pesan dari user (role='user') yang belum dibaca
         if ($user->role !== 'user') {
@@ -57,8 +63,10 @@ class HelpDesk extends Model
      */
     public function getUnreadCountAttribute()
     {
-        if (!auth()->check()) return 0;
+        if (!auth()->check())
+            return 0;
 
         return $this->getUnreadCountForUser(auth()->id());
     }
+    
 }

@@ -6,6 +6,15 @@
 @endsection
 
 @section('style')
+    <style>
+        /* tinggi select tetap */
+        .select2-container--bootstrap-5 .select2-selection--single {
+            min-height: 38px !important;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+    </style>
 
 @endsection
 
@@ -27,7 +36,7 @@
                         {{-- Add Button --}}
                         <button class="btn btn-primary add-btn">
                             <span class="fa fa-plus"></span>
-                            <span> Tambah Data</span>
+                            <span> Tambah Laporan</span>
                         </button>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
@@ -36,11 +45,13 @@
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th class="f-light">id</th>
-                                            <th class="f-light">keterangan</th>
-                                            <th class="f-light">tanggal</th>
+                                            <th class="f-light">No</th>
+                                            <th class="f-light">Tiket</th>
+                                            <th class="f-light">Judul Laporan</th>
+                                            <th class="f-light">Kategori</th>
+                                            <th class="f-light">Prioritas</th>
                                             <th class="f-light">Status</th>
-                                            <th class="f-light">Status</th>
+                                            <th class="f-light">Tanggal Dibuat</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -55,43 +66,106 @@
 
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="helpdesk-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal fade" id="helpdesk-modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Title</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <form class="form-helpdesk" method="post" action="{{ route('user.helpdesk-store') }}">
-
+                    <form class="row g-2 form-helpdesk" autocomplete="off">
                         @csrf
-                        <div class="mb-2">
-                            <label for="f1-first-name">Username</label>
-                            <input class="form-control" id="f1-first-name" type="text"
-                                value="{{ Auth::user()->username }}" name="f1-first-name" disabled required>
-                        </div>
-                        <div class="mb-2">
-                            <label for="f1-last-name">Department</label>
-                            <input class="f1-last-name form-control" id="f1-last-name" type="text" name="department"
-                                value="{{ Auth::user()->role }}" disabled required>
+                        <input type="hidden" name="id">
+                        <input id="f1-first-name" type="hidden" value="{{ Auth::user()->username }}" name="f1-first-name">
+                        <input id="f1-last-name" type="hidden" name="department" value="{{ Auth::user()->role }}">
+
+                        <!-- Judul Laporan  -->
+                        <label for="judul_laporan" class="col-form-label col-sm-2">Judul Laporan</label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control" name="judul_laporan" type="text" placeholder="Judul Laporan..."
+                                required>
                         </div>
 
-                        <div class="mb-2">
-                            <label for="">Keterangan</label>
-                            <textarea class="f1-last-name form-control" name="keterangan" id="keterangan" cols="50" rows="10"></textarea>
-                        </div>
-                        <div class="f1-buttons d-flex justify-content-end mb-2 mt-4">
-                            <button class="btn btn-primary save-btn" type="button">Submit</button>
+                        <!-- Kategori Laporan  -->
+                        <label for="kategori" class="col-form-label col-sm-2">Kategori Laporan</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control select2" name="kategori" required>
+                                <option></option>
+                                <option value="IT">IT / Sistem Informasi</option>
+                                <option value="Medis">Peralatan Medis / Atem </option>
+                                <option value="Teknik">Sarana & Prasarana / Teknik </option>
+                            </select>
                         </div>
 
+                        <!-- Prioritas  -->
+                        <label for="prioritas" class="col-form-label col-sm-2">Prioritas</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control select2" name="prioritas" required>
+                                <option></option>
+                                <option value="Rendah">Rendah</option>
+                                <option value="Sedang">Sedang</option>
+                                <option value="Tinggi">Tinggi</option>
+                                <option value="Darurat">Darurat</option>
+                            </select>
+                        </div>
+
+                        <!-- Deskripsi Masalah  -->
+                        <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50"
+                                rows="10" required placeholder="Deskripsi Masalah..."></textarea>
+                        </div>
+
+                        {{-- ATTACH FILE --}}
+                        <label class="col-sm-2 col-form-label">Lampiran</label>
+                        <div class="col-sm-10">
+
+                            <!-- Button Attach -->
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="btn-attach">
+                                <i class="fa fa-paperclip"></i> Attach File
+                            </button>
+
+                            <!-- Hidden Input -->
+                            <input type="file" id="lampiran" name="lampiran[]" multiple accept="image/jpeg,image/png"
+                                class="d-none">
+
+                            <small class="text-muted d-block">
+                                Maksimal 5 file (JPG / PNG)
+                            </small>
+
+                            {{-- PREVIEW --}}
+                            <div class="row mt-2" id="preview-images"></div>
+                        </div>
 
                     </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
+                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal lihat foto -->
+    <div class="modal fade" id="modal-preview-image" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title-view">Preview Gambar</h5> -->
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="preview-large" class="img-fluid rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -122,10 +196,10 @@
                                                     <div class="status">Last Seen 3:55 PM</div>
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
-                                                    <li class="list-inline-item"><a href="#"><i
-                                                                class="icon-search"></i></a></li>
-                                                    <li class="list-inline-item"><a href="#"><i
-                                                                class="icon-clip"></i></a></li>
+                                                    <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
+                                                    </li>
+                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
+                                                    </li>
                                                     <li class="list-inline-item"><a href="#"><i
                                                                 class="icon-headphone-alt"></i></a></li>
                                                     <li class="list-inline-item"><a href="#"><i
@@ -141,8 +215,7 @@
                                                         <div class="message my-message"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-start chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/3.png') }}"
-                                                                alt="">
+                                                                src="{{ asset('assets/images/user/3.png') }}" alt="">
                                                             <div class="message-data text-end">
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:12 am</span>
@@ -155,8 +228,7 @@
                                                         <div class="message other-message pull-right"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-end chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/12.png') }}"
-                                                                alt="">
+                                                                src="{{ asset('assets/images/user/12.png') }}" alt="">
                                                             <div class="message-data">
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:14 am</span>
@@ -229,9 +301,9 @@
                                                                             href="https://www.instagram.com/"
                                                                             target="_blank"><i
                                                                                 class="fa fa-instagram"></i></a></li>
-                                                                    <li class="list-inline-item"><a
-                                                                            href="https://rss.app/" target="_blank"><i
-                                                                                class="fa fa-rss"></i></a></li>
+                                                                    <li class="list-inline-item"><a href="https://rss.app/"
+                                                                            target="_blank"><i class="fa fa-rss"></i></a>
+                                                                    </li>
                                                                 </ul>
                                                             </div>
                                                             <hr>
@@ -275,7 +347,7 @@
     @include('help-desk.user.script')
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var currentHelpdeskId = null;
             var chatChannel = null;
 
@@ -289,7 +361,7 @@
             });
 
             // ========== OPEN CHAT MODAL ==========
-            $(document).on('click', '.btn-chat', function() {
+            $(document).on('click', '.btn-chat', function () {
                 var helpdeskId = $(this).data('helpdesk-id');
 
                 if (!helpdeskId) {
@@ -350,12 +422,12 @@
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
-                    success: function(messages) {
+                    success: function (messages) {
                         console.log('✅ Messages loaded:', messages.length, 'messages');
                         renderMessages(messages);
                         scrollToBottom();
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('❌ Failed to load messages:', xhr);
                         $('.chat-history ul').html(
                             '<li class="text-center text-danger py-4">Failed to load messages</li>'
@@ -371,7 +443,7 @@
                 if (!messages || messages.length === 0) {
                     html = '<li class="text-center text-muted py-4">Belum ada pesan. Mulai percakapan!</li>';
                 } else {
-                    messages.forEach(function(msg) {
+                    messages.forEach(function (msg) {
                         html += renderSingleMessage(msg);
                     });
                 }
@@ -399,43 +471,43 @@
                 if (isMe) {
                     // User's message (kanan - biru)
                     html = `
-                <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                        <div class="message-data text-end mb-1">
-                            <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
-                        </div>
-                        <div style="text-align: left;">${escapeHtml(msg.message)}</div>
-                    </div>
-                </li>
-            `;
+                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
+                                                        <div class="message-data text-end mb-1">
+                                                            <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
+                                                        </div>
+                                                        <div style="text-align: left;">${escapeHtml(msg.message)}</div>
+                                                    </div>
+                                                </li>
+                                            `;
                 } else if (isAdmin) {
                     // Admin/Support message (kiri - hijau)
                     html = `
-                <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                        <div class="message-data mb-1">
-                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
-                                ${senderName} • ${time}
-                            </span>
-                        </div>
-                        ${escapeHtml(msg.message)}
-                    </div>
-                </li>
-            `;
+                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                        <div class="message-data mb-1">
+                                                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
+                                                                ${senderName} • ${time}
+                                                            </span>
+                                                        </div>
+                                                        ${escapeHtml(msg.message)}
+                                                    </div>
+                                                </li>
+                                            `;
                 } else {
                     // Other user message (kiri - abu-abu) - jarang terjadi
                     html = `
-                <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                        <div class="message-data mb-1">
-                            <span class="message-data-time" style="color: #999; font-size: 11px;">
-                                ${senderName} • ${time}
-                            </span>
-                        </div>
-                        ${escapeHtml(msg.message)}
-                    </div>
-                </li>
-            `;
+                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                        <div class="message-data mb-1">
+                                                            <span class="message-data-time" style="color: #999; font-size: 11px;">
+                                                                ${senderName} • ${time}
+                                                            </span>
+                                                        </div>
+                                                        ${escapeHtml(msg.message)}
+                                                    </div>
+                                                </li>
+                                            `;
                 }
 
                 return html;
@@ -450,17 +522,17 @@
                     '"': '&quot;',
                     "'": '&#039;'
                 };
-                return text.replace(/[&<>"']/g, function(m) {
+                return text.replace(/[&<>"']/g, function (m) {
                     return map[m];
                 });
             }
 
             // ========== SEND MESSAGE ==========
-            $(document).on('click', '#send-chat-btn', function() {
+            $(document).on('click', '#send-chat-btn', function () {
                 sendMessage();
             });
 
-            $(document).on('keypress', '#input-box', function(e) {
+            $(document).on('keypress', '#input-box', function (e) {
                 if (e.which === 13 && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
@@ -489,10 +561,10 @@
                         message: message,
                         _token: "{{ csrf_token() }}"
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#send-chat-btn').prop('disabled', true);
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log('✅ Message sent:', response);
 
                         if (response.success) {
@@ -509,7 +581,7 @@
                             alert(response.message || 'Gagal mengirim pesan');
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('❌ Send message error:', xhr);
 
                         var errorMessage = 'Gagal mengirim pesan';
@@ -524,7 +596,7 @@
 
                         alert(errorMessage);
                     },
-                    complete: function() {
+                    complete: function () {
                         $('#send-chat-btn').prop('disabled', false);
                         $('#input-box').focus();
                     }
@@ -553,7 +625,7 @@
 
             // ========== SCROLL TO BOTTOM ==========
             function scrollToBottom() {
-                setTimeout(function() {
+                setTimeout(function () {
                     var chatBox = $('.chat-history');
                     if (chatBox.length) {
                         chatBox.animate({
@@ -576,7 +648,7 @@
 
                 // Subscribe to channel
                 window.Echo.channel(chatChannel)
-                    .listen('.MessageSent', function(e) {
+                    .listen('.MessageSent', function (e) {
                         console.log('🔔 NEW MESSAGE RECEIVED:', e);
 
                         if (e.message) {
@@ -593,7 +665,7 @@
             }
 
             // ========== CLEAN UP ON MODAL CLOSE ==========
-            $('#chatModal').on('hidden.bs.modal', function() {
+            $('#chatModal').on('hidden.bs.modal', function () {
                 console.log('❌ Chat modal closed');
 
                 if (chatChannel) {
@@ -612,7 +684,7 @@
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
                     );
-                    audio.play().catch(function(e) {
+                    audio.play().catch(function (e) {
                         console.log('🔇 Cannot play sound:', e);
                     });
                 } catch (e) {
@@ -623,7 +695,8 @@
     </script>
 
     <!-- Initialize Laravel Echo (Pusher/Reverb) -->
-    {{-- <script>
+    {{--
+    <script>
         if (typeof window.Echo === 'undefined') {
             window.Echo = new Echo({
                 broadcaster: 'pusher',
@@ -641,7 +714,8 @@
 
     <!-- Pastikan Laravel Echo sudah di-initialize (tambahkan jika belum ada) -->
 
-    {{-- <script>
+    {{--
+    <script>
         // Initialize Echo hanya sekali di halaman
         if (typeof window.Echo === 'undefined') {
             window.Echo = new Echo({

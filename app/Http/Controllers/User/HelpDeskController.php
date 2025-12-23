@@ -41,56 +41,84 @@ class HelpDeskController extends Controller
         return view('help-desk.user.helpdesk', $data);
     }
 
+    //View 
     public function views()
     {
         $query = HelpDesk::where('user_id', Auth()->user()->id)->get();
-
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
-                // 'kode' => $value->kode,
-                // 'kategori' => $value->kategori,
+                'tiket' => $value->tiket,
+                'judul_laporan' => $value->judul_laporan,
+                'kategori' => $value->kategori,
+                'prioritas' => $value->prioritas,
                 'keterangan' => $value->keterangan ?? '-',
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
-                'created_at' => $value->created_at,
+                'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
             ];
         }
         return response()->json($data, 200);
     }
 
+    // Simpan
+    // public function store(Request $request)
+    // {
+    //     try {
+    //         $validated = $request->validate([
+    //             'keterangan' => 'required|string|max:255',
+    //         ]);
+
+    //         $validated['user_id'] = Auth::id();
+    //         $validated['tanggal'] = now();
+
+    //         $helpdesk = HelpDesk::create($validated);
+    //         broadcast(new HelpdeskCreated($helpdesk))->toOthers();
+    //         return response()->json([
+    //             'success' => true,
+    //             'message' => 'Berhasil membuat laporan Help Desk.',
+    //             'data' => $helpdesk,
+    //         ]);
+    //     } catch (\Illuminate\Validation\ValidationException $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Validasi gagal: ' . implode(', ', $e->errors()['keterangan'] ?? []),
+    //         ], 400);
+    //     } catch (\Exception $e) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Terjadi kesalahan pada server.',
+    //         ], 500);
+    //     }
+    // }
+
     public function store(Request $request)
     {
-        try {
-            $validated = $request->validate([
-                'keterangan' => 'required|string|max:255',
-            ]);
+        $data = [
+            'user_id' => Auth::id(),
+            'tiket' => 'IHC-' . now()->format('YmdHis'),
+            'judul_laporan' => $request->judul_laporan,
+            'kategori' => $request->kategori,
+            'prioritas' => $request->prioritas,
+            'keterangan' => $request->keterangan,
+            'status' => 'accept',
+            'tanggal' => now(),
+        ];
 
-            $validated['user_id'] = Auth::id();
-            $validated['tanggal'] = now();
+        $helpdesk = HelpDesk::create($data);
 
-            $helpdesk = HelpDesk::create($validated);
-            broadcast(new HelpdeskCreated($helpdesk))->toOthers();
-            return response()->json([
-                'success' => true,
-                'message' => 'Berhasil membuat laporan Help Desk.',
-                'data' => $helpdesk,
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal: ' . implode(', ', $e->errors()['keterangan'] ?? []),
-            ], 400);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan pada server.',
-            ], 500);
-        }
+        broadcast(new HelpdeskCreated($helpdesk))->toOthers();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil membuat laporan Help Desk.',
+            'data' => $helpdesk,
+        ]);
     }
 
 
+    // Hapus
     public function destroy(HelpDesk $helpDesk)
     {
         $helpDesk->delete();
