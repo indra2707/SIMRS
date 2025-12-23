@@ -16,6 +16,11 @@ return new class extends Migration
             $table->text('keterangan');
             $table->enum('status', ['accept', 'on-progress', 'done'])->default('accept');
             $table->foreignId('user_id');
+            $table->string('tiket');
+            $table->string('judul_laporan');
+            $table->enum('kategori', ['IT', 'Medis', 'Teknik']);
+            $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi',  'Darurat']);
+            $table->string('gambar');
             $table->date('tanggal');
             $table->timestamps();
 
