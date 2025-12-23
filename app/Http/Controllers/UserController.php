@@ -11,4 +11,4 @@ class UserController extends Controller
     {
         return view('dashboard.index');
     }
-}
+}   
