@@ -10,70 +10,8 @@
         allowClear: true
     });
 
-<<<<<<< HEAD
-    //tanggal
-    $('.js-daterangepicker').datepicker({
-        dateFormat: 'dd/mm/yyyy',
-        range: true,
-        multipleDates: true,
-        multipleDatesSeparator: ' - ',
-        autoClose: true,
-        toggleSelected: false,
-
-        onSelect: function (formattedDate, date, inst) {
-            // jika belum pilih 2 tanggal, hentikan
-            if (!date || date.length < 2) {
-                return;
-            }
-
-            // date berupa array [startDate, endDate]
-            let start = date[0];
-            let end = date[1];
-
-            // format ke Y-m-d untuk database
-            $('#tgl_awal').val(formatDate(start));
-            $('#tgl_akhir').val(formatDate(end));
-
-            $table.bootstrapTable("refresh");
-        }
-    });
-
-    let now = new Date();
-    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-    let lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-    // helper format dd/mm/yyyy (untuk tampilan datepicker)
-    function formatDisplay(date) {
-        let d = String(date.getDate()).padStart(2, '0');
-        let m = String(date.getMonth() + 1).padStart(2, '0');
-        let y = date.getFullYear();
-        return `${d}/${m}/${y}`;
-    }
-
-    // helper format Y-m-d (untuk database)
-    function formatDate(date) {
-        let d = String(date.getDate()).padStart(2, '0');
-        let m = String(date.getMonth() + 1).padStart(2, '0');
-        let y = date.getFullYear();
-        return `${y}-${m}-${d}`;
-    }
-
-    $('.js-daterangepicker').val(
-        formatDisplay(firstDay) + ' - ' + formatDisplay(lastDay)
-    );
-
-    $('#tgl_awal').val(formatDate(firstDay));
-    $('#tgl_akhir').val(formatDate(lastDay));
-
-
-
-
-    // onclick upload 
-    $('#btn-attach').on('click', function () {
-=======
     // onclick upload
     $('#btn-attach').on('click', function() {
->>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
         $('#lampiran').trigger('click');
     });
 
@@ -101,13 +39,7 @@
         });
 
         input.files = fileBuffer.files;
-<<<<<<< HEAD
         input.value = '';
-=======
-
-        // reset input supaya bisa upload file yg sama lagi
-        // input.value = '';
->>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
     });
 
 
@@ -224,7 +156,6 @@
                 myformData.delete('lampiran[]');
                 
 
-<<<<<<< HEAD
         // ambil semua field NON file
         $(form).serializeArray().forEach(item => {
             formData.append(item.name, item.value);
@@ -260,77 +191,6 @@
             },
             error: function (xhr) {
                 Alert("error", xhr.responseJSON?.message || "Upload gagal");
-=======
-                // Append file dari fileBuffer
-                if (fileBuffer.files.length > 0) {
-                    console.log('📤 Uploading', fileBuffer.files.length, 'files');
-                    Array.from(fileBuffer.files).forEach((file, index) => {
-                        myformData.append('lampiran[]', file, file.name);
-                        console.log(
-                            `  ${index + 1}. ${file.name} (${(file.size / 1024).toFixed(2)} KB)`
-                        );
-                    });
-                } else {
-                    console.log('No files selected');
-                }
-
-                // Debug FormData
-                console.log('=== FormData Contents ===');
-                for (let pair of myformData.entries()) {
-                    if (pair[1] instanceof File) {
-                        console.log(`${pair[0]} => FILE: ${pair[1].name}`);
-                    } else {
-                        console.log(`${pair[0]} => ${pair[1]}`);
-                    }
-                }
-
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: "json",
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    data: myformData,
-                    beforeSend: function() {
-                        $(".save-btn")
-                            .html(
-                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                            )
-                            .attr("disabled", "disabled");
-                    },
-                    complete: function() {
-                        $(".save-btn")
-                            .html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr("disabled");
-                    },
-                    success: function(res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert("success", res.message);
-                            $table.bootstrapTable("refresh");
-                        } else {
-                            Alert("warning", res.message);
-                        }
-                        $("#helpdesk-modal").modal("hide");
-                        form.classList.remove("was-validated");
-
-                        // Reset fileBuffer agar bisa upload lagi
-                        fileBuffer = new DataTransfer();
-                        $('#lampiran').val('');
-                        $('#preview-images').empty();
-                    },
-                    error: function(xhr, status, error) {
-                        if (xhr.status == 400) {
-                            Alert("error", xhr.responseJSON.message);
-                        } else if (xhr.status == 500) {
-                            Alert("info",
-                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                            );
-                        }
-                        form.classList.remove("was-validated");
-                    },
-                });
->>>>>>> db6017c980c2d2855ca3e759ce17435501a7c4ff
             }
             form.classList.add("was-validated");
         });
