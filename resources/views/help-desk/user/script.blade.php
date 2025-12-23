@@ -130,7 +130,7 @@
         $('#preview-images').empty();
         $('input[name="id"]').val("");
         $('textarea[name="keterangan"]').val("");
-        $('input[name="judul"]').val("");
+        $('input[name="judul_laporan"]').val("");
         $('#lampiran').val('');
         $('select[name="kategori"]').val('').trigger('change');
         $('select[name="prioritas"]').val('').trigger('change');
