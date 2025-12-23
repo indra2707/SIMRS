@@ -231,31 +231,31 @@
                 field: "prioritas",
                 sortable: true,
                 align: "center",
-                 formatter: function (value, row) {
-                    let badgeClass = "";
-                    switch (row.prioritas) {
-                        case "Rendah":
-                            badgeClass =
-                                "badge rounded-pill bg-success fs-9";
-                            break;
-                        case "Sedang":
-                            badgeClass =
-                                "badge rounded-pill bg-warning fs-9";
-                            break;
-                        case "Tinggi":
-                            badgeClass =
-                                "badge rounded-pill bg-danger fs-9";
-                            break;
-                          case "Darurat":
-                            badgeClass =
-                                "badge rounded-pill bg-dark fs-9";
-                            break;
-                        default:
-                            badgeClass = "badge rounded-pill bg-light";
-                    }
-                    return `<span class="${badgeClass}">${row.prioritas}</span>`;
-                },
-                events: window.operateChange,
+                //  formatter: function (value, row) {
+                //     let badgeClass = "";
+                //     switch (row.prioritas) {
+                //         case "Rendah":
+                //             badgeClass =
+                //                 "badge rounded-pill bg-success fs-9";
+                //             break;
+                //         case "Sedang":
+                //             badgeClass =
+                //                 "badge rounded-pill bg-warning fs-9";
+                //             break;
+                //         case "Tinggi":
+                //             badgeClass =
+                //                 "badge rounded-pill bg-danger fs-9";
+                //             break;
+                //           case "Darurat":
+                //             badgeClass =
+                //                 "badge rounded-pill bg-dark fs-9";
+                //             break;
+                //         default:
+                //             badgeClass = "badge rounded-pill bg-light";
+                //     }
+                //     return `<span class="${badgeClass}">${row.prioritas}</span>`;
+                // },
+                // events: window.operateChange,
             },
             {
                 field: "status",
