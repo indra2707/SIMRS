@@ -34,14 +34,16 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-primary add-btn">
-                            <span class="fa fa-plus"></span>
-                            <span> Tambah Laporan</span>
-                        </button><br><br>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-primary add-btn">
+                                <span class="fa fa-plus"></span>
+                                <span> Tambah Laporan</span>
+                            </button>
 
-                        <div class="bs-bars">
-                            <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
-                                placeholder="dd/mm/yyyy - dd/mm/yyyy">
+                            <div class="bs-bars">
+                                <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
+                                    placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                            </div>
                         </div>
                         <input type="hidden" name="tgl_awal" id="tgl_awal">
                         <input type="hidden" name="tgl_akhir" id="tgl_akhir">
@@ -480,43 +482,43 @@
                 if (isMe) {
                     // User's message (kanan - biru)
                     html = `
-                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                                                                                    <div class="message-data text-end mb-1">
-                                                                                        <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
+                                                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                                                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
+                                                                                        <div class="message-data text-end mb-1">
+                                                                                            <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
+                                                                                        </div>
+                                                                                        <div style="text-align: left;">${escapeHtml(msg.message)}</div>
                                                                                     </div>
-                                                                                    <div style="text-align: left;">${escapeHtml(msg.message)}</div>
-                                                                                </div>
-                                                                            </li>
-                                                                        `;
+                                                                                </li>
+                                                                            `;
                 } else if (isAdmin) {
                     // Admin/Support message (kiri - hijau)
                     html = `
-                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                    <div class="message-data mb-1">
-                                                                                        <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
-                                                                                            ${senderName} • ${time}
-                                                                                        </span>
+                                                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                                                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                                                        <div class="message-data mb-1">
+                                                                                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
+                                                                                                ${senderName} • ${time}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        ${escapeHtml(msg.message)}
                                                                                     </div>
-                                                                                    ${escapeHtml(msg.message)}
-                                                                                </div>
-                                                                            </li>
-                                                                        `;
+                                                                                </li>
+                                                                            `;
                 } else {
                     // Other user message (kiri - abu-abu) - jarang terjadi
                     html = `
-                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                    <div class="message-data mb-1">
-                                                                                        <span class="message-data-time" style="color: #999; font-size: 11px;">
-                                                                                            ${senderName} • ${time}
-                                                                                        </span>
+                                                                                <li class="clearfix" data-message-id="${msg.id}">
+                                                                                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                                                        <div class="message-data mb-1">
+                                                                                            <span class="message-data-time" style="color: #999; font-size: 11px;">
+                                                                                                ${senderName} • ${time}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                        ${escapeHtml(msg.message)}
                                                                                     </div>
-                                                                                    ${escapeHtml(msg.message)}
-                                                                                </div>
-                                                                            </li>
-                                                                        `;
+                                                                                </li>
+                                                                            `;
                 }
 
                 return html;
