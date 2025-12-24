@@ -105,23 +105,43 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('admin.helpdesk-views') }}",
             uniqueId: "id",
-            columns: [{
-                    field: 'id',
-                    title: 'ID',
+            columns: [
+                // {
+                //     field: 'id',
+                //     title: 'ID',
+                //     sortable: true,
+                //     align: 'center',
+                //     formatter: function(value, row, index) {
+                //         return index + 1;
+                //     }
+                // },
+                {
+                    field: 'ticket',
+                    title: 'Tiket',
                     sortable: true,
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return index + 1;
-                    }
                 },
                 {
-                    field: 'keterangan',
-                    title: 'Description',
+                    field: 'judul_laporan',
+                    title: 'Laporan',
                     sortable: true,
                     formatter: value =>
                         value && value.length > 50 ?
-                        value.slice(0, 50) + '...' :
-                        value
+                        value.slice(0, 50) + '...' : value
+                },
+                {
+                    field: 'prioritas',
+                    title: 'Prioritas',
+                    sortable: true,
+                    align: 'center',
+
+                },
+                {
+                    field: 'kategori',
+                    title: 'kategori',
+                    sortable: true,
+                    align: 'center',
+                    visible: false
+
                 },
                 {
                     field: 'nama_lengkap',
@@ -130,13 +150,7 @@
                     align: 'center',
 
                 },
-                {
-                    field: 'department',
-                    title: 'Department',
-                    sortable: true,
-                    align: 'center',
 
-                },
 
                 {
                     field: 'tanggal',
@@ -178,18 +192,18 @@
                         let badgeClass = '';
                         switch (value) {
                             case 'accept':
-                                badgeClass = 'badge rounded-pill bg-primary fs-6';
+                                badgeClass = 'badge rounded-pill bg-primary fs-8';
                                 break;
                             case 'on-progress':
-                                badgeClass = 'badge rounded-pill bg-warning fs-6';
+                                badgeClass = 'badge rounded-pill bg-warning fs-8';
                                 break;
                             case 'done':
-                                badgeClass = 'badge rounded-pill bg-success fs-6';
+                                badgeClass = 'badge rounded-pill bg-success fs-8';
                                 break;
                             default:
                                 badgeClass = 'badge rounded-pill bg-light';
                         }
-                        return `<span class="${badgeClass} update-status" style="cursor:pointer;" data-id="${row.id}">${value}</span>`;
+                        return `<span class="${badgeClass} update-status" style="cursor:pointer; display:inline-block; width:75px; text-align:center;" data-id="${row.id}">${value}</span>`;
                     },
                     events: window.operateChange // <-- ini wajib supaya klik bisa dideteksi
                 },
@@ -419,8 +433,8 @@
                     <i class="fa fa-bell text-primary me-2 fs-5"></i>
                     <div>
                         <strong>Helpdesk Baru!</strong><br>
-                        Dari: <b>${e.nama_lengkap}</b><br>
-                        Department: <b>${e.department}</b>
+                        Ticket: <b>${e.tiket} - ${e.nama_lengkap}/${e.department}</b><br>
+                        Laporan: <b>${e.judul_laporan} - ${e.prioritas}</b>
                     </div>
                 </div>
             `

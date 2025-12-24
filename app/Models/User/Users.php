@@ -2,8 +2,9 @@
 
 namespace App\Models\User;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User\Rolls;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Users extends Model
 {
@@ -25,7 +26,9 @@ class Users extends Model
         'updated_at'
     ];
 
-    public function role()
+
+
+    public function rolls()
     {
         return $this->belongsTo(Rolls::class, 'role', 'id');
     }

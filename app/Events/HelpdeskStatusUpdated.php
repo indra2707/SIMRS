@@ -29,9 +29,12 @@ class HelpdeskStatusUpdated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'id' => $this->helpdesk->id,
-            'keterangan' => $this->helpdesk->keterangan,
+           'id' => $this->helpdesk->id,
+            'tiket' => $this->helpdesk->tiket, // DIPERBAIKI
+            'judul_laporan' => $this->helpdesk->judul_laporan, // DIPERBAIKI
             'status' => $this->helpdesk->status,
+            'department' => $this->helpdesk->user->rolls->nama ?? '-',
+            'created_at' => $this->helpdesk->created_at->toDateTimeString(),
         ];
     }
 }

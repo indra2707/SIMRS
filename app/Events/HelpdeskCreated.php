@@ -30,13 +30,17 @@ class HelpdeskCreated implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'id' => $this->helpdesk->id,
+           'id' => $this->helpdesk->id,
+            'tiket' => $this->helpdesk->tiket, // DIPERBAIKI
+            'judul_laporan' => $this->helpdesk->judul_laporan, // DIPERBAIKI
+            'kategori' => $this->helpdesk->kategori, // DIPERBAIKI
+            'prioritas' => $this->helpdesk->prioritas, // DIPERBAIKI
             'keterangan' => $this->helpdesk->keterangan,
-            'nama_lengkap' => $this->helpdesk->user->nama_lengkap,
-            'department' => $this->helpdesk->user->department->nama ?? '',
-            'tanggal' => $this->helpdesk->tanggal,
-            'created_at' => $this->helpdesk->created_at->toDateTimeString(),
             'status' => $this->helpdesk->status,
+            'tanggal' => $this->helpdesk->tanggal,
+            'nama_lengkap' => $this->helpdesk->user->nama_lengkap ?? '-', // DIPERBAIKI
+            'department' => $this->helpdesk->user->rolls->nama ?? '-',
+            'created_at' => $this->helpdesk->created_at->toDateTimeString(),
         ];
     }
 }

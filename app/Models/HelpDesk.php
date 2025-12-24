@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Message;
+use App\Models\User\Users;
+
 
 class HelpDesk extends Model
 {
@@ -29,7 +32,7 @@ class HelpDesk extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Users::class, 'user_id');
     }
     public function messages()
     {

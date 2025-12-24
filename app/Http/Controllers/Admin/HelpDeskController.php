@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use App\Models\HelpDesk;
+use App\Models\User\Users;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
 
 class HelpDeskController extends Controller
@@ -24,9 +25,12 @@ class HelpDeskController extends Controller
 
     public function views()
     {
-        $query = HelpDesk::all();
 
-        $data = []; 
+
+
+        $query = HelpDesk::with(['user.rolls'])->get();
+
+        $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
@@ -34,13 +38,19 @@ class HelpDeskController extends Controller
                 // 'username' => $value->kategori,
                 'nama_lengkap' => $value->user->nama_lengkap ?? '-',
                 'username' => $value->user->username ?? '-',
-                'department' => $value->user->department->nama ?? '-',
+                'department' => $value->user->rolls ->nama ?? '-',
                 'keterangan' => $value->keterangan ?? '-',
+                'ticket' => $value->tiket ?? '-',
+                'judul_laporan' => $value->judul_laporan ?? '-',
+                'kategori' => $value->kategori ?? '-',
+                'prioritas' => $value->prioritas ?? '-',
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
                 'created_at' => $value->created_at,
             ];
         }
+
+
 
         return response()->json($data, 200);
     }
@@ -106,7 +116,11 @@ class HelpDeskController extends Controller
                 'id' => $helpdesk->id,
                 'username' => $helpdesk->user->username ?? 'Unknown',
                 'nama_lengkap' => $helpdesk->user->nama_lengkap ?? 'Unknown',
-                'department' => $helpdesk->department,
+                'judul_laporan' => $helpdesk->judul_laporan,
+                'department' => $helpdesk->user->rolls->nama ?? 'Unknown',
+                'tiket' => $helpdesk->tiket,
+                'prioritas' => $helpdesk->prioritas,
+                'kategori' => $helpdesk->kategori,
                 'keterangan' => $helpdesk->keterangan,
                 'status' => $helpdesk->status,
                 'tanggal' => $helpdesk->tanggal,

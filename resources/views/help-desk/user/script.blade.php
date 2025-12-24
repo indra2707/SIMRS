@@ -378,7 +378,7 @@
                         default:
                             badgeClass = "badge rounded-pill bg-light";
                     }
-                    return `<span class="${badgeClass}">${row.status}</span>`;
+                    return `<span class="${badgeClass}" style="cursor:pointer; display:inline-block; width:75px; text-align:center;">${row.status}</span>`;
                 },
                 events: window.operateChange,
             },
@@ -568,9 +568,9 @@
                     <i class="fa fa-info-circle text-white me-2 fs-5"></i>
                     <div>
                         <strong>Helpdesk Diperbarui!</strong><br>
-                        ID: <b>${e.id}</b><br>
                         Status: <b>${e.status}</b><br>
-                        Keterangan: ${e.keterangan || "-"}
+                        Tiket: <b>${e.tiket}</b><br>
+                        Laporan: ${e.judul_laporan || "-"}
                     </div>
                 </div>
             `,

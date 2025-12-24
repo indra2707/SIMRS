@@ -43,6 +43,7 @@
                                             <th class="f-light">tanggal</th>
                                             <th class="f-light">created_at</th>
                                             <th class="f-light">Status</th>
+                                            <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -276,7 +277,7 @@
     @include('help-desk.admin.script')
 
 
-   
+
     <script>
         $(document).ready(function() {
             var currentHelpdeskId = null;
@@ -518,7 +519,7 @@
                 });
             }
 
-            // ✅ PERBAIKAN: Append new message to chat
+            //  PERBAIKAN: Append new message to chat
             function appendMessage(message) {
                 // Cek apakah pesan sudah ada (avoid duplicate)
                 if ($('.chat-history ul li[data-message-id="' + message.id + '"]').length > 0) {
@@ -526,7 +527,7 @@
                     return;
                 }
 
-                console.log('📝 Appending new message:', message);
+                console.log('Appending new message:', message);
 
                 var html = renderSingleMessage(message);
                 $('.chat-history ul').append(html);
@@ -546,7 +547,7 @@
                 }, 100);
             }
 
-            // ✅ PERBAIKAN: Initialize Laravel Echo untuk REALTIME CHAT
+            //  Initialize Laravel Echo untuk REALTIME CHAT
             function initChatChannel(helpdeskId) {
                 // Leave previous channel
                 if (chatChannel) {
