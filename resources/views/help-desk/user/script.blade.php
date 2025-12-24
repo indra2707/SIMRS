@@ -67,14 +67,14 @@
 
 
 
-    // onclick upload 
+    // onclick upload
     $('#btn-attach').on('click', function () {
         $('#lampiran').trigger('click');
     });
 
     //upload foto multiple
     let fileBuffer = new DataTransfer();
-    $(document).on('change', 'input[name="lampiran[]"]', function () {
+    $(document).on('change', 'input[name="lampiran[]"]', function() {
         const input = this;
         const newFiles = Array.from(input.files);
 
@@ -95,8 +95,11 @@
             renderPreview(file, fileBuffer.files.length - 1);
         });
 
+        // sinkron ke input
         input.files = fileBuffer.files;
-        input.value = '';
+
+        // reset input supaya bisa upload file yg sama lagi
+        // input.value = '';
     });
 
 
@@ -175,14 +178,13 @@
         $('#helpdesk-modal').modal('show');
     });
 
-    $(document).on("click", ".add-btn", function () {
+
+    $(document).on("click", ".add-btn", function() {
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        // $('#preview-images').empty();
-        fileBuffer = new DataTransfer();
-
+        $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
+        $('#preview-images').empty();
         $('input[name="id"]').val("");
         $('textarea[name="keterangan"]').val("");
         $('input[name="judul_laporan"]').val("");
@@ -195,60 +197,95 @@
 
 
     // Save
-    $(document).on("click", ".save-btn", function (event) {
-        event.preventDefault();
+     // Save
+    $(document).on("click", ".save-btn", function(event) {
+        event.preventDefault(); // Pastikan mencegah submit default
 
-        let forms = document.getElementsByClassName("form-helpdesk");
+        var forms = document.getElementsByClassName("form-helpdesk");
 
-        Array.prototype.forEach.call(forms, function (form) {
-
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid")?.focus();
+                form.querySelector(".form-control:invalid").focus();
                 event.stopPropagation();
-                form.classList.add("was-validated");
-                return;
-            }
+            } else {
+                var url = "{{ route('user.helpdesk-store') }}";
+                var type = "POST";
 
-            // BUAT FormData DARI FORM
-            let formData = new FormData(form);
+                // FormData dari form
+                let myformData = new FormData(form);
+                myformData.delete('lampiran[]');
 
-            // hapus file bawaan (karena kita pakai buffer)
-            formData.delete('lampiran[]');
 
-            // 🔥 ambil file dari fileBuffer
-            for (let i = 0; i < fileBuffer.files.length; i++) {
-                formData.append("lampiran[]", fileBuffer.files[i]);
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "{{ route('user.helpdesk-store') }}",
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function () {
-                    $('.save-btn')
-                        .html('<span class="spinner-border spinner-border-sm"></span>')
-                        .attr('disabled', true);
-                },
-                complete: function () {
-                    $('.save-btn')
-                        .html('<span class="fa fa-check"></span> Simpan')
-                        .removeAttr('disabled');
-                },
-                success: function (res) {
-                    Alert("success", res.message);
-                    $table.bootstrapTable("refresh");
-                    $("#helpdesk-modal").modal("hide");
-                    form.reset();
-                    $("#preview-images").html("");
-                    fileBuffer = new DataTransfer(); // reset buffer
-                },
-                error: function (xhr) {
-                    Alert("error", xhr.responseJSON?.message || "Upload gagal");
+                // Append file dari fileBuffer
+                if (fileBuffer.files.length > 0) {
+                    console.log('📤 Uploading', fileBuffer.files.length, 'files');
+                    Array.from(fileBuffer.files).forEach((file, index) => {
+                        myformData.append('lampiran[]', file, file.name);
+                        console.log(
+                            `  ${index + 1}. ${file.name} (${(file.size / 1024).toFixed(2)} KB)`
+                        );
+                    });
+                } else {
+                    console.log('No files selected');
                 }
-            });
 
+                // Debug FormData
+                console.log('=== FormData Contents ===');
+                for (let pair of myformData.entries()) {
+                    if (pair[1] instanceof File) {
+                        console.log(`${pair[0]} => FILE: ${pair[1].name}`);
+                    } else {
+                        console.log(`${pair[0]} => ${pair[1]}`);
+                    }
+                }
+
+                $.ajax({
+                    type: type,
+                    url: url,
+                    dataType: "json",
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    data: myformData,
+                    beforeSend: function() {
+                        $(".save-btn")
+                            .html(
+                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                            )
+                            .attr("disabled", "disabled");
+                    },
+                    complete: function() {
+                        $(".save-btn")
+                            .html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr("disabled");
+                    },
+                    success: function(res, status, xhr) {
+                        if (xhr.status == 200 && res.success == true) {
+                            Alert("success", res.message);
+                            $table.bootstrapTable("refresh");
+                        } else {
+                            Alert("warning", res.message);
+                        }
+                        $("#helpdesk-modal").modal("hide");
+                        form.classList.remove("was-validated");
+
+                        // Reset fileBuffer agar bisa upload lagi
+                        fileBuffer = new DataTransfer();
+                        $('#lampiran').val('');
+                        $('#preview-images').empty();
+                    },
+                    error: function(xhr, status, error) {
+                        if (xhr.status == 400) {
+                            Alert("error", xhr.responseJSON.message);
+                        } else if (xhr.status == 500) {
+                            Alert("info",
+                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                            );
+                        }
+                        form.classList.remove("was-validated");
+                    },
+                });
+            }
             form.classList.add("was-validated");
         });
     });
