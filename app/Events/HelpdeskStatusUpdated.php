@@ -4,8 +4,6 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -14,27 +12,20 @@ class HelpdeskStatusUpdated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $helpdesk;
+    public array $data;
 
-    public function __construct($helpdesk)
+    public function __construct(array $data)
     {
-        $this->helpdesk = $helpdesk;
+        $this->data = $data;
     }
 
     public function broadcastOn()
     {
-        return new Channel('helpdesk-user'); // channel untuk user
+        return new Channel('helpdesk-user');
     }
 
-    public function broadcastWith()
+    public function broadcastWith(): array
     {
-        return [
-           'id' => $this->helpdesk->id,
-            'tiket' => $this->helpdesk->tiket, // DIPERBAIKI
-            'judul_laporan' => $this->helpdesk->judul_laporan, // DIPERBAIKI
-            'status' => $this->helpdesk->status,
-            'department' => $this->helpdesk->user->rolls->nama ?? '-',
-            'created_at' => $this->helpdesk->created_at->toDateTimeString(),
-        ];
+        return $this->data;
     }
 }

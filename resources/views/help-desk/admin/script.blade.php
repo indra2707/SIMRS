@@ -116,7 +116,7 @@
                 //     }
                 // },
                 {
-                    field: 'ticket',
+                    field: 'tiket',
                     title: 'Tiket',
                     sortable: true,
                 },
@@ -269,6 +269,7 @@
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
             `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+            `<a class="dropdown-item btn-infos" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-list text-primary"></i> Info</a>`,
             // '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
@@ -277,20 +278,107 @@
     }
 
 
+    let isViewMode = false;
     // Handle events button actions
     window.operateEvents = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-infos': function(e, value, row, index) {
+            console.log('=== DEBUG INFO ===');
+            console.log('Row Data:', row);
+            console.log('Gambar Value:', row.gambar);
+            isViewMode = true;
             $('#modal-helpdesk').modal('show');
-            $('.modal-title').text('Form Edit helpdesk');
-            $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+            $('.modal-title').text('Detail Helpdesk');
+            $('.save-btn').hide(); // Sembunyikan tombol simpan
+
+            // Disable semua input di mode view
+            $('#modal-helpdesk input, #modal-helpdesk textarea, #modal-helpdesk select').attr('disabled', true);
+            $('#btn-attach').hide(); // Sembunyikan tombol attach
+
+            // Isi data form
             $('input[name="id"]').val(row.id);
-            $('input[name="kode"]').val(row.kode);
-            $('input[name="nama"]').val(row.nama);
-            $('input[name="status"]').prop('checked', row.status === '1');
+            $('input[name="judul_laporan"]').val(row.judul_laporan);
+            $('input[name="tiket"]').val(row.tiket);
+            $('input[name="nama_lengkap"]').val(row.nama_lengkap);
+            $('input[name="username"]').val(row.username);
+            $('input[name="status"]').val(row.status);
+            var $badge = $('#status-badge');
+            var statusText = row.status;
+            $badge.removeClass('bg-primary bg-success bg-warning');
+            if (statusText.toLowerCase() === 'accept') {
+                $badge.addClass('bg-primary');
+            } else if (statusText.toLowerCase() === 'on-progress') {
+                $badge.addClass('bg-warning');
+            } else {
+                $badge.addClass('bg-success');
+            }
+            $badge.text(statusText.charAt(0).toUpperCase() + statusText.slice(1));
+
+            $('select[name="kategori"]').val(row.kategori).trigger('change');
+            $('select[name="prioritas"]').val(row.prioritas).trigger('change');
+            $('textarea[name="keterangan"]').val(row.keterangan);
+
+            // GUNAKAN #preview-images (sesuai view)
+            $('#preview-images').empty();
+
+            console.log('Container exists:', $('#preview-images').length);
+
+            if (row.gambar) {
+                console.log('Gambar ada, mencoba parse...');
+                try {
+                    let images;
+
+                    // Cek apakah sudah array atau masih string
+                    if (typeof row.gambar === 'string') {
+                        images = JSON.parse(row.gambar);
+                        console.log('Parsed images:', images);
+                    } else {
+                        images = row.gambar;
+                        console.log('Images sudah array:', images);
+                    }
+
+                    if (Array.isArray(images) && images.length > 0) {
+                        console.log('Jumlah gambar:', images.length);
+
+                        images.forEach((filename, index) => {
+                            let imgUrl = '/uploads/images/help-desk/' + filename;
+                            console.log(`Image ${index + 1}:`, imgUrl);
+
+                            $('#preview-images').append(`
+                            <div class="col-md-2 mb-2">
+                                <div class="position-relative">
+                                    <img src="${imgUrl}"
+                                         class="img-thumbnail preview-img"
+                                         style="height:100px;object-fit:cover;cursor:pointer"
+                                         onerror="console.error('Failed to load:', '${imgUrl}'); this.src='data:image/svg+xml,%3Csvg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'100\\' height=\\'100\\'%3E%3Crect fill=\\'%23ddd\\' width=\\'100\\' height=\\'100\\'/%3E%3Ctext x=\\'50%25\\' y=\\'50%25\\' text-anchor=\\'middle\\' fill=\\'%23999\\'%3EError%3C/text%3E%3C/svg%3E';">
+                                    <div class="position-absolute bottom-0 end-0 m-1">
+                                        <button type="button"
+                                                class="btn btn-light btn-xs btn-preview-view"
+                                                data-src="${imgUrl}">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `);
+                        });
+                        console.log('Gambar berhasil ditambahkan ke DOM');
+                    } else {
+                        console.log('Images bukan array atau kosong');
+                        $('#preview-images').html('<p class="text-muted">Tidak ada gambar</p>');
+                    }
+                } catch (e) {
+                    console.error('Error parsing gambar:', e);
+                    console.error('Raw gambar value:', row.gambar);
+                    $('#preview-images').html('<p class="text-danger">Error memuat gambar: ' + e.message +
+                        '</p>');
+                }
+            } else {
+                console.log('Row.gambar null atau undefined');
+                $('#preview-images').html('<p class="text-muted">Tidak ada gambar</p>');
+            }
+
+            console.log('=== END DEBUG ===');
         },
-
-
-
         'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('admin.helpdesk-destroy', ':id') }}";
             url = url.replace(':id', row.id);
@@ -327,7 +415,45 @@
             })
         }
     }
+    $(document).on('click', '.btn-preview-view', function() {
+        $('#preview-large').attr('src', $(this).data('src'));
+        $('#modal-preview-image').modal('show');
+        $('#modal-helpdesk').modal('hide');
+    });
 
+    // Kembali ke modal helpdesk saat modal preview ditutup
+    $('#modal-preview-image').on('hidden.bs.modal', function() {
+        if (isViewMode) {
+            // Jangan trigger event hidden dari modal-helpdesk
+            $('#modal-helpdesk').modal('show');
+        }
+    });
+
+    // Reset form saat modal ditutup
+    $('#modal-helpdesk').on('hidden.bs.modal', function() {
+        // Cek apakah modal preview sedang dibuka
+        if (!$('#modal-preview-image').hasClass('show')) {
+            console.log('Modal helpdesk ditutup, reset form');
+
+            // Reset flag
+            isViewMode = false;
+
+            // Enable kembali semua input
+            $('#modal-helpdesk input, #modal-helpdesk textarea, #modal-helpdesk select').attr('disabled',
+                false);
+            $('#btn-attach').show();
+            $('.save-btn').show();
+
+            // Clear preview images
+            $('#preview-images').empty();
+
+            // Reset form
+            $('.form-helpdesk')[0].reset();
+            $('.form-helpdesk').removeClass('was-validated');
+        } else {
+            console.log('Modal preview masih terbuka, jangan reset');
+        }
+    });
 
     // Window operateChange Status
     window.operateChange = {

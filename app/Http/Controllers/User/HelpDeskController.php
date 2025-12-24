@@ -45,7 +45,7 @@ class HelpDeskController extends Controller
         return view('help-desk.user.helpdesk', $data);
     }
 
-    //View 
+    //View
     public function views(Request $request)
     {
         $query = HelpDesk::where('user_id', auth()->id());
@@ -77,6 +77,9 @@ class HelpDeskController extends Controller
 
     public function store(Request $request)
     {
+        if (!is_dir('uploads/images/help-desk/')) {
+            mkdir('uploads/images/help-desk/', 0777, true);
+        }
         $request->validate([
             'lampiran.*' => 'image|mimes:jpg,jpeg,png|max:5120', // 5MB
         ]);
@@ -110,7 +113,15 @@ class HelpDeskController extends Controller
             'gambar' => !empty($gambar) ? json_encode($gambar) : null,
         ]);
 
-        broadcast(new HelpdeskCreated($helpdesk))->toOthers();
+        broadcast(new HelpdeskCreated([
+            'id' => $helpdesk->id,
+            'tiket' => $helpdesk->tiket,
+            'judul_laporan' => $helpdesk->judul_laporan,
+            'kategori' => $helpdesk->kategori,
+            'prioritas' => $helpdesk->prioritas,
+            'status' => $helpdesk->status,
+            'tanggal' => $helpdesk->tanggal,
+        ]))->toOthers();
         return response()->json([
             'success' => true,
             'message' => 'Berhasil membuat laporan Help Desk',

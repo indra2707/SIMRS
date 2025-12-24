@@ -7,6 +7,7 @@ use App\Models\User\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
+use Illuminate\Support\Facades\File;
 
 class HelpDeskController extends Controller
 {
@@ -38,15 +39,16 @@ class HelpDeskController extends Controller
                 // 'username' => $value->kategori,
                 'nama_lengkap' => $value->user->nama_lengkap ?? '-',
                 'username' => $value->user->username ?? '-',
-                'department' => $value->user->rolls ->nama ?? '-',
+                'department' => $value->user->rolls->nama ?? '-',
                 'keterangan' => $value->keterangan ?? '-',
-                'ticket' => $value->tiket ?? '-',
+                'tiket' => $value->tiket ?? '-',
                 'judul_laporan' => $value->judul_laporan ?? '-',
                 'kategori' => $value->kategori ?? '-',
                 'prioritas' => $value->prioritas ?? '-',
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
                 'created_at' => $value->created_at,
+                'gambar' => $value->gambar
             ];
         }
 
@@ -73,7 +75,7 @@ class HelpDeskController extends Controller
 
     public function updateStatus(HelpDesk $helpDesk)
     {
-        // Logika status: accept → on-progress → done
+        // Logika status
         if ($helpDesk->status === 'accept') {
             $helpDesk->status = 'on-progress';
             $message = 'Berhasil menerima Helpdesk';
@@ -81,12 +83,19 @@ class HelpDeskController extends Controller
             $helpDesk->status = 'done';
             $message = 'Berhasil menyelesaikan Helpdesk';
         } else {
-            $helpDesk->status = 'done'; // tetap done
             $message = 'Status sudah done';
         }
 
         $helpDesk->save();
-        HelpdeskStatusUpdated::dispatch($helpDesk);
+
+        broadcast(new HelpdeskStatusUpdated([
+            'id' => $helpDesk->id,
+            'tiket' => $helpDesk->tiket,
+            'judul_laporan' => $helpDesk->judul_laporan,
+            'status' => $helpDesk->status,
+            'updated_at' => $helpDesk->updated_at->toDateTimeString(),
+        ]))->toOthers();
+
         return response()->json([
             'success' => true,
             'message' => $message,
@@ -95,21 +104,35 @@ class HelpDeskController extends Controller
     }
 
 
-    public function destroy(HelpDesk $helpDesk)
+    public function destroy($id)
     {
-        $helpDesk->delete();
+        $helpdesk = HelpDesk::findOrFail($id);
+
+        if ($helpdesk->gambar) {
+            $images = json_decode($helpdesk->gambar, true);
+            $path = public_path('uploads/images/help-desk/');
+
+            foreach ($images as $image) {
+                $filePath = $path . $image;
+                if (File::exists($filePath)) {
+                    File::delete($filePath);
+                }
+            }
+        }
+
+        $helpdesk->delete();
+
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil Menghapus Data Laporan',
-
-        ], 200);
+            'message' => 'Data dan gambar berhasil dihapus'
+        ]);
     }
 
 
     public function getHelpdeskInfo($id)
     {
         try {
-            $helpdesk = HelpDesk::with('user')->findOrFail($id);
+            $helpdesk = HelpDesk::with('user.rolls')->findOrFail($id);
 
             return response()->json([
                 'success' => true,

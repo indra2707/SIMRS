@@ -57,35 +57,123 @@
     </div>
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="modal-helpdesk" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal fade" id="modal-helpdesk" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Edit Laporan</h5>
+                    <h5 class="modal-title">Title</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <form class="form-helpdesk">
 
-                        <div class="mb-2">
-                            <label for="f1-first-name">Username</label>
-                            <input class="form-control" id="username" type="text" name="username" disabled required>
-                        </div>
-                        <div class="mb-2">
-                            <label for="f1-last-name">Department</label>
-                            <input class="form-control" id="department" type="text" name="department" disabled required>
-                        </div>
+                    @csrf
+                    <div class="row justify-content-center">
+                        <div class="col-md-10">
+                            <div class="position-relative mb-5">
+                                <div class="position-absolute top-0 end-0 mt-2 me-2 fw-bold">
+                                    <span id="status-badge" class="badge fs-5">Status</span>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <label for="tiket" class="form-label">Tiket</label>
+                                    <input class="form-control" name="tiket" type="text">
+                                </div>
 
-                        <div class="mb-2">
-                            <label for="keterangan">Keterangan</label>
-                            <textarea class="form-control" name="keterangan" id="keterangan" cols="50" rows="10"></textarea>
-                        </div>
-                        <div class="d-flex justify-content-end mt-4">
-                            <button class="btn btn-primary save-btn" type="button">Update</button>
-                        </div>
+                                <div class="col-md-6">
+                                    <label for="nama_lengkap" class="form-label">Pelapor</label>
+                                    <input class="form-control" name="nama_lengkap" type="text">
+                                </div>
+                            </div>
 
-                    </form>
+                            <!-- Judul Laporan -->
+                            <div class="mb-2">
+                                <label for="judul_laporan" class="form-label">Judul Laporan</label>
+                                <input class="form-control" name="judul_laporan" type="text"
+                                    placeholder="Judul Laporan..." required>
+                            </div>
+
+                            <!-- Hidden Fields -->
+                            <input type="hidden" name="id">
+                            <input type="hidden" value="{{ Auth::user()->username }}" name="f1-first-name">
+                            <input type="hidden" name="department" value="{{ Auth::user()->role }}">
+
+                            <!-- Kategori dan Prioritas (2 Kolom) -->
+                            <div class="row mb-2">
+                                <div class="col-md-6">
+                                    <label for="kategori" class="form-label">Kategori Laporan</label>
+                                    <select class="form-select select2" name="kategori" required>
+                                        <option></option>
+                                        <option value="IT">IT / Sistem Informasi</option>
+                                        <option value="Medis">Peralatan Medis / Atem</option>
+                                        <option value="Teknik">Sarana & Prasarana / Teknik</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="prioritas" class="form-label">Prioritas</label>
+                                    <select class="form-select select2" name="prioritas" required>
+                                        <option></option>
+                                        <option value="Rendah">Rendah</option>
+                                        <option value="Sedang">Sedang</option>
+                                        <option value="Tinggi">Tinggi</option>
+                                        <option value="Darurat">Darurat</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi Masalah -->
+                            <div class="mb-3">
+                                <label for="keterangan" class="form-label">Deskripsi Masalah</label>
+                                <textarea class="form-control" name="keterangan" id="keterangan" rows="10" required
+                                    placeholder="Deskripsi Masalah..."></textarea>
+                            </div>
+
+                            <!-- Lampiran -->
+                            <div class="mb-3 col-md-12">
+                                <label class="form-label">Lampiran</label>
+
+                                <!-- Button Attach -->
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="btn-attach">
+                                    <i class="fa fa-paperclip"></i> Attach File
+                                </button>
+
+                                <!-- Hidden Input -->
+                                <input type="file" id="lampiran" name="lampiran[]" multiple
+                                    accept="image/jpeg,image/png" class="d-none">
+
+                                <small class="text-muted d-block">
+                                    Maksimal 5 file (JPG / PNG)
+                                </small>
+
+                                <!-- Preview Images -->
+                                <div class="row mt-2" id="preview-images"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-info" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> tutup</button>
+                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
+                        Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal lihat foto -->
+    <div class="modal fade" id="modal-preview-image" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title-view">Preview Gambar</h5> -->
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="preview-large" class="img-fluid rounded">
                 </div>
             </div>
         </div>
