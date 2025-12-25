@@ -69,6 +69,7 @@ class HelpDeskController extends Controller
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
                 'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
+                'lampiran' => $value->gambar,
             ];
         });
 

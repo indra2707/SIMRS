@@ -74,7 +74,7 @@
 
     //upload foto multiple
     let fileBuffer = new DataTransfer();
-    $(document).on('change', 'input[name="lampiran[]"]', function() {
+    $(document).on('change', 'input[name="lampiran[]"]', function () {
         const input = this;
         const newFiles = Array.from(input.files);
 
@@ -136,6 +136,7 @@
         reader.readAsDataURL(file);
     }
 
+
     // LIHAT FOTO
     $(document).on('click', '.btn-preview', function () {
         $('#preview-large').attr('src', $(this).data('src'));
@@ -179,31 +180,29 @@
     });
 
 
-    $(document).on("click", ".add-btn", function() {
+    $(document).on("click", ".add-btn", function () {
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
+        $('.save-btn').show();
+        $('.btn-attach').show();
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
         $('input[name="id"]').val("");
-        $('textarea[name="keterangan"]').val("");
-        $('input[name="judul_laporan"]').val("");
+        $('textarea[name="keterangan"]').val("").prop('readonly', false);
+        $('input[name="judul_laporan"]').val("").prop('readonly', false);
         $('#lampiran').val('');
-        $('select[name="kategori"]').val('').trigger('change');
-        $('select[name="prioritas"]').val('').trigger('change');
-
+        $('select[name="kategori"]').val('').trigger('change').prop('disabled', false);
+        $('select[name="prioritas"]').val('').trigger('change').prop('disabled', false);
         fileBuffer = new DataTransfer();
     });
 
 
     // Save
-     // Save
-    $(document).on("click", ".save-btn", function(event) {
+    $(document).on("click", ".save-btn", function (event) {
         event.preventDefault(); // Pastikan mencegah submit default
-
         var forms = document.getElementsByClassName("form-helpdesk");
-
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.stopPropagation();
@@ -247,19 +246,19 @@
                     contentType: false,
                     cache: false,
                     data: myformData,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $(".save-btn")
                             .html(
                                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                             )
                             .attr("disabled", "disabled");
                     },
-                    complete: function() {
+                    complete: function () {
                         $(".save-btn")
                             .html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr("disabled");
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert("success", res.message);
                             $table.bootstrapTable("refresh");
@@ -274,7 +273,7 @@
                         $('#lampiran').val('');
                         $('#preview-images').empty();
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             Alert("error", xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
@@ -291,13 +290,12 @@
     });
 
 
-
     // Page Load Event
     $(function () {
         initTable();
     });
 
-    // ---------------------------------------------------------------------------------------------
+ 
     // init table
     function initTable() {
         $table.bootstrapTable("destroy").bootstrapTable({
@@ -439,21 +437,48 @@
     }
 
     function actionsFunction(value, row, index) {
-        return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
-            "</button>",
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-            `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            "</div>",
-            "</div>",
-        ].join("");
+        if (row.status === 'accept') {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                "</button>",
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+                '<a class="dropdown-item btn-infoo" href="javascript:void(0)"><i class="fa fa-info text-secondary"></i> Informasi</a>',
+                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+                "</div>",
+                "</div>",
+            ].join("");
+        } else {
+            return [
+                '<div class="dropdown icon-dropdown">',
+                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+                '<i class="icon-more-alt"></i>',
+                "</button>",
+                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+                '<a class="dropdown-item btn-infoo" href="javascript:void(0)"><i class="fa fa-info text-secondary"></i> Informasi</a>',
+                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
+                "</div>",
+                "</div>",
+            ].join("");
+        }
     }
 
     // Handle events button actions
     window.operateEvents = {
+        "click .btn-infoo": function (e, value, row, index) {
+            $('#helpdesk-modal').modal('show');
+            $('.modal-title').text('Informasi Laporan');
+            $('.save-btn').hide();
+            $('.btn-attach').hide();
+            $('input[name="id"]').val(row.id);
+            $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
+            $('input[name="judul_laporan"]').val(row.judul_laporan).prop('readonly', true);
+            $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
+            $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
+            $('#lampiran').val(row.lampiran);
+        },
         "click .btn-delete": function (e, value, row, index) {
             var url = "{{ route('user.helpdesk-delete', ':id') }}";
             url = url.replace(":id", row.id);
@@ -510,37 +535,24 @@
 
         $("#chatModal").modal("show");
     });
-    // Window operateChange Status
-    // window.operateChange = {
-    //     'click .update-status': function(e, value, row, index) {
-    //         var url = "{{ route('master-data.icd-9.update-status', ':id') }}";
-    //         url = url.replace(':id', row.id);
-    //         $.ajax({
-    //             url: url,
-    //             type: "POST",
-    //             data: {
-    //                 status: e.target.checked ? 1 : 0,
-    //                 _token: "{{ csrf_token() }}"
-    //             },
-    //             success: function(res, status, xhr) {
-    //                 if (xhr.status == 200 && res.success == true) {
-    //                     Alert('success', res.message);
-    //                 } else {
-    //                     Alert('warnig', res.message);
-    //                 }
-    //                 $table.bootstrapTable('refresh');
-    //             },
-    //             error: function(xhr, status, error) {
-    //                 if (xhr.status == 400) {
-    //                     var errors = xhr.responseJSON.errors;
-    //                     Alert('danger', res.message);
-    //                 } else if (xhr.status == 500) {
-    //                     Alert('warnig', "Silahkan hubungi IT Rumah Sakit!");
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }
+
+    // Mengambil data jam sekarang
+    function updateLastSeen() {
+        const now = new Date();
+
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        hours = hours % 12;
+        hours = hours ? hours : 12; // jam 0 jadi 12
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        document.getElementById('lastSeen').innerText =
+            `Last Seen ${hours}:${minutes} ${ampm}`;
+    }
+    updateLastSeen(); // panggil saat halaman load
+
 </script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.16.1/echo.iife.js"></script>

@@ -134,7 +134,7 @@
                         <div class="col-sm-10">
 
                             <!-- Button Attach -->
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="btn-attach">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach" id="btn-attach">
                                 <i class="fa fa-paperclip"></i> Attach File
                             </button>
 
@@ -142,7 +142,7 @@
                             <input type="file" id="lampiran" name="lampiran[]" multiple accept="image/jpeg,image/png"
                                 class="d-none">
 
-                            <small class="text-muted d-block">
+                            <small class="text-muted btn-attach">
                                 Maksimal 5 file (JPG / PNG)
                             </small>
 
@@ -201,13 +201,13 @@
                                                     src="{{ asset('assets/images/user/8.jpg') }}" alt="">
                                                 <div class="about">
                                                     <div class="name">
-                                                        <div id="chatOpponentFullName"></div>
+                                                        <div id="nama_lengkap"></div>
                                                         <small class="text-muted" id="chatOpponentUsername"></small>
                                                     </div>
-                                                    <div class="status">Last Seen 3:55 PM</div>
+                                                    <div class="status" id="lastSeen"></div>
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
-                                                    <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
+                                                    <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
                                                     </li>
                                                     <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
                                                     </li>
@@ -216,7 +216,7 @@
                                                     <li class="list-inline-item"><a href="#"><i
                                                                 class="icon-video-camera"></i></a></li>
                                                     <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                class="icon-menu"></i></a></li>
+                                                                class="icon-menu"></i></a></li> -->
                                                 </ul>
                                             </div>
                                             <!-- chat-header end-->
@@ -277,69 +277,6 @@
                                             <!-- end chat-message-->
                                             <!-- chat end-->
                                             <!-- Chat right side ends-->
-                                        </div>
-                                    </div>
-                                    <div class="col ps-0 chat-menu">
-
-                                        <div class="tab-content" id="info-tabContent">
-                                            <div class="tab-pane fade show active" id="info-home" role="tabpanel"
-                                                aria-labelledby="info-home-tab">
-                                                <div class="people-list">
-                                                    <div class="user-profile">
-                                                        <div class="image">
-                                                            <div class="avatar text-center"><img alt=""
-                                                                    src="{{ asset('assets/images/user/2.jpg') }}"></div>
-                                                            <div class="icon-wrapper"><i
-                                                                    class="icofont icofont-pencil-alt-5"></i></div>
-                                                        </div>
-                                                        <div class="user-content text-center">
-                                                            <h5 class="text-uppercase">mark jenco</h5>
-                                                            <div class="social-media">
-                                                                <ul class="list-inline">
-                                                                    <li class="list-inline-item"><a
-                                                                            href="https://www.facebook.com/"
-                                                                            target="_blank"><i
-                                                                                class="fa fa-facebook"></i></a>
-                                                                    </li>
-                                                                    <li class="list-inline-item"><a
-                                                                            href="https://accounts.google.com/"
-                                                                            target="_blank"><i
-                                                                                class="fa fa-google-plus"></i></a></li>
-                                                                    <li class="list-inline-item"><a
-                                                                            href="https://twitter.com/" target="_blank"><i
-                                                                                class="fa fa-twitter"></i></a></li>
-                                                                    <li class="list-inline-item"><a
-                                                                            href="https://www.instagram.com/"
-                                                                            target="_blank"><i
-                                                                                class="fa fa-instagram"></i></a></li>
-                                                                    <li class="list-inline-item"><a href="https://rss.app/"
-                                                                            target="_blank"><i class="fa fa-rss"></i></a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="follow text-center">
-                                                                <div class="row">
-                                                                    <div class="col border-right"><span>Following</span>
-                                                                        <div class="follow-num">236k</div>
-                                                                    </div>
-                                                                    <div class="col"><span>Follower</span>
-                                                                        <div class="follow-num">3691k</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="text-center">
-                                                                <p class="mb-0">Mark.jecno23@gmail.com</p>
-                                                                <p class="mb-0">+91 365 - 658 - 1236</p>
-                                                                <p class="mb-0">Fax: 123-4560</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -482,43 +419,43 @@
                 if (isMe) {
                     // User's message (kanan - biru)
                     html = `
-                                                                                <li class="clearfix" data-message-id="${msg.id}">
-                                                                                    <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                                                                                        <div class="message-data text-end mb-1">
-                                                                                            <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
-                                                                                        </div>
-                                                                                        <div style="text-align: left;">${escapeHtml(msg.message)}</div>
-                                                                                    </div>
-                                                                                </li>
-                                                                            `;
+                                                                                            <li class="clearfix" data-message-id="${msg.id}">
+                                                                                                <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
+                                                                                                    <div class="message-data text-end mb-1">
+                                                                                                        <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
+                                                                                                    </div>
+                                                                                                    <div style="text-align: left;">${escapeHtml(msg.message)}</div>
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        `;
                 } else if (isAdmin) {
                     // Admin/Support message (kiri - hijau)
                     html = `
-                                                                                <li class="clearfix" data-message-id="${msg.id}">
-                                                                                    <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                        <div class="message-data mb-1">
-                                                                                            <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
-                                                                                                ${senderName} • ${time}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        ${escapeHtml(msg.message)}
-                                                                                    </div>
-                                                                                </li>
-                                                                            `;
+                                                                                            <li class="clearfix" data-message-id="${msg.id}">
+                                                                                                <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                                                                    <div class="message-data mb-1">
+                                                                                                        <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
+                                                                                                            ${senderName} • ${time}
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    ${escapeHtml(msg.message)}
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        `;
                 } else {
                     // Other user message (kiri - abu-abu) - jarang terjadi
                     html = `
-                                                                                <li class="clearfix" data-message-id="${msg.id}">
-                                                                                    <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                        <div class="message-data mb-1">
-                                                                                            <span class="message-data-time" style="color: #999; font-size: 11px;">
-                                                                                                ${senderName} • ${time}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        ${escapeHtml(msg.message)}
-                                                                                    </div>
-                                                                                </li>
-                                                                            `;
+                                                                                            <li class="clearfix" data-message-id="${msg.id}">
+                                                                                                <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                                                                                                    <div class="message-data mb-1">
+                                                                                                        <span class="message-data-time" style="color: #999; font-size: 11px;">
+                                                                                                            ${senderName} • ${time}
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                    ${escapeHtml(msg.message)}
+                                                                                                </div>
+                                                                                            </li>
+                                                                                        `;
                 }
 
                 return html;
