@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
 
 class HelpDeskController extends Controller
 {
@@ -85,6 +86,7 @@ class HelpDeskController extends Controller
         } else {
             $message = 'Status sudah done';
         }
+        $helpDesk->updated_by = Auth::user()->nama_lengkap;
 
         $helpDesk->save();
 

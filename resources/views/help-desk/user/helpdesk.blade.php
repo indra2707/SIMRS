@@ -76,7 +76,6 @@
         </div>
     </div>
 
-
     {{-- Modal Form --}}
     <div class="modal fade" id="helpdesk-modal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-xl">
