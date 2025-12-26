@@ -24,6 +24,7 @@ class HelpDesk extends Model
         'status',
         'tanggal',
         'gambar',
+        'updated_by',
     ];
 
      protected $casts = [

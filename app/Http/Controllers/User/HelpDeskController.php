@@ -12,29 +12,10 @@ use Illuminate\Support\Facades\Log;
 use App\Events\HelpdeskCreated;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
 
 class HelpDeskController extends Controller
 {
-    // public function index(Request $request)
-    // {
-    //     $helpDesks = HelpDesk::with('user')
-    //         ->where('user_id', Auth()->user()->id)
-    //         ->get();
-
-    //         if ($request->ajax()) {
-    //             return response()->json([
-    //                 'data' => $helpDesks
-    //             ]);
-    //         }
-
-    //     return view('master-data.help-desk.user.helpdesk', [
-    //         'title' => 'Help Desk',
-    //         'helpDesks' => $helpDesks,
-    //         'menuTitle' => 'Master Data',
-    //         'menuSubtitle' => 'Help Desk',
-    //     ]);
-    // }
+    //Index
     public function index()
     {
         $data = [
@@ -77,6 +58,7 @@ class HelpDeskController extends Controller
                 'status' => $value->status ?? '-',
                 'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
                 'user_name' => $value->user_name,
+                'updated_by' => $value->updated_by,
                 'lampiran' => $value->gambar ? json_decode($value->gambar, true) : [],
             ];
         });
@@ -84,6 +66,8 @@ class HelpDeskController extends Controller
         return response()->json($data);
     }
 
+
+    // Simpan
     public function store(Request $request)
     {
         if (!is_dir('uploads/images/help-desk/')) {
@@ -138,16 +122,27 @@ class HelpDeskController extends Controller
         ]);
     }
 
-
     // Hapus
     public function destroy(HelpDesk $helpDesk)
     {
-        $helpDesk->delete();
+        if ($helpDesk->gambar) {
+            $images = json_decode($helpDesk->gambar, true);
 
+            if (is_array($images)) {
+                foreach ($images as $img) {
+                    $path = public_path('uploads/images/help-desk/' . $img);
+
+                    if (File::exists($path)) {
+                        File::delete($path);
+                    }
+                }
+            }
+        }
+
+        $helpDesk->delete();
         return response()->json([
             'success' => true,
             'message' => 'Berhasil Menghapus Data Laporan',
-
         ], 200);
     }
 }

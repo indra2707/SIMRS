@@ -386,6 +386,11 @@
                 align: "center",
             },
             {
+                field: "updated_by",
+                sortable: true,
+                align: "center",
+            },
+            {
                 field: "action",
                 title: "Aksi",
                 align: "center",
@@ -469,7 +474,7 @@
     window.operateEvents = {
         "click .btn-infoo": function (e, value, row, index) {
             $('#helpdesk-modal').modal('show');
-            $('.modal-title').text('Informasi Laporan');
+            $('.modal-title').text('Nomor Tiket : ' + row.tiket);
             $('.save-btn').hide();
             $('.btn-attach').hide();
             
@@ -478,7 +483,6 @@
             $('input[name="judul_laporan"]').val(row.judul_laporan).prop('readonly', true);
             $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
             $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
-            // $('#lampiran').val(row.lampiran);
 
             // reset preview
             $('#preview-images').empty();

@@ -63,6 +63,7 @@
                                             <th class="f-light">Prioritas</th>
                                             <th class="f-light">Status</th>
                                             <th class="f-light">Tanggal Dibuat</th>
+                                            <th class="f-light">Diterima Oleh</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
