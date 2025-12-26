@@ -48,11 +48,18 @@ class HelpDeskController extends Controller
     //View
     public function views(Request $request)
     {
-        $query = HelpDesk::where('user_id', auth()->id());
+        $query = HelpDesk::query()
+            ->join('users', 'users.id', '=', 'help_desk.user_id')
+            ->where('help_desk.user_id', auth()->id())
+            ->select(
+                'help_desk.*',
+                'help_desk.created_at as created_at',
+                'users.username as user_name'
+            );
 
         // FILTER TANGGAL
         if ($request->tgl_awal && $request->tgl_akhir) {
-            $query->whereBetween('created_at', [
+            $query->whereBetween('tanggal', [
                 Carbon::parse($request->tgl_awal)->startOfDay(),
                 Carbon::parse($request->tgl_akhir)->endOfDay()
             ]);
@@ -69,7 +76,8 @@ class HelpDeskController extends Controller
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
                 'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
-                'lampiran' => $value->gambar,
+                'user_name' => $value->user_name,
+                'lampiran' => $value->gambar ? json_decode($value->gambar, true) : [],
             ];
         });
 

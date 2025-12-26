@@ -295,7 +295,7 @@
         initTable();
     });
 
- 
+
     // init table
     function initTable() {
         $table.bootstrapTable("destroy").bootstrapTable({
@@ -472,12 +472,42 @@
             $('.modal-title').text('Informasi Laporan');
             $('.save-btn').hide();
             $('.btn-attach').hide();
+            
             $('input[name="id"]').val(row.id);
             $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
             $('input[name="judul_laporan"]').val(row.judul_laporan).prop('readonly', true);
             $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
             $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
-            $('#lampiran').val(row.lampiran);
+            // $('#lampiran').val(row.lampiran);
+
+            // reset preview
+            $('#preview-images').empty();
+            fileBuffer = new DataTransfer();
+
+            // tampilkan lampiran dari DB
+            if (Array.isArray(row.lampiran)) {
+                row.lampiran.forEach((img, index) => {
+                    const imageUrl = `/uploads/images/help-desk/${img}`; // SESUAIKAN PATH
+
+                    $('#preview-images').append(`
+                <div class="col-md-2 mb-2">
+                    <div class="position-relative">
+                        <img src="${imageUrl}"
+                             class="img-thumbnail"
+                             style="height:100px;object-fit:cover;cursor:pointer">
+
+                        <div class="position-absolute bottom-0 end-0 m-1">
+                            <button type="button"
+                                    class="btn btn-light btn-xs btn-preview"
+                                    data-src="${imageUrl}">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `);
+                });
+            }
         },
         "click .btn-delete": function (e, value, row, index) {
             var url = "{{ route('user.helpdesk-delete', ':id') }}";
@@ -517,6 +547,7 @@
     $(document).on("click", ".btn-chat", function () {
         var helpdeskId = $(this).data("helpdesk-id");
         if (!helpdeskId) return;
+        // $("#chatOpponentUsername").text(row.user_name);
 
         $("#chatOpponentName").text("Loading...");
         $("#chatTypingStatus").text("");
