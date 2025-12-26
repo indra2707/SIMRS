@@ -5,6 +5,43 @@
 @endsection
 
 @section('style')
+    <style>
+        /* tinggi select tetap */
+        .select2-container--bootstrap-5 .select2-selection--single {
+            min-height: 38px !important;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .f1-steps {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .f1-step {
+            flex: 1;
+            text-align: center;
+            min-width: 0;
+        }
+
+        .f1-progress {
+            position: absolute;
+            width: 100%;
+            top: 25px;
+            left: 0;
+            z-index: 0;
+        }
+
+        .f1-step-icon {
+            position: relative;
+            z-index: 1;
+            background: #fff;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -110,9 +147,8 @@
         </div>
     </div>
 
-    {{-- Modal Form  store pegawai --}}
-    <div class="modal fade" id="modal-pegawai" tabindex="-1" role="dialog" data-bs-backdrop="static"
-        data-keyboard="false">
+    {{-- Modal Form store pegawai --}}
+    <div class="modal fade" id="modal-pegawai" tabindex="-1" role="dialog" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
 
@@ -122,7 +158,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="card">
+                    <div class="card g-2">
 
                         <form class="f1 form-pegawai" id="form-pegawai" novalidate>
                             @csrf
@@ -130,7 +166,7 @@
                             <!-- ===================== STEP HEADER ===================== -->
                             <div class="f1-steps">
                                 <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="33" data-number-of-steps="3"></div>
+                                    <div class="f1-progress-line" data-now-value="0" data-number-of-steps="4"></div>
                                 </div>
 
                                 <div class="f1-step active">
@@ -140,86 +176,136 @@
 
                                 <div class="f1-step">
                                     <div class="f1-step-icon"><i class="fa fa-id-card"></i></div>
-                                    <p>Kepegawaian & Kontak</p>
+                                    <p>Kepegawaian</p>
                                 </div>
 
                                 <div class="f1-step">
-                                    <div class="f1-step-icon"><i class="fa fa-gears"></i></div>
-                                    <p>Lisensi & Sistem</p>
+                                    <div class="f1-step-icon"><i class="fa fa-address-book"></i></div>
+                                    <p>Kontak</p>
+                                </div>
+
+                                <div class="f1-step">
+                                    <div class="f1-step-icon"><i class="fa fa-graduation-cap"></i></div>
+                                    <p>Pendidikan</p>
+                                </div>
+
+                                <div class="f1-step">
+                                    <div class="f1-step-icon"><i class="fa fa-bank"></i></div>
+                                    <p>Bank</p>
                                 </div>
                             </div>
+
 
                             <!--                    STEP 1 — PERUSAHAAN + PRIBADI        -->
                             <fieldset>
                                 <h5 class="mb-3">Data Perusahaan</h5>
-                                <div class="row">
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Anak Perusahaan</label>
-                                        <input class="form-control" name="anak_perusahaan">
+                                <div class="row g-2">
+                                    <!-- Anak Perusahaan -->
+                                    <label for="anak_perusahaan" class="col-form-label col-sm-2">Anak Perusahaan</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="anak_perusahaan" name="anak_perusahaan" class="form-control"
+                                            placeholder="Anak Perusahaan..." required value="PT Pertamina Bina Medika IHC">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Rumah Sakit</label>
-                                        <input class="form-control" name="rumah_sakit">
+                                    <!-- Rumah Sakit / Unit -->
+                                    <label for="rumah_sakit" class="col-form-label col-sm-2">Rumah Sakit / Unit</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" name="rumah_sakit" required>
+                                            <option></option>
+                                            <option value="RS Pertamina Royal Biringkanaya">RS Pertamina Royal Biringkanaya
+                                            </option>
+                                            <option value="Kantor Pusat PBM">Kantor Pusat PBM</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor SK Struktur</label>
-                                        <input class="form-control" name="nomor_sk_struktur">
+                                    <!-- Nomor SK Struktur  -->
+                                    <label for="nomor_sk_struktur" class="col-form-label col-sm-2">Nomor SK Struktur</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="nomor_sk_struktur" name="nomor_sk_struktur"
+                                            class="form-control" placeholder="Nomor SK Struktur..." required>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Jabatan</label>
-                                        <input class="form-control" name="jabatan">
+                                    <!-- Jabatan  -->
+                                    <label for="jabatan" class="col-form-label col-sm-2">Jabatan</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="jabatan" name="jabatan" class="form-control"
+                                            placeholder="Jabatan..." required>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Penempatan</label>
-                                        <input class="form-control" name="penempatan">
+                                    <!-- Penempatan -->
+                                    <label for="penempatan" class="col-form-label col-sm-2">Penempatan</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="penempatan" name="penempatan" class="form-control"
+                                            placeholder="Penempatan..." required value="RS Pertamina Royal Biringkanaya">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Lokasi Kerja</label>
-                                        <input class="form-control" name="lokasi_kerja">
+                                    <!-- Lokasi Kerja -->
+                                    <label for="lokasi_kerja" class="col-form-label col-sm-2">Lokasi Kerja</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="lokasi_kerja" name="lokasi_kerja" class="form-control"
+                                            placeholder="Lokasi Kerja..." required value="RS Pertamina Royal Biringkanaya">
                                     </div>
-
                                 </div>
-
                                 <hr>
 
                                 <h5 class="mb-3">Data Pribadi</h5>
-                                <div class="row">
+                                <div class="row g-2">
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor Pegawai</label>
-                                        <input class="form-control" name="nomor_pekerja">
+                                    <!-- Status Pegawai -->
+                                    <label for="status_pegawai" class="col-form-label col-sm-2">Status Pegawai</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" name="status_pegawai" required>
+                                            <option></option>
+                                            <option value="PWTT">PWTT</option>
+                                            <option value="PWT">PWT</option>
+                                            <option value="Mitra Pegawai">Mitra Pegawai</option>
+                                            <option value="Mitra Dokter">Mitra Dokter</option>
+                                            <option value="Outsourcing">Outsourcing</option>
+                                            <option value="Internship">Internship</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-md-8 mb-2">
-                                        <label>Nama Pegawai *</label>
-                                        <input class="form-control" name="nama_pekerja" required>
+                                    <!-- Nomor Pekerja  -->
+                                    <label for="nomor_pekerja" class="col-form-label col-sm-2">Nomor Pekerja</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="nomor_pekerja" name="nomor_pekerja" class="form-control"
+                                            placeholder="Nomor Pekerja..." required>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Jenis Kelamin</label>
-                                        <select class="form-select form-control select2" name="jenis_kelamin">
+                                    <!-- Nama Pekerja  -->
+                                    <label for="nama_pekerja" class="col-form-label col-sm-2">Nama Pekerja</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="nama_pekerja" name="nama_pekerja" class="form-control"
+                                            placeholder="Nama Pekerja..." required>
+                                    </div>
+
+                                    <!-- Jenis Kelamin -->
+                                    <label for="jenis_kelamin" class="col-form-label col-sm-2">Jenis Kelamin</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" name="jenis_kelamin" required>
                                             <option value=""></option>
                                             <option value="Laki-laki">Laki-laki</option>
                                             <option value="Perempuan">Perempuan</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-4 mb-2">
-                                        <label>Tanggal Lahir</label>
+
+                                    <!-- Tanggal Lahir  -->
+                                    <label for="tanggal_lahir" class="col-form-label col-sm-2">Tanggal Lahir</label>
+                                    <div class="col-sm-4">
                                         <input type="text" class="form-control js-datepicker digits"
-                                            placeholder="Tanggal Lahir" name="tanggal_lahir" data-language="en">
+                                            placeholder="Tanggal Lahir..." name="tanggal_lahir" data-language="en">
                                     </div>
-                                    <div class="col-md-4 mb-2">
-                                        <label>NIK</label>
-                                        <input class="form-control" name="nik" maxlength="16">
+
+                                    <!-- NIK  -->
+                                    <label for="nik" class="col-form-label col-sm-2">NIK</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control" id="nik" name="nik" maxlength="16"
+                                            placeholder="NIK...">
                                     </div>
-                                    <div class="col-md-4 mb-2">
-                                        <label for="agama">Agama</label>
+
+                                    <!-- Agama -->
+                                    <label for="agama" class="col-form-label col-sm-2">Agama</label>
+                                    <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="agama" name="agama">
                                             <option value=""></option>
                                             <option value="Islam">Islam</option>
@@ -231,35 +317,45 @@
                                         </select>
                                     </div>
 
-
-                                    <div class="col-md-4 mb-2">
-                                        <label for="status_pernikahan">Status Pernikahan</label>
+                                    <!-- Status Pernikahan -->
+                                    <label for="status_pernikahan" class="col-form-label col-sm-2">Status Pernikahan</label>
+                                    <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="status_pernikahan"
                                             name="status_pernikahan">
                                             <option value=""></option>
-                                            <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Menikah">Menikah</option>
+                                            <option value="Nikah">Nikah</option>
                                             <option value="Cerai">Cerai</option>
+                                            <option value="Janda">Janda</option>
+                                            <option value="Kawin">Kawin</option>
+                                            <option value="Lajang">Lajang</option>
                                         </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <div class="mb-2">
-                                            <label for="golongan_darah">Golongan Darah</label>
-                                            <select class="form-select form-control select2" id="golongan_darah"
-                                                name="golongan_darah">
-                                                <option value=""></option>
-                                                <option value="A">A</option>
-                                                <option value="B">B</option>
-                                                <option value="AB">AB</option>
-                                                <option value="O">O</option>
-                                            </select>
-                                        </div>
+                                    <!-- Golongan Darah -->
+                                    <label for="golongan_darah" class="col-form-label col-sm-2">Golongan Darah</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="golongan_darah"
+                                            name="golongan_darah">
+                                            <option value=""></option>
+                                            <option value="A">A</option>
+                                            <option value="A+">A+</option>
+                                            <option value="A-">A-</option>
+                                            <option value="B">B</option>
+                                            <option value="B+">B+</option>
+                                            <option value="B-">B-</option>
+                                            <option value="AB">AB</option>
+                                            <option value="AB+">AB+</option>
+                                            <option value="AB-">AB-</option>
+                                            <option value="O">O</option>
+                                            <option value="O+">O+</option>
+                                            <option value="O-">O-</option>
+                                        </select>
                                     </div>
 
-
-                                    <div class="col-md-4 mb-2">
-                                        <label for="disabilitas">Disabilitas</label>
+                                    <!-- Disabilitas -->
+                                    <label for="disabilitas" class="col-form-label col-sm-2">Disabilitas</label>
+                                    <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="disabilitas"
                                             name="disabilitas">
                                             <option value="">Pilih</option>
@@ -267,291 +363,387 @@
                                             <option value="Ya">Ya</option>
                                         </select>
                                     </div>
-
-
-                                </div>
-
-                                <div class="f1-buttons">
-                                    <button class="btn btn-primary btn-next" type="button">Next</button>
+                                    <div class="f1-buttons">
+                                        <button class="btn btn-primary btn-next" type="button">Next</button>
+                                    </div>
                                 </div>
                             </fieldset>
+
 
                             <!--        STEP 2 — KEPEGAWAIAN + KONTAK + ALAMAT          -->
                             <fieldset>
                                 <h5 class="mb-3">Data Kepegawaian</h5>
-                                <div class="row">
+                                <div class="row g-2">
 
-                                     <div class="col-md-4 mb-2">
-                                        <div class="mb-2">
-                                            <label for="golongan_upah">Golongan Upah</label>
-                                            <select class="form-select form-control select2" id="golongan_darah"
-                                                name="golongan_upah">
-                                                <option value=""></option>
-                                                <option value="harga_utama">Harga Utama</option>
-                                                <option value="harga_madya">Harga Madya</option>
-                                                <option value="harga_biasa">Harga Biasa</option>
-                                            </select>
-                                        </div>
+                                    <!-- Golongan Upah  -->
+                                    <label for="golongan_upah" class="col-form-label col-sm-2">Golongan Upah</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="golongan_upah"
+                                            name="golongan_upah">
+                                            <option value=""></option>
+                                            <option value="Utama">Utama</option>
+                                            <option value="Madya">Madya</option>
+                                            <option value="Biasa">Biasa</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Status Kepegawaian</label>
-                                        <input class="form-control" name="status_kepegawaian">
+                                    <!-- Masa Kerja  -->
+                                    <label for="masa_kerja" class="col-form-label col-sm-2">Masa Kerja</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control js-datepicker digits" id="masa_kerja"
+                                            name="masa_kerja" data-language="en" placeholder="Masa Kerja...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Masa Kerja</label>
-                                        <input class="form-control" name="masa_kerja">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>TMT Status Kepegawaian</label>
+                                    <!-- TMT Status Kepegawaian -->
+                                    <label for="tmt_status_kepegawaian" class="col-form-label col-sm-2">TMT Status</label>
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control js-datepicker digits"
-                                            placeholder="TMT Status Kepegawian" name="tmt_status_kepegawaian"
+                                            placeholder="TMT Status Kepegawaian..." name="tmt_status_kepegawaian"
                                             data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>TMT PWTT</label>
+                                    <!-- TMT PWTT -->
+                                    <label for="tmt_pwtt" class="col-form-label col-sm-2">TMT PWTT</label>
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control js-datepicker digits" name="tmt_pwtt"
-                                            placeholder="TMT PWTT" data-language="en">
+                                            placeholder="TMT PWTT..." data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>TMT PWT</label>
+                                    <!-- TMT PWT -->
+                                    <label for="tmt_pwt" class="col-form-label col-sm-2">TMT PWT</label>
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control js-datepicker digits" name="tmt_pwt"
-                                            placeholder="TMT PWT" data-language="en">
+                                            placeholder="TMT PWT..." data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Fungsi</label>
-                                        <input class="form-control" name="fungsi">
+                                    <!-- fungsi -->
+                                    <label for="fungsi" class="col-form-label col-sm-2">Fungsi</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="fungsi" name="fungsi">
+                                            <option value=""></option>
+                                            <option value="Medis">Medis</option>
+                                            <option value="Perawat">Perawat</option>
+                                            <option value="Nakes Lain">Nakes Lain</option>
+                                            <option value="Non Medis">Non Medis</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Sub Fungsi</label>
-                                        <input class="form-control" name="sub_fungsi">
+                                    <!-- Sub Fungsi -->
+                                    <label for="sub_fungsi" class="col-form-label col-sm-2">Sub Fungsi</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="sub_fungsi" placeholder="Sub Fungsi...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>TMT Jabatan</label>
+                                    <!-- TMT Jabatan -->
+                                    <label for="tmt_jabatan" class="col-form-label col-sm-2">TMT Jabatan</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control js-datepicker digits" name="tmt_jabatan"
+                                            placeholder="TMT Jabatan..." data-language="en">
+                                    </div>
+
+                                    <!-- TMT Golongan Upah -->
+                                    <label for="tmt_golongan_upah" class="col-form-label col-sm-2">TMT Golongan Upah</label>
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control js-datepicker digits"
-                                            name="tmt_jabatan" placeholder="TMT Jabatan" data-language="en">
+                                            name="tmt_golongan_upah" placeholder="TMT Golongan Upah..." data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>TMT Golongan Upah</label>
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            name="tmt_golongan_upah" placeholder="TMT Golongan Upah" data-language="en">
+                                    <!-- Penyertaan Jabatan AP -->
+                                    <label for="penyetaraan_jabatan_ap" class="col-form-label col-sm-2">Penyetaraan
+                                        Jabatan</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="penyetaraan_jabatan_ap"
+                                            placeholder="Penyetaraan Jabatan AP...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Penyetaraan Jabatan AP</label>
-                                        <input class="form-control" name="penyetaraan_jabatan_ap">
+                                    <!-- Penyertaan Golongan Upah -->
+                                    <label for="penyetaraan_golongan_upah_ap" class="col-form-label col-sm-2">Penyetaraan
+                                        Golongan</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="penyetaraan_golongan_upah_ap"
+                                            placeholder="Penyetaraan Golongan Upah AP...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Penyetaraan Golongan Upah AP</label>
-                                        <input class="form-control" name="penyetaraan_golongan_upah_ap">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Tanggal Akhir Kontrak</label>
+                                    <!-- Tanggal Akhir Kontrak -->
+                                    <label for="tanggal_akhir_kontrak" class="col-form-label col-sm-2">Tanggal Akhir
+                                        Kontrak</label>
+                                    <div class="col-md-4">
                                         <input type="text" class="form-control js-datepicker digits"
                                             name="tanggal_akhir_kontrak" placeholder="Tanggal Akhir Kontrak"
                                             data-language="en">
                                     </div>
 
-                                </div>
-
-                                <hr>
-
-                                <h5 class="mb-3">Data Kontak & Darurat</h5>
-                                <div class="row">
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor HP</label>
-                                        <input class="form-control" name="nomor_hp">
+                                    <div class="f1-buttons">
+                                        <button class="btn btn-primary btn-previous" type="button">Previous</button>
+                                        <button class="btn btn-primary btn-next" type="button">Next</button>
                                     </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor Kontak Darurat</label>
-                                        <input class="form-control" name="nomor_kontak_darurat">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nama Kontak Darurat</label>
-                                        <input class="form-control" name="nama_kontak_darurat">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Hubungan Kontak Darurat</label>
-                                        <input class="form-control" name="hubungan_kontak_darurat">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" name="email">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Email Dinas</label>
-                                        <input class="form-control" name="email_dinas">
-                                    </div>
-
-                                </div>
-
-                                <hr>
-
-                                <h5 class="mb-3">Alamat</h5>
-                                <div class="row">
-
-                                    <div class="col-md-12 mb-2">
-                                        <label>Alamat KTP</label>
-                                        <textarea class="form-control" name="alamat_ktp"></textarea>
-                                    </div>
-
-                                    <div class="col-md-12 mb-2">
-                                        <label>Alamat Domisili</label>
-                                        <textarea class="form-control" name="alamat_domisili"></textarea>
-                                    </div>
-
-                                    <div class="col-md-12 mb-2">
-                                        <label>Alamat NPWP</label>
-                                        <textarea class="form-control" name="alamat_npwp"></textarea>
-                                    </div>
-
-                                </div>
-
-                                <div class="f1-buttons">
-                                    <button class="btn btn-primary btn-previous" type="button">Previous</button>
-                                    <button class="btn btn-primary btn-next" type="button">Next</button>
                                 </div>
                             </fieldset>
 
-                            <!--          STEP 3 — LISENSI + BANKING + SISTEM           -->
+                            <!--        STEP 3 — KONTAK + ALAMAT          -->
+                            <fieldset>
+                                <h5 class="mb-3">Data Kontak & Darurat</h5>
+                                <div class="row g-2">
+
+                                    <!-- Nomor HP -->
+                                    <label for="nomor_hp" class="col-form-label col-sm-2">Nomor HP</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_hp"
+                                            placeholder="Nomor HP Pekerja..." required maxlength="13">
+                                    </div>
+
+                                    <!-- Nomor Kontak Darurat -->
+                                    <label for="nomor_kontak_darurat" class="col-form-label col-sm-2">Nomor Kontak
+                                        Darurat</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_kontak_darurat"
+                                            placeholder="Nomor Kontak Darurat..." required maxlength="13">
+                                    </div>
+
+                                    <!-- Nama Kontak Darurat -->
+                                    <label for="nama_kontak_darurat" class="col-form-label col-sm-2">Nama Kontak
+                                        Darurat</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="nama_kontak_darurat"
+                                            placeholder="Nama Kontak Darurat..." required>
+                                    </div>
+
+                                    <!-- Hubungan Kontak Darurat -->
+                                    <label for="hubungan_kontak_darurat" class="col-form-label col-sm-2">Hubungan
+                                        Kontak</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="hubungan_kontak_darurat"
+                                            placeholder="Hubungan Kontak Darurat...">
+                                    </div>
+
+                                    <!-- Email-->
+                                    <label for="email" class="col-form-label col-sm-2">Email</label>
+                                    <div class="col-md-4">
+                                        <input type="email" class="form-control" name="email" placeholder="Email...">
+                                    </div>
+
+                                    <!-- Email Dinas-->
+                                    <label for="email_dinas" class="col-form-label col-sm-2">Email Dinas</label>
+                                    <div class="col-md-4">
+                                        <input type="email" class="form-control" name="email_dinas"
+                                            placeholder="Email Dinas...">
+                                    </div>
+                                </div>
+                                <hr>
+
+                                <h5 class="mb-3">Alamat</h5>
+                                <div class="row g-2">
+
+                                    <!-- Alamat KTP-->
+                                    <label for="alamat_ktp" class="col-form-label col-sm-2">Alamat KTP</label>
+                                    <div class="col-md-4">
+                                        <textarea class="form-control" name="alamat_ktp"
+                                            placeholder="Alamat KTP..."></textarea>
+                                    </div>
+
+                                    <!-- Alamat Domisili-->
+                                    <label for="alamat_domisili" class="col-form-label col-sm-2">Alamat Domisili</label>
+                                    <div class="col-md-4">
+                                        <textarea class="form-control" name="alamat_domisili"
+                                            placeholder="Alamat Domisili..."></textarea>
+                                    </div>
+
+                                    <!-- Alamat NPWP-->
+                                    <label for="alamat_npwp" class="col-form-label col-sm-2">Alamat NPWP</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" name="alamat_npwp"
+                                            placeholder="Alamat NPWP..."></textarea>
+                                    </div>
+
+                                    <div class="f1-buttons">
+                                        <button class="btn btn-primary btn-previous" type="button">Previous</button>
+                                        <button class="btn btn-primary btn-next" type="button">Next</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+                            <!--          STEP 4 — LISENSI + BANKING + SISTEM           -->
                             <fieldset>
                                 <h5 class="mb-3">Lisensi Profesi</h5>
-                                <div class="row">
+                                <div class="row g-2">
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor STR</label>
-                                        <input class="form-control" name="nomor_str">
+                                    <!-- Nomor STR-->
+                                    <label for="nomor_str" class="col-form-label col-sm-2">Nomor STR</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="nomor_str" placeholder="Nomor STR...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>STR Seumur Hidup</label>
-                                        <input class="form-control" name="str_seumur_hidup">
+                                    <!-- STR Seumur Hidup -->
+                                    <label for="str_seumur_hidup" class="col-form-label col-sm-2">STR Seumur Hidup</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="str_seumur_hidup"
+                                            name="str_seumur_hidup">
+                                            <option value=""></option>
+                                            <option value="Ya">Ya</option>
+                                            <option value="Tidak">Tidak</option>
+                                        </select>
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Masa Berlaku STR</label>
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            name="masa_berlaku_str" placeholder="Masa Berlaku STR" data-language="en">
+                                    <!-- Masa Berlaku STR-->
+                                    <label for="masa_berlaku_str" class="col-form-label col-sm-2">Masa Berlaku STR</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control js-datepicker digits" name="masa_berlaku_str"
+                                            placeholder="Masa Berlaku STR..." data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor SIP</label>
-                                        <input class="form-control" name="nomor_sip">
+                                    <!-- Nomor SIP-->
+                                    <label for="nomor_sip" class="col-form-label col-sm-2">Nomor SIP</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="nomor_sip" placeholder="Nomor SIP...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Masa Berlaku SIP</label>
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            name="masa_berlaku_sip" placeholder="Masa Berlaku SIP" data-language="en">
+                                    <!-- Masa Berlaku SIP-->
+                                    <label for="masa_berlaku_sip" class="col-form-label col-sm-2">Masa Berlaku SIP</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control js-datepicker digits" name="masa_berlaku_sip"
+                                            placeholder="Masa Berlaku SIP..." data-language="en">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Asuransi Profesi</label>
-                                        <input class="form-control" name="asuransi_profesi">
+                                    <!-- Asuransi Profesi-->
+                                    <label for="asuransi_profesi" class="col-form-label col-sm-2">Asuransi Profesi</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="asuransi_profesi"
+                                            placeholder="Asuransi Profesi...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor Polis</label>
-                                        <input class="form-control" name="nomor_polis">
+                                    <!-- Nomor Polis -->
+                                    <label for="nomor_polis" class="col-form-label col-sm-2">Nomor Polis</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="nomor_polis"
+                                            placeholder="Nomor Polis...">
                                     </div>
 
+                                    <!-- Masa Berlaku Asuransi -->
+                                    <label for="masa_berlaku_asuransi" class="col-form-label col-sm-2">Masa Berlaku
+                                        Asuransi</label>
                                     <div class="col-md-4 mb-2">
-                                        <label>Masa Berlaku Asuransi</label>
                                         <input type="text" class="form-control js-datepicker digits"
                                             name="masa_berlaku_asuransi" placeholder="Masa Berlaku Asuransi"
                                             data-language="en">
                                     </div>
-
                                 </div>
-
                                 <hr>
 
                                 <h5 class="mb-3">Pendidikan</h5>
-                                <div class="row">
-                                    <div class="col-md-3 mb-2"><label>Pend. Diploma</label><input class="form-control"
-                                            name="pend_diploma"></div>
-                                    <div class="col-md-3 mb-2"><label>Pend. S1</label><input class="form-control"
-                                            name="pend_s1"></div>
-                                    <div class="col-md-3 mb-2"><label>Pend. S2</label><input class="form-control"
-                                            name="pend_s2"></div>
-                                    <div class="col-md-3 mb-2"><label>Pend. S3</label><input class="form-control"
-                                            name="pend_s3"></div>
+                                <div class="row g-2">
 
-                                    <div class="col-md-6 mb-2">
-                                        <label>Kampus Terakhir</label>
-                                        <input class="form-control" name="kampus_terakhir">
+                                    <!-- Pendidikan Diploma -->
+                                    <label for="pend_diploma" class="col-form-label col-sm-2">Pend. Diploma</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="pend_diploma"
+                                            placeholder="Pend. Diploma...">
                                     </div>
 
-                                    <div class="col-md-6 mb-2">
-                                        <label>Jenjang Pendidikan Terakhir</label>
-                                        <input class="form-control" name="jenjang_pendidikan_terakhir">
+                                    <!-- Pendidikan S1 -->
+                                    <label for="pend_s1" class="col-form-label col-sm-2">Pend. S1</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="pend_s1" placeholder="Pend. S1...">
                                     </div>
 
-                                    <div class="col-md-12 mb-2">
-                                        <label>Keterangan</label>
-                                        <textarea class="form-control" name="keterangan"></textarea>
+                                    <!-- Pendidikan S2 -->
+                                    <label for="pend_s2" class="col-form-label col-sm-2">Pend. S2</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="pend_s2" placeholder="Pend. S2...">
+                                    </div>
+
+                                    <!-- Pendidikan S3 -->
+                                    <label for="pend_s3" class="col-form-label col-sm-2">Pend. S3</label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="pend_s3" placeholder="Pend. S3...">
+                                    </div>
+
+                                    <!-- Kampus Terakhir -->
+                                    <label for="kampus_terakhir" class="col-form-label col-sm-2">Kampus Terakhir</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="kampus_terakhir" placeholder="Kampus Terakhir...">
+                                    </div>
+
+                                    <!-- Pendidikan Terakhir -->
+                                    <label for="jenjang_pendidikan_terakhir" class="col-form-label col-sm-2">Pendidikan
+                                        Terakhir</label>
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="jenjang_pendidikan_terakhir"
+                                            name="jenjang_pendidikan_terakhir">
+                                            <option value=""></option>
+                                            <option value="SMA / SMK">SMA / SMK</option>
+                                            <option value="D3">D3</option>
+                                            <option value="D4">D4</option>
+                                            <option value="S1">S1</option>
+                                            <option value="S2">S2</option>
+                                            <option value="S3">S3</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Keterangan -->
+                                    <label for="keterangan" class="col-form-label col-sm-2">Keterangan</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" name="keterangan"
+                                            placeholder="Keterangan..."></textarea>
+                                    </div>
+
+                                    <div class="f1-buttons">
+                                        <button class="btn btn-primary btn-previous" type="button">Previous</button>
+                                        <button class="btn btn-primary btn-next" type="button">Next</button>
                                     </div>
                                 </div>
+                            </fieldset>
 
-                                <hr>
-
+                            <!--                    STEP 5 — PERUSAHAAN + PRIBADI        -->
+                            <fieldset>
                                 <h5 class="mb-3">Banking, BPJS, Pajak</h5>
-                                <div class="row">
+                                <div class="row g-2">
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nama Bank</label>
-                                        <input class="form-control" name="nama_bank">
+                                    <!-- Nama Bank -->
+                                    <label for="nama_bank" class="col-form-label col-sm-2">Nama Bank</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="nama_bank" placeholder="Nama Bank...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor Rekening</label>
-                                        <input class="form-control" name="nomor_rekening">
+                                    <!-- Nomor Rekening -->
+                                    <label for="nomor_rekening" class="col-form-label col-sm-2">Nomor Rekening</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_rekening"
+                                            placeholder="Nomor Rekening...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nama Rekening</label>
-                                        <input class="form-control" name="nama_rekening">
+                                    <!-- Nama Rekening -->
+                                    <label for="nama_rekening" class="col-form-label col-sm-2">Nama Rekening</label>
+                                    <div class="col-md-4">
+                                        <input class="form-control" name="nama_rekening" placeholder="Nama Rekening...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor BPJSTK</label>
-                                        <input class="form-control" name="nomor_bpjstk">
+                                    <!-- Nomor BPJSTK -->
+                                    <label for="nomor_bpjstk" class="col-form-label col-sm-2">Nomor BPJSTK</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_bpjstk"
+                                            placeholder="Nomor BPJSTK...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor BPJS Kesehatan</label>
-                                        <input class="form-control" name="nomor_bpjskesehatan">
+                                    <!-- Nomor BPJS Kesehatan -->
+                                    <label for="nomor_bpjskesehatan" class="col-form-label col-sm-2">Nomor BPJS
+                                        Kesehatan</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_bpjskesehatan"
+                                            placeholder="Nomor BPJS Kesehatan...">
                                     </div>
 
-                                    <div class="col-md-4 mb-2">
-                                        <label>Nomor NPWP</label>
-                                        <input class="form-control" name="nomor_npwp">
+                                    <!-- Nomor NPWP -->
+                                    <label for="nomor_npwp" class="col-form-label col-sm-2">Nomor NPWP</label>
+                                    <div class="col-md-4">
+                                        <input type="number" class="form-control" name="nomor_npwp"
+                                            placeholder="Nomor NPWP...">
                                     </div>
 
-                                </div>
+                                    <hr>
+                                    <h5 class="mb-3">System Info</h5>
+                                    <div class="row g-2">
 
-                                <hr>
-
-                                <h5 class="mb-3">System Info</h5>
-                                <div class="row">
-
-                                    <div class="col-md-4 mb-2">
+                                        <div class="col-md-4 mb-2">
                                             <label class="col-sm-2 col-form-label" for="Upload">Foto</label>
                                             <div class="col-sm-10">
                                                 <div id="AvatarFileUpload">
@@ -562,8 +754,8 @@
                                                     <!-- Image Preview Wrapper -->
                                                     <!-- Browse Image to Upload Wrapper -->
                                                     <div class="avatar-selector">
-                                                        <input type="file" accept="images/jpg, images/png"
-                                                            id="foto" name="foto">
+                                                        <input type="file" accept="images/jpg, images/png" id="foto"
+                                                            name="foto">
                                                         <a href="#" class="avatar-selector-btn">
                                                             <i class="icofont icofont-pencil-alt-5"></i>
                                                         </a>
@@ -571,32 +763,28 @@
                                                     <!-- Browse Image to Upload Wrapper -->
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="col-md-4 mb-2">
+                                            <label>Temp Username</label>
+                                            <input class="form-control" name="temp_username">
+                                        </div>
+
+                                        <div class="col-md-4 mb-2">
+                                            <label>Username</label>
+                                            <input class="form-control" name="username">
+                                        </div>
+
+                                        <div class="f1-buttons">
+                                            <button class="btn btn-primary btn-previous" type="button">Previous</button>
+                                            <button class="btn btn-primary btn-submit save-btn"
+                                                type="button">Submit</button>
+                                        </div>
                                     </div>
-
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Temp Username</label>
-                                        <input class="form-control" name="temp_username">
-                                    </div>
-
-                                    <div class="col-md-4 mb-2">
-                                        <label>Username</label>
-                                        <input class="form-control" name="username">
-                                    </div>
-
-                                </div>
-
-                                <div class="f1-buttons">
-                                    <button class="btn btn-primary btn-previous" type="button">Previous</button>
-                                    <button class="btn btn-primary btn-submit save-btn" type="button">Submit</button>
-                                </div>
-
                             </fieldset>
-
                         </form>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -606,9 +794,9 @@
 @endsection
 
 @section('script')
-<script>
+    <script>
 
-</script>
+    </script>
     @include('sdm.pegawai.script')
     <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
     <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script>

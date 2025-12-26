@@ -1009,10 +1009,6 @@
         }
     };
 
-
-
-
-
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
         'click .update-status': function(e, value, row, index) {
@@ -1046,6 +1042,7 @@
             });
         }
     }
+
     // Fungsi untuk reset wizard ke step 1
     function resetWizardToFirstStep() {
         // Sembunyikan semua fieldset
@@ -1063,6 +1060,7 @@
         $('.f1-step').removeClass('active').removeClass('activated');
         $('.f1-step').first().addClass('active');
     }
+
     // Page Load Event
     $(function() {
         initTable();
