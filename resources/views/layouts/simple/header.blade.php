@@ -142,8 +142,8 @@
                                         </div>
                                         <h6 class="font-primary">$500</h6>
                                     </div>
-                                    <div class="close-circle"><a class="bg-danger" href="#"><i
-                                                data-feather="x"></i></a></div>
+                                    <div class="close-circle"><a class="bg-danger" href="#"><i data-feather="x"></i></a>
+                                    </div>
                                 </div>
                             </li>
                             <li>
@@ -154,16 +154,16 @@
                                             <div class="input-group"><span class="input-group-prepend">
                                                     <button class="btn quantity-left-minus" type="button"
                                                         data-type="minus" data-field="">-</button></span>
-                                                <input class="form-control input-number" type="text"
-                                                    name="quantity" value="1"><span class="input-group-prepend">
+                                                <input class="form-control input-number" type="text" name="quantity"
+                                                    value="1"><span class="input-group-prepend">
                                                     <button class="btn quantity-right-plus" type="button"
                                                         data-type="plus" data-field="">+</button></span>
                                             </div>
                                         </div>
                                         <h6 class="font-primary">$500.00</h6>
                                     </div>
-                                    <div class="close-circle"><a class="bg-danger" href="#"><i
-                                                data-feather="x"></i></a></div>
+                                    <div class="close-circle"><a class="bg-danger" href="#"><i data-feather="x"></i></a>
+                                    </div>
                                 </div>
                             </li>
                             <li class="total">
@@ -206,7 +206,8 @@
                         <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
                         <div class="media-body">
                             <span>{{ Session::get('nama_lengkap') }}</span>
-                            <p class="mb-0 font-roboto">{{ Session::get('nama_role') }} <i class="middle fa fa-angle-down"></i></p>
+                            <p class="mb-0 font-roboto">{{ Session::get('nama_role') }} <i
+                                    class="middle fa fa-angle-down"></i></p>
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
@@ -214,8 +215,8 @@
                         <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
                         <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
                         <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
-                        <li><a href="{{ route('admin.logout') }}"><i data-feather="log-in"> </i><span>Log
-                                    in</span></a></li>
+                        <li><a href="{{ route('admin.logout') }}"><i data-feather="log-in"> </i><span>Log Out</span></a>
+                        </li>
                     </ul>
                 </li>
             </ul>
@@ -228,6 +229,7 @@
       </div>
       </div>
     </script>
-        <script class="empty-template" type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
+        <script class="empty-template"
+            type="text/x-handlebars-template"><div class="EmptyMessage">Your search turned up 0 results. This most likely means the backend is down, yikes!</div></script>
     </div>
 </div>

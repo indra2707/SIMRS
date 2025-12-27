@@ -1,6 +1,6 @@
 <script type="text/javascript">
     // Disable form validation untuk navigasi step
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Cegah browser validasi form secara otomatis
         var form = document.querySelector('.form-pegawai');
         if (form) {
@@ -22,6 +22,8 @@
         allowClear: true
 
     });
+
+
     var reader = new FileReader();
 
     // Main Wrapper Selector
@@ -42,7 +44,7 @@
 
     imageInput.addEventListener('change', e => {
         // Open File eader
-        reader.onload = function() {
+        reader.onload = function () {
             // Preview Image
             imageViewer.src = reader.result;
         };
@@ -52,7 +54,7 @@
 
 
     // Open Modal Pegawai
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('#modal-pegawai').modal('show');
         $('.modal-title').text('Form Tambah Pegawai');
 
@@ -68,8 +70,18 @@
         $('input[name="id"]').val(''); // Kosongkan ID
 
         // Reset Select2 (jika ada)
-        $('.select2').each(function() {
+        $('.select2').each(function () {
             $(this).val(null).trigger('change');
+        });
+
+        InitSelect2($("select[name='nama_bank']"), {
+            url: "{{ route('get-select-bank') }}",
+            dropdownParent: $("#modal-pegawai")
+        });
+
+        InitSelect2($("select[name='sub_fungsi']"), {
+            url: "{{ route('get-select-fungsi') }}",
+            dropdownParent: $("#modal-pegawai")
         });
 
         // Reset checkbox/radio ke unchecked
@@ -95,7 +107,7 @@
     // Save/update
     // Nonaktifkan validasi HTML5 native
     $('.form-pegawai').attr('novalidate', 'novalidate');
-    $(document).on('click', '.save-btn', function(e) {
+    $(document).on('click', '.save-btn', function (e) {
         var id = $('input[name="id"]').val();
 
         if (id) {
@@ -108,7 +120,7 @@
         }
         var forms = document.getElementsByClassName('form-pegawai');
         // var form = forms[0];
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -151,16 +163,16 @@
                     cache: false,
                     data: myformData,
                     enctype: 'multipart/form-data',
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-pegawai').modal('hide');
@@ -231,7 +243,7 @@
                     sortable: true,
                     align: 'center',
                     width: 50,
-                    formatter: function(value, row, index) {
+                    formatter: function (value, row, index) {
                         return index + 1;
                     }
                 },
@@ -700,16 +712,16 @@
                 }
             ],
 
-            onLoadSuccess: function(data) {
+            onLoadSuccess: function (data) {
                 console.log(' Data loaded:', data.length, 'records');
             },
 
-            onLoadError: function(status, xhr) {
+            onLoadError: function (status, xhr) {
                 console.error(' Load error:', status);
                 console.error('Response:', xhr.responseText);
             },
 
-            responseHandler: function(res) {
+            responseHandler: function (res) {
                 console.log(' Response received:', res);
                 return res; // Return langsung karena sudah array
             }
@@ -717,58 +729,113 @@
     }
 
     //  Call function saat document ready
-    $(document).ready(function() {
+    $(document).ready(function () {
         initTable();
 
         // Paksa nonaktifkan validasi
-        setTimeout(function() {
+        setTimeout(function () {
             $('.form-pegawai').attr('novalidate', 'novalidate');
 
             // Hapus semua required kecuali nama_pekerja
             $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
                 .not('[name="nama_pekerja"]')
-                .each(function() {
+                .each(function () {
                     $(this).removeAttr('required');
                     $(this).prop('required', false);
                 });
         }, 500);
 
         // Intercept button next SEBELUM validasi plugin berjalan
-        $(document).on('click', '.btn-next', function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
+        // $(document).on('click', '.btn-next', function(e) {
+        //     e.preventDefault();
+        //     e.stopImmediatePropagation();
 
-            // Hapus validasi visual
-            $('.form-pegawai').removeClass('was-validated');
+        //     // Hapus validasi visual
+        //     $('.form-pegawai').removeClass('was-validated');
+        //     $('.form-control').removeClass('is-invalid');
+
+        //     // Trigger next step secara manual
+        //     var $currentFieldset = $(this).closest('fieldset');
+        //     var $nextFieldset = $currentFieldset.next('fieldset');
+
+        //     if ($nextFieldset.length) {
+        //         $currentFieldset.fadeOut(300, function() {
+        //             $nextFieldset.fadeIn(300);
+        //         });
+
+        //         // Update progress bar
+        //         var stepIndex = $nextFieldset.index('fieldset');
+        //         var totalSteps = $('fieldset').length;
+        //         var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+
+        //         $('.f1-progress-line').css('width', progressPercentage + '%');
+
+        //         // Update step indicator
+        //         $('.f1-step').removeClass('active').removeClass('activated');
+        //         $('.f1-step').eq(stepIndex).addClass('active');
+        //         $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
+        //     }
+
+        //     return false;
+        // });
+
+        $(document).on('click', '.btn-next', function (e) {
+            e.preventDefault();
+
+            let $currentFieldset = $(this).closest('fieldset');
+            let inputs = $currentFieldset.find('input, select, textarea').filter(':visible');
+            let isValid = true;
+
+            // reset error
             $('.form-control').removeClass('is-invalid');
 
-            // Trigger next step secara manual
-            var $currentFieldset = $(this).closest('fieldset');
-            var $nextFieldset = $currentFieldset.next('fieldset');
+            inputs.each(function () {
+                // KHUSUS select2
+                if ($(this).hasClass('select2') && !$(this).val()) {
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                    return false;
+                }
+
+                // HTML5 validation
+                if (!this.checkValidity()) {
+                    this.reportValidity();
+                    $(this).addClass('is-invalid');
+                    isValid = false;
+                    return false;
+                }
+            });
+
+            // JANGAN LANJUT JIKA TIDAK VALID
+            if (!isValid) {
+                return false;
+            }
+
+            // JIKA VALID → LANJUT STEP
+            let $nextFieldset = $currentFieldset.next('fieldset');
 
             if ($nextFieldset.length) {
-                $currentFieldset.fadeOut(300, function() {
+                $currentFieldset.fadeOut(300, function () {
                     $nextFieldset.fadeIn(300);
                 });
 
-                // Update progress bar
-                var stepIndex = $nextFieldset.index('fieldset');
-                var totalSteps = $('fieldset').length;
-                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+                // progress bar
+                let stepIndex = $('fieldset').index($nextFieldset);
+                let totalSteps = $('fieldset').length;
+                let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
 
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
-                // Update step indicator
-                $('.f1-step').removeClass('active').removeClass('activated');
+                // step indicator
+                $('.f1-step').removeClass('active activated');
                 $('.f1-step').eq(stepIndex).addClass('active');
                 $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
             }
-
-            return false;
         });
 
+
         // Handle button previous
-        $(document).on('click', '.btn-previous', function(e) {
+        $(document).on('click', '.btn-previous', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
@@ -812,7 +879,7 @@
 
     // Handle events button actions
     window.eventsPegawai = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             console.log('Edit button clicked!', row);
 
             // Reset validasi
@@ -950,7 +1017,7 @@
             console.log('Form populated with data for ID:', row.id);
         },
 
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             console.log('✅ Delete button clicked!', row);
 
             var url = "{{ route('pegawai-delete', ':id') }}";
@@ -973,7 +1040,7 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        beforeSend: function() {
+                        beforeSend: function () {
                             Swal.fire({
                                 title: 'Menghapus...',
                                 allowOutsideClick: false,
@@ -982,7 +1049,7 @@
                                 }
                             });
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
@@ -993,7 +1060,7 @@
                             }, 1500);
 
                         },
-                        error: function(xhr) {
+                        error: function (xhr) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
@@ -1001,7 +1068,7 @@
                             });
                             console.error('Delete error:', xhr.responseText);
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $tablePegawai.bootstrapTable('refresh');
                     });
                 }
@@ -1011,7 +1078,7 @@
 
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
-        'click .update-status': function(e, value, row, index) {
+        'click .update-status': function (e, value, row, index) {
             var url = "{{ route('pegawai.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -1022,7 +1089,7 @@
                     table: 'tbl_pegawais',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(res, status, xhr) {
+                success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -1030,7 +1097,7 @@
                     }
                     $tablePegawai.bootstrapTable('refresh');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
@@ -1062,7 +1129,7 @@
     }
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 </script>

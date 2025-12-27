@@ -7,39 +7,45 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GlobalController;
+
 use App\Http\Controllers\Sdm\SpdsController;
+use App\Http\Controllers\Sdm\Rincian_spdsController;
+use App\Http\Controllers\Sdm\PegawaiController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
-
-
-use App\Http\Controllers\Sdm\PegawaiController;
-use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\User\HelpDeskController;
+
+use App\Http\Controllers\Tarif\SKTarifController;
+use App\Http\Controllers\Tarif\HargaTindakanController;
+use App\Http\Controllers\Tarif\TarifTindakanController;
+
 use App\Http\Controllers\MasterData\CoaController;
-use App\Http\Controllers\MasterData\AsetController;
+use App\Http\Controllers\MasterData\Jadwal_dokterController;
+use App\Http\Controllers\MasterData\Poli_tindakanController;
+
 use App\Http\Controllers\MasterData\Icd9Controller;
-use App\Http\Controllers\MasterData\KotaController;
+use App\Http\Controllers\MasterData\Poli_obatController;
+use App\Http\Controllers\MasterData\SpesialisController;
+
 use App\Http\Controllers\MasterData\PoliController;
 use App\Http\Controllers\MasterData\BiayaController;
 use App\Http\Controllers\MasterData\Icd10Controller;
-use App\Http\Controllers\Sdm\Rincian_spdsController;
-use App\Http\Controllers\MasterData\LokasiController;
-use App\Http\Controllers\MasterData\MutasiController;
 use App\Http\Controllers\MasterData\PasienController;
 use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\CustomerController;
+
+use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\MutasiController;
 use App\Http\Controllers\MasterData\PenjaminController;
-use App\Http\Controllers\Tarif\HargaTindakanController;
-use App\Http\Controllers\Tarif\TarifTindakanController;
 use App\Http\Controllers\MasterData\KalibrasiController;
-use App\Http\Controllers\MasterData\Poli_obatController;
-use App\Http\Controllers\MasterData\SpesialisController;
+use App\Http\Controllers\MasterData\KotaController;
 use App\Http\Controllers\MasterData\KondisiAsetController;
 use App\http\Controllers\MasterData\KelompokAsetController;
+use App\Http\Controllers\MasterData\AsetController;
+use App\http\Controllers\MasterData\BankController;
+use App\http\Controllers\MasterData\FungsiController;
 
-use App\Http\Controllers\MasterData\Jadwal_dokterController;
-use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 
@@ -74,11 +80,8 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     // USER CHAT
     Route::get('chat/{helpdeskId}', [ChatController::class, 'index'])->name('user.chat');
     Route::post('chat/{helpdeskId}/send', [ChatController::class, 'send'])->name('user.chat-send');
-    Route::get('/chat/{id}', [ChatController::class, 'openChat'])
-        ->middleware('auth');
+    Route::get('/chat/{id}', [ChatController::class, 'openChat'])->middleware('auth');
     Route::get('/chat/opponent-name/{helpdeskId}', [ChatController::class, 'getOpponentName'])->middleware('auth');
-
-
 });
 
 
@@ -251,6 +254,22 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/customer/update/{id}', [CustomerController::class, 'update'])->name('master-data.customer.update');
         Route::delete('/customer/delete/{id}', [CustomerController::class, 'destroy'])->name('master-data.customer.delete');
         Route::post('/customer/update-status/{id}', [CustomerController::class, 'updateStatus'])->name('master-data.customer.update-status');
+
+        // Bank
+        Route::get('/bank', [BankController::class, 'index'])->name('master-data.bank');
+        Route::get('/bank/view', [BankController::class, 'views'])->name('master-data.bank.view');
+        Route::post('/bank/store', [BankController::class, 'store'])->name('master-data.bank.create');
+        Route::put('/bank/update/{id}', [BankController::class, 'update'])->name('master-data.bank.update');
+        Route::delete('/bank/delete/{id}', [BankController::class, 'destroy'])->name('master-data.bank.delete');
+        Route::post('/bank/update-status/{id}', [BankController::class, 'updateStatus'])->name('master-data.bank.update-status');
+
+        // Fungsi
+        Route::get('/fungsi', [FungsiController::class, 'index'])->name('master-data.fungsi');
+        Route::get('/fungsi/view', [FungsiController::class, 'views'])->name('master-data.fungsi.view');
+        Route::post('/fungsi/store', [FungsiController::class, 'store'])->name('master-data.fungsi.create');
+        Route::put('/fungsi/update/{id}', [FungsiController::class, 'update'])->name('master-data.fungsi.update');
+        Route::delete('/fungsi/delete/{id}', [FungsiController::class, 'destroy'])->name('master-data.fungsi.delete');
+        Route::post('/fungsi/update-status/{id}', [FungsiController::class, 'updateStatus'])->name('master-data.fungsi.update-status');
     });
 
     // User Management
@@ -371,6 +390,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-vendor', [GlobalController::class, 'optionsSelectVendor'])->name('get-select-vendor');
         // Biaya SPD
         Route::get('/get-select-biaya', [GlobalController::class, 'optionsSelectBiaya'])->name('get-select-biaya');
+        // Bank
+        Route::get('/get-select-bank', [GlobalController::class, 'optionsSelectBank'])->name('get-select-bank');
+        // Fungsi
+        Route::get('/get-select-fungsi', [GlobalController::class, 'optionsSelectFungsi'])->name('get-select-fungsi');
     });
 });
 

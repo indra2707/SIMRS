@@ -246,7 +246,7 @@ class GlobalController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'text' => $value->nama,
-                'harga' =>'Rp'. number_format($value->harga_utama, 0, '.', ','),
+                'harga' => 'Rp' . number_format($value->harga_utama, 0, '.', ','),
             ];
         }
 
@@ -439,6 +439,59 @@ class GlobalController extends Controller
         foreach ($query as $key => $value) {
             $data[$key]['id'] = $value->id;
             $data[$key]['text'] = $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // select Bank
+    public function optionsSelectBank(Request $request)
+    {
+        $query = DB::table('tbl_bank')
+            ->where('status', '=', '1')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('nama_bank', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->limit(10)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->nama_bank;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+
+     // select Fungsi
+    public function optionsSelectFungsi(Request $request)
+    {
+        $query = DB::table('tbl_fungsi')
+            ->where('status', '=', '1')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('nama_fungsi', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->limit(10)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->nama_fungsi;
         }
         return response()->json([
             'data' => $data

@@ -203,8 +203,12 @@
                                                 Vendor</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Kota">
                                                 Kota</label></li>
-                                         <li><label><input type="checkbox" name="permissions[]" value="Biaya SPD">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Biaya SPD">
                                                 Biaya SPD</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Bank">
+                                                Bank</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Fungsi">
+                                                Fungsi</label></li>
                                     </ul>
                                 </li>
 
@@ -230,7 +234,8 @@
                                 </li>
                                 <li>
                                     <label class="caret">
-                                        <input type="checkbox" name="permissions[]" value="Helpdesk" class="parent"><b> Helpdesk</b>
+                                        <input type="checkbox" name="permissions[]" value="Helpdesk" class="parent"><b>
+                                            Helpdesk</b>
                                     </label>
                                     <ul class="nested">
                                         <li><label><input type="checkbox" name="permissions[]" value="Helpdesk.List">

@@ -41,6 +41,10 @@
             z-index: 1;
             background: #fff;
         }
+
+        .is-invalid+.select2-container .select2-selection {
+            border-color: #dc3545;
+        }
     </style>
 @endsection
 
@@ -207,6 +211,20 @@
                                             placeholder="Anak Perusahaan..." required value="PT Pertamina Bina Medika IHC">
                                     </div>
 
+                                    <!-- Penempatan -->
+                                    <label for="penempatan" class="col-form-label col-sm-2">Penempatan</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="penempatan" name="penempatan" class="form-control"
+                                            placeholder="Penempatan..." required value="RS Pertamina Royal Biringkanaya">
+                                    </div>
+
+                                    <!-- Lokasi Kerja -->
+                                    <label for="lokasi_kerja" class="col-form-label col-sm-2">Lokasi Kerja</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" id="lokasi_kerja" name="lokasi_kerja" class="form-control"
+                                            placeholder="Lokasi Kerja..." required value="RS Pertamina Royal Biringkanaya">
+                                    </div>
+
                                     <!-- Rumah Sakit / Unit -->
                                     <label for="rumah_sakit" class="col-form-label col-sm-2">Rumah Sakit / Unit</label>
                                     <div class="col-sm-4">
@@ -230,20 +248,6 @@
                                     <div class="col-sm-4">
                                         <input type="text" id="jabatan" name="jabatan" class="form-control"
                                             placeholder="Jabatan..." required>
-                                    </div>
-
-                                    <!-- Penempatan -->
-                                    <label for="penempatan" class="col-form-label col-sm-2">Penempatan</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" id="penempatan" name="penempatan" class="form-control"
-                                            placeholder="Penempatan..." required value="RS Pertamina Royal Biringkanaya">
-                                    </div>
-
-                                    <!-- Lokasi Kerja -->
-                                    <label for="lokasi_kerja" class="col-form-label col-sm-2">Lokasi Kerja</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" id="lokasi_kerja" name="lokasi_kerja" class="form-control"
-                                            placeholder="Lokasi Kerja..." required value="RS Pertamina Royal Biringkanaya">
                                     </div>
                                 </div>
                                 <hr>
@@ -299,7 +303,7 @@
                                     <!-- NIK  -->
                                     <label for="nik" class="col-form-label col-sm-2">NIK</label>
                                     <div class="col-sm-4">
-                                        <input type="number" class="form-control" id="nik" name="nik" maxlength="16"
+                                        <input type="text" class="form-control ktp-number" id="nik" name="nik"
                                             placeholder="NIK...">
                                     </div>
 
@@ -379,7 +383,7 @@
                                     <label for="golongan_upah" class="col-form-label col-sm-2">Golongan Upah</label>
                                     <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="golongan_upah"
-                                            name="golongan_upah">
+                                            name="golongan_upah" required>
                                             <option value=""></option>
                                             <option value="Utama">Utama</option>
                                             <option value="Madya">Madya</option>
@@ -431,7 +435,10 @@
                                     <!-- Sub Fungsi -->
                                     <label for="sub_fungsi" class="col-form-label col-sm-2">Sub Fungsi</label>
                                     <div class="col-md-4">
-                                        <input class="form-control" name="sub_fungsi" placeholder="Sub Fungsi...">
+                                          <select class="form-select select2" name="sub_fungsi"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                            <option></option>
+                                        </select>
                                     </div>
 
                                     <!-- TMT Jabatan -->
@@ -488,16 +495,16 @@
                                     <!-- Nomor HP -->
                                     <label for="nomor_hp" class="col-form-label col-sm-2">Nomor HP</label>
                                     <div class="col-md-4">
-                                        <input type="number" class="form-control" name="nomor_hp"
-                                            placeholder="Nomor HP Pekerja..." required maxlength="13">
+                                        <input type="text" class="form-control phone-number" name="nomor_hp"
+                                            placeholder="+62 xxx xxx xxxx" required>
                                     </div>
 
                                     <!-- Nomor Kontak Darurat -->
                                     <label for="nomor_kontak_darurat" class="col-form-label col-sm-2">Nomor Kontak
                                         Darurat</label>
                                     <div class="col-md-4">
-                                        <input type="number" class="form-control" name="nomor_kontak_darurat"
-                                            placeholder="Nomor Kontak Darurat..." required maxlength="13">
+                                        <input type="text" class="form-control phone-number" name="nomor_kontak_darurat"
+                                            placeholder="+62 xxx xxx xxxx" required>
                                     </div>
 
                                     <!-- Nama Kontak Darurat -->
@@ -511,9 +518,20 @@
                                     <!-- Hubungan Kontak Darurat -->
                                     <label for="hubungan_kontak_darurat" class="col-form-label col-sm-2">Hubungan
                                         Kontak</label>
-                                    <div class="col-md-4">
-                                        <input type="text" class="form-control" name="hubungan_kontak_darurat"
-                                            placeholder="Hubungan Kontak Darurat...">
+                                    <div class="col-sm-4">
+                                        <select class="form-select form-control select2" id="hubungan_kontak_darurat"
+                                            name="hubungan_kontak_darurat">
+                                            <option value=""></option>
+                                            <option value="Orang Tua">Orang Tua</option>
+                                            <option value="Ayah">Ayah</option>
+                                            <option value="Ibu">Ibu</option>
+                                            <option value="Suami">Suami</option>
+                                            <option value="Istri">Istri</option>
+                                            <option value="Saudara Kandung">Saudara Kandung</option>
+                                            <option value="Keluarga">Keluarga</option>
+                                            <option value="Teman">Teman</option>
+                                            <option value="Atasan">Atasan</option>
+                                        </select>
                                     </div>
 
                                     <!-- Email-->
@@ -531,7 +549,7 @@
                                 </div>
                                 <hr>
 
-                                <h5 class="mb-3">Alamat</h5>
+                                <h5 class="mb-3">Alamat Pegawai</h5>
                                 <div class="row g-2">
 
                                     <!-- Alamat KTP-->
@@ -701,7 +719,10 @@
                                     <!-- Nama Bank -->
                                     <label for="nama_bank" class="col-form-label col-sm-2">Nama Bank</label>
                                     <div class="col-md-4">
-                                        <input class="form-control" name="nama_bank" placeholder="Nama Bank...">
+                                        <select class="form-select select2" name="nama_bank"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                            <option></option>
+                                        </select>
                                     </div>
 
                                     <!-- Nomor Rekening -->
@@ -720,22 +741,22 @@
                                     <!-- Nomor BPJSTK -->
                                     <label for="nomor_bpjstk" class="col-form-label col-sm-2">Nomor BPJSTK</label>
                                     <div class="col-md-4">
-                                        <input type="number" class="form-control" name="nomor_bpjstk"
-                                            placeholder="Nomor BPJSTK...">
+                                        <input type="text" class="form-control ktp-number" name="nomor_bpjstk"
+                                            maxlength="14" placeholder="Nomor BPJSTK...">
                                     </div>
 
                                     <!-- Nomor BPJS Kesehatan -->
                                     <label for="nomor_bpjskesehatan" class="col-form-label col-sm-2">Nomor BPJS
                                         Kesehatan</label>
                                     <div class="col-md-4">
-                                        <input type="number" class="form-control" name="nomor_bpjskesehatan"
-                                            placeholder="Nomor BPJS Kesehatan...">
+                                        <input type="text" class="form-control ktp-number" name="nomor_bpjskesehatan"
+                                            maxlength="15" placeholder="Nomor BPJS Kesehatan...">
                                     </div>
 
                                     <!-- Nomor NPWP -->
                                     <label for="nomor_npwp" class="col-form-label col-sm-2">Nomor NPWP</label>
                                     <div class="col-md-4">
-                                        <input type="number" class="form-control" name="nomor_npwp"
+                                        <input type="text" class="form-control npwp-number" name="nomor_npwp"
                                             placeholder="Nomor NPWP...">
                                     </div>
 
