@@ -209,6 +209,8 @@
                                                 Bank</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Fungsi">
                                                 Fungsi</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="SK Struktur">
+                                                SK Struktur</label></li>
                                     </ul>
                                 </li>
 

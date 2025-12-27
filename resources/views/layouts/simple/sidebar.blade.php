@@ -160,6 +160,7 @@
                                 @if (in_array('Fungsi', $aksesMenu))
                                     <li><a href="{{ route('master-data.fungsi') }}">Fungsi</a></li>
                                 @endif
+                                <li><a href="{{ route('master-data.sk-struktur') }}">SK Struktur</a></li>
                             </ul>
                         </li>
                     @endif

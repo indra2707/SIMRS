@@ -498,4 +498,30 @@ class GlobalController extends Controller
         ], 200);
     }
 
+    // select SK Struktur
+    public function optionsSelectSKStruktur(Request $request)
+    {
+        $query = DB::table('tbl_sk_struktur')
+            ->where('status', '=', '1')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('no_sk', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->limit(10)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->no_sk;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
 }

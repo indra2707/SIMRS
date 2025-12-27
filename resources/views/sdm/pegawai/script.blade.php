@@ -84,6 +84,11 @@
             dropdownParent: $("#modal-pegawai")
         });
 
+        InitSelect2($("select[name='nomor_sk_struktur']"), {
+            url: "{{ route('get-select-sk-struktur') }}",
+            dropdownParent: $("#modal-pegawai")
+        });
+
         // Reset checkbox/radio ke unchecked
         $('input[type="checkbox"]').prop('checked', false);
         $('input[type="radio"]').prop('checked', false);

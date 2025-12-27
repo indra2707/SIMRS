@@ -45,6 +45,7 @@ use App\http\Controllers\MasterData\KelompokAsetController;
 use App\Http\Controllers\MasterData\AsetController;
 use App\http\Controllers\MasterData\BankController;
 use App\http\Controllers\MasterData\FungsiController;
+use App\http\Controllers\MasterData\SKStrukturController;
 
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
@@ -270,6 +271,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/fungsi/update/{id}', [FungsiController::class, 'update'])->name('master-data.fungsi.update');
         Route::delete('/fungsi/delete/{id}', [FungsiController::class, 'destroy'])->name('master-data.fungsi.delete');
         Route::post('/fungsi/update-status/{id}', [FungsiController::class, 'updateStatus'])->name('master-data.fungsi.update-status');
+        
+        // SK Struktur
+        Route::get('/sk-struktur', [SKStrukturController::class, 'index'])->name('master-data.sk-struktur');
+        Route::get('/sk-struktur/view', [SKStrukturController::class, 'views'])->name('master-data.sk-struktur.view');
+        Route::post('/sk-struktur/store', [SKStrukturController::class, 'store'])->name('master-data.sk-struktur.create');
+        Route::put('/sk-struktur/update/{id}', [SKStrukturController::class, 'update'])->name('master-data.sk-struktur.update');
+        Route::delete('/sk-struktur/delete/{id}', [SKStrukturController::class, 'destroy'])->name('master-data.sk-struktur.delete');
+        Route::post('/sk-struktur/update-status/{id}', [SKStrukturController::class, 'updateStatus'])->name('master-data.sk-struktur.update-status');
     });
 
     // User Management
@@ -394,6 +403,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-bank', [GlobalController::class, 'optionsSelectBank'])->name('get-select-bank');
         // Fungsi
         Route::get('/get-select-fungsi', [GlobalController::class, 'optionsSelectFungsi'])->name('get-select-fungsi');
+        // SK Struktur
+        Route::get('/get-select-sk-struktur', [GlobalController::class, 'optionsSelectSKStruktur'])->name('get-select-sk-struktur');
     });
 });
 
