@@ -45,6 +45,7 @@
         .is-invalid+.select2-container .select2-selection {
             border-color: #dc3545;
         }
+
     </style>
 @endsection
 
@@ -239,15 +240,19 @@
                                     <!-- Nomor SK Struktur  -->
                                     <label for="nomor_sk_struktur" class="col-form-label col-sm-2">Nomor SK Struktur</label>
                                     <div class="col-sm-4">
-                                        <input type="text" id="nomor_sk_struktur" name="nomor_sk_struktur"
-                                            class="form-control" placeholder="Nomor SK Struktur..." required>
+                                        <select class="form-select select2" name="nomor_sk_struktur"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                            <option></option>
+                                        </select>
                                     </div>
 
                                     <!-- Jabatan  -->
                                     <label for="jabatan" class="col-form-label col-sm-2">Jabatan</label>
                                     <div class="col-sm-4">
-                                        <input type="text" id="jabatan" name="jabatan" class="form-control"
-                                            placeholder="Jabatan..." required>
+                                        <select class="form-select select2" name="jabatan"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                            <option></option>
+                                        </select>
                                     </div>
                                 </div>
                                 <hr>
@@ -328,7 +333,7 @@
                                             name="status_pernikahan">
                                             <option value=""></option>
                                             <option value="Menikah">Menikah</option>
-                                            <option value="Nikah">Nikah</option>
+                                            <option value="Belum Menikah">Belum Menikah</option>
                                             <option value="Cerai">Cerai</option>
                                             <option value="Janda">Janda</option>
                                             <option value="Kawin">Kawin</option>
@@ -435,7 +440,7 @@
                                     <!-- Sub Fungsi -->
                                     <label for="sub_fungsi" class="col-form-label col-sm-2">Sub Fungsi</label>
                                     <div class="col-md-4">
-                                          <select class="form-select select2" name="sub_fungsi"
+                                        <select class="form-select select2" name="sub_fungsi"
                                             data-placeholder="---- Pilih Salah Satu ----" required>
                                             <option></option>
                                         </select>

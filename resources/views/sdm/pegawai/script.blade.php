@@ -746,92 +746,92 @@
         }, 500);
 
         // Intercept button next SEBELUM validasi plugin berjalan
-        // $(document).on('click', '.btn-next', function(e) {
-        //     e.preventDefault();
-        //     e.stopImmediatePropagation();
-
-        //     // Hapus validasi visual
-        //     $('.form-pegawai').removeClass('was-validated');
-        //     $('.form-control').removeClass('is-invalid');
-
-        //     // Trigger next step secara manual
-        //     var $currentFieldset = $(this).closest('fieldset');
-        //     var $nextFieldset = $currentFieldset.next('fieldset');
-
-        //     if ($nextFieldset.length) {
-        //         $currentFieldset.fadeOut(300, function() {
-        //             $nextFieldset.fadeIn(300);
-        //         });
-
-        //         // Update progress bar
-        //         var stepIndex = $nextFieldset.index('fieldset');
-        //         var totalSteps = $('fieldset').length;
-        //         var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
-
-        //         $('.f1-progress-line').css('width', progressPercentage + '%');
-
-        //         // Update step indicator
-        //         $('.f1-step').removeClass('active').removeClass('activated');
-        //         $('.f1-step').eq(stepIndex).addClass('active');
-        //         $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
-        //     }
-
-        //     return false;
-        // });
-
-        $(document).on('click', '.btn-next', function (e) {
+        $(document).on('click', '.btn-next', function(e) {
             e.preventDefault();
+            e.stopImmediatePropagation();
 
-            let $currentFieldset = $(this).closest('fieldset');
-            let inputs = $currentFieldset.find('input, select, textarea').filter(':visible');
-            let isValid = true;
-
-            // reset error
+            // Hapus validasi visual
+            $('.form-pegawai').removeClass('was-validated');
             $('.form-control').removeClass('is-invalid');
 
-            inputs.each(function () {
-                // KHUSUS select2
-                if ($(this).hasClass('select2') && !$(this).val()) {
-                    $(this).addClass('is-invalid');
-                    isValid = false;
-                    return false;
-                }
-
-                // HTML5 validation
-                if (!this.checkValidity()) {
-                    this.reportValidity();
-                    $(this).addClass('is-invalid');
-                    isValid = false;
-                    return false;
-                }
-            });
-
-            // JANGAN LANJUT JIKA TIDAK VALID
-            if (!isValid) {
-                return false;
-            }
-
-            // JIKA VALID → LANJUT STEP
-            let $nextFieldset = $currentFieldset.next('fieldset');
+            // Trigger next step secara manual
+            var $currentFieldset = $(this).closest('fieldset');
+            var $nextFieldset = $currentFieldset.next('fieldset');
 
             if ($nextFieldset.length) {
-                $currentFieldset.fadeOut(300, function () {
+                $currentFieldset.fadeOut(300, function() {
                     $nextFieldset.fadeIn(300);
                 });
 
-                // progress bar
-                let stepIndex = $('fieldset').index($nextFieldset);
-                let totalSteps = $('fieldset').length;
-                let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+                // Update progress bar
+                var stepIndex = $nextFieldset.index('fieldset');
+                var totalSteps = $('fieldset').length;
+                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
 
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
-                // step indicator
-                $('.f1-step').removeClass('active activated');
+                // Update step indicator
+                $('.f1-step').removeClass('active').removeClass('activated');
                 $('.f1-step').eq(stepIndex).addClass('active');
                 $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
             }
+
+            return false;
         });
+
+        // $(document).on('click', '.btn-next', function (e) {
+        //     e.preventDefault();
+
+        //     let $currentFieldset = $(this).closest('fieldset');
+        //     let inputs = $currentFieldset.find('input, select, textarea').filter(':visible');
+        //     let isValid = true;
+
+        //     // reset error
+        //     $('.form-control').removeClass('is-invalid');
+
+        //     inputs.each(function () {
+        //         // KHUSUS select2
+        //         if ($(this).hasClass('select2') && !$(this).val()) {
+        //             $(this).addClass('is-invalid');
+        //             isValid = false;
+        //             return false;
+        //         }
+
+        //         // HTML5 validation
+        //         if (!this.checkValidity()) {
+        //             this.reportValidity();
+        //             $(this).addClass('is-invalid');
+        //             isValid = false;
+        //             return false;
+        //         }
+        //     });
+
+        //     // JANGAN LANJUT JIKA TIDAK VALID
+        //     if (!isValid) {
+        //         return false;
+        //     }
+
+        //     // JIKA VALID → LANJUT STEP
+        //     let $nextFieldset = $currentFieldset.next('fieldset');
+
+        //     if ($nextFieldset.length) {
+        //         $currentFieldset.fadeOut(300, function () {
+        //             $nextFieldset.fadeIn(300);
+        //         });
+
+        //         // progress bar
+        //         let stepIndex = $('fieldset').index($nextFieldset);
+        //         let totalSteps = $('fieldset').length;
+        //         let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
+
+        //         $('.f1-progress-line').css('width', progressPercentage + '%');
+
+        //         // step indicator
+        //         $('.f1-step').removeClass('active activated');
+        //         $('.f1-step').eq(stepIndex).addClass('active');
+        //         $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
+        //     }
+        // });
 
 
         // Handle button previous
