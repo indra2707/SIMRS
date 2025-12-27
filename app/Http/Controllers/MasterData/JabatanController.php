@@ -3,51 +3,63 @@
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
-use App\Models\MaterData\SKStruktur;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
+use App\Models\MaterData\Jabatan;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
-class SKStrukturController extends Controller
+class JabatanController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'SK Struktur',
+            'title' => 'Jabatan',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'SK Struktur',
+            'menuSubtitle' => 'Jabatan',
         ];
-        return view('master-data.sk-struktur.sk-struktur', $data);
+        return view('master-data.jabatan.jabatan', $data);
     }
 
-    // Views Table SK Struktur
-    public function views()
+    // Views Table Jabatan
+    public function views(Request $request)
     {
-        $query = SKStruktur::all();
+        $query = DB::table('tbl_jabatan')
+            ->join('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'tbl_jabatan.id_sk_struktur')
+            ->where('tbl_jabatan.id_sk_struktur', $request->id_sk_struktur)
+            ->select(
+                'tbl_jabatan.id',
+                'tbl_jabatan.id_sk_struktur',
+                'tbl_jabatan.unit',
+                'tbl_jabatan.nama_jabatan',
+                'tbl_jabatan.status',
+                'tbl_sk_struktur.no_sk as no_skstruktur'
+            )
+            ->get();
+
         $data = [];
-        foreach ($query as $key => $value) {
+        foreach ($query as $value) {
             $data[] = [
                 'id' => $value->id,
-                'no_sk' => $value->no_sk,
-                'tanggal_mulai' => Carbon::createFromFormat('Y-m-d', $value->tanggal_mulai)->format('d/m/Y'),
-                'tanggal_selesai' => Carbon::createFromFormat('Y-m-d', $value->tanggal_selesai)->format('d/m/Y'),
-                'keterangan' => $value->keterangan,
+                'id_sk_struktur' => $value->id_sk_struktur,
+                'no_skstruktur' => $value->no_skstruktur,
+                'unit' => $value->unit,
+                'nama_jabatan' => $value->nama_jabatan,
                 'status' => $value->status,
             ];
         }
+
         return response()->json($data, 200);
     }
+
 
     // Simpan SK Struktur
     public function store(Request $request)
     {
-        $query = SKStruktur::create([
-            'no_sk' => $request->no_sk,
-            'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai)->format('Y-m-d'),
-            'tanggal_selesai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_selesai)->format('Y-m-d'),
-            'keterangan' => $request->keterangan,
-            'status' => $request->status == 'on' ? '1' : '0',
+        $query = Jabatan::create([
+            'id_sk_struktur' => $request->id_sk_struktur,
+            'unit' => $request->unit,
+            'nama_jabatan' => $request->nama_jabatan,
+            'status_jabatan' => $request->status_jabatan == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([
@@ -67,11 +79,10 @@ class SKStrukturController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $query = SKStruktur::where('id', $id)->update([
-            'no_sk' => $request->no_sk,
-            'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai)->format('Y-m-d'),
-            'tanggal_selesai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_selesai)->format('Y-m-d'),
-            'keterangan' => $request->keterangan,
+        $query = Jabatan::where('id', $id)->update([
+            'id_sk_struktur' => $request->id_sk_struktur,
+            'unit' => $request->unit,
+            'nama_jabatan' => $request->nama_jabatan,
             'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -92,10 +103,8 @@ class SKStrukturController extends Controller
     // Delete
     public function destroy($id)
     {
-        $query = SKStruktur::where('id', $id)->delete();
-        $query1 = DB::table('tbl_jabatan')->where('id_sk_struktur', $id) ->delete();
-
-        if ($query && $query1) {
+        $query = Jabatan::where('id', $id)->delete();
+        if ($query) {
             return response()->json([
                 'success' => true,
                 'data' => [],
@@ -113,7 +122,7 @@ class SKStrukturController extends Controller
     // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = SKStruktur::where('id', $id)->update([
+        $query = Jabatan::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {

@@ -46,6 +46,7 @@ use App\Http\Controllers\MasterData\AsetController;
 use App\http\Controllers\MasterData\BankController;
 use App\http\Controllers\MasterData\FungsiController;
 use App\http\Controllers\MasterData\SKStrukturController;
+use App\http\Controllers\MasterData\JabatanController;
 
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
@@ -279,6 +280,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/sk-struktur/update/{id}', [SKStrukturController::class, 'update'])->name('master-data.sk-struktur.update');
         Route::delete('/sk-struktur/delete/{id}', [SKStrukturController::class, 'destroy'])->name('master-data.sk-struktur.delete');
         Route::post('/sk-struktur/update-status/{id}', [SKStrukturController::class, 'updateStatus'])->name('master-data.sk-struktur.update-status');
+
+        // Jabatan
+        Route::get('/jabatan', [JabatanController::class, 'index'])->name('master-data.jabatan');
+        Route::get('/jabatan/view', [JabatanController::class, 'views'])->name('master-data.jabatan.view');
+        Route::post('/jabatan/store', [JabatanController::class, 'store'])->name('master-data.jabatan.create');
+        Route::put('/jabatan/update/{id}', [JabatanController::class, 'update'])->name('master-data.jabatan.update');
+        Route::delete('/jabatan/delete/{id}', [JabatanController::class, 'destroy'])->name('master-data.jabatan.delete');
+        Route::post('/jabatan/update-status/{id}', [JabatanController::class, 'updateStatus'])->name('master-data.jabatan.update-status');
     });
 
     // User Management

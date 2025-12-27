@@ -111,7 +111,8 @@
 
     // Save/update
     // Nonaktifkan validasi HTML5 native
-    $('.form-pegawai').attr('novalidate', 'novalidate');
+    // $('.form-pegawai').attr('novalidate', 'novalidate');
+
     $(document).on('click', '.save-btn', function (e) {
         var id = $('input[name="id"]').val();
 
