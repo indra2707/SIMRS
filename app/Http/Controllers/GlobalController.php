@@ -472,7 +472,7 @@ class GlobalController extends Controller
     }
 
 
-     // select Fungsi
+    // select Fungsi
     public function optionsSelectFungsi(Request $request)
     {
         $query = DB::table('tbl_fungsi')
@@ -523,5 +523,42 @@ class GlobalController extends Controller
             'data' => $data
         ], 200);
     }
+
+    // select Jabatan
+    public function optionsSelectJabatan(Request $request)
+{
+    // Jika id_sk_struktur kosong, kembalikan data kosong
+    if (!$request->filled('id_sk_struktur')) {
+        return response()->json([
+            'data' => []
+        ], 200);
+    }
+
+    $query = DB::table('tbl_jabatan')
+        ->where('status', '1')
+        ->where('id_sk_struktur', $request->id_sk_struktur)
+        ->when($request->values, function ($q) use ($request) {
+            $q->where('id', $request->values);
+        })
+        ->when($request->search, function ($q) use ($request) {
+            $q->where('nama_jabatan', 'like', '%' . $request->search . '%');
+        })
+        ->limit(10)
+        ->get();
+
+    $data = [];
+    foreach ($query as $value) {
+        $data[] = [
+            'id'   => $value->id,
+            'text' => $value->nama_jabatan
+        ];
+    }
+
+    return response()->json([
+        'data' => $data
+    ], 200);
+}
+
+
 
 }

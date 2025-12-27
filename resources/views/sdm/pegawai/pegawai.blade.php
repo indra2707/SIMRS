@@ -207,7 +207,7 @@
                                 <div class="row g-2">
                                     <!-- Anak Perusahaan -->
                                     <label for="anak_perusahaan" class="col-form-label col-sm-2">Anak Perusahaan</label>
-                                    <div class="col-sm-4">
+                                    <div class="col-sm-10">
                                         <input type="text" id="anak_perusahaan" name="anak_perusahaan" class="form-control"
                                             placeholder="Anak Perusahaan..." required value="PT Pertamina Bina Medika IHC">
                                     </div>
@@ -224,17 +224,6 @@
                                     <div class="col-sm-4">
                                         <input type="text" id="lokasi_kerja" name="lokasi_kerja" class="form-control"
                                             placeholder="Lokasi Kerja..." required value="RS Pertamina Royal Biringkanaya">
-                                    </div>
-
-                                    <!-- Rumah Sakit / Unit -->
-                                    <label for="rumah_sakit" class="col-form-label col-sm-2">Rumah Sakit / Unit</label>
-                                    <div class="col-sm-4">
-                                        <select class="form-select form-control select2" name="rumah_sakit" required>
-                                            <option></option>
-                                            <option value="RS Pertamina Royal Biringkanaya">RS Pertamina Royal Biringkanaya
-                                            </option>
-                                            <option value="Kantor Pusat PBM">Kantor Pusat PBM</option>
-                                        </select>
                                     </div>
 
                                     <!-- Nomor SK Struktur  -->
@@ -789,16 +778,6 @@
                                                     <!-- Browse Image to Upload Wrapper -->
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-4 mb-2">
-                                            <label>Temp Username</label>
-                                            <input class="form-control" name="temp_username">
-                                        </div>
-
-                                        <div class="col-md-4 mb-2">
-                                            <label>Username</label>
-                                            <input class="form-control" name="username">
                                         </div>
 
                                         <div class="f1-buttons">

@@ -342,6 +342,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('sdm/users/add', [PegawaiController::class, 'store'])->name('pegawai-store');
         Route::delete('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
         Route::get('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
+        Route::get('sdm/generate-nomor-pekerja', [PegawaiController::class, 'generateNomorPekerjaAjax'])->name('pegawai.generate-nomor-pekerja');
     });
 
     // Tarif
@@ -414,6 +415,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-fungsi', [GlobalController::class, 'optionsSelectFungsi'])->name('get-select-fungsi');
         // SK Struktur
         Route::get('/get-select-sk-struktur', [GlobalController::class, 'optionsSelectSKStruktur'])->name('get-select-sk-struktur');
+        // Jabatan
+        Route::get('/get-select-jabatan', [GlobalController::class, 'optionsSelectJabatan'])->name('get-select-jabatan');
     });
 });
 

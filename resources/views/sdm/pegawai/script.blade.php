@@ -12,9 +12,11 @@
             .not('[name="nama_pekerja"]')
             .removeAttr('required');
     });
+
     // Tabel
     var $tablePegawai = $('#table_pegawai');
 
+    // select2 global
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
         theme: "bootstrap-5",
@@ -22,6 +24,102 @@
         allowClear: true
 
     });
+
+    // select2 ajax init function
+    function InitSelect2(element, options) {
+        element.select2({
+            theme: "bootstrap-5",
+            dropdownParent: options.dropdownParent,
+            placeholder: "---- Pilih Salah Satu ----",
+            allowClear: true,
+            ajax: {
+                url: options.url,
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+
+                    let data = {
+                        search: params.term
+                    };
+
+                    // mengambil data select
+                    if (typeof options.data === 'function') {
+                        data = Object.assign(data, options.data(params));
+                    }
+
+                    return data;
+                },
+                processResults: function (response) {
+                    return {
+                        results: response.data
+                    };
+                }
+            }
+        });
+    }
+
+
+    // aktifkan saat SK dipilih
+    const jabatanSelect = $("select[name='jabatan']");
+    jabatanSelect.prop('disabled', true);
+    $("select[name='nomor_sk_struktur']").on('change', function () {
+        const idSk = $(this).val();
+        jabatanSelect.val(null).trigger('change');
+        if (idSk) {
+            jabatanSelect.prop('disabled', false);
+        } else {
+            jabatanSelect.prop('disabled', true);
+        }
+    });
+
+
+    // disabled nomor pekerja input
+    const $statusPegawai = $("select[name='status_pegawai']");
+    const $nomorPekerja = $("input[name='nomor_pekerja']");
+    function toggleNomorPekerja() {
+        const status = $statusPegawai.val();
+        const hideList = ['PWTT', 'PWT'];
+        const disableList = [
+            'Mitra Pegawai',
+            'Mitra Dokter',
+            'Outsourcing',
+            'Internship'
+        ];
+
+        if (hideList.includes(status)) {
+            $nomorPekerja.val('').prop('disabled', false).removeAttr('required');
+            return;
+        }
+
+        if (disableList.includes(status)) {
+            $nomorPekerja.val('').prop('disabled', true).removeAttr('required');
+            loadNomorPekerja(status);
+        } else {
+            $nomorPekerja.prop('disabled', false).attr('required', true);
+        }
+    }
+    $statusPegawai.on('change', toggleNomorPekerja);
+    toggleNomorPekerja();
+
+
+    // Nomor Pekerja otomatis
+    function loadNomorPekerja(status) {
+        $.ajax({
+            url: "{{ route('pegawai.generate-nomor-pekerja') }}",
+            type: "GET",
+            dataType: "json",
+            data: {
+                status_pegawai: status
+            },
+            success: function (res) {
+                $nomorPekerja.val(res.nomor_pekerja);
+            },
+            error: function () {
+                alert('Gagal mengambil nomor pekerja');
+            }
+        });
+    }
+
 
 
     var reader = new FileReader();
@@ -52,7 +150,6 @@
     });
 
 
-
     // Open Modal Pegawai
     $(document).on('click', '.add-btn', function () {
         $('#modal-pegawai').modal('show');
@@ -68,6 +165,7 @@
 
         // Reset khusus
         $('input[name="id"]').val(''); // Kosongkan ID
+        $("select[name='jabatan']").val('').trigger('change');
 
         // Reset Select2 (jika ada)
         $('.select2').each(function () {
@@ -87,6 +185,16 @@
         InitSelect2($("select[name='nomor_sk_struktur']"), {
             url: "{{ route('get-select-sk-struktur') }}",
             dropdownParent: $("#modal-pegawai")
+        });
+
+        InitSelect2($("select[name='jabatan']"), {
+            url: "{{ route('get-select-jabatan') }}",
+            dropdownParent: $("#modal-pegawai"),
+            data: function (params) {
+                return {
+                    id_sk_struktur: $("select[name='nomor_sk_struktur']").val()
+                };
+            }
         });
 
         // Reset checkbox/radio ke unchecked
@@ -752,7 +860,7 @@
         }, 500);
 
         // Intercept button next SEBELUM validasi plugin berjalan
-        $(document).on('click', '.btn-next', function(e) {
+        $(document).on('click', '.btn-next', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
@@ -765,7 +873,7 @@
             var $nextFieldset = $currentFieldset.next('fieldset');
 
             if ($nextFieldset.length) {
-                $currentFieldset.fadeOut(300, function() {
+                $currentFieldset.fadeOut(300, function () {
                     $nextFieldset.fadeIn(300);
                 });
 
