@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,50 +12,48 @@ return new class extends Migration
     {
         Schema::create('pegawai', function (Blueprint $table) {
             $table->id();
-            $table->string('anak_perusahaan')->nullable();
-            $table->string('rumah_sakit')->nullable();
-            $table->string('nomor_sk_struktur')->nullable();
-            $table->string('jabatan')->nullable();
-            $table->string('penempatan')->nullable();
-            $table->string('lokasi_kerja')->nullable();
-            $table->string('nomor_pekerja')->nullable();
+            $table->string('anak_perusahaan');
+            $table->string('id_sk_struktur');
+            $table->string('id_jabatan');
+            $table->string('penempatan');
+            $table->string('lokasi_kerja');
+            $table->enum('status_kepegawaian', ["PWTT", "PWT", "Mitra Pegawai", "Mitra Dokter", "Outsourcing", "Internship"]);
+            $table->string('nomor_pekerja');
             $table->string('nama_pekerja');
-            $table->string('jenis_kelamin')->nullable();
-            $table->string('agama')->nullable();
-            $table->string('nik')->nullable();
-            $table->string('status_pernikahan')->nullable();
-            $table->string('golongan_darah')->nullable();
-            $table->string('disabilitas')->nullable();
-            $table->date('tanggal_lahir')->nullable();
-            $table->enum('golongan_upah', ['harga_utama', 'harga_madya', 'harga_biasa'])->default('harga utama');
-            $table->string('status_kepegawaian')->nullable();
+            $table->enum('jenis_kelamin', ["Laki-laki", "Perempuan"]);
+            $table->enum('agama', ["Islam", "Kristen", "Hindu", "Buddha", "Konghucu", "Katolik"]);
+            $table->string('nik', 16);
+            $table->enum('status_pernikahan', ["Menikah", "Belum Menikah", "Cerai", "Janda", "Kawin", "Lajang"]);
+            $table->enum('golongan_darah', ["A", "A+", "A-", "B", "B+", "B-", "AB", "AB+", "AB-", "O", "O+", "O-"]);
+            $table->enum('disabilitas', ["Ya", "Tidak"])->default('Tidak');
+            $table->date('tanggal_lahir');
+            $table->enum('golongan_upah', ['Utama', 'Madya', 'Biasa']);
             $table->date('tmt_status_kepegawaian')->nullable();
             $table->date('tmt_pwtt')->nullable();
             $table->date('tmt_pwt')->nullable();
             $table->string('masa_kerja')->nullable();
-            $table->string('fungsi')->nullable();
-            $table->string('sub_fungsi')->nullable();
-            $table->date('tmt_jabatan')->nullable();
+            $table->enum('fungsi', ["Medis", "Perawat", "Nakes Lain", "Non Medis"]);
+            $table->string('id_sub_fungsi');
             $table->date('tmt_golongan_upah')->nullable();
             $table->string('penyetaraan_jabatan_ap')->nullable();
             $table->string('penyetaraan_golongan_upah_ap')->nullable();
-            $table->string('nama_bank')->nullable();
+            $table->string('id_bank');
             $table->string('nomor_rekening')->nullable();
             $table->string('nama_rekening')->nullable();
             $table->string('nomor_bpjstk')->nullable();
             $table->string('nomor_bpjskesehatan')->nullable();
             $table->string('nomor_npwp')->nullable();
-            $table->string('nomor_hp')->nullable();
-            $table->string('nomor_kontak_darurat')->nullable();
+            $table->string('nomor_hp', 13)->nullable();
+            $table->string('nomor_kontak_darurat', 13)->nullable();
             $table->string('nama_kontak_darurat')->nullable();
-            $table->string('hubungan_kontak_darurat')->nullable();
+            $table->enum('hubungan_kontak_darurat', ["Orang Tua", "Ayah", "Ibu", "Suami", "Istri", "Saudara Kandung", "Keluarga", "Teman", "Atasan"])->nullable();
             $table->string('email')->nullable();
             $table->string('email_dinas')->nullable();
             $table->text('alamat_ktp')->nullable();
             $table->text('alamat_npwp')->nullable();
             $table->text('alamat_domisili')->nullable();
             $table->string('nomor_str')->nullable();
-            $table->string('str_seumur_hidup')->nullable();
+            $table->enum('str_seumur_hidup', ["Ya", "Tidak"])->nullable();
             $table->date('masa_berlaku_str')->nullable();
             $table->string('nomor_sip')->nullable();
             $table->date('masa_berlaku_sip')->nullable();
@@ -76,14 +73,10 @@ return new class extends Migration
             $table->string('jenjang_pendidikan_terakhir')->nullable();
 
             // Input tracking
-            $table->string('input_by')->nullable();
-            $table->date('input_date')->nullable();
-            $table->string('update_by')->nullable();
-            $table->date('update_date')->nullable();
+            $table->string('created_by')->nullable();
+            $table->string('updated_by')->nullable();
 
             // Username
-            $table->string('temp_username')->nullable();
-            $table->string('username')->nullable();
             $table->string('foto')->nullable();
             $table->timestamps();
         });

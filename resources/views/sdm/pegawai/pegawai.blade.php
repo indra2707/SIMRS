@@ -227,18 +227,18 @@
                                     </div>
 
                                     <!-- Nomor SK Struktur  -->
-                                    <label for="nomor_sk_struktur" class="col-form-label col-sm-2">Nomor SK Struktur</label>
+                                    <label for="id_sk_struktur" class="col-form-label col-sm-2">Nomor SK Struktur</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select select2" name="nomor_sk_struktur"
+                                        <select class="form-select select2" name="id_sk_struktur"
                                             data-placeholder="---- Pilih Salah Satu ----" required>
                                             <option></option>
                                         </select>
                                     </div>
 
                                     <!-- Jabatan  -->
-                                    <label for="jabatan" class="col-form-label col-sm-2">Jabatan</label>
+                                    <label for="id_jabatan" class="col-form-label col-sm-2">Jabatan</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select select2" name="jabatan"
+                                        <select class="form-select select2" name="id_jabatan"
                                             data-placeholder="---- Pilih Salah Satu ----" required>
                                             <option></option>
                                         </select>
@@ -250,9 +250,9 @@
                                 <div class="row g-2">
 
                                     <!-- Status Pegawai -->
-                                    <label for="status_pegawai" class="col-form-label col-sm-2">Status Pegawai</label>
+                                    <label for="status_kepegawaian" class="col-form-label col-sm-2">Status Pegawai</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select form-control select2" name="status_pegawai" required>
+                                        <select class="form-select form-control select2" name="status_kepegawaian" required>
                                             <option></option>
                                             <option value="PWTT">PWTT</option>
                                             <option value="PWT">PWT</option>
@@ -357,7 +357,7 @@
                                         <select class="form-select form-control select2" id="disabilitas"
                                             name="disabilitas">
                                             <option value="">Pilih</option>
-                                            <option value="Tidak">Tidak</option>
+                                            <option value="Tidak" selected>Tidak</option>
                                             <option value="Ya">Ya</option>
                                         </select>
                                     </div>
@@ -373,8 +373,8 @@
                                 <h5 class="mb-3">Data Kepegawaian</h5>
                                 <div class="row g-2">
 
-                                    <!-- Golongan Upah  -->
-                                    <label for="golongan_upah" class="col-form-label col-sm-2">Golongan Upah</label>
+                                    <!-- Golongan  -->
+                                    <label for="golongan_upah" class="col-form-label col-sm-2">Golongan</label>
                                     <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="golongan_upah"
                                             name="golongan_upah" required>
@@ -427,9 +427,9 @@
                                     </div>
 
                                     <!-- Sub Fungsi -->
-                                    <label for="sub_fungsi" class="col-form-label col-sm-2">Sub Fungsi</label>
+                                    <label for="id_sub_fungsi" class="col-form-label col-sm-2">Sub Fungsi</label>
                                     <div class="col-md-4">
-                                        <select class="form-select select2" name="sub_fungsi"
+                                        <select class="form-select select2" name="id_sub_fungsi"
                                             data-placeholder="---- Pilih Salah Satu ----" required>
                                             <option></option>
                                         </select>
@@ -711,9 +711,9 @@
                                 <div class="row g-2">
 
                                     <!-- Nama Bank -->
-                                    <label for="nama_bank" class="col-form-label col-sm-2">Nama Bank</label>
+                                    <label for="id_bank" class="col-form-label col-sm-2">Nama Bank</label>
                                     <div class="col-md-4">
-                                        <select class="form-select select2" name="nama_bank"
+                                        <select class="form-select select2" name="id_bank"
                                             data-placeholder="---- Pilih Salah Satu ----" required>
                                             <option></option>
                                         </select>

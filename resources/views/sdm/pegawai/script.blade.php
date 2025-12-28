@@ -27,6 +27,14 @@
 
     // select2 ajax init function
     function InitSelect2(element, options) {
+
+        if (element.hasClass("select2-hidden-accessible")) {
+            element.select2('destroy');
+            element.empty();
+        }
+
+        element.prop('disabled', false);
+
         element.select2({
             theme: "bootstrap-5",
             dropdownParent: options.dropdownParent,
@@ -37,32 +45,36 @@
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
-
-                    let data = {
-                        search: params.term
-                    };
-
-                    // mengambil data select
+                    let data = { search: params.term };
                     if (typeof options.data === 'function') {
                         data = Object.assign(data, options.data(params));
                     }
-
                     return data;
                 },
                 processResults: function (response) {
-                    return {
-                        results: response.data
-                    };
+                    return { results: response.data };
                 }
             }
         });
+
+        // SET VALUE EDIT
+        if (options.initialValue && options.initialText) {
+            let option = new Option(
+                options.initialText,
+                options.initialValue,
+                true,
+                true
+            );
+            element.append(option).trigger('change');
+        }
     }
 
 
+
     // aktifkan saat SK dipilih
-    const jabatanSelect = $("select[name='jabatan']");
+    const jabatanSelect = $("select[name='id_jabatan']");
     jabatanSelect.prop('disabled', true);
-    $("select[name='nomor_sk_struktur']").on('change', function () {
+    $("select[name='id_sk_struktur']").on('change', function () {
         const idSk = $(this).val();
         jabatanSelect.val(null).trigger('change');
         if (idSk) {
@@ -74,7 +86,7 @@
 
 
     // disabled nomor pekerja input
-    const $statusPegawai = $("select[name='status_pegawai']");
+    const $statusPegawai = $("select[name='status_kepegawaian']");
     const $nomorPekerja = $("input[name='nomor_pekerja']");
     function toggleNomorPekerja() {
         const status = $statusPegawai.val();
@@ -87,15 +99,15 @@
         ];
 
         if (hideList.includes(status)) {
-            $nomorPekerja.val('').prop('disabled', false).removeAttr('required');
+            $nomorPekerja.val('').prop('readonly', false).removeAttr('required');
             return;
         }
 
         if (disableList.includes(status)) {
-            $nomorPekerja.val('').prop('disabled', true).removeAttr('required');
+            $nomorPekerja.val('').prop('readonly', true).removeAttr('required');
             loadNomorPekerja(status);
         } else {
-            $nomorPekerja.prop('disabled', false).attr('required', true);
+            $nomorPekerja.prop('readonly', false).attr('required', true);
         }
     }
     $statusPegawai.on('change', toggleNomorPekerja);
@@ -103,7 +115,13 @@
 
 
     // Nomor Pekerja otomatis
+    let isLoadingNomorPekerja = false;
+
     function loadNomorPekerja(status) {
+
+        if (isLoadingNomorPekerja) return;
+        isLoadingNomorPekerja = true;
+
         $.ajax({
             url: "{{ route('pegawai.generate-nomor-pekerja') }}",
             type: "GET",
@@ -112,10 +130,17 @@
                 status_pegawai: status
             },
             success: function (res) {
-                $nomorPekerja.val(res.nomor_pekerja);
+
+                // set hanya jika masih kosong
+                if (!$nomorPekerja.val()) {
+                    $nomorPekerja.val(res.nomor_pekerja);
+                }
             },
             error: function () {
                 alert('Gagal mengambil nomor pekerja');
+            },
+            complete: function () {
+                isLoadingNomorPekerja = false;
             }
         });
     }
@@ -165,34 +190,34 @@
 
         // Reset khusus
         $('input[name="id"]').val(''); // Kosongkan ID
-        $("select[name='jabatan']").val('').trigger('change');
+        $("select[name='id_jabatan']").val('').trigger('change');
 
         // Reset Select2 (jika ada)
         $('.select2').each(function () {
             $(this).val(null).trigger('change');
         });
 
-        InitSelect2($("select[name='nama_bank']"), {
+        InitSelect2($("select[name='id_bank']"), {
             url: "{{ route('get-select-bank') }}",
             dropdownParent: $("#modal-pegawai")
         });
 
-        InitSelect2($("select[name='sub_fungsi']"), {
+        InitSelect2($("select[name='id_sub_fungsi']"), {
             url: "{{ route('get-select-fungsi') }}",
             dropdownParent: $("#modal-pegawai")
         });
 
-        InitSelect2($("select[name='nomor_sk_struktur']"), {
+        InitSelect2($("select[name='id_sk_struktur']"), {
             url: "{{ route('get-select-sk-struktur') }}",
             dropdownParent: $("#modal-pegawai")
         });
 
-        InitSelect2($("select[name='jabatan']"), {
+        InitSelect2($("select[name='id_jabatan']"), {
             url: "{{ route('get-select-jabatan') }}",
             dropdownParent: $("#modal-pegawai"),
             data: function (params) {
                 return {
-                    id_sk_struktur: $("select[name='nomor_sk_struktur']").val()
+                    id_sk_struktur: $("select[name='id_sk_struktur']").val()
                 };
             }
         });
@@ -389,13 +414,13 @@
                     width: 150
                 },
                 {
-                    field: 'nomor_sk_struktur',
+                    field: 'id_sk_struktur',
                     title: 'No SK Struktur',
                     sortable: true,
                     width: 120,
                 },
                 {
-                    field: 'jabatan',
+                    field: 'id_jabatan',
                     title: 'Jabatan',
                     sortable: true,
                     width: 150
@@ -521,7 +546,7 @@
                     visible: false
                 },
                 {
-                    field: 'sub_fungsi',
+                    field: 'id_sub_fungsi',
                     title: 'Sub Fungsi',
                     sortable: true,
                     width: 120,
@@ -558,7 +583,7 @@
 
                 // ========== BANKING INFO ==========
                 {
-                    field: 'nama_bank',
+                    field: 'id_bank',
                     title: 'Bank',
                     sortable: true,
                     width: 120,
@@ -844,8 +869,6 @@
 
     //  Call function saat document ready
     $(document).ready(function () {
-        initTable();
-
         // Paksa nonaktifkan validasi
         setTimeout(function () {
             $('.form-pegawai').attr('novalidate', 'novalidate');
@@ -994,110 +1017,106 @@
     // Handle events button actions
     window.eventsPegawai = {
         'click .btn-edit': function (e, value, row, index) {
-            console.log('Edit button clicked!', row);
+            // console.log('Edit button clicked!', row);
 
-            // Reset validasi
             $('.form-pegawai').removeClass('was-validated');
-
-            // Tampilkan modal
             $('#modal-pegawai').modal('show');
             resetWizardToFirstStep();
-            // Judul modal
             $('.modal-title').text('Form Edit Pegawai');
-
-            // Tombol simpan
-            $('.save-btn')
-                .html('<span class="fa fa-check"></span> Update')
-                .removeAttr('disabled');
-
-            // Set ID untuk update
+            $('.save-btn').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
 
-            // ============================================
             // DATA PERUSAHAAN
-            // ============================================
             $('input[name="anak_perusahaan"]').val(row.anak_perusahaan || '');
-            $('input[name="rumah_sakit"]').val(row.rumah_sakit || '');
-            $('input[name="nomor_sk_struktur"]').val(row.nomor_sk_struktur || '');
-            $('input[name="jabatan"]').val(row.jabatan || '');
             $('input[name="penempatan"]').val(row.penempatan || '');
             $('input[name="lokasi_kerja"]').val(row.lokasi_kerja || '');
 
-            // ============================================
+            $('select[name="id_sk_struktur"]').val(row.id_sk_struktur || '').trigger('change');
+
+            InitSelect2($("select[name='id_sk_struktur']"), {
+                url: "{{ route('get-select-sk-struktur') }}",
+                dropdownParent: $("#modal-pegawai"),
+                initialValue: row.id_sk_struktur
+            });
+
+            InitSelect2($("select[name='id_jabatan']"), {
+                url: "{{ route('get-select-jabatan') }}",
+                dropdownParent: $("#modal-pegawai"),
+                initialValue: row.id_jabatan,
+                data: function (params) {
+                    return {
+                        id_sk_struktur: $("select[name='id_sk_struktur']").val()
+                    };
+                }
+            });
+
             // DATA PRIBADI
-            // ============================================
+            $('select[name="status_kepegawaian"]').val(row.status_kepegawaian || '').trigger('change');
             $('input[name="nomor_pekerja"]').val(row.nomor_pekerja || '');
             $('input[name="nama_pekerja"]').val(row.nama_pekerja || '');
             $('input[name="nik"]').val(row.nik || '');
             $('input[name="tanggal_lahir"]').val(row.tanggal_lahir || '');
 
-            // === Select2 fields ===
-            setTimeout(() => {
-                $('select[name="jenis_kelamin"]').val(row.jenis_kelamin || '').trigger('change');
-                $('select[name="agama"]').val(row.agama || '').trigger('change');
-                $('select[name="status_pernikahan"]').val(row.status_pernikahan || '').trigger(
-                    'change');
-                $('select[name="golongan_darah"]').val(row.golongan_darah || '').trigger('change');
-                $('select[name="disabilitas"]').val(row.disabilitas || '').trigger('change');
-            }, 50); // Delay untuk memastikan modal dan Select2 sudah render
+            // Select2 fields
+            $('select[name="jenis_kelamin"]').val(row.jenis_kelamin || '').trigger('change');
+            $('select[name="agama"]').val(row.agama || '').trigger('change');
+            $('select[name="status_pernikahan"]').val(row.status_pernikahan || '').trigger('change');
+            $('select[name="golongan_darah"]').val(row.golongan_darah || '').trigger('change');
+            $('select[name="disabilitas"]').val(row.disabilitas || '').trigger('change');
 
-            // ============================================
             // DATA KEPEGAWAIAN
-            // ============================================
-            $('input[name="golongan_upah"]').val(row.golongan_upah || '');
-            $('input[name="status_kepegawaian"]').val(row.status_kepegawaian || '');
+            $('select[name="golongan_upah"]').val(row.golongan_upah || '').trigger('change');
             $('input[name="tmt_status_kepegawaian"]').val(row.tmt_status_kepegawaian || '');
             $('input[name="tmt_pwtt"]').val(row.tmt_pwtt || '');
             $('input[name="tmt_pwt"]').val(row.tmt_pwt || '');
             $('input[name="masa_kerja"]').val(row.masa_kerja || '');
             $('input[name="tanggal_akhir_kontrak"]').val(row.tanggal_akhir_kontrak || '');
 
-            // ============================================
             // FUNGSI & GRADE
-            // ============================================
-            $('input[name="fungsi"]').val(row.fungsi || '');
-            $('input[name="sub_fungsi"]').val(row.sub_fungsi || '');
+            $('select[name="fungsi"]').val(row.fungsi || '').trigger('change');
             $('input[name="tmt_jabatan"]').val(row.tmt_jabatan || '');
             $('input[name="tmt_golongan_upah"]').val(row.tmt_golongan_upah || '');
             $('input[name="penyetaraan_jabatan_ap"]').val(row.penyetaraan_jabatan_ap || '');
             $('input[name="penyetaraan_golongan_upah_ap"]').val(row.penyetaraan_golongan_upah_ap || '');
 
-            // ============================================
+            InitSelect2($("select[name='id_sub_fungsi']"), {
+                url: "{{ route('get-select-fungsi') }}",
+                dropdownParent: $("#modal-pegawai"),
+                initialValue: row.id_sub_fungsi,
+                initialText: row.id_sub_fungsi
+            });
+
             // BANKING INFO
-            // ============================================
-            $('input[name="nama_bank"]').val(row.nama_bank || '');
             $('input[name="nomor_rekening"]').val(row.nomor_rekening || '');
             $('input[name="nama_rekening"]').val(row.nama_rekening || '');
 
-            // ============================================
+            InitSelect2($("select[name='id_bank']"), {
+                url: "{{ route('get-select-bank') }}",
+                dropdownParent: $("#modal-pegawai"),
+                initialValue: row.id_bank
+            });
+
             // INSURANCE & TAX
-            // ============================================
             $('input[name="nomor_bpjstk"]').val(row.nomor_bpjstk || '');
             $('input[name="nomor_bpjskesehatan"]').val(row.nomor_bpjskesehatan || '');
             $('input[name="nomor_npwp"]').val(row.nomor_npwp || '');
 
-            // ============================================
             // CONTACT INFO
-            // ============================================
             $('input[name="nomor_hp"]').val(row.nomor_hp || '');
             $('input[name="email"]').val(row.email || '');
             $('input[name="email_dinas"]').val(row.email_dinas || '');
             $('input[name="nomor_kontak_darurat"]').val(row.nomor_kontak_darurat || '');
             $('input[name="nama_kontak_darurat"]').val(row.nama_kontak_darurat || '');
-            $('input[name="hubungan_kontak_darurat"]').val(row.hubungan_kontak_darurat || '');
+            $('select[name="hubungan_kontak_darurat"]').val(row.hubungan_kontak_darurat || '').trigger('change');
 
-            // ============================================
             // ADDRESS INFO
-            // ============================================
             $('textarea[name="alamat_ktp"]').val(row.alamat_ktp || '');
             $('textarea[name="alamat_npwp"]').val(row.alamat_npwp || '');
             $('textarea[name="alamat_domisili"]').val(row.alamat_domisili || '');
 
-            // ============================================
             // PROFESSIONAL LICENSES
-            // ============================================
             $('input[name="nomor_str"]').val(row.nomor_str || '');
-            $('input[name="str_seumur_hidup"]').val(row.str_seumur_hidup || '');
+            $('select[name="str_seumur_hidup"]').val(row.str_seumur_hidup || '').trigger('change');
             $('input[name="masa_berlaku_str"]').val(row.masa_berlaku_str || '');
             $('input[name="nomor_sip"]').val(row.nomor_sip || '');
             $('input[name="masa_berlaku_sip"]').val(row.masa_berlaku_sip || '');
@@ -1105,22 +1124,16 @@
             $('input[name="nomor_polis"]').val(row.nomor_polis || '');
             $('input[name="masa_berlaku_asuransi"]').val(row.masa_berlaku_asuransi || '');
 
-            // ============================================
             // EDUCATION
-            // ============================================
             $('input[name="pend_diploma"]').val(row.pend_diploma || '');
             $('input[name="pend_s1"]').val(row.pend_s1 || '');
             $('input[name="pend_s2"]').val(row.pend_s2 || '');
             $('input[name="pend_s3"]').val(row.pend_s3 || '');
             $('input[name="kampus_terakhir"]').val(row.kampus_terakhir || '');
-            $('input[name="jenjang_pendidikan_terakhir"]').val(row.jenjang_pendidikan_terakhir || '');
+            $('select[name="jenjang_pendidikan_terakhir"]').val(row.jenjang_pendidikan_terakhir || '').trigger('change');
             $('textarea[name="keterangan"]').val(row.keterangan || '');
 
-            // ============================================
             // SYSTEM INFO
-            // ============================================
-            $('input[name="temp_username"]').val(row.temp_username || '');
-            $('input[name="username"]').val(row.username || '');
             imageInput.value = '';
             if (row.foto) {
                 imageViewer.src = "{{ asset('/uploads/images/foto-pegawai') }}" + '/' + row.foto;
