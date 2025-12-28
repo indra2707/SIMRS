@@ -25,6 +25,7 @@
         }
 
         element.prop('disabled', false);
+
         element.select2({
             theme: "bootstrap-5",
             dropdownParent: options.dropdownParent,
@@ -37,7 +38,7 @@
                 data: function (params) {
                     let data = { search: params.term };
                     if (typeof options.data === 'function') {
-                        data = Object.assign(data, options.data(params));
+                        Object.assign(data, options.data(params));
                     }
                     return data;
                 },
@@ -47,9 +48,9 @@
             }
         });
 
-        // SET VALUE EDIT
+        // Set Value Edit
         if (options.initialValue && options.initialText) {
-            let option = new Option(
+            const option = new Option(
                 options.initialText,
                 options.initialValue,
                 true,
@@ -58,6 +59,7 @@
             element.append(option).trigger('change');
         }
     }
+
 
     // aktifkan saat SK dipilih
     const jabatanSelect = $("select[name='id_jabatan']");
@@ -177,7 +179,7 @@
         }
 
         // Reset khusus
-        $('input[name="id"]').val('');        
+        $('input[name="id"]').val('');
 
         // Reset Select2 (jika ada)
         $('.select2').each(function () {
@@ -386,19 +388,19 @@
                     visible: false
                 },
                 {
-                    field: 'rumah_sakit',
+                    field: 'nama_rumah_sakit',
                     title: 'Rumah Sakit',
                     sortable: true,
                     width: 150
                 },
                 {
-                    field: 'id_sk_struktur',
+                    field: 'no_sk_struktur',
                     title: 'No SK Struktur',
                     sortable: true,
                     width: 120,
                 },
                 {
-                    field: 'id_jabatan',
+                    field: 'nama_jabatan',
                     title: 'Jabatan',
                     sortable: true,
                     width: 150
@@ -524,7 +526,7 @@
                     visible: false
                 },
                 {
-                    field: 'id_sub_fungsi',
+                    field: 'nama_sub_fungsi',
                     title: 'Sub Fungsi',
                     sortable: true,
                     width: 120,
@@ -561,7 +563,7 @@
 
                 // ========== BANKING INFO ==========
                 {
-                    field: 'id_bank',
+                    field: 'nama_bank',
                     title: 'Bank',
                     sortable: true,
                     width: 120,
@@ -779,43 +781,6 @@
                     visible: false
                 },
 
-                // ========== SYSTEM INFO ==========
-                {
-                    field: 'input_by',
-                    title: 'Input By',
-                    sortable: true,
-                    width: 120,
-                    visible: false
-                },
-                {
-                    field: 'input_date_formatted',
-                    title: 'Input Date',
-                    sortable: true,
-                    width: 120,
-                    visible: false
-                },
-                {
-                    field: 'update_by',
-                    title: 'Update By',
-                    sortable: true,
-                    width: 120,
-                    visible: false
-                },
-                {
-                    field: 'update_date_formatted',
-                    title: 'Update Date',
-                    sortable: true,
-                    width: 120,
-                    visible: false
-                },
-                {
-                    field: 'username',
-                    title: 'Username',
-                    sortable: true,
-                    width: 120,
-                    visible: false
-                },
-
                 // ========== ACTIONS ==========
                 {
                     width: '100%',
@@ -995,8 +960,6 @@
     // Handle events button actions
     window.eventsPegawai = {
         'click .btn-edit': function (e, value, row, index) {
-            // console.log('Edit button clicked!', row);
-
             $('.form-pegawai').removeClass('was-validated');
             $('#modal-pegawai').modal('show');
             resetWizardToFirstStep();
@@ -1008,22 +971,24 @@
             $('input[name="anak_perusahaan"]').val(row.anak_perusahaan || '');
             $('input[name="penempatan"]').val(row.penempatan || '');
             $('input[name="lokasi_kerja"]').val(row.lokasi_kerja || '');
-
-            $('select[name="id_sk_struktur"]').val(row.id_sk_struktur || '').trigger('change');
+            jabatanSelect.prop('disabled', false);
+            console.log(row.no_sk_struktur, row.nama_jabatan);
 
             InitSelect2($("select[name='id_sk_struktur']"), {
                 url: "{{ route('get-select-sk-struktur') }}",
                 dropdownParent: $("#modal-pegawai"),
-                initialValue: row.id_sk_struktur
+                initialValue: row.id_sk_struktur,
+                initialText: row.no_sk_struktur
             });
 
             InitSelect2($("select[name='id_jabatan']"), {
                 url: "{{ route('get-select-jabatan') }}",
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_jabatan,
-                data: function (params) {
+                initialText: row.nama_jabatan,
+                data: function () {
                     return {
-                        id_sk_struktur: $("select[name='id_sk_struktur']").val()
+                        id_sk_struktur: $("select[name='id_sk_struktur']").val() || row.id_sk_struktur
                     };
                 }
             });
@@ -1061,7 +1026,7 @@
                 url: "{{ route('get-select-fungsi') }}",
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_sub_fungsi,
-                initialText: row.id_sub_fungsi
+                initialText: row.nama_fungsi
             });
 
             // BANKING INFO
@@ -1071,7 +1036,8 @@
             InitSelect2($("select[name='id_bank']"), {
                 url: "{{ route('get-select-bank') }}",
                 dropdownParent: $("#modal-pegawai"),
-                initialValue: row.id_bank
+                initialValue: row.id_bank,
+                initialText: row.nama_bank
             });
 
             // INSURANCE & TAX

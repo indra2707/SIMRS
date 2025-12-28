@@ -408,7 +408,7 @@
 
 
     // Open Modal Detail
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function (e, value, row, index) {
         $('.form-detail').removeClass('was-validated');
         $('#modal-detail').modal('show');
         $('#modal-rincian').modal('hide');
@@ -422,8 +422,14 @@
 
         InitSelect2($("select[name='biaya']"), {
             url: "{{ route('get-select-biaya') }}",
-            dropdownParent: $("#modal-detail")
+            dropdownParent: $("#modal-detail"),
+            data: function () {
+                return {
+                    golongan_upah: currentGolonganUpah
+                };
+            }
         });
+        console.log(currentGolonganUpah);
     });
 
     $('#modal-detail').on('hidden.bs.modal', function () {
@@ -546,6 +552,7 @@
             $('#modal-rincian').modal('show');
             $('.modal-title').text('Form Rincian');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+            currentGolonganUpah = row.golongan_upah;
             $('input[name="id"]').val(row.id);
             $('input[name="no_surat"]').val(row.no_surat);
             $('input[name="id_pegawai"]').val(row.id_pegawai);

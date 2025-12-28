@@ -139,11 +139,11 @@
             </tr>
             <tr>
                 <td class="label">Pangkat / Golongan</td>
-                <td>: - / -</td>
+                <td>: {{ $spd->golongan_upah }}</td>
             </tr>
             <tr>
                 <td class="label">Jabatan</td>
-                <td>: -</td>
+                <td>: {{ $spd->jabatan }}</td>
             </tr>
             <tr>
                 <td class="label">Eselon</td>
@@ -256,7 +256,7 @@
                 <td colspan="2">
                     Menyetujui :<br>
                     <b style="font-size:11px">RSOJ Pertamina Royal Biringkanaya</b><br>
-                    Direktur<br><br><br><br><br><br>
+                    {{ $spd->jabatan }}<br><br><br><br><br><br>
                     <!-- <img src="TEST" width="75" ><br> -->
                     {{ $spd->nama_pimpinan }}
                 </td>

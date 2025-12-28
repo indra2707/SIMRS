@@ -27,7 +27,21 @@ class PegawaiController extends Controller
 
     public function views()
     {
-        $query = Pegawai::all();
+        // 
+        $query = DB::table('pegawai')
+            ->join('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
+            ->join('tbl_fungsi', 'tbl_fungsi.id', '=', 'pegawai.id_sub_fungsi')
+            ->join('tbl_bank', 'tbl_bank.id', '=', 'pegawai.id_bank')
+            ->select(
+                'pegawai.*',
+                'tbl_sk_struktur.no_sk as no_sk_struktur',
+                'tbl_jabatan.nama_jabatan as nama_jabatan',
+                'tbl_jabatan.unit as nama_rumah_sakit',
+                'tbl_fungsi.nama_fungsi as nama_fungsi',
+                'tbl_bank.nama_bank as nama_bank'
+            )
+            ->get();
         $data = [];
 
         foreach ($query as $key => $value) {
@@ -36,9 +50,12 @@ class PegawaiController extends Controller
                 // Company & Position Info
                 'anak_perusahaan' => $value->anak_perusahaan ?? null,
                 'nomor_sk_struktur' => $value->nomor_sk_struktur ?? null,
+                'no_sk_struktur' => $value->no_sk_struktur ?? null,
                 'jabatan' => $value->jabatan ?? null,
+                'nama_jabatan' => $value->nama_jabatan ?? null,
                 'penempatan' => $value->penempatan ?? null,
                 'lokasi_kerja' => $value->lokasi_kerja ?? null,
+                'nama_rumah_sakit' => $value->nama_rumah_sakit ?? null,
 
                 // Personal Info
                 'nomor_pekerja' => $value->nomor_pekerja ?? null,
@@ -50,32 +67,34 @@ class PegawaiController extends Controller
                 'golongan_darah' => $value->golongan_darah ?? null,
                 'disabilitas' => $value->disabilitas ?? null,
                 'tanggal_lahir' => $value->tanggal_lahir ?? null,
-                'tanggal_lahir_formatted' => $value->tanggal_lahir ? \Carbon\Carbon::parse($value->tanggal_lahir)->format('d M Y') : null,
+                'tanggal_lahir_formatted' => $value->tanggal_lahir ? Carbon::parse($value->tanggal_lahir)->format('d M Y') : null,
 
                 // Employment Status
                 'golongan_upah' => $value->golongan_upah ?? null,
                 'status_kepegawaian' => $value->status_kepegawaian ?? null,
                 'tmt_status_kepegawaian' => $value->tmt_status_kepegawaian ?? null,
-                'tmt_status_kepegawaian_formatted' => $value->tmt_status_kepegawaian ? \Carbon\Carbon::parse($value->tmt_status_kepegawaian)->format('d M Y') : null,
+                'tmt_status_kepegawaian_formatted' => $value->tmt_status_kepegawaian ? Carbon::parse($value->tmt_status_kepegawaian)->format('d M Y') : null,
                 'tmt_pwtt' => $value->tmt_pwtt ?? null,
-                'tmt_pwtt_formatted' => $value->tmt_pwtt ? \Carbon\Carbon::parse($value->tmt_pwtt)->format('d M Y') : null,
+                'tmt_pwtt_formatted' => $value->tmt_pwtt ? Carbon::parse($value->tmt_pwtt)->format('d M Y') : null,
                 'tmt_pwt' => $value->tmt_pwt ?? null,
-                'tmt_pwt_formatted' => $value->tmt_pwt ? \Carbon\Carbon::parse($value->tmt_pwt)->format('d M Y') : null,
+                'tmt_pwt_formatted' => $value->tmt_pwt ? Carbon::parse($value->tmt_pwt)->format('d M Y') : null,
                 'masa_kerja' => $value->masa_kerja ?? null,
                 'tanggal_akhir_kontrak' => $value->tanggal_akhir_kontrak ?? null,
-                'tanggal_akhir_kontrak_formatted' => $value->tanggal_akhir_kontrak ? \Carbon\Carbon::parse($value->tanggal_akhir_kontrak)->format('d M Y') : null,
+                'tanggal_akhir_kontrak_formatted' => $value->tanggal_akhir_kontrak ? Carbon::parse($value->tanggal_akhir_kontrak)->format('d M Y') : null,
 
                 // Function & Grade
                 'fungsi' => $value->fungsi ?? null,
-                'sub_fungsi' => $value->sub_fungsi ?? null,
+                'id_sub_fungsi' => $value->id_sub_fungsi ?? null,
+                'nama_fungsi' => $value->nama_fungsi ?? null,
                 'tmt_jabatan' => $value->tmt_jabatan ?? null,
-                'tmt_jabatan_formatted' => $value->tmt_jabatan ? \Carbon\Carbon::parse($value->tmt_jabatan)->format('d M Y') : null,
+                'tmt_jabatan_formatted' => $value->tmt_jabatan ? Carbon::parse($value->tmt_jabatan)->format('d M Y') : null,
                 'tmt_golongan_upah' => $value->tmt_golongan_upah ?? null,
-                'tmt_golongan_upah_formatted' => $value->tmt_golongan_upah ? \Carbon\Carbon::parse($value->tmt_golongan_upah)->format('d M Y') : null,
+                'tmt_golongan_upah_formatted' => $value->tmt_golongan_upah ? Carbon::parse($value->tmt_golongan_upah)->format('d M Y') : null,
                 'penyetaraan_jabatan_ap' => $value->penyetaraan_jabatan_ap ?? null,
                 'penyetaraan_golongan_upah_ap' => $value->penyetaraan_golongan_upah_ap ?? null,
 
                 // Banking Info
+                'id_bank' => $value->id_bank ?? null,
                 'nama_bank' => $value->nama_bank ?? null,
                 'nomor_rekening' => $value->nomor_rekening ?? null,
                 'nama_rekening' => $value->nama_rekening ?? null,
@@ -102,14 +121,14 @@ class PegawaiController extends Controller
                 'nomor_str' => $value->nomor_str ?? null,
                 'str_seumur_hidup' => $value->str_seumur_hidup ?? null,
                 'masa_berlaku_str' => $value->masa_berlaku_str ?? null,
-                'masa_berlaku_str_formatted' => $value->masa_berlaku_str ? \Carbon\Carbon::parse($value->masa_berlaku_str)->format('d M Y') : null,
+                'masa_berlaku_str_formatted' => $value->masa_berlaku_str ? Carbon::parse($value->masa_berlaku_str)->format('d M Y') : null,
                 'nomor_sip' => $value->nomor_sip ?? null,
                 'masa_berlaku_sip' => $value->masa_berlaku_sip ?? null,
-                'masa_berlaku_sip_formatted' => $value->masa_berlaku_sip ? \Carbon\Carbon::parse($value->masa_berlaku_sip)->format('d M Y') : null,
+                'masa_berlaku_sip_formatted' => $value->masa_berlaku_sip ? Carbon::parse($value->masa_berlaku_sip)->format('d M Y') : null,
                 'asuransi_profesi' => $value->asuransi_profesi ?? null,
                 'nomor_polis' => $value->nomor_polis ?? null,
                 'masa_berlaku_asuransi' => $value->masa_berlaku_asuransi ?? null,
-                'masa_berlaku_asuransi_formatted' => $value->masa_berlaku_asuransi ? \Carbon\Carbon::parse($value->masa_berlaku_asuransi)->format('d M Y') : null,
+                'masa_berlaku_asuransi_formatted' => $value->masa_berlaku_asuransi ? Carbon::parse($value->masa_berlaku_asuransi)->format('d M Y') : null,
 
                 // Education
                 'pend_diploma' => $value->pend_diploma ?? null,
@@ -121,14 +140,6 @@ class PegawaiController extends Controller
                 'keterangan' => $value->keterangan ?? null,
 
                 // System Info
-                'input_by' => $value->input_by ?? null,
-                'input_date' => $value->input_date ?? null,
-                'input_date_formatted' => $value->input_date ? \Carbon\Carbon::parse($value->input_date)->format('d M Y') : null,
-                'update_by' => $value->update_by ?? null,
-                'update_date' => $value->update_date ?? null,
-                'update_date_formatted' => $value->update_date ? \Carbon\Carbon::parse($value->update_date)->format('d M Y') : null,
-                'temp_username' => $value->temp_username ?? null,
-                'username' => $value->username ?? null,
                 'foto' => $value->foto ?? null,
             ];
         }
@@ -246,7 +257,7 @@ class PegawaiController extends Controller
     public function update(Request $request, $id)
     {
         $dataValues = [
-             'anak_perusahaan' => $request->anak_perusahaan,
+            'anak_perusahaan' => $request->anak_perusahaan,
             'id_sk_struktur' => $request->id_sk_struktur,
             'id_jabatan' => $request->id_jabatan,
             'penempatan' => $request->penempatan,

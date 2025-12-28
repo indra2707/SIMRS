@@ -333,6 +333,7 @@ class SpdsController extends Controller
         // Ambil data SPD header
         $spd = DB::table('tbl_spds')
             ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
             ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
             ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
             ->leftJoin('pegawai as pegawai2', 'pegawai2.id', '=', 'tbl_spds.id_pimpinan')
@@ -340,7 +341,8 @@ class SpdsController extends Controller
                 'tbl_spds.*',
                 'pegawai.nama_pekerja as nama_pegawai',
                 'pegawai.nomor_pekerja as nomor_pekerja',
-                'pegawai.jabatan as jabatan_pegawai', // Tambahkan jabatan
+                'pegawai.golongan_upah as golongan_upah',
+                'tbl_jabatan.nama_jabatan as jabatan',
                 'tbl_kotas.nama as nama_kota1',
                 'kota2.nama as nama_kota2',
                 'pegawai2.nama_pekerja as nama_pimpinan'
@@ -352,17 +354,17 @@ class SpdsController extends Controller
             abort(404, 'SPD tidak ditemukan.');
         }
 
-        // ==========================================
         // TAMBAHKAN: Ambil data pengikut
-        // ==========================================
         $pengikut = DB::table('tbl_spd_details')
             ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
             ->where('tbl_spd_details.no_surat', $spd->no_surat)
+            ->where('pegawai.id', '!=', $spd->id_pegawai)
             ->select(
                 'tbl_spd_details.id',
                 'pegawai.nama_pekerja as nama_pengikut',
                 'pegawai.nomor_pekerja as nopek',
-                'pegawai.jabatan as jabatan'
+                'tbl_jabatan.nama_jabatan as jabatan'
             )
             ->get();
 

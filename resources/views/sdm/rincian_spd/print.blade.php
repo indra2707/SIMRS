@@ -118,7 +118,7 @@
         <tr>
             <td>Nama / Jabatan</td>
             <td>:</td>
-            <td>{{ $rincian->nama_pegawai }}</td>
+            <td>{{ $rincian->nama_pegawai }} / {{ $rincian->jabatan_pegawai }}</td>
         </tr>
         <tr>
             <td>Tanggal</td>
@@ -207,12 +207,12 @@
             <td width="60%">
                 Menyetujui,<br>
                 RSOJ Pertamina Royal Biringkanaya<br>
-                <b>Direktur</b><br><br><br><br><br>
+                <b>{{ $rincian->jabatan_pegawai }}</b><br><br><br><br><br>
                 <b>{{ $rincian->nama_menyetujui }}</b>
             </td>
             <td width="40%">
                 Yang Mengajukan,<br>
-                <b>VD Human Capital And General Affair</b><br><br><br><br><br><br>
+                <b>{{ $rincian->jabatan_pegawai }}</b><br><br><br><br><br><br>
                 <b>{{ $rincian->nama_mengajukan }}</b>
             </td>
         </tr>

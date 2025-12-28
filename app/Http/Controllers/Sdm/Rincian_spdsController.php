@@ -36,6 +36,7 @@ class Rincian_spdsController extends Controller
                 'tbl_spd_details.*',
                 'pegawai.nama_pekerja as nama_pegawai',
                 'tbl_spds.tgl_awal',
+                'pegawai.golongan_upah as golongan_upah',
                 'tbl_spds.tgl_akhir',
                 'tbl_spds.pelaksanaan',
                 'tbl_spds.status as status_spd',
@@ -57,6 +58,7 @@ class Rincian_spdsController extends Controller
                 'jenis' => $value->jenis,
                 'id_pegawai' => $value->id_pegawai,
                 'id_menyetujui' => $value->id_menyetujui,
+                'golongan_upah' => $value->golongan_upah,
                 'id_mengajukan' => $value->id_mengajukan,
                 'panjar' => $value->panjar,
                 'no_surat' => $value->no_surat,
@@ -246,6 +248,7 @@ class Rincian_spdsController extends Controller
         $rincian = DB::table('tbl_spd_details')
             ->join('tbl_spds', 'tbl_spds.no_surat', '=', 'tbl_spd_details.no_surat')
             ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
             ->join('pegawai as mengajukan', 'mengajukan.id', '=', 'tbl_spd_details.id_mengajukan')
             ->join('pegawai as menyetujui', 'menyetujui.id', '=', 'tbl_spd_details.id_menyetujui')
             ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
@@ -254,6 +257,7 @@ class Rincian_spdsController extends Controller
                 'tbl_spd_details.*',
                 'pegawai.nama_pekerja as nama_pegawai',
                 'pegawai.nomor_pekerja as nomor_pekerja',
+                'tbl_jabatan.nama_jabatan as jabatan_pegawai',
                 'tbl_spds.tgl_awal',
                 'tbl_spds.tgl_akhir',
                 'tbl_spds.pelaksanaan',
