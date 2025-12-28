@@ -1,18 +1,4 @@
 <script type="text/javascript">
-    // Disable form validation untuk navigasi step
-    document.addEventListener('DOMContentLoaded', function () {
-        // Cegah browser validasi form secara otomatis
-        var form = document.querySelector('.form-pegawai');
-        if (form) {
-            form.setAttribute('novalidate', 'novalidate');
-        }
-
-        // Hapus semua required kecuali nama_pekerja
-        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
-            .not('[name="nama_pekerja"]')
-            .removeAttr('required');
-    });
-
     // Tabel
     var $tablePegawai = $('#table_pegawai');
 
@@ -25,6 +11,11 @@
 
     });
 
+    // Page Load Event
+    $(function () {
+        initTable();
+    });
+
     // select2 ajax init function
     function InitSelect2(element, options) {
 
@@ -34,7 +25,6 @@
         }
 
         element.prop('disabled', false);
-
         element.select2({
             theme: "bootstrap-5",
             dropdownParent: options.dropdownParent,
@@ -68,8 +58,6 @@
             element.append(option).trigger('change');
         }
     }
-
-
 
     // aktifkan saat SK dipilih
     const jabatanSelect = $("select[name='id_jabatan']");
@@ -112,13 +100,11 @@
     }
     $statusPegawai.on('change', toggleNomorPekerja);
     toggleNomorPekerja();
-
-
-    // Nomor Pekerja otomatis
     let isLoadingNomorPekerja = false;
 
-    function loadNomorPekerja(status) {
 
+    // Nomor Otomatis
+    function loadNomorPekerja(status) {
         if (isLoadingNomorPekerja) return;
         isLoadingNomorPekerja = true;
 
@@ -179,6 +165,8 @@
     $(document).on('click', '.add-btn', function () {
         $('#modal-pegawai').modal('show');
         $('.modal-title').text('Form Tambah Pegawai');
+        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        resetWizardToFirstStep();
 
         var form = document.querySelector('.form-pegawai');
 
@@ -189,13 +177,14 @@
         }
 
         // Reset khusus
-        $('input[name="id"]').val(''); // Kosongkan ID
-        $("select[name='id_jabatan']").val('').trigger('change');
+        $('input[name="id"]').val('');        
 
         // Reset Select2 (jika ada)
         $('.select2').each(function () {
             $(this).val(null).trigger('change');
         });
+
+        $("select[name='disabilitas']").val('Tidak').trigger('change');
 
         InitSelect2($("select[name='id_bank']"), {
             url: "{{ route('get-select-bank') }}",
@@ -232,20 +221,10 @@
             imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
         }
 
-        // Reset button state
-        $('.save-btn')
-            .html('<span class="fa fa-check"></span> Simpan')
-            .removeAttr('disabled');
-        resetWizardToFirstStep();
     });
-
-    // Fungsi untuk konversi tanggal dari DD/MM/YYYY ke YYYY-MM-DD
 
 
     // Save/update
-    // Nonaktifkan validasi HTML5 native
-    // $('.form-pegawai').attr('novalidate', 'novalidate');
-
     $(document).on('click', '.save-btn', function (e) {
         var id = $('input[name="id"]').val();
 
@@ -342,7 +321,6 @@
             form.classList.add('was-validated');
         });
     });
-
 
 
     // Table Pegawai
@@ -1254,9 +1232,4 @@
         $('.f1-step').removeClass('active').removeClass('activated');
         $('.f1-step').first().addClass('active');
     }
-
-    // Page Load Event
-    $(function () {
-        initTable();
-    });
 </script>

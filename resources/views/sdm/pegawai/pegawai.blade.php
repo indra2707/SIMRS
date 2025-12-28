@@ -298,13 +298,13 @@
                                     <label for="nik" class="col-form-label col-sm-2">NIK</label>
                                     <div class="col-sm-4">
                                         <input type="text" class="form-control ktp-number" id="nik" name="nik"
-                                            placeholder="NIK...">
+                                            placeholder="NIK..." required>
                                     </div>
 
                                     <!-- Agama -->
                                     <label for="agama" class="col-form-label col-sm-2">Agama</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select form-control select2" id="agama" name="agama">
+                                        <select class="form-select form-control select2" id="agama" name="agama" required>
                                             <option value=""></option>
                                             <option value="Islam">Islam</option>
                                             <option value="Kristen">Kristen</option>
@@ -319,7 +319,7 @@
                                     <label for="status_pernikahan" class="col-form-label col-sm-2">Status Pernikahan</label>
                                     <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="status_pernikahan"
-                                            name="status_pernikahan">
+                                            name="status_pernikahan" required>
                                             <option value=""></option>
                                             <option value="Menikah">Menikah</option>
                                             <option value="Belum Menikah">Belum Menikah</option>
