@@ -27,7 +27,7 @@ class PegawaiController extends Controller
 
     public function views()
     {
-        // 
+        //
         $query = DB::table('pegawai')
             ->join('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
             ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -47,6 +47,10 @@ class PegawaiController extends Controller
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id ?? null,
+                'id_sk_struktur' => $value->id_sk_struktur ?? null,
+                'id_jabatan' => $value->id_jabatan ?? null,
+                'id_sub_fungsi' => $value->id_sub_fungsi ?? null,
+                'id_bank' => $value->id_bank ?? null,
                 // Company & Position Info
                 'anak_perusahaan' => $value->anak_perusahaan ?? null,
                 'nomor_sk_struktur' => $value->nomor_sk_struktur ?? null,
@@ -150,6 +154,7 @@ class PegawaiController extends Controller
     // Simpan
     public function store(Request $request)
     {
+        
         $dataValues = [
             'anak_perusahaan' => $request->anak_perusahaan,
             'id_sk_struktur' => $request->id_sk_struktur,
@@ -485,7 +490,7 @@ class PegawaiController extends Controller
     // Buat nomor otomatis
     private function generateNomorPekerja($status = null)
     {
-        // Mapping status 
+        // Mapping status
         $prefixMap = [
             'Mitra Pegawai' => 'MP',
             'Mitra Dokter' => 'MD',
@@ -493,7 +498,7 @@ class PegawaiController extends Controller
             'Internship' => 'INT',
         ];
 
-        // Default 
+        // Default
         $prefix = $prefixMap[$status] ?? 'IHC';
 
         // Ambil nomor terakhir
@@ -512,6 +517,4 @@ class PegawaiController extends Controller
 
         return $prefix . '-' . str_pad($next, 5, '0', STR_PAD_LEFT);
     }
-
-
 }

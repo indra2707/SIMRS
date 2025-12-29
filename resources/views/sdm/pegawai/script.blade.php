@@ -12,7 +12,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -35,15 +35,19 @@
                 url: options.url,
                 dataType: 'json',
                 delay: 250,
-                data: function (params) {
-                    let data = { search: params.term };
+                data: function(params) {
+                    let data = {
+                        search: params.term
+                    };
                     if (typeof options.data === 'function') {
                         Object.assign(data, options.data(params));
                     }
                     return data;
                 },
-                processResults: function (response) {
-                    return { results: response.data };
+                processResults: function(response) {
+                    return {
+                        results: response.data
+                    };
                 }
             }
         });
@@ -64,7 +68,7 @@
     // aktifkan saat SK dipilih
     const jabatanSelect = $("select[name='id_jabatan']");
     jabatanSelect.prop('disabled', true);
-    $("select[name='id_sk_struktur']").on('change', function () {
+    $("select[name='id_sk_struktur']").on('change', function() {
         const idSk = $(this).val();
         jabatanSelect.val(null).trigger('change');
         if (idSk) {
@@ -78,6 +82,7 @@
     // disabled nomor pekerja input
     const $statusPegawai = $("select[name='status_kepegawaian']");
     const $nomorPekerja = $("input[name='nomor_pekerja']");
+
     function toggleNomorPekerja() {
         const status = $statusPegawai.val();
         const hideList = ['PWTT', 'PWT'];
@@ -117,17 +122,17 @@
             data: {
                 status_pegawai: status
             },
-            success: function (res) {
+            success: function(res) {
 
                 // set hanya jika masih kosong
                 if (!$nomorPekerja.val()) {
                     $nomorPekerja.val(res.nomor_pekerja);
                 }
             },
-            error: function () {
+            error: function() {
                 alert('Gagal mengambil nomor pekerja');
             },
-            complete: function () {
+            complete: function() {
                 isLoadingNomorPekerja = false;
             }
         });
@@ -155,7 +160,7 @@
 
     imageInput.addEventListener('change', e => {
         // Open File eader
-        reader.onload = function () {
+        reader.onload = function() {
             // Preview Image
             imageViewer.src = reader.result;
         };
@@ -164,7 +169,7 @@
 
 
     // Open Modal Pegawai
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function() {
         $('#modal-pegawai').modal('show');
         $('.modal-title').text('Form Tambah Pegawai');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -182,7 +187,7 @@
         $('input[name="id"]').val('');
 
         // Reset Select2 (jika ada)
-        $('.select2').each(function () {
+        $('.select2').each(function() {
             $(this).val(null).trigger('change');
         });
 
@@ -206,7 +211,7 @@
         InitSelect2($("select[name='id_jabatan']"), {
             url: "{{ route('get-select-jabatan') }}",
             dropdownParent: $("#modal-pegawai"),
-            data: function (params) {
+            data: function(params) {
                 return {
                     id_sk_struktur: $("select[name='id_sk_struktur']").val()
                 };
@@ -227,7 +232,7 @@
 
 
     // Save/update
-    $(document).on('click', '.save-btn', function (e) {
+    $(document).on('click', '.save-btn', function(e) {
         var id = $('input[name="id"]').val();
 
         if (id) {
@@ -240,7 +245,59 @@
         }
         var forms = document.getElementsByClassName('form-pegawai');
         // var form = forms[0];
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var validation = Array.prototype.filter.call(forms, function(form) {
+
+            // ✅ TAMBAHAN: Clear error sebelumnya
+            $(form).find('.is-invalid').removeClass('is-invalid');
+            $(form).find('.invalid-feedback').remove();
+            $(form).find('.select2-container').removeClass('border border-danger is-invalid-select2');
+
+            // ✅ TAMBAHAN: Validasi manual untuk Select2 yang required
+            let select2Valid = true;
+            let select2Errors = [];
+
+            $(form).find('.select2[required]').each(function() {
+                let value = $(this).val();
+                let isEmpty = !value || value === '' || value === null || (Array.isArray(
+                    value) && value.length === 0);
+
+                if (isEmpty) {
+                    select2Valid = false;
+                    $(this).next('.select2-container').addClass('is-invalid-select2');
+
+                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                        .children().remove().end().text().trim();
+                    select2Errors.push(fieldName || $(this).attr('name'));
+
+                    if (!$(this).next('.select2-container').next('.invalid-feedback').length) {
+                        $(this).next('.select2-container').after(
+                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
+                        );
+                    }
+                }
+            });
+
+            // ✅ TAMBAHAN: Jika Select2 tidak valid, stop dan tampilkan pesan
+            if (!select2Valid) {
+                let errorList = '';
+                if (select2Errors.length > 0) {
+                    errorList = '<br><small>Field yang belum dipilih: ' + select2Errors.join(', ') +
+                        '</small>';
+                }
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validasi Gagal',
+                    html: 'Harap pilih semua field yang wajib diisi!' + errorList,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+
+                event.preventDefault();
+                event.stopPropagation();
+                return; // Stop eksekusi
+            }
+
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -274,6 +331,22 @@
                     Alert('warning', 'Nama pekerja wajib diisi!');
                     return;
                 }
+
+                // ❌ HAPUS BAGIAN INI (sudah diganti dengan validasi di atas)
+                // let select2Valid = true;
+                // $('.select2').each(function() {
+                //     if (!$(this).val() || $(this).val().length === 0) {
+                //         select2Valid = false;
+                //         $(this).next('.select2-container').addClass('border border-danger');
+                //     } else {
+                //         $(this).next('.select2-container').removeClass('border border-danger');
+                //     }
+                // });
+                // if (!select2Valid) {
+                //     Alert('warning', 'Harap pilih semua field yang wajib diisi!');
+                //     return;
+                // }
+
                 $.ajax({
                     type: "POST",
                     url: url,
@@ -283,16 +356,16 @@
                     cache: false,
                     data: myformData,
                     enctype: 'multipart/form-data',
-                    beforeSend: function () {
+                    beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function () {
+                    complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-pegawai').modal('hide');
@@ -323,6 +396,8 @@
             form.classList.add('was-validated');
         });
     });
+
+
 
 
     // Table Pegawai
@@ -362,7 +437,7 @@
                     sortable: true,
                     align: 'center',
                     width: 50,
-                    formatter: function (value, row, index) {
+                    formatter: function(value, row, index) {
                         return index + 1;
                     }
                 },
@@ -794,60 +869,143 @@
                 }
             ],
 
-            onLoadSuccess: function (data) {
+            onLoadSuccess: function(data) {
                 console.log(' Data loaded:', data.length, 'records');
             },
 
-            onLoadError: function (status, xhr) {
+            onLoadError: function(status, xhr) {
                 console.error(' Load error:', status);
                 console.error('Response:', xhr.responseText);
             },
 
-            responseHandler: function (res) {
+            responseHandler: function(res) {
                 console.log(' Response received:', res);
                 return res; // Return langsung karena sudah array
             }
         });
     }
 
-    //  Call function saat document ready
-    $(document).ready(function () {
-        // Paksa nonaktifkan validasi
-        setTimeout(function () {
-            $('.form-pegawai').attr('novalidate', 'novalidate');
-
-            // Hapus semua required kecuali nama_pekerja
-            $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea')
-                .not('[name="nama_pekerja"]')
-                .each(function () {
-                    $(this).removeAttr('required');
-                    $(this).prop('required', false);
-                });
-        }, 500);
-
-        // Intercept button next SEBELUM validasi plugin berjalan
-        $(document).on('click', '.btn-next', function (e) {
+    $(document).ready(function() {
+        // Handle tombol NEXT dengan validasi hanya untuk field required
+        $(document).on('click', '.btn-next', function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            // Hapus validasi visual
-            $('.form-pegawai').removeClass('was-validated');
-            $('.form-control').removeClass('is-invalid');
+            let $currentFieldset = $(this).closest('fieldset');
+            let isValid = true;
+            let errorMessages = [];
 
-            // Trigger next step secara manual
-            var $currentFieldset = $(this).closest('fieldset');
-            var $nextFieldset = $currentFieldset.next('fieldset');
+            // Bersihkan error sebelumnya
+            $currentFieldset.find('.is-invalid').removeClass('is-invalid');
+            $currentFieldset.find('.invalid-feedback').remove();
+            $currentFieldset.find('.select2-container').removeClass(
+                'border border-danger is-invalid-select2');
 
+            // 1️⃣ Validasi input dan textarea required
+            $currentFieldset.find('input:visible[required], textarea:visible[required]').each(
+        function() {
+                let value = $.trim($(this).val());
+                if (!this.checkValidity() || value === '') {
+                    isValid = false;
+                    $(this).addClass('is-invalid');
+
+                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                        .children().remove().end().text().trim();
+                    errorMessages.push(fieldName || $(this).attr('name'));
+
+                    let errorMsg = this.validationMessage || 'Field ini wajib diisi';
+                    $(this).after('<div class="invalid-feedback d-block">' + errorMsg +
+                        '</div>');
+                }
+            });
+
+            // 2️⃣ Validasi select biasa yang required (tidak Select2)
+            $currentFieldset.find('select:visible[required]').not('.select2-hidden-accessible').each(
+                function() {
+                    let value = $(this).val();
+                    if (!value || value === '' || value === null) {
+                        isValid = false;
+                        $(this).addClass('is-invalid');
+
+                        let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                            .children().remove().end().text().trim();
+                        errorMessages.push(fieldName || $(this).attr('name'));
+
+                        $(this).after(
+                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
+                            );
+                    }
+                });
+
+            // 3️⃣ Validasi Select2 yang required
+            $currentFieldset.find('select.select2-hidden-accessible[required]').each(function() {
+                let value = $(this).val();
+                let isEmpty = !value || value === '' || value === null || (Array.isArray(
+                    value) && value.length === 0);
+                if (isEmpty) {
+                    isValid = false;
+                    $(this).next('.select2-container').addClass('is-invalid-select2');
+
+                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                        .children().remove().end().text().trim();
+                    errorMessages.push(fieldName || $(this).attr('name'));
+
+                    if (!$(this).next('.select2-container').next('.invalid-feedback').length) {
+                        $(this).next('.select2-container').after(
+                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
+                        );
+                    }
+                }
+            });
+
+            // Jika tidak valid, tampilkan alert dan jangan pindah step
+            if (!isValid) {
+                setTimeout(function() {
+                    let $firstInvalid = $currentFieldset.find('.is-invalid:first');
+                    if ($firstInvalid.length) {
+                        if ($firstInvalid.hasClass('select2-hidden-accessible')) {
+                            $firstInvalid.select2('open');
+                        } else {
+                            $firstInvalid.focus();
+                        }
+                    } else {
+                        let $firstInvalidSelect2 = $currentFieldset.find(
+                            '.is-invalid-select2:first');
+                        if ($firstInvalidSelect2.length) {
+                            $firstInvalidSelect2.prev('select').select2('open');
+                        }
+                    }
+                }, 100);
+
+                let errorList = errorMessages.length > 0 ?
+                    '<br><small>Field yang belum diisi: ' + errorMessages.join(', ') + '</small>' : '';
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Validasi Gagal',
+                    html: 'Mohon lengkapi semua field yang wajib diisi sebelum melanjutkan' +
+                        errorList,
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+
+                return false; // STOP pindah step
+            }
+
+            // Jika valid, lanjut ke step berikutnya
+            let $nextFieldset = $currentFieldset.next('fieldset');
             if ($nextFieldset.length) {
-                $currentFieldset.fadeOut(300, function () {
+                $currentFieldset.fadeOut(300, function() {
                     $nextFieldset.fadeIn(300);
+                    $('.modal-body').animate({
+                        scrollTop: 0
+                    }, 300);
                 });
 
                 // Update progress bar
-                var stepIndex = $nextFieldset.index('fieldset');
-                var totalSteps = $('fieldset').length;
-                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
-
+                let stepIndex = $nextFieldset.index('fieldset');
+                let totalSteps = $('fieldset').length;
+                let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
                 // Update step indicator
@@ -859,88 +1017,56 @@
             return false;
         });
 
-        // $(document).on('click', '.btn-next', function (e) {
-        //     e.preventDefault();
-
-        //     let $currentFieldset = $(this).closest('fieldset');
-        //     let inputs = $currentFieldset.find('input, select, textarea').filter(':visible');
-        //     let isValid = true;
-
-        //     // reset error
-        //     $('.form-control').removeClass('is-invalid');
-
-        //     inputs.each(function () {
-        //         // KHUSUS select2
-        //         if ($(this).hasClass('select2') && !$(this).val()) {
-        //             $(this).addClass('is-invalid');
-        //             isValid = false;
-        //             return false;
-        //         }
-
-        //         // HTML5 validation
-        //         if (!this.checkValidity()) {
-        //             this.reportValidity();
-        //             $(this).addClass('is-invalid');
-        //             isValid = false;
-        //             return false;
-        //         }
-        //     });
-
-        //     // JANGAN LANJUT JIKA TIDAK VALID
-        //     if (!isValid) {
-        //         return false;
-        //     }
-
-        //     // JIKA VALID → LANJUT STEP
-        //     let $nextFieldset = $currentFieldset.next('fieldset');
-
-        //     if ($nextFieldset.length) {
-        //         $currentFieldset.fadeOut(300, function () {
-        //             $nextFieldset.fadeIn(300);
-        //         });
-
-        //         // progress bar
-        //         let stepIndex = $('fieldset').index($nextFieldset);
-        //         let totalSteps = $('fieldset').length;
-        //         let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
-
-        //         $('.f1-progress-line').css('width', progressPercentage + '%');
-
-        //         // step indicator
-        //         $('.f1-step').removeClass('active activated');
-        //         $('.f1-step').eq(stepIndex).addClass('active');
-        //         $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
-        //     }
-        // });
-
-
-        // Handle button previous
-        $(document).on('click', '.btn-previous', function (e) {
+        // Handle tombol PREVIOUS (tanpa validasi)
+        $(document).on('click', '.btn-previous', function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
-            var $currentFieldset = $(this).closest('fieldset');
-            var $prevFieldset = $currentFieldset.prev('fieldset');
+            let $currentFieldset = $(this).closest('fieldset');
+            let $prevFieldset = $currentFieldset.prev('fieldset');
 
             if ($prevFieldset.length) {
-                $currentFieldset.hide();
-                $prevFieldset.show();
+                $currentFieldset.fadeOut(300, function() {
+                    $prevFieldset.fadeIn(300);
+                    $('.modal-body').animate({
+                        scrollTop: 0
+                    }, 300);
+                });
 
-                // Update progress bar
-                var stepIndex = $prevFieldset.index('fieldset');
-                var totalSteps = $('fieldset').length;
-                var progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
-
+                let stepIndex = $prevFieldset.index('fieldset');
+                let totalSteps = $('fieldset').length;
+                let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
-                // Update step indicator
-                $('.f1-step').removeClass('active');
+                $('.f1-step').removeClass('active').removeClass('activated');
                 $('.f1-step').eq(stepIndex).addClass('active');
+                $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
             }
 
             return false;
         });
+
+        // Clear error saat user input/select
+        $('.form-pegawai').on('input change', 'input, select, textarea', function() {
+            $(this).removeClass('is-invalid');
+            $(this).next('.invalid-feedback').remove();
+
+            if ($(this).hasClass('select2-hidden-accessible')) {
+                $(this).next('.select2-container').removeClass(
+                    'is-invalid-select2 border border-danger');
+                $(this).next('.select2-container').next('.invalid-feedback').remove();
+            }
+        });
+
+        // Clear error saat Select2 dibuka atau dipilih
+        $(document).on('select2:open select2:select', '.select2', function() {
+            $(this).removeClass('is-invalid');
+            $(this).next('.select2-container').removeClass('is-invalid-select2 border border-danger');
+            $(this).next('.select2-container').next('.invalid-feedback').remove();
+        });
     });
+
+
 
 
     function actionsFunctionPegawai(value, row, index) {
@@ -959,7 +1085,7 @@
 
     // Handle events button actions
     window.eventsPegawai = {
-        'click .btn-edit': function (e, value, row, index) {
+        'click .btn-edit': function(e, value, row, index) {
             $('.form-pegawai').removeClass('was-validated');
             $('#modal-pegawai').modal('show');
             resetWizardToFirstStep();
@@ -986,9 +1112,10 @@
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_jabatan,
                 initialText: row.nama_jabatan,
-                data: function () {
+                data: function() {
                     return {
-                        id_sk_struktur: $("select[name='id_sk_struktur']").val() || row.id_sk_struktur
+                        id_sk_struktur: $("select[name='id_sk_struktur']").val() || row
+                            .id_sk_struktur
                     };
                 }
             });
@@ -1051,7 +1178,8 @@
             $('input[name="email_dinas"]').val(row.email_dinas || '');
             $('input[name="nomor_kontak_darurat"]').val(row.nomor_kontak_darurat || '');
             $('input[name="nama_kontak_darurat"]').val(row.nama_kontak_darurat || '');
-            $('select[name="hubungan_kontak_darurat"]').val(row.hubungan_kontak_darurat || '').trigger('change');
+            $('select[name="hubungan_kontak_darurat"]').val(row.hubungan_kontak_darurat || '').trigger(
+                'change');
 
             // ADDRESS INFO
             $('textarea[name="alamat_ktp"]').val(row.alamat_ktp || '');
@@ -1074,7 +1202,8 @@
             $('input[name="pend_s2"]').val(row.pend_s2 || '');
             $('input[name="pend_s3"]').val(row.pend_s3 || '');
             $('input[name="kampus_terakhir"]').val(row.kampus_terakhir || '');
-            $('select[name="jenjang_pendidikan_terakhir"]').val(row.jenjang_pendidikan_terakhir || '').trigger('change');
+            $('select[name="jenjang_pendidikan_terakhir"]').val(row.jenjang_pendidikan_terakhir || '').trigger(
+                'change');
             $('textarea[name="keterangan"]').val(row.keterangan || '');
 
             // SYSTEM INFO
@@ -1088,7 +1217,7 @@
             console.log('Form populated with data for ID:', row.id);
         },
 
-        'click .btn-delete': function (e, value, row, index) {
+        'click .btn-delete': function(e, value, row, index) {
             console.log('✅ Delete button clicked!', row);
 
             var url = "{{ route('pegawai-delete', ':id') }}";
@@ -1111,7 +1240,7 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        beforeSend: function () {
+                        beforeSend: function() {
                             Swal.fire({
                                 title: 'Menghapus...',
                                 allowOutsideClick: false,
@@ -1120,7 +1249,7 @@
                                 }
                             });
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
@@ -1131,7 +1260,7 @@
                             }, 1500);
 
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
@@ -1139,7 +1268,7 @@
                             });
                             console.error('Delete error:', xhr.responseText);
                         }
-                    }).done(function () {
+                    }).done(function() {
                         $tablePegawai.bootstrapTable('refresh');
                     });
                 }
@@ -1149,7 +1278,7 @@
 
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
-        'click .update-status': function (e, value, row, index) {
+        'click .update-status': function(e, value, row, index) {
             var url = "{{ route('pegawai.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -1160,7 +1289,7 @@
                     table: 'tbl_pegawais',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
+                success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -1168,7 +1297,7 @@
                     }
                     $tablePegawai.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
