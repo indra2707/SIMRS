@@ -170,29 +170,30 @@
 
     // Open Modal Pegawai
     $(document).on('click', '.add-btn', function() {
+        clearAllValidationErrors();
+
+        var form = document.querySelector('.form-pegawai');
+        if (form) {
+            form.reset();
+        }
+
+        resetWizardToFirstStep();
+
+        // Setup modal
         $('#modal-pegawai').modal('show');
         $('.modal-title').text('Form Tambah Pegawai');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        resetWizardToFirstStep();
 
-        var form = document.querySelector('.form-pegawai');
-
-        // Reset form native
-        if (form) {
-            form.reset();
-            form.classList.remove('was-validated');
-        }
-
-        // Reset khusus
         $('input[name="id"]').val('');
 
-        // Reset Select2 (jika ada)
+        // Reset Select2
         $('.select2').each(function() {
             $(this).val(null).trigger('change');
         });
 
         $("select[name='disabilitas']").val('Tidak').trigger('change');
 
+        // Init Select2
         InitSelect2($("select[name='id_bank']"), {
             url: "{{ route('get-select-bank') }}",
             dropdownParent: $("#modal-pegawai")
@@ -218,182 +219,95 @@
             }
         });
 
-        // Reset checkbox/radio ke unchecked
+        // Reset inputs
         $('input[type="checkbox"]').prop('checked', false);
         $('input[type="radio"]').prop('checked', false);
-
-        // Reset file input & preview
         $('input[type="file"]').val('');
+
         if (typeof imageViewer !== 'undefined') {
             imageViewer.src = "{{ asset('assets/images/avatar/user2.png') }}";
         }
 
+        // Clear validasi KEDUA KALI (setelah init)
+        setTimeout(function() {
+            clearAllValidationErrors();
+        }, 250);
     });
 
 
     // Save/update
     $(document).on('click', '.save-btn', function(e) {
-        var id = $('input[name="id"]').val();
+        e.preventDefault();
 
-        if (id) {
-            var url = "{{ route('pegawai-update', ':id') }}";
-            url = url.replace(':id', id);
-            var type = "PUT";
-        } else {
-            var url = "{{ route('pegawai-store') }}";
-            var type = "POST";
+        let $form = $('.form-pegawai');
+        let form = $form[0];
+
+        if (!form.checkValidity()) {
+            // form.classList.add('was-validated');
+            Alert('warning', 'Mohon lengkapi semua field yang wajib diisi');
+            return;
         }
-        var forms = document.getElementsByClassName('form-pegawai');
-        // var form = forms[0];
-        var validation = Array.prototype.filter.call(forms, function(form) {
 
-            // ✅ TAMBAHAN: Clear error sebelumnya
-            $(form).find('.is-invalid').removeClass('is-invalid');
-            $(form).find('.invalid-feedback').remove();
-            $(form).find('.select2-container').removeClass('border border-danger is-invalid-select2');
-
-            // ✅ TAMBAHAN: Validasi manual untuk Select2 yang required
-            let select2Valid = true;
-            let select2Errors = [];
-
-            $(form).find('.select2[required]').each(function() {
-                let value = $(this).val();
-                let isEmpty = !value || value === '' || value === null || (Array.isArray(
-                    value) && value.length === 0);
-
-                if (isEmpty) {
-                    select2Valid = false;
-                    $(this).next('.select2-container').addClass('is-invalid-select2');
-
-                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
-                        .children().remove().end().text().trim();
-                    select2Errors.push(fieldName || $(this).attr('name'));
-
-                    if (!$(this).next('.select2-container').next('.invalid-feedback').length) {
-                        $(this).next('.select2-container').after(
-                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
-                        );
-                    }
-                }
-            });
-
-            // ✅ TAMBAHAN: Jika Select2 tidak valid, stop dan tampilkan pesan
-            if (!select2Valid) {
-                let errorList = '';
-                if (select2Errors.length > 0) {
-                    errorList = '<br><small>Field yang belum dipilih: ' + select2Errors.join(', ') +
-                        '</small>';
-                }
-
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Validasi Gagal',
-                    html: 'Harap pilih semua field yang wajib diisi!' + errorList,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                });
-
-                event.preventDefault();
-                event.stopPropagation();
-                return; // Stop eksekusi
+        // Validasi foto (opsional)
+        const fileInput = $('#foto')[0];
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const maxSize = 1024 * 1024;
+            const allowed = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!allowed.includes(file.type)) {
+                Alert('warning', 'Format foto hanya JPG, JPEG, atau PNG');
+                return;
             }
-
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                const fileInput = $('#foto')[0],
-                    file = fileInput.files[0],
-                    maxSize = 1 * 1024 * 1024,
-                    allowedTypes = ['image/jpeg', 'image/png',
-                        'image/jpg'
-                    ]; // Example allowed types
-                // Validate file type
-                if (file && !allowedTypes.includes(file.type)) {
-                    Alert('warning',
-                        'Jenis berkas tidak valid. Jenis yang diperbolehkan: JPEG, PNG, JPG.');
-                    return;
-                }
-                // Validate file size
-                if (file && file.size > maxSize) {
-                    Alert('warning', 'Ukuran file melebihi batas maksimal 1 MB');
-                    return;
-                }
-                let myformData = new FormData(form);
-                console.log('=== FORM DATA ===');
-                for (let [key, value] of myformData.entries()) {
-                    console.log(key + ':', value);
-                }
-
-                // Pastikan nama_pekerja ada
-                if (!myformData.get('nama_pekerja')) {
-                    Alert('warning', 'Nama pekerja wajib diisi!');
-                    return;
-                }
-
-                // ❌ HAPUS BAGIAN INI (sudah diganti dengan validasi di atas)
-                // let select2Valid = true;
-                // $('.select2').each(function() {
-                //     if (!$(this).val() || $(this).val().length === 0) {
-                //         select2Valid = false;
-                //         $(this).next('.select2-container').addClass('border border-danger');
-                //     } else {
-                //         $(this).next('.select2-container').removeClass('border border-danger');
-                //     }
-                // });
-                // if (!select2Valid) {
-                //     Alert('warning', 'Harap pilih semua field yang wajib diisi!');
-                //     return;
-                // }
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    dataType: "json",
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    data: myformData,
-                    enctype: 'multipart/form-data',
-                    beforeSend: function() {
-                        $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                        ).attr('disabled', 'disabled');
-                    },
-                    complete: function() {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-                    success: function(res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert('success', res.message);
-                            $('#modal-pegawai').modal('hide');
-                            resetWizardToFirstStep();
-                            $tablePegawai.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            form.classList.remove('was-validated');
-                        }
-                    },
-                });
+            if (file.size > maxSize) {
+                Alert('warning', 'Ukuran foto maksimal 1 MB');
+                return;
             }
-            form.classList.add('was-validated');
+        }
+
+        let formData = new FormData(form);
+        let id = $('input[name="id"]').val();
+
+        // Tentukan URL
+        let url = id ?
+            "{{ route('pegawai-update', ':id') }}".replace(':id', id) :
+            "{{ route('pegawai-store') }}";
+
+        // Tambahkan _method = PUT kalau edit
+        if (id) {
+            formData.append('_method', 'PUT');
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST', // SELALU POST
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            beforeSend: () => {
+                $('.save-btn').html(
+                    '<span class="spinner-border spinner-border-sm"></span> Menyimpan...').prop(
+                    'disabled', true);
+            },
+            success: function(res) {
+                if (res.success) {
+                    Alert('success', res.message || 'Data berhasil diperbarui!');
+                    $('#modal-pegawai').modal('hide');
+                    $tablePegawai.bootstrapTable('refresh');
+                } else {
+                    Alert('warning', res.message || 'Gagal menyimpan data');
+                }
+            },
+            error: function(xhr) {
+                let msg = 'Terjadi kesalahan saat menyimpan';
+                if (xhr.responseJSON?.message) msg = xhr.responseJSON.message;
+                Alert('error', msg);
+            },
+            complete: () => {
+                $('.save-btn').html(id ? '<span class="fa fa-check"></span> Update' :
+                        '<span class="fa fa-check"></span> Simpan')
+                    .prop('disabled', false);
+            }
         });
     });
 
@@ -466,7 +380,8 @@
                     field: 'nama_rumah_sakit',
                     title: 'Rumah Sakit',
                     sortable: true,
-                    width: 150
+                    width: 150,
+                    visible: false
                 },
                 {
                     field: 'no_sk_struktur',
@@ -491,7 +406,8 @@
                     field: 'lokasi_kerja',
                     title: 'Lokasi Kerja',
                     sortable: true,
-                    width: 120
+                    width: 120,
+                    visible: false
                 },
 
                 // ========== PERSONAL INFO ==========
@@ -500,7 +416,11 @@
                     title: 'L/P',
                     sortable: true,
                     align: 'center',
-                    width: 60
+                    width: 60,
+                    formatter: function(value, row, index) {
+                        return value == 'Laki-laki' ? 'L' : 'P';
+                    }
+
                 },
                 {
                     field: 'agama',
@@ -527,7 +447,7 @@
                     sortable: true,
                     align: 'center',
                     width: 80,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'disabilitas',
@@ -583,13 +503,16 @@
                     field: 'masa_kerja',
                     title: 'Masa Kerja',
                     sortable: true,
-                    width: 100
+                    width: 100,
+                    visible: false
                 },
                 {
                     field: 'tanggal_akhir_kontrak_formatted',
                     title: 'Akhir Kontrak',
                     sortable: true,
-                    width: 120
+                    width: 120,
+                    visible: false
+
                 },
 
                 // ========== FUNCTION & GRADE ==========
@@ -731,7 +654,7 @@
                     title: 'Alamat KTP',
                     sortable: true,
                     width: 200,
-                    visible: true
+                    visible: false
                 },
                 {
                     field: 'alamat_npwp',
@@ -811,7 +734,8 @@
                     field: 'jenjang_pendidikan_terakhir',
                     title: 'Pendidikan Terakhir',
                     sortable: true,
-                    width: 150
+                    width: 150,
+                    visible: false
                 },
                 {
                     field: 'pend_diploma',
@@ -901,98 +825,113 @@
             $currentFieldset.find('.select2-container').removeClass(
                 'border border-danger is-invalid-select2');
 
-            // 1️⃣ Validasi input dan textarea required
             $currentFieldset.find('input:visible[required], textarea:visible[required]').each(
-        function() {
-                let value = $.trim($(this).val());
-                if (!this.checkValidity() || value === '') {
-                    isValid = false;
-                    $(this).addClass('is-invalid');
-
-                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
-                        .children().remove().end().text().trim();
-                    errorMessages.push(fieldName || $(this).attr('name'));
-
-                    let errorMsg = this.validationMessage || 'Field ini wajib diisi';
-                    $(this).after('<div class="invalid-feedback d-block">' + errorMsg +
-                        '</div>');
-                }
-            });
-
-            // 2️⃣ Validasi select biasa yang required (tidak Select2)
-            $currentFieldset.find('select:visible[required]').not('.select2-hidden-accessible').each(
                 function() {
-                    let value = $(this).val();
-                    if (!value || value === '' || value === null) {
-                        isValid = false;
-                        $(this).addClass('is-invalid');
+                    let $input = $(this);
+                    let value = $input.val();
 
-                        let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
-                            .children().remove().end().text().trim();
-                        errorMessages.push(fieldName || $(this).attr('name'));
-
-                        $(this).after(
-                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
-                            );
+                    // Jika ini datepicker, cek apakah ada nilai (bisa berformat tanggal)
+                    if ($input.hasClass('js-datepicker')) {
+                        if (!value || value === '' || value === '____-__-__' || value === '//') {
+                            isValid = false;
+                            $input.addClass('is-invalid');
+                            let fieldName = $input.closest('.mb-3, .form-group').find('label')
+                                .clone()
+                                .children().remove().end().text().trim();
+                            errorMessages.push(fieldName || $input.attr('name'));
+                            if (!$input.next('.invalid-feedback').length) {
+                                $input.after(
+                                    '<div class="invalid-feedback d-block">Field ini wajib diisi</div>'
+                                );
+                            }
+                        }
+                    } else {
+                        // Input biasa
+                        if (!value || $.trim(value) === '') {
+                            isValid = false;
+                            $input.addClass('is-invalid');
+                            let fieldName = $input.closest('.mb-3, .form-group').find('label')
+                                .clone()
+                                .children().remove().end().text().trim();
+                            errorMessages.push(fieldName || $input.attr('name'));
+                            if (!$input.next('.invalid-feedback').length) {
+                                $input.after(
+                                    '<div class="invalid-feedback d-block">Field ini wajib diisi</div>'
+                                );
+                            }
+                        }
                     }
                 });
 
-            // 3️⃣ Validasi Select2 yang required
-            $currentFieldset.find('select.select2-hidden-accessible[required]').each(function() {
-                let value = $(this).val();
+                // validadsi selcetbiasa
+            $currentFieldset.find('select:visible[required]').not('.select2-hidden-accessible').each(
+                function() {
+                    if (!$(this).val()) {
+                        isValid = false;
+                        $(this).addClass('is-invalid');
+                        let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                            .children().remove().end().text().trim();
+                        errorMessages.push(fieldName || $(this).attr('name'));
+                        $(this).after(
+                            '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
+                        );
+                    }
+                });
+
+                // validasi select2
+            $currentFieldset.find('select.select2[required]').each(function() {
+                let $select = $(this);
+                let value = $select.val();
                 let isEmpty = !value || value === '' || value === null || (Array.isArray(
                     value) && value.length === 0);
+
                 if (isEmpty) {
                     isValid = false;
-                    $(this).next('.select2-container').addClass('is-invalid-select2');
+                    $select.next('.select2-container').addClass(
+                        'is-invalid-select2 border border-danger');
 
-                    let fieldName = $(this).closest('.mb-3, .form-group').find('label').clone()
+                    let fieldName = $select.closest('.mb-3, .form-group').find('label').clone()
                         .children().remove().end().text().trim();
-                    errorMessages.push(fieldName || $(this).attr('name'));
+                    errorMessages.push(fieldName || $select.attr('name'));
 
-                    if (!$(this).next('.select2-container').next('.invalid-feedback').length) {
-                        $(this).next('.select2-container').after(
+                    // Tambahkan pesan error jika belum ada
+                    if (!$select.next('.select2-container').next('.invalid-feedback').length) {
+                        $select.next('.select2-container').after(
                             '<div class="invalid-feedback d-block">Field ini wajib dipilih</div>'
                         );
                     }
                 }
             });
 
-            // Jika tidak valid, tampilkan alert dan jangan pindah step
             if (!isValid) {
+                // Scroll halus ke field error pertama + highlight (tanpa buka Select2 otomatis)
                 setTimeout(function() {
-                    let $firstInvalid = $currentFieldset.find('.is-invalid:first');
+                    let $firstInvalid = $currentFieldset.find(
+                        '.is-invalid:first, .is-invalid-select2:first').first();
                     if ($firstInvalid.length) {
-                        if ($firstInvalid.hasClass('select2-hidden-accessible')) {
-                            $firstInvalid.select2('open');
-                        } else {
-                            $firstInvalid.focus();
-                        }
-                    } else {
-                        let $firstInvalidSelect2 = $currentFieldset.find(
-                            '.is-invalid-select2:first');
-                        if ($firstInvalidSelect2.length) {
-                            $firstInvalidSelect2.prev('select').select2('open');
-                        }
+                        let $target = $firstInvalid.hasClass('select2-hidden-accessible') ||
+                            $firstInvalid.hasClass('is-invalid-select2') ?
+                            $firstInvalid.next('.select2-container') :
+                            $firstInvalid;
+
+                        $('.modal-body').animate({
+                            scrollTop: $target.offset().top - $('.modal-body').offset()
+                                .top + $('.modal-body').scrollTop() - 150
+                        }, 600);
+
+                        // Highlight kuning agar jelas
+                        $target.effect('highlight', {
+                            color: '#f8d7da'
+                        }, 2000); // merah muda agar sesuai error
                     }
                 }, 100);
 
-                let errorList = errorMessages.length > 0 ?
-                    '<br><small>Field yang belum diisi: ' + errorMessages.join(', ') + '</small>' : '';
+                Alert('warning', 'Mohon lengkapi semua field yang wajib diisi');
 
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Validasi Gagal',
-                    html: 'Mohon lengkapi semua field yang wajib diisi sebelum melanjutkan' +
-                        errorList,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#3085d6'
-                });
-
-                return false; // STOP pindah step
+                return; // ← PALING PENTING: Hentikan eksekusi sepenuhnya
             }
 
-            // Jika valid, lanjut ke step berikutnya
+            // ====== JIKA VALID → LANJUT KE STEP BERIKUTNYA ======
             let $nextFieldset = $currentFieldset.next('fieldset');
             if ($nextFieldset.length) {
                 $currentFieldset.fadeOut(300, function() {
@@ -1009,12 +948,11 @@
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
                 // Update step indicator
-                $('.f1-step').removeClass('active').removeClass('activated');
-                $('.f1-step').eq(stepIndex).addClass('active');
-                $('.f1-step').eq(stepIndex).prevAll().addClass('activated');
+                $('.f1-step').removeClass('active activated');
+                $('.f1-step').eq(stepIndex + 1).addClass(
+                    'active'); // +1 karena index fieldset mulai dari 0
+                $('.f1-step').eq(stepIndex + 1).prevAll().addClass('activated');
             }
-
-            return false;
         });
 
         // Handle tombol PREVIOUS (tanpa validasi)
@@ -1086,6 +1024,19 @@
     // Handle events button actions
     window.eventsPegawai = {
         'click .btn-edit': function(e, value, row, index) {
+
+            clearAllValidationErrors();
+
+            $('.form-pegawai').removeClass('was-validated');
+            resetWizardToFirstStep();
+
+            $('#modal-pegawai').modal('show');
+            $('.modal-title').text('Form Edit Pegawai');
+            $('.save-btn').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
+            $('input[name="id"]').val(row.id);
+
+
+
             $('.form-pegawai').removeClass('was-validated');
             $('#modal-pegawai').modal('show');
             resetWizardToFirstStep();
@@ -1215,6 +1166,9 @@
             }
 
             console.log('Form populated with data for ID:', row.id);
+            setTimeout(function() {
+                clearAllValidationErrors();
+            }, 300);
         },
 
         'click .btn-delete': function(e, value, row, index) {
@@ -1310,21 +1264,107 @@
         }
     }
 
-    // Fungsi untuk reset wizard ke step 1
     function resetWizardToFirstStep() {
-        // Sembunyikan semua fieldset
         $('fieldset').hide();
-
-        // Tampilkan fieldset pertama
         $('fieldset').first().show();
 
-        // Reset progress bar ke 0%
         var totalSteps = $('fieldset').length;
         var progressPercentage = (1 / totalSteps) * 100;
         $('.f1-progress-line').css('width', progressPercentage + '%');
 
-        // Reset step indicator
         $('.f1-step').removeClass('active').removeClass('activated');
         $('.f1-step').first().addClass('active');
     }
+
+    // ============================================================
+    // FUNGSI CLEAR VALIDASI - ULTIMATE VERSION
+    // ============================================================
+    function clearAllValidationErrors() {
+        console.log('🧹 Membersihkan SEMUA validasi...');
+
+        // 1. Hapus class Bootstrap validation
+        $('.form-pegawai').removeClass('was-validated');
+
+        // 2. Hapus class is-invalid dari semua input
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea').removeClass('is-invalid');
+
+        // 3. Hapus semua pesan error
+        $('.form-pegawai .invalid-feedback').remove();
+
+        // 4. Reset Select2 errors
+        $('.form-pegawai .select2-container').removeClass('border border-danger is-invalid-select2');
+
+        // 5. Reset custom validity (browser native)
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea').each(function() {
+            this.setCustomValidity('');
+        });
+
+        // 6. Reset inline styles
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea').css({
+            'border-color': '',
+            'border': ''
+        });
+
+        console.log('✅ Validasi dibersihkan!');
+    }
+
+
+    // Saat modal MULAI dibuka
+    $('#modal-pegawai').on('show.bs.modal', function() {
+        console.log('▶️ Modal akan dibuka...');
+        clearAllValidationErrors();
+    });
+
+    // Saat modal SUDAH terbuka
+    $('#modal-pegawai').on('shown.bs.modal', function() {
+        console.log('✅ Modal sudah terbuka');
+        setTimeout(function() {
+            clearAllValidationErrors();
+        }, 100);
+    });
+
+    // Saat modal MULAI ditutup
+    $('#modal-pegawai').on('hide.bs.modal', function() {
+        console.log('▶️ Modal akan ditutup...');
+        clearAllValidationErrors();
+    });
+
+    // Saat modal SUDAH ditutup
+    $('#modal-pegawai').on('hidden.bs.modal', function() {
+        console.log('✅ Modal sudah ditutup');
+
+        var form = document.querySelector('.form-pegawai');
+        if (form) {
+            form.reset();
+        }
+
+        clearAllValidationErrors();
+        resetWizardToFirstStep();
+        $('.modal-body').scrollTop(0);
+
+        // Final cleanup dengan delay
+        setTimeout(function() {
+            clearAllValidationErrors();
+        }, 150);
+    });
+
+    // Inisialisasi ulang js-datepicker
+    $(document).ready(function() {
+        $('.js-datepicker').datepicker({
+            language: 'en',
+            dateFormat: 'yyyy-mm-dd',
+            autoClose: true,
+            onSelect: function(formattedDate, date, inst) {
+                $(inst.el).val(formattedDate).trigger('change').trigger('input');
+            }
+        });
+    });
+    // Clear error saat user pilih tanggal di datepicker
+    $('.form-pegawai').on('change input', 'input.js-datepicker[required]', function() {
+        let $el = $(this);
+        if ($el.val() && $el.val() !== '' && $el.val() !== '//') {
+            $el.removeClass('is-invalid');
+            $el.next('.invalid-feedback').remove();
+        }
+    });
 </script>

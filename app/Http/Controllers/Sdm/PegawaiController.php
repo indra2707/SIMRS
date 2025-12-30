@@ -154,7 +154,7 @@ class PegawaiController extends Controller
     // Simpan
     public function store(Request $request)
     {
-        
+
         $dataValues = [
             'anak_perusahaan' => $request->anak_perusahaan,
             'id_sk_struktur' => $request->id_sk_struktur,

@@ -14,9 +14,36 @@
             align-items: center;
         }
 
-        .is-invalid-select2 .select2-selection {
-            border: 1px solid #dc3545 !important;
-            border-radius: 0.25rem;
+        /* Validasi error untuk input & select biasa (tetap rounded) */
+        .form-control.is-invalid,
+        .form-select.is-invalid,
+        .was-validated .form-control:invalid,
+        .was-validated .form-select:invalid {
+            border-color: #dc3545 !important;
+            border-radius: 0.375rem !important;
+            /* sesuaikan dengan rounded form kamu */
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        /* KHUSUS SELECT2 - versi anti-double border */
+        .is-invalid-select2 .select2-selection--single {
+            border-color: #dc3545 !important;
+            border-radius: 0.375rem !important;
+            box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25) !important;
+        }
+
+        /* Hilangkan border ganda di container Select2 */
+        .is-invalid-select2 {
+            border: none !important;
+            /* penting: hapus border container */
+        }
+
+        /* Pastikan pesan error di bawahnya rapi */
+        .select2-container+.invalid-feedback {
+            display: block;
+            margin-top: 0.25rem;
+            color: #dc3545;
+            font-size: 0.875em;
         }
 
 
@@ -277,14 +304,14 @@
                                     <!-- Nama Pekerja  -->
                                     <label for="nama_pekerja" class="col-form-label col-sm-2">Nama Pekerja</label>
                                     <div class="col-sm-4">
-                                        <input type="text" id="nama_pekerja" name="nama_pekerja" class="form-control"
+                                        <input id="nama_pekerja" name="nama_pekerja" class="form-control"
                                             placeholder="Nama Pekerja..." required>
                                     </div>
 
                                     <!-- Jenis Kelamin -->
                                     <label for="jenis_kelamin" class="col-form-label col-sm-2">Jenis Kelamin</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select form-control select2" name="jenis_kelamin" >
+                                        <select class="form-select form-control select2" name="jenis_kelamin" required>
                                             <option value=""></option>
                                             <option value="Laki-laki">Laki-laki</option>
                                             <option value="Perempuan">Perempuan</option>
@@ -294,15 +321,15 @@
                                     <!-- Tanggal Lahir  -->
                                     <label for="tanggal_lahir" class="col-form-label col-sm-2">Tanggal Lahir</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            placeholder="Tanggal Lahir..." name="tanggal_lahir" data-language="en">
+                                        <input class="form-control js-datepicker digits" placeholder="Tanggal Lahir..."
+                                            name="tanggal_lahir" data-language="en" required>
                                     </div>
 
                                     <!-- NIK  -->
                                     <label for="nik" class="col-form-label col-sm-2">NIK</label>
                                     <div class="col-sm-4">
-                                        <input type="text" class="form-control ktp-number" id="nik"
-                                            name="nik" placeholder="NIK..." required>
+                                        <input class="form-control ktp-number" id="nik" name="nik"
+                                            placeholder="NIK..." required>
                                     </div>
 
                                     <!-- Agama -->
@@ -383,7 +410,7 @@
                                     <label for="golongan_upah" class="col-form-label col-sm-2">Golongan</label>
                                     <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="golongan_upah"
-                                            name="golongan_upah">
+                                            name="golongan_upah" required>
                                             <option value=""></option>
                                             <option value="Utama">Utama</option>
                                             <option value="Madya">Madya</option>
@@ -394,14 +421,14 @@
                                     <!-- Masa Kerja  -->
                                     <label for="masa_kerja" class="col-form-label col-sm-2">Masa Kerja</label>
                                     <div class="col-sm-4">
-                                        <input  class="form-control js-datepicker digits" id="masa_kerja"
+                                        <input class="form-control js-datepicker digits" id="masa_kerja"
                                             name="masa_kerja" data-language="en" placeholder="Masa Kerja...">
                                     </div>
 
                                     <!-- TMT Status Kepegawaian -->
                                     <label for="tmt_status_kepegawaian" class="col-form-label col-sm-2">TMT Status</label>
                                     <div class="col-md-4">
-                                        <input  class="form-control js-datepicker digits"
+                                        <input class="form-control js-datepicker digits"
                                             placeholder="TMT Status Kepegawaian..." name="tmt_status_kepegawaian"
                                             data-language="en">
                                     </div>
@@ -409,21 +436,22 @@
                                     <!-- TMT PWTT -->
                                     <label for="tmt_pwtt" class="col-form-label col-sm-2">TMT PWTT</label>
                                     <div class="col-md-4">
-                                        <input  class="form-control js-datepicker digits" name="tmt_pwtt"
+                                        <input class="form-control js-datepicker digits" name="tmt_pwtt"
                                             placeholder="TMT PWTT..." data-language="en">
                                     </div>
 
                                     <!-- TMT PWT -->
                                     <label for="tmt_pwt" class="col-form-label col-sm-2">TMT PWT</label>
                                     <div class="col-md-4">
-                                        <input  class="form-control js-datepicker digits" name="tmt_pwt"
+                                        <input class="form-control js-datepicker digits" name="tmt_pwt"
                                             placeholder="TMT PWT..." data-language="en">
                                     </div>
 
                                     <!-- fungsi -->
                                     <label for="fungsi" class="col-form-label col-sm-2">Fungsi</label>
                                     <div class="col-sm-4">
-                                        <select type="text" class="form-select form-control select2" id="fungsi" name="fungsi" required>
+                                        <select type="text" class="form-select form-control select2" id="fungsi"
+                                            name="fungsi" required>
                                             <option value=""></option>
                                             <option value="Medis">Medis</option>
                                             <option value="Perawat">Perawat</option>
@@ -444,17 +472,16 @@
                                     <!-- TMT Jabatan -->
                                     <label for="tmt_jabatan" class="col-form-label col-sm-2">TMT Jabatan</label>
                                     <div class="col-md-4">
-                                        <input  class="form-control js-datepicker digits"
-                                            name="tmt_jabatan" placeholder="TMT Jabatan..." data-language="en">
+                                        <input class="form-control js-datepicker digits" name="tmt_jabatan"
+                                            placeholder="TMT Jabatan..." data-language="en">
                                     </div>
 
                                     <!-- TMT Golongan Upah -->
                                     <label for="tmt_golongan_upah" class="col-form-label col-sm-2">TMT Golongan
                                         Upah</label>
                                     <div class="col-md-4">
-                                        <input class="form-control js-datepicker digits"
-                                            name="tmt_golongan_upah" placeholder="TMT Golongan Upah..."
-                                            data-language="en">
+                                        <input class="form-control js-datepicker digits" name="tmt_golongan_upah"
+                                            placeholder="TMT Golongan Upah..." data-language="en">
                                     </div>
 
                                     <!-- Penyertaan Jabatan AP -->
@@ -477,9 +504,8 @@
                                     <label for="tanggal_akhir_kontrak" class="col-form-label col-sm-2">Tanggal Akhir
                                         Kontrak</label>
                                     <div class="col-md-4">
-                                        <input  class="form-control js-datepicker digits"
-                                            name="tanggal_akhir_kontrak" placeholder="Tanggal Akhir Kontrak"
-                                            data-language="en">
+                                        <input class="form-control js-datepicker digits" name="tanggal_akhir_kontrak"
+                                            placeholder="Tanggal Akhir Kontrak" data-language="en">
                                     </div>
 
                                     <div class="f1-buttons">
@@ -684,7 +710,7 @@
                                     <label for="kampus_terakhir" class="col-form-label col-sm-2">Kampus Terakhir</label>
                                     <div class="col-md-4">
                                         <input class="form-control" name="kampus_terakhir"
-                                            placeholder="Kampus Terakhir...">
+                                            placeholder="Kampus Terakhir..." required>
                                     </div>
 
                                     <!-- Pendidikan Terakhir -->
@@ -692,7 +718,7 @@
                                         Terakhir</label>
                                     <div class="col-sm-4">
                                         <select class="form-select form-control select2" id="jenjang_pendidikan_terakhir"
-                                            name="jenjang_pendidikan_terakhir">
+                                            name="jenjang_pendidikan_terakhir" required>
                                             <option value=""></option>
                                             <option value="SMA / SMK">SMA / SMK</option>
                                             <option value="D3">D3</option>
@@ -812,6 +838,6 @@
 @section('script')
     <script></script>
     @include('sdm.pegawai.script')
-    <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
-    <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
+    <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script> --}}
 @endsection
