@@ -337,6 +337,7 @@ class SpdsController extends Controller
             ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
             ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
             ->leftJoin('pegawai as pegawai2', 'pegawai2.id', '=', 'tbl_spds.id_pimpinan')
+            ->leftJoin('tbl_jabatan as jabatan_pimpinan', 'jabatan_pimpinan.id', '=', 'pegawai2.id_jabatan')
             ->select(
                 'tbl_spds.*',
                 'pegawai.nama_pekerja as nama_pegawai',
@@ -345,7 +346,8 @@ class SpdsController extends Controller
                 'tbl_jabatan.nama_jabatan as jabatan',
                 'tbl_kotas.nama as nama_kota1',
                 'kota2.nama as nama_kota2',
-                'pegawai2.nama_pekerja as nama_pimpinan'
+                'pegawai2.nama_pekerja as nama_pimpinan',
+                'jabatan_pimpinan.nama_jabatan as jabatan_pimpinan'
             )
             ->where('tbl_spds.id', $id)
             ->first();

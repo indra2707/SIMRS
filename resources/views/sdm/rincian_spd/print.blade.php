@@ -207,12 +207,12 @@
             <td width="60%">
                 Menyetujui,<br>
                 RSOJ Pertamina Royal Biringkanaya<br>
-                <b>{{ $rincian->jabatan_pegawai }}</b><br><br><br><br><br>
+                <b>{{ $rincian->jabatan_menyetujui }}</b><br><br><br><br><br>
                 <b>{{ $rincian->nama_menyetujui }}</b>
             </td>
             <td width="40%">
                 Yang Mengajukan,<br>
-                <b>{{ $rincian->jabatan_pegawai }}</b><br><br><br><br><br><br>
+                <b>{{ $rincian->jabatan_mengajukan }}</b><br><br><br><br><br><br>
                 <b>{{ $rincian->nama_mengajukan }}</b>
             </td>
         </tr>

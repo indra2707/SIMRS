@@ -256,7 +256,7 @@
                 <td colspan="2">
                     Menyetujui :<br>
                     <b style="font-size:11px">RSOJ Pertamina Royal Biringkanaya</b><br>
-                    {{ $spd->jabatan }}<br><br><br><br><br><br>
+                    {{ $spd->jabatan_pimpinan }}<br><br><br><br><br><br>
                     <!-- <img src="TEST" width="75" ><br> -->
                     {{ $spd->nama_pimpinan }}
                 </td>

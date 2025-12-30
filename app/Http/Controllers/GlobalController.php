@@ -232,28 +232,48 @@ class GlobalController extends Controller
     {
         $query = DB::table('tbl_biaya_spd')
             ->where('status', '1')
-            ->when($request->values, function ($q) use ($request) {
-                $q->where('id', $request->values);
-            })
+
             ->when($request->search, function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%');
             })
-            ->limit(5)
+
+            ->limit(10)
             ->get();
 
         $data = [];
+
         foreach ($query as $value) {
+
+            // mapping harga sesuai golongan_upah
+            switch ($request->golongan_upah) {
+                case 'Biasa':
+                    $harga = $value->harga_biasa;
+                    break;
+
+                case 'Madya':
+                    $harga = $value->harga_madya;
+                    break;
+
+                case 'Utama':
+                    $harga = $value->harga_utama;
+                    break;
+
+                default:
+                    $harga = 0;
+            }
+
             $data[] = [
                 'id' => $value->id,
                 'text' => $value->nama,
-                'harga' => 'Rp' . number_format($value->harga_utama, 0, '.', ','),
+                'harga' => 'Rp '  .number_format($harga, 0, '.', ',')
             ];
         }
 
         return response()->json([
             'data' => $data
-        ], 200);
+        ]);
     }
+
 
     // select lokasi
     public function optionsSelectLokasi(Request $request)

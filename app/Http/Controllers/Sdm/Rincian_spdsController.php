@@ -245,31 +245,54 @@ class Rincian_spdsController extends Controller
     // Print
     public function print(Request $request, $id)
     {
-        $rincian = DB::table('tbl_spd_details')
-            ->join('tbl_spds', 'tbl_spds.no_surat', '=', 'tbl_spd_details.no_surat')
-            ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
-            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
-            ->join('pegawai as mengajukan', 'mengajukan.id', '=', 'tbl_spd_details.id_mengajukan')
-            ->join('pegawai as menyetujui', 'menyetujui.id', '=', 'tbl_spd_details.id_menyetujui')
-            ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
-            ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+        $rincian = DB::table('tbl_spd_details as d')
+            ->join('tbl_spds as s', 's.no_surat', '=', 'd.no_surat')
+
+            // pegawai utama
+            ->join('pegawai as p', 'p.id', '=', 'd.id_pegawai')
+            ->join('tbl_jabatan as j', 'j.id', '=', 'p.id_jabatan')
+
+            // mengajukan
+            ->join('pegawai as pm', 'pm.id', '=', 'd.id_mengajukan')
+            ->join('tbl_jabatan as jm', 'jm.id', '=', 'pm.id_jabatan')
+
+            // menyetujui
+            ->join('pegawai as ps', 'ps.id', '=', 'd.id_menyetujui')
+            ->join('tbl_jabatan as js', 'js.id', '=', 'ps.id_jabatan')
+
+            // kota
+            ->join('tbl_kotas as k1', 'k1.id', '=', 's.id_kota1')
+            ->join('tbl_kotas as k2', 'k2.id', '=', 's.id_kota2')
+
             ->select(
-                'tbl_spd_details.*',
-                'pegawai.nama_pekerja as nama_pegawai',
-                'pegawai.nomor_pekerja as nomor_pekerja',
-                'tbl_jabatan.nama_jabatan as jabatan_pegawai',
-                'tbl_spds.tgl_awal',
-                'tbl_spds.tgl_akhir',
-                'tbl_spds.pelaksanaan',
-                'tbl_spds.status as status_spd',
-                'tbl_kotas.nama as nama_kota1',
-                'kota2.nama as nama_kota2',
-                'mengajukan.nama_pekerja as nama_mengajukan',
-                'menyetujui.nama_pekerja as nama_menyetujui'
+                'd.*',
+
+                // pegawai
+                'p.nama_pekerja as nama_pegawai',
+                'p.nomor_pekerja',
+                'j.nama_jabatan as jabatan_pegawai',
+
+                // spd
+                's.tgl_awal',
+                's.tgl_akhir',
+                's.pelaksanaan',
+                's.status as status_spd',
+
+                // kota
+                'k1.nama as nama_kota1',
+                'k2.nama as nama_kota2',
+
+                // mengajukan
+                'pm.nama_pekerja as nama_mengajukan',
+                'jm.nama_jabatan as jabatan_mengajukan',
+
+                // menyetujui
+                'ps.nama_pekerja as nama_menyetujui',
+                'js.nama_jabatan as jabatan_menyetujui'
             )
-            ->where('tbl_spd_details.id', $id)
-            ->where('tbl_spd_details.no_surat', $request->no_surat)
-            ->where('tbl_spd_details.id_pegawai', $request->id_pegawai)
+            ->where('d.id', $id)
+            ->where('d.no_surat', $request->no_surat)
+            ->where('d.id_pegawai', $request->id_pegawai)
             ->first();
 
         if (!$rincian) {

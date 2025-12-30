@@ -8,6 +8,49 @@
         allowClear: true
     });
 
+    function InitSelect2(element, options) {
+        element.select2({
+            theme: "bootstrap-5",
+            allowClear: true,
+            dropdownParent: options.dropdownParent || null,
+            ajax: {
+                url: options.url,
+                dataType: 'json',
+                delay: 250,
+                data: options.data,
+                processResults: function (res) {
+                    return {
+                        results: res.data.map(item => ({
+                            id: item.id,
+                            text: item.text,
+                            harga: item.harga // 🔥 WAJIB
+                        }))
+                    };
+                }
+            }
+        });
+
+        // untuk edit mode
+        if (options.initialValue) {
+            $.ajax({
+                url: options.url,
+                data: { id: options.initialValue },
+                success: function (res) {
+                    let item = res.data[0];
+                    let option = new Option(item.text, item.id, true, true);
+                    element.append(option).trigger('change.select2');
+
+                    // 🔑 JANGAN TIMPA jika harga sudah ada (dari row1)
+                    let currentHarga = $('input[name="harga"]').val();
+
+                    if (!currentHarga || currentHarga === '0' || currentHarga === 'Rp 0') {
+                        $('#harga').val(formatRupiah(item.harga));
+                    }
+                }
+            });
+        }
+    }
+
     // Tabel
     var $tableRincian = $('#table_rincian');
     var $table_detail = $('#table_detail');
@@ -423,13 +466,13 @@
         InitSelect2($("select[name='biaya']"), {
             url: "{{ route('get-select-biaya') }}",
             dropdownParent: $("#modal-detail"),
-            data: function () {
+            data: function (params) {
                 return {
+                    search: params.term || '',
                     golongan_upah: currentGolonganUpah
                 };
             }
         });
-        console.log(currentGolonganUpah);
     });
 
     $('#modal-detail').on('hidden.bs.modal', function () {
@@ -459,7 +502,7 @@
 
     //event button detail
     window.eventsDetail = {
-        'click .btn-edit-detail': function (e, value, row1, index) {
+        'click .btn-edit-detail': function (e, value, row1, index) {    
             $('.form-detail').removeClass('was-validated');
             $('#modal-detail').modal('show');
             $('#modal-rincian').modal('hide');
@@ -475,8 +518,15 @@
             InitSelect2($("select[name='biaya']"), {
                 url: "{{ route('get-select-biaya') }}",
                 dropdownParent: $("#modal-detail"),
-                initialValue: row1.id_biaya
+                initialValue: row1.id_biaya,
+                data: function (params) {
+                    return {
+                        search: params.term || '',
+                        golongan_upah: currentGolonganUpah
+                    };
+                }
             });
+
         },
         'click .btn-delete-detail': function (e, value, row1, index) {
             var url = "{{ route('sdm.rincian_spd.delete', ':id') }}";
