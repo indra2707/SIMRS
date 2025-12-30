@@ -463,11 +463,7 @@
         InitSelect2($("select[name='biaya']"), {
             url: "{{ route('get-select-biaya') }}",
             dropdownParent: $("#modal-detail"),
-<<<<<<< HEAD
-            data: function (params) {
-=======
             data: function() {
->>>>>>> 34ebac65d9f7098b8d08509f43b101b630213be1
                 return {
                     search: params.term || '',
                     golongan_upah: currentGolonganUpah
@@ -503,11 +499,7 @@
 
     //event button detail
     window.eventsDetail = {
-<<<<<<< HEAD
-        'click .btn-edit-detail': function (e, value, row1, index) {    
-=======
         'click .btn-edit-detail': function(e, value, row1, index) {
->>>>>>> 34ebac65d9f7098b8d08509f43b101b630213be1
             $('.form-detail').removeClass('was-validated');
             $('#modal-detail').modal('show');
             $('#modal-rincian').modal('hide');

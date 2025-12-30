@@ -43,8 +43,7 @@ class Rincian_spdsController extends Controller
                 'tbl_kotas.nama as nama_kota1',
                 'kota2.nama as nama_kota2'
             )
-            ->where('tbl_spds.status', 'Close')
-            ->where('tbl_spds.status', 'Close')
+            ->where('tbl_spds.status', 'Close') 
             ->where(function ($q) {
                 $q->where('tbl_spds.pelaksanaan', 'PD-DN')
                     ->orWhere('tbl_spds.pelaksanaan', 'PD-LN');
