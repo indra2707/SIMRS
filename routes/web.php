@@ -272,7 +272,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/fungsi/update/{id}', [FungsiController::class, 'update'])->name('master-data.fungsi.update');
         Route::delete('/fungsi/delete/{id}', [FungsiController::class, 'destroy'])->name('master-data.fungsi.delete');
         Route::post('/fungsi/update-status/{id}', [FungsiController::class, 'updateStatus'])->name('master-data.fungsi.update-status');
-        
+
         // SK Struktur
         Route::get('/sk-struktur', [SKStrukturController::class, 'index'])->name('master-data.sk-struktur');
         Route::get('/sk-struktur/view', [SKStrukturController::class, 'views'])->name('master-data.sk-struktur.view');
@@ -338,7 +338,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Pegawai
         Route::get('sdm', [PegawaiController::class, 'index'])->name('pegawai');
         Route::get('sdm/views', [PegawaiController::class, 'views'])->name('pegawai-view');
-        Route::post('sdm/update/{id}', [PegawaiController::class, 'update'])->name('pegawai-update');
+        Route::put('sdm/update/{id}', [PegawaiController::class, 'update'])->name('pegawai-update');
         Route::post('sdm/users/add', [PegawaiController::class, 'store'])->name('pegawai-store');
         Route::delete('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
         Route::get('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
