@@ -61,8 +61,8 @@
         formatDisplay(firstDay) + ' - ' + formatDisplay(lastDay)
     );
 
-    $('#tgl_awal').val(formatDate(firstDay));
-    $('#tgl_akhir').val(formatDate(lastDay));
+        $('#tgl_awal').val(formatDate(firstDay));
+        $('#tgl_akhir').val(formatDate(lastDay));
 
 
 

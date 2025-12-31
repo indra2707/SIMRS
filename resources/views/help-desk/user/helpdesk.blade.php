@@ -41,8 +41,8 @@
                             </button>
 
                             <div class="bs-bars">
-                                <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
-                                    placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                                <input type="text" class="form-control js-daterangepicker text-center"
+                                    style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
                             </div>
                         </div>
                         <input type="hidden" name="tgl_awal" id="tgl_awal">
@@ -125,8 +125,8 @@
                         <!-- Deskripsi Masalah  -->
                         <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50"
-                                rows="10" required placeholder="Deskripsi Masalah..."></textarea>
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50" rows="10" required
+                                placeholder="Deskripsi Masalah..."></textarea>
                         </div>
 
                         {{-- ATTACH FILE --}}
@@ -139,8 +139,8 @@
                             </button>
 
                             <!-- Hidden Input -->
-                            <input type="file" id="lampiran" name="lampiran[]" multiple accept="image/jpeg,image/png"
-                                class="d-none">
+                            <input type="file" id="lampiran" name="lampiran[]" multiple
+                                accept="image/jpeg,image/png" class="d-none">
 
                             <small class="text-muted btn-attach">
                                 Maksimal 5 file (JPG / PNG)
@@ -208,15 +208,15 @@
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
                                                     <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
-                                                    </li>
-                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
-                                                    </li>
-                                                    <li class="list-inline-item"><a href="#"><i
-                                                                class="icon-headphone-alt"></i></a></li>
-                                                    <li class="list-inline-item"><a href="#"><i
-                                                                class="icon-video-camera"></i></a></li>
-                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                class="icon-menu"></i></a></li> -->
+                                                                                    </li>
+                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
+                                                                                    </li>
+                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                class="icon-headphone-alt"></i></a></li>
+                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                class="icon-video-camera"></i></a></li>
+                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
+                                                                                                class="icon-menu"></i></a></li> -->
                                                 </ul>
                                             </div>
                                             <!-- chat-header end-->
@@ -226,7 +226,8 @@
                                                         <div class="message my-message"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-start chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/3.png') }}" alt="">
+                                                                src="{{ asset('assets/images/user/3.png') }}"
+                                                                alt="">
                                                             <div class="message-data text-end">
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:12 am</span>
@@ -239,7 +240,8 @@
                                                         <div class="message other-message pull-right"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-end chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/12.png') }}" alt="">
+                                                                src="{{ asset('assets/images/user/12.png') }}"
+                                                                alt="">
                                                             <div class="message-data">
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:14 am</span>
@@ -295,7 +297,7 @@
     @include('help-desk.user.script')
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var currentHelpdeskId = null;
             var chatChannel = null;
 
@@ -309,17 +311,17 @@
             });
 
             // ========== OPEN CHAT MODAL ==========
-            $(document).on('click', '.btn-chat', function () {
+            $(document).on('click', '.btn-chat', function() {
                 var helpdeskId = $(this).data('helpdesk-id');
-
                 if (!helpdeskId) {
-                    console.error('❌ Helpdesk ID not found');
+                    console.error('Helpdesk ID tidak ditemukan');
                     return;
                 }
+                currentHelpdeskId = helpdeskId;
 
                 currentHelpdeskId = helpdeskId;
                 console.log('📂 Opening chat for ticket:', helpdeskId);
-
+                loadChatOpponent(helpdeskId);
                 loadTicketInfo(helpdeskId);
                 loadChatMessages(helpdeskId);
                 initChatChannel(helpdeskId);
@@ -370,12 +372,12 @@
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
-                    success: function (messages) {
+                    success: function(messages) {
                         console.log('✅ Messages loaded:', messages.length, 'messages');
                         renderMessages(messages);
                         scrollToBottom();
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error('❌ Failed to load messages:', xhr);
                         $('.chat-history ul').html(
                             '<li class="text-center text-danger py-4">Failed to load messages</li>'
@@ -391,7 +393,7 @@
                 if (!messages || messages.length === 0) {
                     html = '<li class="text-center text-muted py-4">Belum ada pesan. Mulai percakapan!</li>';
                 } else {
-                    messages.forEach(function (msg) {
+                    messages.forEach(function(msg) {
                         html += renderSingleMessage(msg);
                     });
                 }
@@ -417,17 +419,21 @@
                 var html = '';
 
                 if (isMe) {
-                    // User's message (kanan - biru)
+                    // Tampilkan "You (username)" — username diambil dari currentUsername
+                    var usernameDisplay = currentUsername ? `(${currentUsername})` : '';
+
                     html = `
-                                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                                <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                                                                                                    <div class="message-data text-end mb-1">
-                                                                                                        <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">You • ${time}</span>
-                                                                                                    </div>
-                                                                                                    <div style="text-align: left;">${escapeHtml(msg.message)}</div>
-                                                                                                </div>
-                                                                                            </li>
-                                                                                        `;
+        <li class="clearfix" data-message-id="${msg.id}">
+            <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
+                <div class="message-data text-end mb-1">
+                    <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">
+                        You ${usernameDisplay} • ${time}
+                    </span>
+                </div>
+                <div style="text-align: left;">${escapeHtml(msg.message)}</div>
+            </div>
+        </li>
+    `;
                 } else if (isAdmin) {
                     // Admin/Support message (kiri - hijau)
                     html = `
@@ -461,6 +467,78 @@
                 return html;
             }
 
+            // ========== LOAD INFO LAWAN CHAT (ADMIN/SUPPORT) ==========
+            function loadChatOpponent(helpdeskId) {
+                $.ajax({
+                    url: '/user/helpdesk/' + helpdeskId + '/info', // route baru
+                    type: 'GET',
+                    success: function(data) {
+                        if (data.success) {
+                            $('#nama_lengkap').text(data.nama_lengkap || 'Support');
+                            $('#chatOpponentUsername').text(data.username ? '@' + data.username : '');
+                            $('.modal-title').text('Chat - ' + data.judul_laporan);
+
+                        }
+                    },
+                    error: function() {
+                        $('#nama_lengkap').text('Support'); 
+                        $('#chatOpponentUsername').text('');
+                    }
+                });
+            }
+            function updateAdminRoleBadge(role) {
+                var badge = $('#admin-role-badge');
+
+                if (!role || role === 'user') {
+                    badge.hide();
+                    return;
+                }
+
+                // Reset class
+                badge.removeClass('bg-danger bg-primary bg-success bg-warning bg-info');
+
+                // Set warna dan text berdasarkan role
+                switch (role.toLowerCase()) {
+                    case 'superadmin':
+                        badge.addClass('bg-danger');
+                        badge.text('Super Admin');
+                        break;
+                    case 'admin':
+                        badge.addClass('bg-primary');
+                        badge.text('Admin');
+                        break;
+                    case 'support':
+                        badge.addClass('bg-success');
+                        badge.text('Support');
+                        break;
+                    case 'it':
+                        badge.addClass('bg-info');
+                        badge.text('IT');
+                        break;
+                    case 'medis':
+                        badge.addClass('bg-warning');
+                        badge.text('Medis');
+                        break;
+                    case 'teknik':
+                        badge.addClass('bg-secondary');
+                        badge.text('Teknik');
+                        break;
+                    default:
+                        badge.addClass('bg-secondary');
+                        badge.text(role.toUpperCase());
+                }
+
+                badge.show(); // Tampilkan badge
+            }
+
+            // ✅ Function untuk set default info
+            function setDefaultChatInfo() {
+                $('#nama_lengkap').text('Support Team');
+                $('#chatOpponentUsername').text('');
+                $('#admin-role-badge').hide();
+                $('#lastSeen').text('Offline');
+            }
+
             // ========== ESCAPE HTML ==========
             function escapeHtml(text) {
                 var map = {
@@ -470,17 +548,17 @@
                     '"': '&quot;',
                     "'": '&#039;'
                 };
-                return text.replace(/[&<>"']/g, function (m) {
+                return text.replace(/[&<>"']/g, function(m) {
                     return map[m];
                 });
             }
 
             // ========== SEND MESSAGE ==========
-            $(document).on('click', '#send-chat-btn', function () {
+            $(document).on('click', '#send-chat-btn', function() {
                 sendMessage();
             });
 
-            $(document).on('keypress', '#input-box', function (e) {
+            $(document).on('keypress', '#input-box', function(e) {
                 if (e.which === 13 && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
@@ -509,10 +587,10 @@
                         message: message,
                         _token: "{{ csrf_token() }}"
                     },
-                    beforeSend: function () {
+                    beforeSend: function() {
                         $('#send-chat-btn').prop('disabled', true);
                     },
-                    success: function (response) {
+                    success: function(response) {
                         console.log('✅ Message sent:', response);
 
                         if (response.success) {
@@ -529,7 +607,7 @@
                             alert(response.message || 'Gagal mengirim pesan');
                         }
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         console.error('❌ Send message error:', xhr);
 
                         var errorMessage = 'Gagal mengirim pesan';
@@ -544,7 +622,7 @@
 
                         alert(errorMessage);
                     },
-                    complete: function () {
+                    complete: function() {
                         $('#send-chat-btn').prop('disabled', false);
                         $('#input-box').focus();
                     }
@@ -573,7 +651,7 @@
 
             // ========== SCROLL TO BOTTOM ==========
             function scrollToBottom() {
-                setTimeout(function () {
+                setTimeout(function() {
                     var chatBox = $('.chat-history');
                     if (chatBox.length) {
                         chatBox.animate({
@@ -596,7 +674,7 @@
 
                 // Subscribe to channel
                 window.Echo.channel(chatChannel)
-                    .listen('.MessageSent', function (e) {
+                    .listen('.MessageSent', function(e) {
                         console.log('🔔 NEW MESSAGE RECEIVED:', e);
 
                         if (e.message) {
@@ -613,7 +691,7 @@
             }
 
             // ========== CLEAN UP ON MODAL CLOSE ==========
-            $('#chatModal').on('hidden.bs.modal', function () {
+            $('#chatModal').on('hidden.bs.modal', function() {
                 console.log('❌ Chat modal closed');
 
                 if (chatChannel) {
@@ -632,7 +710,7 @@
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
                     );
-                    audio.play().catch(function (e) {
+                    audio.play().catch(function(e) {
                         console.log('🔇 Cannot play sound:', e);
                     });
                 } catch (e) {
