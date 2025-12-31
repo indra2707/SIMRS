@@ -253,20 +253,41 @@
                     align: 'center',
                     formatter: function(value, row) {
                         let badgeClass = '';
+                        let text = value || 'unknown';
+                        let clickableClass = '';
+                        let cursorStyle = 'cursor:pointer;';
+                        let clickable = true;
+
                         switch (value) {
                             case 'accept':
                                 badgeClass = 'badge rounded-pill bg-primary fs-8';
+                                clickableClass = 'update-status';
                                 break;
                             case 'on-progress':
                                 badgeClass = 'badge rounded-pill bg-warning fs-8';
+                                clickableClass = 'update-status';
                                 break;
                             case 'done':
                                 badgeClass = 'badge rounded-pill bg-success fs-8';
+                                clickable = false; // tidak bisa diklik
+                                cursorStyle = 'cursor:default;';
                                 break;
                             default:
                                 badgeClass = 'badge rounded-pill bg-light';
+                                clickable = false;
+                                cursorStyle = 'cursor:default;';
                         }
-                        return `<span class="${badgeClass} update-status" style="cursor:pointer; display:inline-block; width:75px; text-align:center;" data-id="${row.id}">${value}</span>`;
+
+                            text = text.charAt(0).toUpperCase() + text.slice(1); // kapital huruf pertama
+
+                            if (clickable) {
+                                return `<span class="${badgeClass} ${clickableClass}" 
+                        style="${cursorStyle} display:inline-block; width:75px; text-align:center;" 
+                        data-id="${row.id}">${text}</span>`;
+                            } else {
+                                return `<span class="${badgeClass}" 
+                        style="${cursorStyle} display:inline-block; width:75px; text-align:center;">${text}</span>`;
+                            }
                     },
                     events: window.operateChange // <-- ini wajib supaya klik bisa dideteksi
                 },
@@ -519,9 +540,15 @@
     });
 
     // Window operateChange Status
+    let btnProcessing = false;
     window.operateChange = {
         'click .update-status': function(e, value, row, index) {
-            var id = $(this).data('id');
+            e.preventDefault();
+            var $badge = $(e.target); // cegah event bubbling
+            if (btnProcessing) return;
+            btnProcessing = true;
+            $badge.prop('disabled', true)
+                .html('<span class="spinner-border spinner-border-sm"></span>');
 
             var url = "{{ route('admin.helpdesk-update-status', ':id') }}";
             url = url.replace(':id', row.id);
@@ -577,6 +604,13 @@
                             },
                         });
                     }
+                },
+                complete: function() {
+                    // Tahan spinner selama 800ms supaya terlihat lebih jelas
+                    setTimeout(function() {
+                        btnProcessing = false;
+                        // Badge akan otomatis kembali normal setelah refresh table
+                    }, 800);
                 }
             });
         }
@@ -592,10 +626,6 @@
         // loadChat(helpdeskId); // COMMENT dulu sementara
         $('#chatModal').modal('show');
     });
-
-
-
-    
 </script>
 // Echo listener
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
