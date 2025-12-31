@@ -61,7 +61,7 @@
     }
 
     // ketika user memilih biaya
-    $('#biaya').on('select2:select', function(e) {
+    $('#biaya').on('select2:select', function (e) {
         let selected = e.params.data;
         let biayaId = selected.id;
 
@@ -77,10 +77,10 @@
         $.ajax({
             url: url,
             type: 'GET',
-            success: function(res) {
+            success: function (res) {
                 $('#harga').val(res.harga || '');
             },
-            error: function() {
+            error: function () {
                 $('#harga').val('');
             }
         });
@@ -88,7 +88,7 @@
 
 
     // Save Detail biaya
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val(); // GET value, jangan SET
         console.log('ID submit:', id);
 
@@ -96,7 +96,7 @@
         url = url.replace(':id', id);
         var type = "PUT";
         var forms = document.getElementsByClassName('form-rincian');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -107,16 +107,16 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-rincian').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-rincian').modal('hide');
@@ -148,7 +148,7 @@
     });
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -177,62 +177,62 @@
             url: "{{ route('sdm.rincian_spd.view') }}",
             columns: [
                 [{
-                        field: 'no_surat',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_pegawai',
-                        sortable: true,
-                    },
-                    {
-                        field: 'tgl_awal',
-                        sortable: true,
-                        formatter: function(value, row, index) {
-                            return row.tgl_awal + ' - ' + row.tgl_akhir;
-                        }
-                    },
-                    {
-                        field: 'nama_kota1',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_kota2',
-                        sortable: true,
-                    },
-                    {
-                        width: '50%',
-                        align: 'center',
-                        valign: 'middle',
-                        formatter: function(value, row, index) {
-                            let buttons = ''; // Tombol yang akan ditampilkan
+                    field: 'no_surat',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_pegawai',
+                    sortable: true,
+                },
+                {
+                    field: 'tgl_awal',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.tgl_awal + ' - ' + row.tgl_akhir;
+                    }
+                },
+                {
+                    field: 'nama_kota1',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_kota2',
+                    sortable: true,
+                },
+                {
+                    width: '50%',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        let buttons = ''; // Tombol yang akan ditampilkan
 
-                            // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
-                            if (row.status == 'Draft') {
-                                buttons += `
+                        // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
+                        if (row.status == 'Draft') {
+                            buttons += `
                                     <button class="btn btn-pill btn-xs btn-success action-btn">${row.status}</button>
                                 `;
-                            } else {
-                                buttons += `
+                        } else {
+                            buttons += `
                                     <button class="btn btn-pill btn-xs btn-danger action-btn">${row.status}</button>
                                 `;
-                            }
-
-                            return buttons;
                         }
-                    },
-                    {
-                        width: '100%',
-                        field: 'action',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        clickToSelect: false,
-                        events: window.eventsRincian,
-                        formatter: actionsFunctionRincian
+
+                        return buttons;
                     }
+                },
+                {
+                    width: '100%',
+                    field: 'action',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    clickToSelect: false,
+                    events: window.eventsRincian,
+                    formatter: actionsFunctionRincian
+                }
                 ]
             ],
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             }
         });
@@ -255,7 +255,7 @@
             loadingTemplate: loadingTemplate,
 
             url: "{{ route('sdm.rincian_spd.view_detail') }}",
-            queryParams: function(params) {
+            queryParams: function (params) {
                 return {
                     id_pegawai: id_pegawai,
                     no_surat: no_surat
@@ -263,65 +263,65 @@
             },
 
             columns: [{
-                    field: 'no',
-                    sortable: true,
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return index + 1;
-                    }
-                },
-                {
-                    field: 'nama_biaya',
-                    sortable: true,
-                },
-                {
-                    field: 'harga',
-                    sortable: true,
-                    align: 'right',
-                    formatter: function(value, row, index) {
-                        if (!value) return;
-                        return parseInt(value).toLocaleString('id-ID');
-                    }
-                },
-                {
-                    field: 'jumlah',
-                    sortable: true,
-                    align: 'center'
-                },
-                {
-                    field: 'total',
-                    sortable: true,
-                    align: 'right',
-                    footerFormatter: function(data) {
-                        let total = 0;
+                field: 'no',
+                sortable: true,
+                align: 'center',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            },
+            {
+                field: 'nama_biaya',
+                sortable: true,
+            },
+            {
+                field: 'harga',
+                sortable: true,
+                align: 'right',
+                formatter: function (value, row, index) {
+                    if (!value) return;
+                    return parseInt(value).toLocaleString('id-ID');
+                }
+            },
+            {
+                field: 'jumlah',
+                sortable: true,
+                align: 'center'
+            },
+            {
+                field: 'total',
+                sortable: true,
+                align: 'right',
+                footerFormatter: function (data) {
+                    let total = 0;
 
-                        data.forEach(function(row) {
-                            let harga = parseFloat(row.harga) || 0;
-                            let jumlah = parseFloat(row.jumlah) || 0;
-                            total += harga * jumlah;
-                        });
-
-                        return total.toLocaleString('id-ID');
-                    },
-                    formatter: function(value, row, index) {
+                    data.forEach(function (row) {
                         let harga = parseFloat(row.harga) || 0;
                         let jumlah = parseFloat(row.jumlah) || 0;
-                        return (harga * jumlah).toLocaleString('id-ID');
-                    }
+                        total += harga * jumlah;
+                    });
+
+                    return total.toLocaleString('id-ID');
                 },
-                {
-                    width: '100%',
-                    field: 'action',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    clickToSelect: false,
-                    events: window.eventsDetail,
-                    formatter: actionsFunctionDetail
-                },
+                formatter: function (value, row, index) {
+                    let harga = parseFloat(row.harga) || 0;
+                    let jumlah = parseFloat(row.jumlah) || 0;
+                    return (harga * jumlah).toLocaleString('id-ID');
+                }
+            },
+            {
+                width: '100%',
+                field: 'action',
+                align: 'center',
+                valign: 'middle',
+                sortable: true,
+                clickToSelect: false,
+                events: window.eventsDetail,
+                formatter: actionsFunctionDetail
+            },
             ],
 
-            responseHandler: function(res) {
+            responseHandler: function (res) {
                 return res.data;
             }
         });
@@ -333,7 +333,7 @@
         let data = $('#table_detail').bootstrapTable('getData');
         let total = 0;
 
-        data.forEach(function(row) {
+        data.forEach(function (row) {
             let harga = parseFloat(row.harga) || 0;
             let jumlah = parseFloat(row.jumlah) || 0;
             total += harga * jumlah * 80 / 100;
@@ -360,7 +360,7 @@
     }
 
     //reload data panjar
-    $('#table_detail').on('load-success.bs.table', function() {
+    $('#table_detail').on('load-success.bs.table', function () {
         if ($('#jenis').val() === 'Panjar') {
             $('#panjar').val(formatRupiah(getTotalTable()));
         }
@@ -378,7 +378,7 @@
     }
 
     //save rincian biaya spd
-    $(document).on('click', '.save-detail', function() {
+    $(document).on('click', '.save-detail', function () {
         var id = $('input[name="id_detail"]').val();
         if (id) {
             var url = "{{ route('sdm.rincian_spd.update_detail', ':id') }}";
@@ -389,7 +389,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-detail');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -400,23 +400,23 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-detail').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-detail').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-detail').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-detail').modal('hide');
                             $table_detail.bootstrapTable('refresh');
 
                             // auto hitung ulang panjar
-                            setTimeout(function() {
+                            setTimeout(function () {
                                 updatePanjar();
                             }, 300);
 
@@ -448,7 +448,7 @@
 
 
     // Open Modal Detail
-    $(document).on('click', '.add-btn', function(e, value, row, index) {
+    $(document).on('click', '.add-btn', function (e, value, row, index) {
         $('.form-detail').removeClass('was-validated');
         $('#modal-detail').modal('show');
         $('#modal-rincian').modal('hide');
@@ -463,7 +463,7 @@
         InitSelect2($("select[name='biaya']"), {
             url: "{{ route('get-select-biaya') }}",
             dropdownParent: $("#modal-detail"),
-            data: function() {
+            data: function (params) {
                 return {
                     search: params.term || '',
                     golongan_upah: currentGolonganUpah
@@ -472,7 +472,7 @@
         });
     });
 
-    $('#modal-detail').on('hidden.bs.modal', function() {
+    $('#modal-detail').on('hidden.bs.modal', function () {
         $('#modal-rincian').modal('show');
     });
 
@@ -499,7 +499,7 @@
 
     //event button detail
     window.eventsDetail = {
-        'click .btn-edit-detail': function(e, value, row1, index) {
+        'click .btn-edit-detail': function (e, value, row1, index) {
             $('.form-detail').removeClass('was-validated');
             $('#modal-detail').modal('show');
             $('#modal-rincian').modal('hide');
@@ -525,7 +525,7 @@
             });
 
         },
-        'click .btn-delete-detail': function(e, value, row1, index) {
+        'click .btn-delete-detail': function (e, value, row1, index) {
             var url = "{{ route('sdm.rincian_spd.delete', ':id') }}";
             url = url.replace(':id', row1.id_detail);
             Swal.fire({
@@ -546,14 +546,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $table_detail.bootstrapTable('refresh');
                     });
 
@@ -595,7 +595,7 @@
 
     // Handle events button actions
     window.eventsRincian = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-rincian').modal('show');
             $('.modal-title').text('Form Rincian');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
@@ -640,7 +640,7 @@
             initTable1(row.id_pegawai, row.no_surat);
 
         },
-        'click .btn-tutup': function(e, value, row, index) {
+        'click .btn-tutup': function (e, value, row, index) {
             e.preventDefault();
 
             let url = "{{ route('sdm.rincian_spd.update-status', ':id') }}";
@@ -666,23 +666,23 @@
                         table: 'tbl_spds',
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (res.success) {
                             Alert('success', res.message);
                         } else {
                             Alert('warning', res.message);
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Alert('error', 'Terjadi kesalahan server');
                     },
-                    complete: function() {
+                    complete: function () {
                         $tableRincian.bootstrapTable('refresh');
                     }
                 });
             });
         },
-        'click .btn-print': function(e, value, row, index) {
+        'click .btn-print': function (e, value, row, index) {
             var url = "{{ route('sdm.rincian_spd.print', ':id') }}";
             url = url.replace(':id', row.id);
 
