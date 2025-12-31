@@ -29,19 +29,21 @@
                             <span class="fa fa-plus"></span>
                             <span> Tambah Pasien</span>
                         </button> --}}
-                        <div class="mt-0 mb-0">
+                        <div id="toolbar-helpdesk" class="d-flex align-items-center gap-3 mb-3">
                             <div class="bs-bars">
-                                <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
-                                    placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                                <input type="text" class="form-control js-daterangepicker text-center"
+                                    style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
                             </div>
+
+                            <!-- Hidden inputs untuk kirim ke server -->
+                            <input type="hidden" name="tgl_awal" id="tgl_awal">
+                            <input type="hidden" name="tgl_akhir" id="tgl_akhir">
                         </div>
-                        <input type="hidden" name="tgl_awal" id="tgl_awal">
-                        <input type="hidden" name="tgl_akhir" id="tgl_akhir">
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
                                 <table id="table_helpdesk" class="table table-hover" data-buttons-class="primary"
-                                    data-toggle="table">
+                                    data-toolbar="#toolbar-helpdesk" data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">id</th>
@@ -74,97 +76,76 @@
                 </div>
 
                 <div class="modal-body">
+                    <form class="row g-2 form-helpdesk" enctype="multipart/form-data" autocomplete="off">
+                        @csrf
+                        <input type="hidden" name="id">
+                        <input id="f1-first-name" type="hidden" value="{{ Auth::user()->username }}" name="f1-first-name">
+                        <input id="f1-last-name" type="hidden" name="department" value="{{ Auth::user()->role }}">
 
-                    @csrf
-                    <div class="row justify-content-center">
-                        <div class="col-md-10">
-                            <div class="position-relative mb-5">
-                                <div class="position-absolute top-0 end-0 mt-2 me-2 fw-bold">
-                                    <span id="status-badge" class="badge fs-5">Status</span>
-                                </div>
-                            </div>
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <label for="tiket" class="form-label">Tiket</label>
-                                    <input class="form-control" name="tiket" type="text">
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="nama_lengkap" class="form-label">Pelapor</label>
-                                    <input class="form-control" name="nama_lengkap" type="text">
-                                </div>
-                            </div>
-
-                            <!-- Judul Laporan -->
-                            <div class="mb-2">
-                                <label for="judul_laporan" class="form-label">Judul Laporan</label>
-                                <input class="form-control" name="judul_laporan" type="text"
-                                    placeholder="Judul Laporan..." required>
-                            </div>
-
-                            <!-- Hidden Fields -->
-                            <input type="hidden" name="id">
-                            <input type="hidden" value="{{ Auth::user()->username }}" name="f1-first-name">
-                            <input type="hidden" name="department" value="{{ Auth::user()->role }}">
-
-                            <!-- Kategori dan Prioritas (2 Kolom) -->
-                            <div class="row mb-2">
-                                <div class="col-md-6">
-                                    <label for="kategori" class="form-label">Kategori Laporan</label>
-                                    <select class="form-select select2" name="kategori" required>
-                                        <option></option>
-                                        <option value="IT">IT / Sistem Informasi</option>
-                                        <option value="Medis">Peralatan Medis / Atem</option>
-                                        <option value="Teknik">Sarana & Prasarana / Teknik</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label for="prioritas" class="form-label">Prioritas</label>
-                                    <select class="form-select select2" name="prioritas" required>
-                                        <option></option>
-                                        <option value="Rendah">Rendah</option>
-                                        <option value="Sedang">Sedang</option>
-                                        <option value="Tinggi">Tinggi</option>
-                                        <option value="Darurat">Darurat</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Deskripsi Masalah -->
-                            <div class="mb-3">
-                                <label for="keterangan" class="form-label">Deskripsi Masalah</label>
-                                <textarea class="form-control" name="keterangan" id="keterangan" rows="10" required
-                                    placeholder="Deskripsi Masalah..."></textarea>
-                            </div>
-
-                            <!-- Lampiran -->
-                            <div class="mb-3 col-md-12">
-                                <label class="form-label">Lampiran</label>
-
-                                <!-- Button Attach -->
-                                <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="btn-attach">
-                                    <i class="fa fa-paperclip"></i> Attach File
-                                </button>
-
-                                <!-- Hidden Input -->
-                                <input type="file" id="lampiran" name="lampiran[]" multiple
-                                    accept="image/jpeg,image/png" class="d-none">
-
-                                <small class="text-muted d-block">
-                                    Maksimal 5 file (JPG / PNG)
-                                </small>
-
-                                <!-- Preview Images -->
-                                <div class="row mt-2" id="preview-images"></div>
-                            </div>
+                        <!-- Judul Laporan  -->
+                        <label for="judul_laporan" class="col-form-label col-sm-2">Judul Laporan</label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control" name="judul_laporan" type="text"
+                                placeholder="Judul Laporan..." required>
                         </div>
-                    </div>
 
+                        <!-- Kategori Laporan  -->
+                        <label for="kategori" class="col-form-label col-sm-2">Kategori Laporan</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control select2" name="kategori" required>
+                                <option></option>
+                                <option value="IT">IT / Sistem Informasi</option>
+                                <option value="Medis">Peralatan Medis / Atem </option>
+                                <option value="Teknik">Sarana & Prasarana / Teknik </option>
+                            </select>
+                        </div>
+
+                        <!-- Prioritas  -->
+                        <label for="prioritas" class="col-form-label col-sm-2">Prioritas</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control select2" name="prioritas" required>
+                                <option></option>
+                                <option value="Rendah">Rendah</option>
+                                <option value="Sedang">Sedang</option>
+                                <option value="Tinggi">Tinggi</option>
+                                <option value="Darurat">Darurat</option>
+                            </select>
+                        </div>
+
+                        <!-- Deskripsi Masalah  -->
+                        <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50" rows="10" required
+                                placeholder="Deskripsi Masalah..."></textarea>
+                        </div>
+
+                        {{-- ATTACH FILE --}}
+                        <label class="col-sm-2 col-form-label">Lampiran</label>
+                        <div class="col-sm-10">
+
+                            <!-- Button Attach -->
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach"
+                                id="btn-attach">
+                                <i class="fa fa-paperclip"></i> Attach File
+                            </button>
+
+                            <!-- Hidden Input -->
+                            <input type="file" id="lampiran" name="lampiran[]" multiple
+                                accept="image/jpeg,image/png" class="d-none">
+
+                            <small class="text-muted btn-attach">
+                                Maksimal 5 file (JPG / PNG)
+                            </small>
+
+                            {{-- PREVIEW --}}
+                            <div class="row mt-2" id="preview-images"></div>
+                        </div>
+
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-info" type="button" data-bs-dismiss="modal">
-                        <span class="fa fa-times"></span> tutup</button>
+                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                        <span class="fa fa-times"></span> Batal</button>
                     <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
                         Simpan</button>
                 </div>
@@ -290,7 +271,7 @@
                                             <!-- Chat right side ends-->
                                         </div>
                                     </div>
-                                    <div class="col ps-0 chat-menu">
+                                    {{-- <div class="col ps-0 chat-menu">
 
                                         <div class="tab-content" id="info-tabContent">
                                             <div class="tab-pane fade show active" id="info-home" role="tabpanel"
@@ -352,7 +333,7 @@
 
 
                                         </div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
