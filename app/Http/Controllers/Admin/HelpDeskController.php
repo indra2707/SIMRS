@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\HelpDesk;
 use App\Models\User\Users;
 use Illuminate\Http\Request;
@@ -25,19 +26,24 @@ class HelpDeskController extends Controller
         return view('help-desk.Admin.helpDesk', $data);
     }
 
-    public function views()
+    public function views(Request $request)
     {
 
 
 
-        $query = HelpDesk::with(['user.rolls'])->get();
+        $query = HelpDesk::with(['user.rolls']);
+        if ($request->tgl_awal && $request->tgl_akhir) {
+            $query->whereBetween('tanggal', [
+                Carbon::parse($request->tgl_awal)->startOfDay(),
+                Carbon::parse($request->tgl_akhir)->endOfDay()
+            ]);
+        }
+       
 
-        $data = [];
-        foreach ($query as $key => $value) {
-            $data[] = [
+
+        $data = $query->get()->map(function ($value) {
+            return [
                 'id' => $value->id,
-                // 'nama_lengkap' => $value->kode,
-                // 'username' => $value->kategori,
                 'nama_lengkap' => $value->user->nama_lengkap ?? '-',
                 'username' => $value->user->username ?? '-',
                 'department' => $value->user->rolls->nama ?? '-',
@@ -51,9 +57,7 @@ class HelpDeskController extends Controller
                 'created_at' => $value->created_at,
                 'gambar' => $value->gambar
             ];
-        }
-
-
+        });
 
         return response()->json($data, 200);
     }
@@ -150,6 +154,8 @@ class HelpDeskController extends Controller
                 'status' => $helpdesk->status,
                 'tanggal' => $helpdesk->tanggal,
                 'created_at' => $helpdesk->created_at,
+                'updated_by' => $helpdesk->updated_by
+
             ]);
         } catch (\Exception $e) {
             return response()->json([

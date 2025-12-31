@@ -49,7 +49,7 @@ return new class extends Migration
             $table->string('nama_kontak_darurat')->nullable();
             $table->enum('hubungan_kontak_darurat', ["Orang Tua", "Ayah", "Ibu", "Suami", "Istri", "Saudara Kandung", "Keluarga", "Teman", "Atasan"])->nullable();
 
-            $table->data('tmt_jabatan')->nullable();
+            $table->date('tmt_jabatan')->nullable();
             $table->string('email')->nullable();
             $table->string('email_dinas')->nullable();
             $table->text('alamat_ktp')->nullable();

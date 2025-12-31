@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
-use App\Models\HelpDesk;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\HelpDesk;
 use PHPUnit\TextUI\Help;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 use App\Events\HelpdeskCreated;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 class HelpDeskController extends Controller
@@ -67,6 +68,7 @@ class HelpDeskController extends Controller
     }
 
 
+
     // Simpan
     public function store(Request $request)
     {
@@ -96,6 +98,7 @@ class HelpDeskController extends Controller
         Log::info('Total files: ' . count($gambar));
         $helpdesk = HelpDesk::create([
             'user_id' => Auth::id(),
+            'created_by' => Auth::user()->nama_lengkap ?? Auth::user()->username ?? 'Unknown',
             'tiket' => 'IHC-' . now()->format('YmdHis'),
             'judul_laporan' => $request->judul_laporan,
             'kategori' => $request->kategori,
@@ -121,6 +124,46 @@ class HelpDeskController extends Controller
             'data' => $helpdesk
         ]);
     }
+
+
+
+    public function getHelpdeskInfo($id)
+    {
+        try {
+            $helpdesk = HelpDesk::with('user')->findOrFail($id);
+
+            // Ambil nama dari kolom updated_by
+            $opponentName = $helpdesk->updated_by ?? 'Support Team';
+            $opponentUsername = '';
+            $opponentRole = '';
+
+            if ($helpdesk->updated_by) {
+                $admin = User::where('nama_lengkap', $helpdesk->updated_by) ->first();
+
+                if ($admin) {
+                    $opponentUsername = $admin->username;
+                    $opponentRole = $admin->role; // superadmin, admin, support, dll
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'nama_lengkap' => $opponentName,
+                'username' => $opponentUsername,
+                'role' => $opponentRole,  // ✅ Kirim role
+                'judul_laporan' => $helpdesk->judul_laporan,
+                'status' => $helpdesk->status,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error getting helpdesk info: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memuat informasi'
+            ], 500);
+        }
+    }
+
 
     // Hapus
     public function destroy(HelpDesk $helpDesk)

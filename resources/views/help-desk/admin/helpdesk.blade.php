@@ -29,6 +29,12 @@
                             <span class="fa fa-plus"></span>
                             <span> Tambah Pasien</span>
                         </button> --}}
+                        <div class="bs-bars">
+                            <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
+                                placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                        </div>
+                        <input type="hidden" name="tgl_awal" id="tgl_awal">
+                        <input type="hidden" name="tgl_akhir" id="tgl_akhir">
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">

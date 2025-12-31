@@ -9,6 +9,59 @@
 
     });
     var $table = $('#table_helpdesk');
+    $('.js-daterangepicker').datepicker({
+        dateFormat: 'dd/mm/yyyy',
+        range: true,
+        multipleDates: true,
+        multipleDatesSeparator: ' - ',
+        autoClose: true,
+        toggleSelected: false,
+
+        onSelect: function(formattedDate, date, inst) {
+            // jika belum pilih 2 tanggal, hentikan
+            if (!date || date.length < 2) {
+                return;
+            }
+
+            // date berupa array [startDate, endDate]
+            let start = date[0];
+            let end = date[1];
+
+            // format ke Y-m-d untuk database
+            $('#tgl_awal').val(formatDate(start));
+            $('#tgl_akhir').val(formatDate(end));
+
+            $table.bootstrapTable("refresh");
+        }
+    });
+
+    let now = new Date();
+    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+    let lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    // helper format dd/mm/yyyy (untuk tampilan datepicker)
+    function formatDisplay(date) {
+        let d = String(date.getDate()).padStart(2, '0');
+        let m = String(date.getMonth() + 1).padStart(2, '0');
+        let y = date.getFullYear();
+        return `${d}/${m}/${y}`;
+    }
+
+    // helper format Y-m-d (untuk database)
+    function formatDate(date) {
+        let d = String(date.getDate()).padStart(2, '0');
+        let m = String(date.getMonth() + 1).padStart(2, '0');
+        let y = date.getFullYear();
+        return `${y}-${m}-${d}`;
+    }
+
+    $('.js-daterangepicker').val(
+        formatDisplay(firstDay) + ' - ' + formatDisplay(lastDay)
+    );
+
+    $('#tgl_awal').val(formatDate(firstDay));
+    $('#tgl_akhir').val(formatDate(lastDay));
+
 
     // Open Modal
     $(document).on('click', '.add-btn', function() {
@@ -105,6 +158,16 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('admin.helpdesk-views') }}",
             uniqueId: "id",
+            queryParams: function(params) {
+                return {
+                    limit: params.limit,
+                    offset: params.offset,
+                    search: params.search,
+
+                    tgl_awal: $('#tgl_awal').val(),
+                    tgl_akhir: $('#tgl_akhir').val()
+                };
+            },
             columns: [
                 // {
                 //     field: 'id',

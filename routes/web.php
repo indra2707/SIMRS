@@ -77,6 +77,7 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
     Route::get('help-desk', [HelpDeskController::class, 'index'])->name('user.helpdesk');
     Route::post('help-desk/add', [HelpDeskController::class, 'store'])->name('user.helpdesk-store');
     Route::get('help-desk/views', [HelpDeskController::class, 'views'])->name('user.helpdesk-views');
+    Route::get('helpdesk/{id}/info', [HelpDeskController::class, 'getHelpdeskInfo'])->name('user.helpdesk.info');
     Route::delete('help-desk/{helpDesk}', [HelpDeskController::class, 'destroy'])->name('user.helpdesk-delete');
 
     // USER CHAT
