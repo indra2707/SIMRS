@@ -247,8 +247,7 @@
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:12 am</span>
                                                             </div>
-                                                            Are we meeting today? Project has been already finished and I
-                                                            have results to show you.
+                                                          
                                                         </div>
                                                     </li>
                                                     <li class="clearfix">
@@ -261,8 +260,7 @@
                                                                 <span class="message-data-time"
                                                                     style="color: #e0e0e0;">10:14 am</span>
                                                             </div>
-                                                            Well I am not sure. The rest of the team is not here yet. Maybe
-                                                            in an hour or so?
+                                                            
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -560,7 +558,7 @@
                 <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
                    <span style="font-size: 11px; color: #e0e0e0;">${time}</span> ${escapeHtml(msg.message)} 
                     <div class="message-data text-end mb-1">
-                            
+
                     </div>
                 </div>
             </li>

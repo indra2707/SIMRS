@@ -232,47 +232,45 @@
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
                                                     <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
-                                                                                                                    </li>
-                                                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
-                                                                                                                    </li>
-                                                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                                                class="icon-headphone-alt"></i></a></li>
-                                                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                                                class="icon-video-camera"></i></a></li>
-                                                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                                                                                class="icon-menu"></i></a></li> -->
+                                                                                                                        </li>
+                                                                                                                        <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
+                                                                                                                        </li>
+                                                                                                                        <li class="list-inline-item"><a href="#"><i
+                                                                                                                                    class="icon-headphone-alt"></i></a></li>
+                                                                                                                        <li class="list-inline-item"><a href="#"><i
+                                                                                                                                    class="icon-video-camera"></i></a></li>
+                                                                                                                        <li class="list-inline-item toogle-bar"><a href="#"><i
+                                                                                                                                    class="icon-menu"></i></a></li> -->
                                                 </ul>
                                             </div>
                                             <!-- chat-header end-->
                                             <div class="chat-history chat-msg-box custom-scrollbar">
                                                 <ul>
                                                     <li class="clearfix">
-                                                        <div class="message my-message"
+                                                        {{-- <div class="message my-message"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-start chat-user-img img-30"
                                                                 src="{{ asset('assets/images/user/3.png') }}"
                                                                 alt="">
                                                             <div class="message-data text-end">
                                                                 <span class="message-data-time"
-                                                                    style="color: #e0e0e0;">10:12 am</span>
+                                                                    style="color: #e0e0e0;"></span>
                                                             </div>
-                                                            Are we meeting today? Project has been already finished and I
-                                                            have results to show you.
-                                                        </div>
+                                                         
+                                                        </div> --}}
                                                     </li>
                                                     <li class="clearfix">
-                                                        <div class="message other-message pull-right"
+                                                        {{-- <div class="message other-message pull-right"
                                                             style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
                                                             <img class="rounded-circle float-end chat-user-img img-30"
                                                                 src="{{ asset('assets/images/user/12.png') }}"
                                                                 alt="">
                                                             <div class="message-data">
                                                                 <span class="message-data-time"
-                                                                    style="color: #e0e0e0;">10:14 am</span>
+                                                                    style="color: #e0e0e0;"></span>
                                                             </div>
-                                                            Well I am not sure. The rest of the team is not here yet. Maybe
-                                                            in an hour or so?
-                                                        </div>
+                                                          
+                                                        </div> --}}
                                                     </li>
                                                 </ul>
                                             </div>
@@ -292,10 +290,10 @@
                                                             </button>
 
                                                             <!-- Input teks -->
-                                                            <input type="text" id="input-box"
+                                                            <textarea type="text" id="input-box"
                                                                 class="form-control border-0 flex-grow-1 mx-2"
                                                                 placeholder="Masukkan teks..."
-                                                                style="height: 40px; background: transparent; outline: none; box-shadow: none;">
+                                                                style="height: 40px; background: transparent; outline: none; box-shadow: none;"></textarea>
 
                                                             <!-- Tombol Kirim -->
                                                             <button type="button" id="send-chat-btn"
@@ -489,8 +487,22 @@
                     var usernameDisplay = currentUsername ? `(${currentUsername})` : '';
                     html = `
             <li class="clearfix" data-message-id="${msg.id}">
-                <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                    <div style="text-align: right;">${escapeHtml(msg.message)} <span style="font-size: 11px; color: #e0e0e0;">${time}</span></div>
+              <div style="
+  background-color: #DCF8C6;
+  color: #000;
+  padding: 6px 10px;
+  border-radius: 8px 8px 0 8px;
+  max-width: 75%;
+  float: right;
+  clear: both;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.12);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 20px
+">
+ 
+
+                    <div style="text-align: right;">${escapeHtml(msg.message)} <span style="font-size: 11px; color: brown;">${time}</span></div>
                     <div class="message-data text-end mb-1">
                        
                     </div>
@@ -501,7 +513,16 @@
                     // Admin/Support message (kiri - hijau)
                     html = `
             <li class="clearfix" data-message-id="${msg.id}">
-                <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                <div style="
+  background-color: #FFFFFF;
+  color: #000000;
+  padding: 8px 12px;
+  border-radius: 8px 8px 8px 0;
+  max-width: 75%;
+  float: left;
+  clear: both;
+  margin-bottom: 8px;
+">
                    <span style="font-size: 11px; color: #e0e0e0;">${time}</span> ${escapeHtml(msg.message)} 
                     <div class="message-data text-end mb-1">
                             
