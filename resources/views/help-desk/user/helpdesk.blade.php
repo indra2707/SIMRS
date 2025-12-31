@@ -232,15 +232,15 @@
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
                                                     <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
-                                                                                                    </li>
-                                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
-                                                                                                    </li>
-                                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                                class="icon-headphone-alt"></i></a></li>
-                                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                                class="icon-video-camera"></i></a></li>
-                                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                                                                class="icon-menu"></i></a></li> -->
+                                                                                                                    </li>
+                                                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
+                                                                                                                    </li>
+                                                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                                                class="icon-headphone-alt"></i></a></li>
+                                                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                                                class="icon-video-camera"></i></a></li>
+                                                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
+                                                                                                                                class="icon-menu"></i></a></li> -->
                                                 </ul>
                                             </div>
                                             <!-- chat-header end-->
@@ -403,9 +403,7 @@
             }
 
 
-
             // Toggle emoji picker
-
             $(document).on('click', '#emoji-btn', function() {
                 const picker = document.getElementById('emoji-picker');
                 picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
@@ -430,6 +428,7 @@
                     picker.style.display = 'none';
                 });
             });
+
 
             // ========== LOAD CHAT MESSAGES ==========
             function loadChatMessages(helpdeskId) {
@@ -488,33 +487,28 @@
                 if (isMe) {
                     // Tampilkan "You (username)" — username diambil dari currentUsername
                     var usernameDisplay = currentUsername ? `(${currentUsername})` : '';
-
                     html = `
-        <li class="clearfix" data-message-id="${msg.id}">
-            <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
-                <div class="message-data text-end mb-1">
-                    <span class="message-data-time" style="color: #e0e0e0; font-size: 11px;">
-                        You ${usernameDisplay} • ${time}
-                    </span>
+            <li class="clearfix" data-message-id="${msg.id}">
+                <div class="message my-message" style="background-color: #0d6efd; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: right; clear: both; margin-bottom: 10px;">
+                    <div style="text-align: right;">${escapeHtml(msg.message)} <span style="font-size: 11px; color: #e0e0e0;">${time}</span></div>
+                    <div class="message-data text-end mb-1">
+                       
+                    </div>
                 </div>
-                <div style="text-align: left;">${escapeHtml(msg.message)}</div>
-            </div>
-        </li>
-    `;
+            </li>
+        `;
                 } else if (isAdmin) {
                     // Admin/Support message (kiri - hijau)
                     html = `
-                                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                                <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                                    <div class="message-data mb-1">
-                                                                                                        <span class="message-data-time" style="color: rgba(255,255,255,0.8); font-size: 11px;">
-                                                                                                            ${senderName} • ${time}
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                    ${escapeHtml(msg.message)}
-                                                                                                </div>
-                                                                                            </li>
-                                                                                        `;
+            <li class="clearfix" data-message-id="${msg.id}">
+                <div class="message other-message" style="background-color: #28a745; color: white; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
+                   <span style="font-size: 11px; color: #e0e0e0;">${time}</span> ${escapeHtml(msg.message)} 
+                    <div class="message-data text-end mb-1">
+                            
+                    </div>
+                </div>
+            </li>
+        `;
                 } else {
                     // Other user message (kiri - abu-abu) - jarang terjadi
                     html = `
