@@ -14,6 +14,30 @@
             display: flex;
             align-items: center;
         }
+
+        .input-group .btn {
+            z-index: 1;
+        }
+
+        .input-group .form-control:focus {
+            box-shadow: none;
+            border-color: transparent;
+        }
+
+        .input-group:hover {
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .chat-history .message {
+            font-size: 1.4em !important;
+            line-height: 1.5;
+            padding: 12px 16px;
+        }
+
+        .chat-history .message .message-data-time {
+            font-size: 0.65em !important;
+            opacity: 0.9;
+        }
     </style>
 
 @endsection
@@ -208,15 +232,15 @@
                                                 </div>
                                                 <ul class="list-inline float-start float-sm-end chat-menu-icons">
                                                     <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
-                                                                                    </li>
-                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
-                                                                                    </li>
-                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                class="icon-headphone-alt"></i></a></li>
-                                                                                    <li class="list-inline-item"><a href="#"><i
-                                                                                                class="icon-video-camera"></i></a></li>
-                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                                                class="icon-menu"></i></a></li> -->
+                                                                                                    </li>
+                                                                                                    <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
+                                                                                                    </li>
+                                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                                class="icon-headphone-alt"></i></a></li>
+                                                                                                    <li class="list-inline-item"><a href="#"><i
+                                                                                                                class="icon-video-camera"></i></a></li>
+                                                                                                    <li class="list-inline-item toogle-bar"><a href="#"><i
+                                                                                                                class="icon-menu"></i></a></li> -->
                                                 </ul>
                                             </div>
                                             <!-- chat-header end-->
@@ -256,24 +280,37 @@
                                             <!-- end chat-history-->
                                             <div class="chat-message clearfix">
                                                 <div class="row">
-                                                    <div class="col-xl-12 d-flex align-items-center">
-                                                        <i class="fa fa-comment text-primary"
-                                                            style="font-size: 28px; margin-right: 10px;"></i>
-                                                        <div style="display: flex; gap: 0; width: 100%;">
-                                                            <input type="text" id="input-box" name="input-box"
+                                                    <div class="col-xl-12">
+                                                        <!-- Bar input chat menyatu (rounded pill) -->
+                                                        <div class="d-flex align-items-center bg-white border rounded-pill shadow-sm p-1"
+                                                            style="height: 50px;">
+                                                            <!-- Tombol Emoji -->
+                                                            <button type="button" id="emoji-btn"
+                                                                class="btn btn-light rounded-pill mx-1"
+                                                                style="height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;">
+                                                                <span style="font-size: 20px;">😊</span>
+                                                            </button>
+
+                                                            <!-- Input teks -->
+                                                            <input type="text" id="input-box"
+                                                                class="form-control border-0 flex-grow-1 mx-2"
                                                                 placeholder="Masukkan teks..."
-                                                                style="flex: 1; border-radius: 0.25rem 0 0 0.25rem; margin: 0; padding: 8px;">
+                                                                style="height: 40px; background: transparent; outline: none; box-shadow: none;">
+
+                                                            <!-- Tombol Kirim -->
                                                             <button type="button" id="send-chat-btn"
-                                                                style="border-radius: 0 0.25rem 0.25rem 0; margin: 0; padding: 0 12px; display: flex; align-items: center; justify-content: center; background-color: #0d6efd; color: white; border: none;">
-                                                                <i class="fa fa-paper-plane"
-                                                                    style="margin: 0; padding: 0;"></i>
+                                                                class="btn btn-primary rounded-pill mx-1"
+                                                                style="height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;">
+                                                                <i class="fa fa-paper-plane"></i>
                                                             </button>
                                                         </div>
 
-
-
+                                                        <!-- Emoji Picker (di bawah bar input) -->
+                                                        <div class="mt-3">
+                                                            <emoji-picker id="emoji-picker"
+                                                                style="display: none; width: 100%; height: 350px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"></emoji-picker>
+                                                        </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                             <!-- end chat-message-->
@@ -296,6 +333,7 @@
 @section('script')
     @include('help-desk.user.script')
 
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script>
         $(document).ready(function() {
             var currentHelpdeskId = null;
@@ -363,6 +401,35 @@
                     }
                 }
             }
+
+
+
+            // Toggle emoji picker
+
+            $(document).on('click', '#emoji-btn', function() {
+                const picker = document.getElementById('emoji-picker');
+                picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
+            });
+
+            // Tunggu picker siap baru attach event
+            customElements.whenDefined('emoji-picker').then(() => {
+                const picker = document.getElementById('emoji-picker');
+                picker.addEventListener('emoji-click', event => {
+                    const emoji = event.detail.unicode;
+                    const input = document.getElementById('input-box');
+
+                    const start = input.selectionStart;
+                    const end = input.selectionEnd;
+                    const text = input.value;
+                    input.value = text.substring(0, start) + emoji + text.substring(end);
+
+                    input.focus();
+                    const newPos = start + emoji.length;
+                    input.setSelectionRange(newPos, newPos);
+
+                    picker.style.display = 'none';
+                });
+            });
 
             // ========== LOAD CHAT MESSAGES ==========
             function loadChatMessages(helpdeskId) {
@@ -481,11 +548,12 @@
                         }
                     },
                     error: function() {
-                        $('#nama_lengkap').text('Support'); 
+                        $('#nama_lengkap').text('Support');
                         $('#chatOpponentUsername').text('');
                     }
                 });
             }
+
             function updateAdminRoleBadge(role) {
                 var badge = $('#admin-role-badge');
 

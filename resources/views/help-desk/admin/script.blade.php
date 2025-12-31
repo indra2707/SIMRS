@@ -592,6 +592,10 @@
         // loadChat(helpdeskId); // COMMENT dulu sementara
         $('#chatModal').modal('show');
     });
+
+
+
+    
 </script>
 // Echo listener
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
