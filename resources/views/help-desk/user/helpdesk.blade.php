@@ -456,7 +456,7 @@
                                                         <div class="message-data text-end">
                                                             <span class="message-data-time">10:12 am</span>
                                                         </div>
-                                                        Are you there?
+                                                       
                                                     </div>
                                                 </li>
                                                 <li class="clearfix">
@@ -466,7 +466,7 @@
                                                         <div class="message-data">
                                                             <span class="message-data-time">10:14 am</span>
                                                         </div>
-                                                        Yes, I'm here!
+                                                        
                                                     </div>
                                                 </li>
                                             </ul>
