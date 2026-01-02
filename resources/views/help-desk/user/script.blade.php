@@ -264,7 +264,7 @@
                         $(".save-btn")
                             .html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr("disabled");
-                            saveBtnProcessing = false;
+                        saveBtnProcessing = false;
                     },
                     success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
@@ -582,19 +582,14 @@
     // Mengambil data jam sekarang
     function updateLastSeen() {
         const now = new Date();
-
         let hours = now.getHours();
         let minutes = now.getMinutes();
         const ampm = hours >= 12 ? 'PM' : 'AM';
-
-        hours = hours % 12;
-        hours = hours ? hours : 12; // jam 0 jadi 12
+        hours = hours % 12 || 12; // jam 0 jadi 12
         minutes = minutes < 10 ? '0' + minutes : minutes;
 
-        document.getElementById('lastSeen').innerText =
-            `Last Seen ${hours}:${minutes} ${ampm}`;
+        $('#lastSeen').text(`Last Seen ${hours}:${minutes} ${ampm}`);
     }
-    updateLastSeen(); // panggil saat halaman load
 </script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.16.1/echo.iife.js"></script>

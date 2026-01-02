@@ -278,16 +278,16 @@
                                 cursorStyle = 'cursor:default;';
                         }
 
-                            text = text.charAt(0).toUpperCase() + text.slice(1); // kapital huruf pertama
+                        text = text.charAt(0).toUpperCase() + text.slice(1); // kapital huruf pertama
 
-                            if (clickable) {
-                                return `<span class="${badgeClass} ${clickableClass}" 
+                        if (clickable) {
+                            return `<span class="${badgeClass} ${clickableClass}" 
                         style="${cursorStyle} display:inline-block; width:75px; text-align:center;" 
                         data-id="${row.id}">${text}</span>`;
-                            } else {
-                                return `<span class="${badgeClass}" 
+                        } else {
+                            return `<span class="${badgeClass}" 
                         style="${cursorStyle} display:inline-block; width:75px; text-align:center;">${text}</span>`;
-                            }
+                        }
                     },
                     events: window.operateChange // <-- ini wajib supaya klik bisa dideteksi
                 },
@@ -626,6 +626,17 @@
         // loadChat(helpdeskId); // COMMENT dulu sementara
         $('#chatModal').modal('show');
     });
+
+   function updateLastSeen() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12 || 12;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+
+    $('#lastSeen').text(`Last Seen ${hours}:${minutes} ${ampm}`);
+}
 </script>
 // Echo listener
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>

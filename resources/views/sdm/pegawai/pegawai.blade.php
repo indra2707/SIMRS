@@ -524,7 +524,7 @@
                                     <label for="nomor_hp" class="col-form-label col-sm-2">Nomor HP</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control phone-number" name="nomor_hp"
-                                            placeholder="+62 xxx xxx xxxx" required>
+                                            placeholder="+62 xxx xxx xxxx" >
                                     </div>
 
                                     <!-- Nomor Kontak Darurat -->
@@ -532,7 +532,7 @@
                                         Darurat</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control phone-number"
-                                            name="nomor_kontak_darurat" placeholder="+62 xxx xxx xxxx" required>
+                                            name="nomor_kontak_darurat" placeholder="+62 xxx xxx xxxx" >
                                     </div>
 
                                     <!-- Nama Kontak Darurat -->
@@ -540,7 +540,7 @@
                                         Darurat</label>
                                     <div class="col-md-4">
                                         <input class="form-control" name="nama_kontak_darurat"
-                                            placeholder="Nama Kontak Darurat..." required>
+                                            placeholder="Nama Kontak Darurat..." >
                                     </div>
 
                                     <!-- Hubungan Kontak Darurat -->

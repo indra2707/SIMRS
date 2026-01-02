@@ -15,28 +15,232 @@
             align-items: center;
         }
 
-        .input-group .btn {
-            z-index: 1;
+        /* Layout chat flexible */
+        .chat-box,
+        .chat-right-aside,
+        .chat {
+            height: 100%;
         }
 
-        .input-group .form-control:focus {
-            box-shadow: none;
-            border-color: transparent;
+        .chat {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .input-group:hover {
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        /* Chat history - area scrollable */
+        .chat-history {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: 10px;
+
+            /* min-height: 200px; */
+            max-height: none;
+            /* Hapus batas tinggi */
         }
 
-        .chat-history .message {
-            font-size: 1.4em !important;
-            line-height: 1.5;
-            padding: 12px 16px;
+        /* Padding bawah dinamis untuk chat history */
+        .chat-history::after {
+            /* content: ''; */
+            display: block;
+            /* height: 20px; */
         }
 
-        .chat-history .message .message-data-time {
-            font-size: 0.65em !important;
-            opacity: 0.9;
+        /* Chat message input area - fixed di bawah */
+        .chat-message {
+            flex-shrink: 0;
+            background: #f8f9fa;
+            padding: 6px 8px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Container input pill */
+        .input-pill-container {
+            background: white;
+            border-radius: 24px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        /* Textarea WhatsApp-style */
+        #input-box {
+            flex: 1;
+            min-height: 38px;
+            max-height: 120px;
+            height: 38px;
+            padding: 6px 8px;
+            resize: none;
+            overflow-y: auto;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            line-height: 20px;
+            padding: 10px 8px;
+            font-family: inherit;
+            box-shadow: none !important;
+        }
+
+        #input-box:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        #input-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #input-box::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        /* Buttons */
+        .chat-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .chat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        #emoji-btn {
+            background: #f5f5f5;
+            font-size: 20px;
+        }
+
+        #send-chat-btn {
+            background: #0d6efd;
+            color: white;
+        }
+
+        #send-chat-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Emoji picker */
+        #emoji-picker {
+            margin-top: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Chat messages styling */
+        .chat-history ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-history li {
+            margin-bottom: 5px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar untuk chat history */
+        .chat-history::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-history::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .chat-history::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .chat-history::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Modal full height - PENTING! */
+        #chatModal .modal-dialog {
+            height: 90vh;
+            max-height: 90vh;
+        }
+
+        #chatModal .modal-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .modal-body {
+            padding: 0;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .card {
+            height: 100%;
+            margin: 0;
+        }
+
+        #chatModal .card-body {
+            height: 100%;
+            padding: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .chat-box {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .chat-right-aside {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chat header - fixed height */
+        .chat-header {
+            flex-shrink: 0;
+            height: auto;
+        }
+
+        .chat-history {
+            padding-bottom: 0px !important;
+        }
+
+        .chat-message {
+            padding-top: 0px !important;
+        }
+
+        .card-body,
+        .modal-body {
+            padding-bottom: 0 !important;
         }
     </style>
 
@@ -201,124 +405,103 @@
         </div>
     </div>
 
-    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
+    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+        data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
+                <!-- Modal Header -->
                 <div class="modal-header">
                     <h5 class="modal-title">Chat</h5>
-
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
+                <!-- Modal Body -->
                 <div class="modal-body">
-                    <form class="form-chat">
-
-                        <div class="card">
-                            <div class="card-body p-0">
-                                <div class="row chat-box">
-                                    <!-- Chat right side start-->
-                                    <div class="col pe-0 chat-right-aside">
-                                        <!-- chat start-->
-                                        <div class="chat">
-                                            <!-- chat-header start-->
-                                            <div class="chat-header clearfix"><img class="rounded-circle"
-                                                    src="{{ asset('assets/images/user/8.jpg') }}" alt="">
-                                                <div class="about">
-                                                    <div class="name">
-                                                        <div id="nama_lengkap"></div>
-                                                        <small class="text-muted" id="chatOpponentUsername"></small>
-                                                    </div>
-                                                    <div class="status" id="lastSeen"></div>
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="row chat-box">
+                                <div class="col-12 pe-0 chat-right-aside">
+                                    <div class="chat">
+                                        <!-- Chat Header -->
+                                        <div class="chat-header clearfix">
+                                            <img class="rounded-circle" src="{{ asset('assets/images/user/8.jpg') }}"
+                                                alt="">
+                                            <div class="about">
+                                                <div class="name">
+                                                    <div id="nama_lengkap"></div>
+                                                    <small class="text-muted" id="chatOpponentUsername"></small>
                                                 </div>
-                                                <ul class="list-inline float-start float-sm-end chat-menu-icons">
-                                                    <!-- <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
-                                                                                                                            </li>
-                                                                                                                            <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a>
-                                                                                                                            </li>
-                                                                                                                            <li class="list-inline-item"><a href="#"><i
-                                                                                                                                        class="icon-headphone-alt"></i></a></li>
-                                                                                                                            <li class="list-inline-item"><a href="#"><i
-                                                                                                                                        class="icon-video-camera"></i></a></li>
-                                                                                                                            <li class="list-inline-item toogle-bar"><a href="#"><i
-                                                                                                                                        class="icon-menu"></i></a></li> -->
-                                                </ul>
+                                                <div class="status" id="lastSeen"></div>
+                                                <!-- Sudah langsung pakai id="lastSeen" di div status -->
                                             </div>
-                                            <!-- chat-header end-->
-                                            <div class="chat-history chat-msg-box custom-scrollbar">
-                                                <ul>
-                                                    <li class="clearfix">
-                                                        {{-- <div class="message my-message"
-                                                            style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
-                                                            <img class="rounded-circle float-start chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/3.png') }}"
-                                                                alt="">
-                                                            <div class="message-data text-end">
-                                                                <span class="message-data-time"
-                                                                    style="color: #e0e0e0;"></span>
-                                                            </div>
+                                            <ul class="list-inline float-start float-sm-end chat-menu-icons">
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-search"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-clip"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-headphone-alt"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-video-camera"></i></a></li>
+                                            </ul>
+                                        </div>
 
-                                                        </div> --}}
-                                                    </li>
-                                                    <li class="clearfix">
-                                                        {{-- <div class="message other-message pull-right"
-                                                            style="background-color: #0d6efd; color: white; padding: 8px 12px; border-radius: 15px; display: inline-block; max-width: 75%;">
-                                                            <img class="rounded-circle float-end chat-user-img img-30"
-                                                                src="{{ asset('assets/images/user/12.png') }}"
-                                                                alt="">
-                                                            <div class="message-data">
-                                                                <span class="message-data-time"
-                                                                    style="color: #e0e0e0;"></span>
-                                                            </div>
-
-                                                        </div> --}}
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- end chat-history-->
-                                            <div class="chat-message clearfix">
-                                                <div class="row">
-                                                    <div class="col-xl-12">
-                                                        <!-- Bar input chat menyatu (rounded pill) -->
-                                                        <div class="d-flex align-items-center bg-white border rounded-pill shadow-sm p-1"
-                                                            style="height: 50px;">
-                                                            <!-- Tombol Emoji -->
-                                                            <button type="button" id="emoji-btn"
-                                                                class="btn btn-light rounded-pill mx-1"
-                                                                style="height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;">
-                                                                <span style="font-size: 20px;">😊</span>
-                                                            </button>
-
-                                                            <!-- Input teks -->
-                                                            <textarea type="text" id="input-box" class="form-control border-0 flex-grow-1 mx-2"
-                                                                placeholder="Masukkan teks..." style="height: 40px; background: transparent; outline: none; box-shadow: none;"></textarea>
-
-                                                            <!-- Tombol Kirim -->
-                                                            <button type="button" id="send-chat-btn"
-                                                                class="btn btn-primary rounded-pill mx-1"
-                                                                style="height: 40px; width: 40px; display: flex; align-items: center; justify-content: center;">
-                                                                <i class="fa fa-paper-plane"></i>
-                                                            </button>
+                                        <!-- Chat History -->
+                                        <div class="chat-history chat-msg-box custom-scrollbar">
+                                            <ul>
+                                                <li class="clearfix">
+                                                    <div class="message my-message">
+                                                        <img class="rounded-circle float-start chat-user-img img-30"
+                                                            src="{{ asset('assets/images/user/3.png') }}" alt="">
+                                                        <div class="message-data text-end">
+                                                            <span class="message-data-time">10:12 am</span>
                                                         </div>
-
-                                                        <!-- Emoji Picker (di bawah bar input) -->
-                                                        <div class="mt-3">
-                                                            <emoji-picker id="emoji-picker"
-                                                                style="display: none; width: 100%; height: 350px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"></emoji-picker>
+                                                        Are you there?
+                                                    </div>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <div class="message other-message pull-right">
+                                                        <img class="rounded-circle float-end chat-user-img img-30"
+                                                            src="{{ asset('assets/images/user/12.png') }}" alt="">
+                                                        <div class="message-data">
+                                                            <span class="message-data-time">10:14 am</span>
                                                         </div>
+                                                        Yes, I'm here!
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Chat Message Input -->
+                                        <div class="chat-message clearfix">
+                                            <div class="row m-0">
+                                                <div class="col-12">
+                                                    <!-- Emoji Picker -->
+                                                    <div class="px-2">
+                                                        <emoji-picker id="emoji-picker"
+                                                            style="display: none; width: 100%; height: 350px;"></emoji-picker>
+                                                    </div>
+
+                                                    <!-- Input Container -->
+                                                    <div class="input-pill-container mx-2 mb-2">
+                                                        <button type="button" id="emoji-btn" class="chat-btn">
+                                                            😊
+                                                        </button>
+
+                                                        <textarea id="input-box" class="form-control" placeholder="Ketik pesan..." rows="1"></textarea>
+
+                                                        <button type="button" id="send-chat-btn" class="chat-btn">
+                                                            <i class="fa fa-paper-plane"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- end chat-message-->
-                                            <!-- chat end-->
-                                            <!-- Chat right side ends-->
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -469,8 +652,11 @@
                 var isMe = messageUserId === currentUserId;
 
                 // Get sender info
-                var senderName = msg.display_name || msg.user?.nama_lengkap || msg.user?.username || msg
-                    .sender_type || 'Support';
+                var senderName = msg.display_name ||
+                    (msg.user && msg.user.nama_lengkap) ||
+                    (msg.user && msg.user.username) ||
+                    msg.sender_type || 'Support';
+
                 var isAdmin = msg.is_admin || (msg.user && msg.user.role !== 'user');
 
                 var time = new Date(msg.created_at).toLocaleTimeString('id-ID', {
@@ -478,67 +664,81 @@
                     minute: '2-digit'
                 });
 
+                // Pastikan isi pesan di-escape dan newline diganti <br>
+                var messageContent = escapeHtml(msg.message || '').replace(/\n/g, '<br>');
+
                 var html = '';
+
                 if (isMe) {
-                    // Pesan SAYA: hijau, tail kanan bawah, posisi kanan
+                    // PESAN DARI DIRI SENDIRI (kanan - hijau WhatsApp)
                     html = `
-        <li class="clearfix" data-message-id="${msg.id}">
-            <div style="
-                background-color: #DCF8C6;
-                color: #000;
-                padding: 10px 14px;
-                border-radius: 18px 18px 7px 18px; /* tail kanan bawah */
-                max-width: 75%;
-                float: right;
-                clear: both;
-                margin: 6px 12px 12px 30px;
-                box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
-                font-size: 16px;
-                line-height: 1.45;
-                position: relative;
-            ">
-                <div style="word-wrap: break-word; margin-bottom: 12px;">${escapeHtml(msg.message.replace(/\n/g, '<br>'))}</div>
-                <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
-            </div>
-        </li>
-    `;
+            <li class="clearfix" data-message-id="${msg.id}">
+                <div style="
+                    background-color: #DCF8C6;
+                    color: #000;
+                    padding: 9px 13px 10px 15px;
+                    border-radius: 18px 18px 7px 18px;
+                    max-width: 75%;
+                    float: right;
+                    clear: both;
+                    margin: 4px 10px 12px 30px;
+                    box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+                    font-size: 15.8px;
+                    line-height: 1.45;
+                    position: relative;
+                ">
+                    <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
+                    <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
+                </div>
+            </li>
+        `;
                 } else if (isAdmin) {
-                    // Pesan ADMIN: SAMA persis style bubble-nya, tapi posisi kiri + tail kiri
+                    // PESAN ADMIN (kiri - hijau sama seperti punya kamu)
                     html = `
-        <li class="clearfix" data-message-id="${msg.id}">
-            <div style="
-                background-color: #DCF8C6; /* Sama hijau seperti pesan kamu */
-                color: #000;
-                padding: 10px 14px;
-                border-radius: 18px 18px 18px 7px; /* tail kiri bawah */
-                max-width: 75%;
-                float: left;
-                clear: both;
-                margin: 6px 30px 12px 12px;
-                box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
-                font-size: 16px;
-                line-height: 1.45;
-                position: relative;
-            ">
-                <div style="word-wrap: break-word; margin-bottom: 12px;">${escapeHtml(msg.message.replace(/\n/g, '<br>'))}</div>
-                <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
-            </div>
-        </li>
-    `;
+            <li class="clearfix" data-message-id="${msg.id}">
+                <div style="
+                    background-color: #DCF8C6;
+                    color: #000;
+                    padding: 10px 14px;
+                    border-radius: 18px 18px 18px 7px;
+                    max-width: 75%;
+                    float: left;
+                    clear: both;
+                    margin: 6px 30px 12px 12px;
+                    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+                    font-size: 16px;
+                    line-height: 1.45;
+                    position: relative;
+                ">
+                    <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
+                    <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
+                </div>
+            </li>
+        `;
                 } else {
-                    // Other user message (kiri - abu-abu) - jarang terjadi
+                    // PESAN DARI USER LAIN (kiri - abu-abu)
                     html = `
-                                                                                            <li class="clearfix" data-message-id="${msg.id}">
-                                                                                                <div class="message other-message" style="background-color: #f1f1f1; color: #333; padding: 10px 15px; border-radius: 15px; display: inline-block; max-width: 75%; float: left; clear: both; margin-bottom: 10px;">
-                                                                                                    <div class="message-data mb-1">
-                                                                                                        <span class="message-data-time" style="color: #999; font-size: 11px;">
-                                                                                                            ${senderName} • ${time}
-                                                                                                        </span>
-                                                                                                    </div>
-                                                                                                    ${escapeHtml(msg.message)}
-                                                                                                </div>
-                                                                                            </li>
-                                                                                        `;
+            <li class="clearfix" data-message-id="${msg.id}">
+                <div class="message other-message" style="
+                    background-color: #f1f1f1;
+                    color: #333;
+                    padding: 10px 15px;
+                    border-radius: 15px;
+                    display: inline-block;
+                    max-width: 75%;
+                    float: left;
+                    clear: both;
+                    margin-bottom: 10px;
+                ">
+                    <div class="message-data mb-1">
+                        <span class="message-data-time" style="color: #999; font-size: 11px;">
+                            ${senderName} • ${time}
+                        </span>
+                    </div>
+                    <div style="word-wrap: break-word;">${messageContent}</div>
+                </div>
+            </li>
+        `;
                 }
 
                 return html;
@@ -547,19 +747,40 @@
             // ========== LOAD INFO LAWAN CHAT (ADMIN/SUPPORT) ==========
             function loadChatOpponent(helpdeskId) {
                 $.ajax({
-                    url: '/user/helpdesk/' + helpdeskId + '/info', // route baru
+                    url: '/user/helpdesk/' + helpdeskId + '/info',
                     type: 'GET',
                     success: function(data) {
-                        if (data.success) {
-                            $('#nama_lengkap').text(data.nama_lengkap || 'Support');
-                            $('#chatOpponentUsername').text(data.username ? '@' + data.username : '');
-                            $('.modal-title').text('Chat - ' + data.judul_laporan);
+                        console.log('📋 Chat opponent data:', data);
 
+                        if (data.success) {
+                            // Update nama lengkap
+                            $('#nama_lengkap').text(data.nama_lengkap || 'Support Team');
+
+                            // Update username
+                            $('#chatOpponentUsername').text(data.username ? '' + data.username : '');
+
+                            // Update judul modal
+                            $('.modal-title').text('Chat - ' + (data.judul_laporan || 'Support'));
+
+                            // Update last seen dengan status
+                            if (data.is_online) {
+                                updateLastSeen('online');
+                            } else if (data.last_seen) {
+                                updateLastSeen(null, data.last_seen);
+                            } else {
+                                updateLastSeen();
+                            }
+
+                            // Update role badge jika ada
+                            if (data.role && data.role !== 'user') {
+                                updateAdminRoleBadge(data.role);
+                            }
                         }
                     },
                     error: function() {
-                        $('#nama_lengkap').text('Support');
+                        $('#nama_lengkap').text('Support Team');
                         $('#chatOpponentUsername').text('');
+                        updateLastSeen(); // Tampilkan offline
                     }
                 });
             }
@@ -614,7 +835,7 @@
                 $('#nama_lengkap').text('Support Team');
                 $('#chatOpponentUsername').text('');
                 $('#admin-role-badge').hide();
-                $('#lastSeen').text('Offline');
+                // $('#lastSeen').text('Offline');
             }
 
             // ========== ESCAPE HTML ==========
@@ -795,8 +1016,151 @@
                     console.log('🔇 Audio error:', e);
                 }
             }
+            const inputBox = document.getElementById('input-box');
+            const chatHistory = document.querySelector('.chat-history');
+
+            if (inputBox && chatHistory) {
+
+                // Function untuk adjust chat history height
+                function adjustChatHeight() {
+                    const inputHeight = inputBox.scrollHeight;
+                    const modalBody = document.querySelector('#chatModal .modal-body');
+                    const chatHeader = document.querySelector('.chat-header');
+                    const chatMessage = document.querySelector('.chat-message');
+
+                    if (modalBody && chatHeader && chatMessage) {
+                        const modalHeight = modalBody.offsetHeight;
+                        const headerHeight = chatHeader.offsetHeight;
+                        const messageHeight = chatMessage.offsetHeight;
+
+                        // Calculate available height untuk chat history
+                        const availableHeight = modalHeight - headerHeight - messageHeight;
+                        // 40px buffer
+
+                        chatHistory.style.maxHeight = availableHeight + 'px';
+
+                        // Auto scroll ke bawah
+                        setTimeout(() => {
+                            chatHistory.scrollTop = chatHistory.scrollHeight;
+                        }, 50);
+                    }
+                }
+
+                // Auto-resize textarea DENGAN adjust chat height
+                inputBox.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+
+                    if (this.scrollHeight > 160) {
+                        this.style.height = '160px';
+                        this.style.overflowY = 'auto';
+                    } else {
+                        this.style.overflowY = 'hidden';
+                    }
+
+                    // KUNCI: Adjust chat height setiap kali textarea berubah
+                    adjustChatHeight();
+                });
+
+                // Shift + Enter = baris baru, Enter = kirim
+                inputBox.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendMessage();
+                    }
+                });
+
+                // Adjust saat modal dibuka
+                $('#chatModal').on('shown.bs.modal', function() {
+                    adjustChatHeight();
+                    inputBox.focus();
+                });
+
+                // Adjust saat window resize
+                $(window).on('resize', function() {
+                    if ($('#chatModal').hasClass('show')) {
+                        adjustChatHeight();
+                    }
+                });
+
+                // Override fungsi sendMessage yang sudah ada
+                const originalSendMessage = window.sendMessage || sendMessage;
+                window.sendMessage = function() {
+                    const message = $('#input-box').val().trim();
+                    if (!message) return;
+
+                    $.ajax({
+                        url: '/admin/chat/' + currentHelpdeskId + '/send',
+                        type: 'POST',
+                        data: {
+                            message: message,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        beforeSend: function() {
+                            $('#send-chat-btn').prop('disabled', true);
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#input-box').val('');
+                                inputBox.style.height = '40px';
+                                inputBox.style.overflowY = 'hidden';
+
+                                if (response.data) {
+                                    appendMessage(response.data);
+                                }
+
+                                // KUNCI: Adjust height setelah kirim
+                                adjustChatHeight();
+                            } else {
+                                alert(response.message || 'Gagal mengirim pesan');
+                            }
+                        },
+                        error: function() {
+                            alert('Gagal mengirim pesan');
+                        },
+                        complete: function() {
+                            $('#send-chat-btn').prop('disabled', false);
+                            inputBox.focus();
+                        }
+                    });
+                };
+            }
         });
     </script>
+    <style>
+        .chat-header .about .name .font-primary {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Smooth message appearance */
+        .chat-history li {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 
     <!-- Initialize Laravel Echo (Pusher/Reverb) -->
     {{--
