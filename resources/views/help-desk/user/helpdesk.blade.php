@@ -456,7 +456,7 @@
                                                         <div class="message-data text-end">
                                                             <span class="message-data-time">10:12 am</span>
                                                         </div>
-                                                        Are you there?
+                                                       
                                                     </div>
                                                 </li>
                                                 <li class="clearfix">
@@ -466,7 +466,7 @@
                                                         <div class="message-data">
                                                             <span class="message-data-time">10:14 am</span>
                                                         </div>
-                                                        Yes, I'm here!
+                                                        
                                                     </div>
                                                 </li>
                                             </ul>
@@ -938,8 +938,18 @@
 
                 console.log('📝 Appending message:', message.id);
 
+                var chatList = $('.chat-history ul');
+
+                // ✅ HAPUS PLACEHOLDER "Belum ada pesan" jika ada
+                var placeholder = chatList.find('li.text-center.text-muted');
+                if (placeholder.length > 0) {
+                    console.log('🗑️ Removing placeholder message');
+                    placeholder.remove();
+                }
+
+                // Tambah pesan baru
                 var html = renderSingleMessage(message);
-                $('.chat-history ul').append(html);
+                chatList.append(html);
                 scrollToBottom();
 
                 // Play sound if from admin
