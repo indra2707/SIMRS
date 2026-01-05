@@ -480,6 +480,14 @@ class PegawaiController extends Controller
     }
 
     // Generate nomor pekerja
+    public function generateNomorPekerjaAjax(Request $request)
+    {
+        return response()->json([
+            'nomor_pekerja' => $this->generateNomorPekerja($request->status_pegawai)
+        ]);
+    }
+
+    // Buat nomor otomatis
     private function generateNomorPekerja($status = null)
     {
         // Mapping status
@@ -490,26 +498,24 @@ class PegawaiController extends Controller
             'Internship' => 'INT',
         ];
 
+        // Default
         $prefix = $prefixMap[$status] ?? 'IHC';
 
-        // Ambil nomor terakhir berdasarkan prefix
+        // Ambil nomor terakhir
         $last = DB::table('pegawai')
             ->where('nomor_pekerja', 'like', $prefix . '%')
-            ->orderByRaw(
-                "CAST(SUBSTRING(nomor_pekerja, " . (strlen($prefix) + 1) . ") AS UNSIGNED) DESC"
-            )
+            ->orderByRaw('CAST(SUBSTRING(nomor_pekerja, ' . (strlen($prefix) + 1) . ') AS UNSIGNED) DESC')
             ->value('nomor_pekerja');
 
-        // Jika belum ada data
         if (!$last) {
             return $prefix . '00001';
         }
 
-        // Ambil angka terakhir
-        $number = (int) substr($last, strlen($prefix));
+        preg_match('/-(\d+)$/', $last, $matches);
+
+        $number = isset($matches[1]) ? (int) $matches[1] : 0;
         $next = $number + 1;
 
-        return $prefix . str_pad($next, 5, '0', STR_PAD_LEFT);
+        return $prefix . '-' . str_pad($next, 5, '0', STR_PAD_LEFT);
     }
-
 }
