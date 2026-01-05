@@ -498,23 +498,26 @@ class PegawaiController extends Controller
             'Internship' => 'INT',
         ];
 
-        // Default
         $prefix = $prefixMap[$status] ?? 'IHC';
 
-        // Ambil nomor terakhir
+        // Ambil nomor pekerja TERAKHIR berdasarkan angka
         $last = DB::table('pegawai')
-            ->where('nomor_pekerja', 'like', $prefix . '-%')
-            ->orderBy('id', 'desc')
+            ->where('nomor_pekerja', 'like', $prefix . '%')
+            ->orderByRaw(
+                "CAST(SUBSTRING(nomor_pekerja, " . (strlen($prefix) + 1) . ") AS UNSIGNED) DESC"
+            )
             ->value('nomor_pekerja');
 
+        // Jika belum ada data
         if (!$last) {
             return $prefix . '00001';
         }
 
-        preg_match('/(\d+)$/', $last, $matches);
-        $number = (int) ($matches[1] ?? 0);
+        // Ambil angka terakhir
+        $number = (int) substr($last, strlen($prefix));
         $next = $number + 1;
 
         return $prefix . str_pad($next, 5, '0', STR_PAD_LEFT);
     }
+
 }
