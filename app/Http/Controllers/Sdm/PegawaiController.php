@@ -508,7 +508,7 @@ class PegawaiController extends Controller
             ->value('nomor_pekerja');
 
         if (!$last) {
-            return $prefix . '001';
+            return $prefix . '00001';
         }
 
         preg_match('/(\d+)$/', $last, $matches);
