@@ -75,10 +75,7 @@ class SpdsController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-
         try {
-
-            // SATU SUMBER KEBENARAN
             $noSurat = $request->no_surat . $request->format_no_surat;
 
             $exists = Spds::where('no_surat', $noSurat)->exists();
@@ -135,15 +132,6 @@ class SpdsController extends Controller
                         'created_by' => Auth::user()->username
                     ]);
                 }
-            } else {
-                DB::table('tbl_spd_details')->insert([
-                    'no_surat' => $noSurat,
-                    'id_pegawai' => $request->id_pegawai,
-                    'status' => 'Draft',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                    'created_by' => Auth::user()->username
-                ]);
             }
 
             DB::commit();
@@ -221,16 +209,6 @@ class SpdsController extends Controller
                         'created_by' => Auth::user()->username
                     ]);
                 }
-            } else {
-                // Jika tidak ada pengikut, simpan data pembuat SPD saja
-                DB::table('tbl_spd_details')->insert([
-                    'no_surat' => $request->no_surat,
-                    'id_pegawai' => $request->id_pegawai,
-                    'status' => 'Draft',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                    'updated_by' => Auth::user()->username
-                ]);
             }
 
             DB::commit();
