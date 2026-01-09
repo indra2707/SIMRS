@@ -265,7 +265,7 @@ class GlobalController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'text' => $value->nama,
-                'harga' => 'Rp '  .number_format($harga, 0, '.', ',')
+                'harga' => 'Rp ' . number_format($harga, 0, '.', ',')
             ];
         }
 
@@ -334,6 +334,7 @@ class GlobalController extends Controller
         $values = $request->values ?? '';
 
         $query = DB::table('pegawai')
+            ->where('status', '1')
             // filter by selected value (jika ada)
             ->when(!empty($values), function ($q) use ($values) {
                 $q->where('id', $values);

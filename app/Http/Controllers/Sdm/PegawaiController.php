@@ -145,6 +145,7 @@ class PegawaiController extends Controller
 
                 // System Info
                 'foto' => $value->foto ?? null,
+                'status' => $value->status ?? null,
             ];
         }
 
@@ -154,7 +155,6 @@ class PegawaiController extends Controller
     // Simpan
     public function store(Request $request)
     {
-
         $dataValues = [
             'anak_perusahaan' => $request->anak_perusahaan,
             'id_sk_struktur' => $request->id_sk_struktur,
@@ -518,6 +518,28 @@ class PegawaiController extends Controller
         $next = $number + 1;
 
         return $prefix . str_pad($next, 5, '0', STR_PAD_LEFT);
+    }
+
+
+    // update status check
+    public function updateStatus(Request $request, $id)
+    {
+        $query = Pegawai::where('id', $id)->update([
+            'status' => $request->status,
+        ]);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
+                'data' => [],
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status.',
+                'data' => [],
+            ], status: 400);
+        }
     }
 
 }

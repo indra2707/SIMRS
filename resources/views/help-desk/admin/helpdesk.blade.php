@@ -277,13 +277,15 @@
                                         data-toolbar="#toolbar-helpdesk" data-toggle="table">
                                         <thead class="text-bold text-white text-uppercase text-center">
                                             <tr>
-                                                <th class="f-light">id</th>
-                                                <th class="f-light">keterangan</th>
-                                                <th class="f-light">Nama Pelapor</th>
-                                                <th class="f-light">Department</th>
-                                                <th class="f-light">tanggal</th>
-                                                <th class="f-light">created_at</th>
-                                                <th class="f-light">Status</th>
+                                                <th class="f-light">Tiket</th>
+                                                <th class="f-light">Judul Laporan</th>
+                                                <th class="f-light">Kategori</th>
+                                                <th class="f-light">Prioritas</th>
+                                                <th class="f-light">Nama Melapor</th>
+                                                <th class="f-light">tanggal Melapor</th>
+                                                <th class="f-light">Diterima</th>
+                                                <th class="f-light">Selesai</th>
+                                                <th class="f-light">Nama Menerima</th>
                                                 <th class="f-light">Status</th>
                                                 <th>Action</th>
                                             </tr>

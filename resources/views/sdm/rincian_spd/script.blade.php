@@ -566,6 +566,16 @@
     //Action Rincian
     function actionsFunctionRincian(value, row, index) {
 
+        let btnPrint = '';
+
+        if (row.id_menyetujui !== null && row.id_mengajukan !== null) {
+            btnPrint = `
+        <a class="dropdown-item btn-print" href="javascript:void(0)">
+            <i class="fa fa-print text-secondary"></i> Print
+        </a>
+    `;
+        }
+
         if (row.status === 'Close') {
             return [
                 '<div class="dropdown icon-dropdown">',
@@ -573,7 +583,7 @@
                 '<i class="icon-more-alt"></i>',
                 '</button>',
                 '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                btnPrint,
                 '</div>',
                 '</div>',
             ].join("");
@@ -585,7 +595,7 @@
                 '</button>',
                 '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
                 '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Tambah Biaya</a></a>',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a></a>',
+                 btnPrint,
                 '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-danger"></i> Close</a></a>',
                 '</div>',
                 '</div>',

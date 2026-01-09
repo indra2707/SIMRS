@@ -17,7 +17,7 @@
         autoClose: true,
         toggleSelected: false,
 
-        onSelect: function(formattedDate, date, inst) {
+        onSelect: function (formattedDate, date, inst) {
             // jika belum pilih 2 tanggal, hentikan
             if (!date || date.length < 2) {
                 return;
@@ -64,7 +64,7 @@
 
 
     // Open Modal
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-helpdesk').removeClass('was-validated');
         $('#modal-helpdesk').modal('show');
         $('.modal-title').text('Form Tambah helpdesk');
@@ -74,7 +74,7 @@
     });
 
     // Save
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('admin.helpdesk-update', ':id') }}";
@@ -82,7 +82,7 @@
         }
 
         var forms = document.getElementsByClassName('form-helpdesk');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -93,16 +93,16 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-helpdesk').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $table.bootstrapTable('refresh');
@@ -112,7 +112,7 @@
                         $('#modal-helpdesk').modal('hide');
                         form.classList.remove('was-validated');
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             Alert('error', xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
@@ -130,7 +130,7 @@
 
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -158,7 +158,7 @@
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('admin.helpdesk-views') }}",
             uniqueId: "id",
-            queryParams: function(params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset,
@@ -180,78 +180,60 @@
                 // },
                 {
                     field: 'tiket',
-                    title: 'Tiket',
                     sortable: true,
                 },
                 {
                     field: 'judul_laporan',
-                    title: 'Laporan',
                     sortable: true,
                     formatter: value =>
                         value && value.length > 50 ?
-                        value.slice(0, 50) + '...' : value
+                            value.slice(0, 50) + '...' : value
                 },
                 {
-                    field: 'prioritas',
-                    title: 'Prioritas',
+                    field: 'kategori',
                     sortable: true,
                     align: 'center',
 
                 },
                 {
-                    field: 'kategori',
-                    title: 'kategori',
+                    field: 'prioritas',
                     sortable: true,
                     align: 'center',
-                    visible: false
 
                 },
                 {
                     field: 'nama_lengkap',
-                    title: 'Nama Pelapor',
                     sortable: true,
                     align: 'center',
-
                 },
-
-
-                {
-                    field: 'tanggal',
-                    title: 'Date',
-                    sortable: true,
-                    align: 'center',
-                    formatter: function(value, row) {
-                        if (!value) return '-';
-                        const date = new Date(value);
-                        return date.toLocaleDateString('id-ID', {
-                            day: 'numeric',
-                            month: 'long', // menampilkan bulan penuh
-                            year: 'numeric'
-                        });
-                    }
-                },
-
                 {
                     field: 'created_at',
-                    title: 'Time',
                     sortable: true,
                     align: 'center',
-                    formatter: function(value, row) {
-                        if (!row.created_at) return '-';
-                        const date = new Date(row.created_at);
-                        return date.toLocaleString('id-ID', {
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        });
-                    },
-                    events: window.operateChange
+                },
+                {
+                    field: 'tgl_terima',
+                    sortable: true,
+                    align: 'center',
+                    visible: false
+                },
+                {
+                    field: 'tgl_selesai',
+                    sortable: true,
+                    align: 'center',
+                    visible: false
+                },
+                {
+                    field: 'updated_by',
+                    sortable: true,
+                    align: 'center',
+                    visible: false
                 },
                 {
                     field: 'status',
-                    title: 'Status',
                     sortable: true,
                     align: 'center',
-                    formatter: function(value, row) {
+                    formatter: function (value, row) {
                         let badgeClass = '';
                         let text = value || 'unknown';
                         let clickableClass = '';
@@ -294,14 +276,13 @@
 
                 {
                     field: 'action',
-                    title: 'Aksi',
                     align: 'center',
                     formatter: actionsFunction,
                     events: window.operateEvents
                 }
             ],
 
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     var errors = xhr.responseJSON.errors;
                     $.notify({
@@ -339,7 +320,7 @@
                     });
                 }
             },
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             }
         });
@@ -365,7 +346,7 @@
     let isViewMode = false;
     // Handle events button actions
     window.operateEvents = {
-        'click .btn-infos': function(e, value, row, index) {
+        'click .btn-infos': function (e, value, row, index) {
             console.log('=== DEBUG INFO ===');
             console.log('Row Data:', row);
             console.log('Gambar Value:', row.gambar);
@@ -463,7 +444,7 @@
 
             console.log('=== END DEBUG ===');
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('admin.helpdesk-destroy', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -484,14 +465,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warnig', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $table.bootstrapTable('refresh');
                     });
 
@@ -499,14 +480,14 @@
             })
         }
     }
-    $(document).on('click', '.btn-preview-view', function() {
+    $(document).on('click', '.btn-preview-view', function () {
         $('#preview-large').attr('src', $(this).data('src'));
         $('#modal-preview-image').modal('show');
         $('#modal-helpdesk').modal('hide');
     });
 
     // Kembali ke modal helpdesk saat modal preview ditutup
-    $('#modal-preview-image').on('hidden.bs.modal', function() {
+    $('#modal-preview-image').on('hidden.bs.modal', function () {
         if (isViewMode) {
             // Jangan trigger event hidden dari modal-helpdesk
             $('#modal-helpdesk').modal('show');
@@ -514,7 +495,7 @@
     });
 
     // Reset form saat modal ditutup
-    $('#modal-helpdesk').on('hidden.bs.modal', function() {
+    $('#modal-helpdesk').on('hidden.bs.modal', function () {
         // Cek apakah modal preview sedang dibuka
         if (!$('#modal-preview-image').hasClass('show')) {
             console.log('Modal helpdesk ditutup, reset form');
@@ -542,7 +523,7 @@
     // Window operateChange Status
     let btnProcessing = false;
     window.operateChange = {
-        'click .update-status': function(e, value, row, index) {
+        'click .update-status': function (e, value, row, index) {
             e.preventDefault();
             var $badge = $(e.target); // cegah event bubbling
             if (btnProcessing) return;
@@ -559,7 +540,7 @@
                     status: e.target.checked ? 1 : 0,
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(res, status, xhr) {
+                success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -567,7 +548,7 @@
                     }
                     $table.bootstrapTable('refresh');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         var errors = xhr.responseJSON.errors;
                         $.notify({
@@ -605,9 +586,9 @@
                         });
                     }
                 },
-                complete: function() {
+                complete: function () {
                     // Tahan spinner selama 800ms supaya terlihat lebih jelas
-                    setTimeout(function() {
+                    setTimeout(function () {
                         btnProcessing = false;
                         // Badge akan otomatis kembali normal setelah refresh table
                     }, 800);
@@ -615,11 +596,11 @@
             });
         }
     }
-    window.addEventListener('refresh-admin-table', function() {
+    window.addEventListener('refresh-admin-table', function () {
         $('#table_helpdesk').bootstrapTable('refresh');
     });
 
-    $(document).on('click', '.btn-chat', function() {
+    $(document).on('click', '.btn-chat', function () {
         var helpdeskId = $(this).data('helpdesk-id');
         if (!helpdeskId) return;
 
@@ -627,16 +608,16 @@
         $('#chatModal').modal('show');
     });
 
-   function updateLastSeen() {
-    const now = new Date();
-    let hours = now.getHours();
-    let minutes = now.getMinutes();
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
+    function updateLastSeen() {
+        const now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
 
-    $('#lastSeen').text(`Last Seen ${hours}:${minutes} ${ampm}`);
-}
+        $('#lastSeen').text(`Last Seen ${hours}:${minutes} ${ampm}`);
+    }
 </script>
 // Echo listener
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>

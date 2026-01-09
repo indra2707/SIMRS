@@ -19,7 +19,7 @@
         autoClose: true,
         toggleSelected: false,
 
-        onSelect: function(formattedDate, date, inst) {
+        onSelect: function (formattedDate, date, inst) {
             // jika belum pilih 2 tanggal, hentikan
             if (!date || date.length < 2) {
                 return;
@@ -68,13 +68,13 @@
 
 
     // onclick upload
-    $('#btn-attach').on('click', function() {
+    $('#btn-attach').on('click', function () {
         $('#lampiran').trigger('click');
     });
 
     //upload foto multiple
     let fileBuffer = new DataTransfer();
-    $(document).on('change', 'input[name="lampiran[]"]', function() {
+    $(document).on('change', 'input[name="lampiran[]"]', function () {
         const input = this;
         const newFiles = Array.from(input.files);
 
@@ -107,7 +107,7 @@
     function renderPreview(file, index) {
         const reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             $('#preview-images').append(`
             <div class="col-md-2 mb-2" data-index="${index}">
                 <div class="position-relative">
@@ -138,14 +138,14 @@
 
 
     // LIHAT FOTO
-    $(document).on('click', '.btn-preview', function() {
+    $(document).on('click', '.btn-preview', function () {
         $('#preview-large').attr('src', $(this).data('src'));
         $('#modal-preview-image').modal('show');
         $('#helpdesk-modal').modal('hide');
     });
 
     // HAPUS FOTO
-    $(document).on('click', '.btn-remove', function() {
+    $(document).on('click', '.btn-remove', function () {
 
         const $item = $(this).closest('.col-md-2');
 
@@ -175,12 +175,12 @@
     });
 
     // close modal
-    $('#modal-preview-image').on('hidden.bs.modal', function() {
+    $('#modal-preview-image').on('hidden.bs.modal', function () {
         $('#helpdesk-modal').modal('show');
     });
 
 
-    $(document).on("click", ".add-btn", function() {
+    $(document).on("click", ".add-btn", function () {
         $(".form-helpdesk").removeClass("was-validated");
         $("#helpdesk-modal").modal("show");
         $(".modal-title").text("Form Tambah Help Desk");
@@ -200,7 +200,7 @@
 
     // Save
     let saveBtnProcessing = false;
-    $(document).on("click", ".save-btn", function(event) {
+    $(document).on("click", ".save-btn", function (event) {
         event.preventDefault();
         if (saveBtnProcessing) return; // kalau sedang proses, langsung stop
         saveBtnProcessing = true;
@@ -208,7 +208,7 @@
         if ($btn.prop('disabled')) return;
         $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Memproses...');
         var forms = document.getElementsByClassName("form-helpdesk");
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.stopPropagation();
@@ -253,20 +253,20 @@
                     contentType: false,
                     cache: false,
                     data: myformData,
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $(".save-btn")
                             .html(
                                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                             )
                             .attr("disabled", "disabled");
                     },
-                    complete: function() {
+                    complete: function () {
                         $(".save-btn")
                             .html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr("disabled");
                         saveBtnProcessing = false;
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert("success", res.message);
                             $table.bootstrapTable("refresh");
@@ -281,7 +281,7 @@
                         $('#lampiran').val('');
                         $('#preview-images').empty();
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status == 400) {
                             Alert("error", xhr.responseJSON.message);
                         } else if (xhr.status == 500) {
@@ -299,7 +299,7 @@
 
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -327,7 +327,7 @@
             exportTypes: ["json", "csv", "txt", "excel"],
             url: "{{ route('user.helpdesk-views') }}",
 
-            queryParams: function(params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset,
@@ -339,74 +339,84 @@
             },
 
             columns: [{
-                    field: "id",
-                    sortable: true,
-                    align: "center",
-                    formatter: function(value, row, index) {
-                        return index + 1;
-                    },
+                field: "id",
+                sortable: true,
+                align: "center",
+                formatter: function (value, row, index) {
+                    return index + 1;
                 },
-                {
-                    field: "tiket",
-                    sortable: true,
+            },
+            {
+                field: "tiket",
+                sortable: true,
+            },
+            {
+                field: "judul_laporan",
+                sortable: true,
+            },
+            {
+                field: "kategori",
+                sortable: true,
+            },
+            {
+                field: "prioritas",
+                sortable: true,
+            },
+            {
+                field: "status",
+                sortable: true,
+                align: "center",
+                formatter: function (value, row) {
+                    let badgeClass = "";
+                    switch (row.status) {
+                        case "accept":
+                            badgeClass =
+                                "badge rounded-pill bg-primary fs-9";
+                            break;
+                        case "on-progress":
+                            badgeClass =
+                                "badge rounded-pill bg-warning fs-9";
+                            break;
+                        case "done":
+                            badgeClass =
+                                "badge rounded-pill bg-success fs-9";
+                            break;
+                        default:
+                            badgeClass = "badge rounded-pill bg-light";
+                    }
+                    return `<span class="${badgeClass}" style="cursor:pointer; display:inline-block; width:75px; text-align:center;">${row.status}</span>`;
                 },
-                {
-                    field: "judul_laporan",
-                    sortable: true,
-                },
-                {
-                    field: "kategori",
-                    sortable: true,
-                },
-                {
-                    field: "prioritas",
-                    sortable: true,
-                },
-                {
-                    field: "status",
-                    sortable: true,
-                    align: "center",
-                    formatter: function(value, row) {
-                        let badgeClass = "";
-                        switch (row.status) {
-                            case "accept":
-                                badgeClass =
-                                    "badge rounded-pill bg-primary fs-9";
-                                break;
-                            case "on-progress":
-                                badgeClass =
-                                    "badge rounded-pill bg-warning fs-9";
-                                break;
-                            case "done":
-                                badgeClass =
-                                    "badge rounded-pill bg-success fs-9";
-                                break;
-                            default:
-                                badgeClass = "badge rounded-pill bg-light";
-                        }
-                        return `<span class="${badgeClass}" style="cursor:pointer; display:inline-block; width:75px; text-align:center;">${row.status}</span>`;
-                    },
-                    events: window.operateChange,
-                },
-                {
-                    field: "created_at",
-                    sortable: true,
-                    align: "center",
-                },
-                {
-                    field: "updated_by",
-                    sortable: true,
-                    align: "center",
-                },
-                {
-                    field: "action",
-                    title: "Aksi",
-                    align: "center",
-                    formatter: actionsFunction,
-                    events: window.operateEvents,
-                },
+                events: window.operateChange,
+            },
+            {
+                field: "created_at",
+                sortable: true,
+                align: "center",
+            },
+            {
+                field: "updated_by",
+                sortable: true,
+                align: "center",
+            },
+            {
+                field: 'tgl_terima',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                field: 'tgl_selesai',
+                sortable: true,
+                align: 'center',
+            },
+            {
+                field: "action",
+                title: "Aksi",
+                align: "center",
+                formatter: actionsFunction,
+                events: window.operateEvents,
+            },
             ],
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     $.notify({
                         icon: "fa fa-check",
@@ -443,7 +453,7 @@
                     });
                 }
             },
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             },
         });
@@ -480,7 +490,7 @@
 
     // Handle events button actions
     window.operateEvents = {
-        "click .btn-infoo": function(e, value, row, index) {
+        "click .btn-infoo": function (e, value, row, index) {
             $('#helpdesk-modal').modal('show');
             $('.modal-title').text('Nomor Tiket : ' + row.tiket);
             $('.save-btn').hide();
@@ -521,7 +531,7 @@
                 });
             }
         },
-        "click .btn-delete": function(e, value, row, index) {
+        "click .btn-delete": function (e, value, row, index) {
             var url = "{{ route('user.helpdesk-delete', ':id') }}";
             url = url.replace(":id", row.id);
             Swal.fire({
@@ -542,21 +552,21 @@
                         data: {
                             _token: "{{ csrf_token() }}",
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert("success", res.message);
                             } else {
                                 Alert("warnig", res.message);
                             }
                         },
-                    }).done(function() {
+                    }).done(function () {
                         $table.bootstrapTable("refresh");
                     });
                 }
             });
         },
     };
-    $(document).on("click", ".btn-chat", function() {
+    $(document).on("click", ".btn-chat", function () {
         var helpdeskId = $(this).data("helpdesk-id");
         if (!helpdeskId) return;
         // $("#chatOpponentUsername").text(row.user_name);
@@ -567,11 +577,11 @@
         $.ajax({
             url: "/chat/opponent/" + helpdeskId,
             type: "GET",
-            success: function(res) {
+            success: function (res) {
                 $("#chatOpponentFullName").text(res.nama_lengkap);
                 $("#chatOpponentUsername").text(res.username);
             },
-            error: function() {
+            error: function () {
                 $("#chatOpponentName").text("Unknown");
             }
         });

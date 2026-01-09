@@ -113,12 +113,12 @@
         <tr>
             <td width="20%">Nomor Pekerja</td>
             <td width="2%">:</td>
-            <td> {{ $rincian->nomor_pekerja }} </td>
+            <td> {{ $rincian->nomor_pekerja ?? '-'}} </td>
         </tr>
         <tr>
             <td>Nama / Jabatan</td>
             <td>:</td>
-            <td>{{ $rincian->nama_pegawai }} / {{ $rincian->jabatan_pegawai }}</td>
+            <td>{{ $rincian->nama_pegawai ?? '-' }} / {{ $rincian->jabatan_pegawai ?? '-' }}</td>
         </tr>
         <tr>
             <td>Tanggal</td>
@@ -199,7 +199,7 @@
     </div>
 
     <div class="section text-right">
-        Makassar, {{ \Carbon\Carbon::parse($rincian->tanggal)->translatedFormat('d F Y') }}
+        <!-- Makassar, {{ \Carbon\Carbon::parse($rincian->tanggal)->translatedFormat('d F Y') }} -->
     </div>
 
     <table class="signature">
@@ -207,13 +207,14 @@
             <td width="60%">
                 Menyetujui,<br>
                 RSOJ Pertamina Royal Biringkanaya<br>
-                <b>{{ $rincian->jabatan_menyetujui }}</b><br><br><br><br><br>
-                <b>{{ $rincian->nama_menyetujui }}</b>
+                <b>{{ $rincian->jabatan_menyetujui ?? '-'}}</b><br><br><br><br><br>
+                <b>{{ $rincian->nama_menyetujui ?? '-'}}</b>
             </td>
-            <td width="40%">
+            <td width="20%">
+                Makassar, {{ \Carbon\Carbon::parse($rincian->tanggal)->translatedFormat('d F Y') }}<br>
                 Yang Mengajukan,<br>
-                <b>{{ $rincian->jabatan_mengajukan }}</b><br><br><br><br><br><br>
-                <b>{{ $rincian->nama_mengajukan }}</b>
+                <b>{{ $rincian->jabatan_mengajukan ?? '-'}}</b><br><br><br><br><br><br>
+                <b>{{ $rincian->nama_mengajukan ?? '-'}}</b>
             </td>
         </tr>
     </table>
@@ -221,7 +222,7 @@
     <div class="footer">
         <b>RS Otak & Jantung Pertamina Royal Biringkanaya</b><br>
         Jl. Pajjaiyyang Sudiang Raya
-        Kecamatan Biringkanaya Kota madya Ujung Pandang
+        Kecamatan Biringkanaya Kota Makassar
         Sulawesi Selatan
         <br>
         Call Center. (021) 150442 &nbsp;|&nbsp; Telp. (0411) 4821000 &nbsp;|&nbsp; Email: rsoj.prb@ihc.id

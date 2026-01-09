@@ -342,7 +342,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('sdm/update/{id}', [PegawaiController::class, 'update'])->name('pegawai-update');
         Route::post('sdm/users/add', [PegawaiController::class, 'store'])->name('pegawai-store');
         Route::delete('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
-        Route::get('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
+        Route::post('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
         Route::get('sdm/generate-nomor-pekerja', [PegawaiController::class, 'generateNomorPekerjaAjax'])->name('pegawai.generate-nomor-pekerja');
     });
 

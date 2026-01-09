@@ -82,9 +82,13 @@
 
                         <!-- Nomor Surat -->
                         <label for="no_surat" class="col-form-label col-sm-2">Nomor Surat</label>
-                        <div class="col-sm-10">
+                        <div class="col-sm-5">
                             <input type="text" id="no_surat" name="no_surat" class="form-control"
                                 placeholder="Nomor Surat..." required>
+                        </div>
+
+                        <div class="col-sm-5">
+                            <input type="text" id="no_surat" name="format_no_surat" class="form-control" readonly>
                         </div>
 
                         <!-- Pegawai -->

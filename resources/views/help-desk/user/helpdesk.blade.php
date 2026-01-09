@@ -292,6 +292,8 @@
                                             <th class="f-light">Status</th>
                                             <th class="f-light">Tanggal Dibuat</th>
                                             <th class="f-light">Diterima Oleh</th>
+                                            <th class="f-light">Diterima</th>
+                                            <th class="f-light">Selesai</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

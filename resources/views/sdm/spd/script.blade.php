@@ -23,7 +23,7 @@
         autoClose: true,
         toggleSelected: false,
 
-        onSelect: function(formattedDate, date, inst) {
+        onSelect: function (formattedDate, date, inst) {
             // jika belum pilih 2 tanggal, hentikan
             if (!date || date.length < 2) {
                 return;
@@ -40,7 +40,7 @@
     });
 
     //button radio biaya ditanggung
-    $('.biaya-group button').on('click', function() {
+    $('.biaya-group button').on('click', function () {
         // hapus active dari semua button
         $('.biaya-group button').removeClass('active');
 
@@ -74,7 +74,7 @@
     }
 
     //btn btn-group
-    $(document).on('click', '.biaya-group button', function() {
+    $(document).on('click', '.biaya-group button', function () {
         $(this).addClass('active').attr('aria-pressed', true);
         $(this).siblings().removeClass('active').attr('aria-pressed', false);
 
@@ -95,14 +95,17 @@
     $table_employee.bootstrapTable('resetView');
 
     // Open Modal spd
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-spd').removeClass('was-validated');
         $('#modal-spd').modal('show');
         $('.modal-title').text('Form Tambah SPD');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $table_employee.bootstrapTable('removeAll');
+        let tahun = new Date().getFullYear();
+        $('input[name="format_no_surat"]').val('').show();
         $('input[name="id"]').val('');
         $('input[name="no_surat"]').val('');
+        $('input[name="format_no_surat"]').val('/U00000/' + tahun + '-S8');
         $('input[name="tgl_masuk"]').val('');
         $('input[name="tgl_awal"]').val('');
         $('input[name="hak_cuti"]').val('');
@@ -147,7 +150,7 @@
     });
 
 
-    window.actionFormatter = function(value, row, index) {
+    window.actionFormatter = function (value, row, index) {
         return [
             '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id +
             '" data-field_id="' + row.field_id + '">',
@@ -160,7 +163,7 @@
     };
 
     //add pegawai
-    $(document).on('click', '.add-pegawai', function() {
+    $(document).on('click', '.add-pegawai', function () {
 
         $('#modal-spd').modal('hide');
         $('#modal-pegawai').modal('show');
@@ -178,13 +181,13 @@
     });
 
 
-    $('#modal-pegawai').on('hidden.bs.modal', function() {
+    $('#modal-pegawai').on('hidden.bs.modal', function () {
         $('#modal-spd').modal('show');
     });
 
 
     // Save Pegawai
-    $(document).on('click', '.save-pegawai-btn', function() {
+    $(document).on('click', '.save-pegawai-btn', function () {
 
         if (!$('#pengikut').data('select2')) {
             alert('Select pegawai belum siap');
@@ -287,7 +290,7 @@
 
 
     //hapus pegawai
-    $(document).on('click', '.remove-employee-btn', function() {
+    $(document).on('click', '.remove-employee-btn', function () {
         const id = String($(this).data('id'));
         $table_employee.bootstrapTable('remove', {
             field: 'id',
@@ -296,7 +299,7 @@
     });
 
     //edit pegawai
-    $(document).on('click', '.edit-employee-btn', function() {
+    $(document).on('click', '.edit-employee-btn', function () {
         const id = String($(this).data('id'));
         const data = $table_employee.bootstrapTable('getRowByUniqueId', id);
 
@@ -328,7 +331,7 @@
 
 
     // Save spd
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
 
         if (!$('#ditanggung').val()) {
             let activeValue = $('.biaya-group button.active').data('value');
@@ -347,7 +350,7 @@
         }
 
         var forms = document.getElementsByClassName('form-spd');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -369,41 +372,53 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $.param(formData), // Ubah dari serialize() ke param(formData)
-                    beforeSend: function() {
+                    data: $.param(formData),
+
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
+
+                    success: function (res, status, xhr) {
+                        if (xhr.status == 200 && res.success === true) {
                             Alert('success', res.message);
                             $('#modal-spd').modal('hide');
                             $tableSpd.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            form.classList.remove('was-validated');
                         }
                     },
+
+                    error: function (xhr) {
+                        let message = 'Terjadi kesalahan';
+
+                        if (xhr.status === 422) {
+                            message = xhr.responseJSON?.message || 'Nomor surat sudah ada';
+                        } else if (xhr.status === 500) {
+                            message = 'Kesalahan server';
+                        }
+
+                        $.notify({
+                            // icon: 'fa fa-warning',
+                            title: 'Peringatan',
+                            message: message
+                        }, {
+                            type: 'warning',
+                            allow_dismiss: true,
+                            delay: 2000,
+                            showProgressbar: true,
+                            timer: 300,
+                            z_index: 1127,
+                            animate: {
+                                enter: 'animated fadeInDown',
+                                exit: 'animated fadeOutUp'
+                            },
+                        });
+                    }
                 });
             }
             form.classList.add('was-validated');
@@ -411,7 +426,7 @@
     });
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -440,73 +455,73 @@
             url: "{{ route('sdm.spd.view') }}",
             columns: [
                 [{
-                        title: 'No',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        width: '5%',
-                        formatter: function(value, row, index) {
-                            return index + 1
-                        }
-                    },
-                    {
-                        field: 'no_surat',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_pegawai',
-                        sortable: true,
-                    },
-                    {
-                        field: 'pelaksanaan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_kota1',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_kota2',
-                        sortable: true,
-                    },
-                    {
-                        field: 'pengikut1',
-                        sortable: true,
-                    },
-                    {
-                        width: '50%',
-                        align: 'center',
-                        valign: 'middle',
-                        formatter: function(value, row, index) {
-                            let buttons = ''; // Tombol yang akan ditampilkan
+                    title: 'No',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    width: '5%',
+                    formatter: function (value, row, index) {
+                        return index + 1
+                    }
+                },
+                {
+                    field: 'no_surat',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_pegawai',
+                    sortable: true,
+                },
+                {
+                    field: 'pelaksanaan',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_kota1',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_kota2',
+                    sortable: true,
+                },
+                {
+                    field: 'pengikut1',
+                    sortable: true,
+                },
+                {
+                    width: '50%',
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: function (value, row, index) {
+                        let buttons = ''; // Tombol yang akan ditampilkan
 
-                            // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
-                            if (row.status == 'Draft') {
-                                buttons += `
+                        // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
+                        if (row.status == 'Draft') {
+                            buttons += `
                                     <button class="btn btn-pill btn-xs btn-success action-btn">${row.status}</button>
                                 `;
-                            } else {
-                                buttons += `
+                        } else {
+                            buttons += `
                                     <button class="btn btn-pill btn-xs btn-danger action-btn">${row.status}</button>
                                 `;
-                            }
-
-                            return buttons;
                         }
-                    },
-                    {
-                        width: '100%',
-                        field: 'action',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        clickToSelect: false,
-                        events: window.eventsSpd,
-                        formatter: actionsFunctionSpd
+
+                        return buttons;
                     }
+                },
+                {
+                    width: '100%',
+                    field: 'action',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    clickToSelect: false,
+                    events: window.eventsSpd,
+                    formatter: actionsFunctionSpd
+                }
                 ]
             ],
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             }
         });
@@ -581,7 +596,7 @@
 
     // Handle events button actions
     window.eventsSpd = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-spd').modal('show');
             $('.modal-title').text('Form Edit SPD');
             let pengikutValue = (row.pengikut1 === 'Tidak Ada') ? '0' : '1';
@@ -603,6 +618,7 @@
             $('textarea[name="keterangan"]').val(row.keterangan);
             $('input[name="id_pimpinan"]').val(row.id_pimpinan);
             $('select[name="pengikut1"]').val(pengikutValue).trigger('change');
+            $('input[name="format_no_surat"]').val('').hide();
 
             // format tampilan
             let startDisplay = formatDateDMY(row.tgl_awal);
@@ -656,10 +672,10 @@
                     url: "{{ route('sdm.spd.get-pengikut', ':id') }}".replace(':id', row.id),
                     type: "GET",
                     dataType: "json",
-                    success: function(response) {
+                    success: function (response) {
                         if (response.success && response.data.length > 0) {
                             // Loop data pengikut dan tambahkan ke tabel
-                            response.data.forEach(function(pengikut) {
+                            response.data.forEach(function (pengikut) {
                                 $table_employee.bootstrapTable('append', {
                                     id: pengikut.id,
                                     field_id: pengikut.id_pegawai,
@@ -673,13 +689,13 @@
                             $table_employee.bootstrapTable('resetView');
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('Error loading pengikut:', xhr);
                     }
                 });
             }
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('sdm.spd.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -701,21 +717,21 @@
                             _token: "{{ csrf_token() }}",
                             no_surat: row.no_surat // menambah data
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $tableSpd.bootstrapTable('refresh');
                     });
 
                 }
             })
         },
-        'click .btn-tutup': function(e, value, row, index) {
+        'click .btn-tutup': function (e, value, row, index) {
             e.preventDefault();
 
             let url = "{{ route('sdm.spd.update-status', ':id') }}";
@@ -741,23 +757,23 @@
                         table: 'tbl_spds',
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (res.success) {
                             Alert('success', res.message);
                         } else {
                             Alert('warning', res.message);
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Alert('error', 'Terjadi kesalahan server');
                     },
-                    complete: function() {
+                    complete: function () {
                         $tableSpd.bootstrapTable('refresh');
                     }
                 });
             });
         },
-        'click .btn-draft': function(e, value, row, index) {
+        'click .btn-draft': function (e, value, row, index) {
             e.preventDefault();
 
             let url = "{{ route('sdm.spd.update-status', ':id') }}";
@@ -783,23 +799,23 @@
                         table: 'tbl_spds',
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function(res) {
+                    success: function (res) {
                         if (res.success) {
                             Alert('success', res.message);
                         } else {
                             Alert('warning', res.message);
                         }
                     },
-                    error: function() {
+                    error: function () {
                         Alert('error', 'Terjadi kesalahan server');
                     },
-                    complete: function() {
+                    complete: function () {
                         $tableSpd.bootstrapTable('refresh');
                     }
                 });
             });
         },
-        'click .btn-print': function(e, value, row, index) {
+        'click .btn-print': function (e, value, row, index) {
             var url = "{{ route('sdm.spd.print', ':id') }}";
             url = url.replace(':id', row.id);
             window.open(url, '_blank');

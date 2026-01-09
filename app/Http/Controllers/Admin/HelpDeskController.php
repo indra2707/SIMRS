@@ -28,9 +28,6 @@ class HelpDeskController extends Controller
 
     public function views(Request $request)
     {
-
-
-
         $query = HelpDesk::with(['user.rolls']);
         if ($request->tgl_awal && $request->tgl_akhir) {
             $query->whereBetween('tanggal', [
@@ -38,9 +35,7 @@ class HelpDeskController extends Controller
                 Carbon::parse($request->tgl_akhir)->endOfDay()
             ]);
         }
-       
-
-
+        
         $data = $query->get()->map(function ($value) {
             return [
                 'id' => $value->id,
@@ -54,8 +49,11 @@ class HelpDeskController extends Controller
                 'prioritas' => $value->prioritas ?? '-',
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
-                'created_at' => $value->created_at,
-                'gambar' => $value->gambar
+                'created_at' => Carbon::parse($value->created_at)->format('d-m-Y H:i'),
+                'gambar' => $value->gambar,
+                'tgl_terima' => $value->tgl_terima ? Carbon::parse($value->tgl_terima)->format('d-m-Y H:i') : '-',
+                'tgl_selesai' => $value->tgl_selesai ? Carbon::parse($value->tgl_selesai)->format('d-m-Y H:i') : '-',
+                'updated_by' => $value->updated_by ?? '-'
             ];
         });
 
@@ -80,18 +78,24 @@ class HelpDeskController extends Controller
 
     public function updateStatus(HelpDesk $helpDesk)
     {
-        // Logika status
         if ($helpDesk->status === 'accept') {
             $helpDesk->status = 'on-progress';
+            $helpDesk->tgl_terima = Carbon::now();
             $message = 'Berhasil menerima Helpdesk';
+
         } elseif ($helpDesk->status === 'on-progress') {
             $helpDesk->status = 'done';
+            $helpDesk->tgl_selesai = Carbon::now();
             $message = 'Berhasil menyelesaikan Helpdesk';
-        } else {
-            $message = 'Status sudah done';
-        }
-        $helpDesk->updated_by = Auth::user()->nama_lengkap;
 
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Status sudah done'
+            ], 400);
+        }
+
+        $helpDesk->updated_by = Auth::user()->nama_lengkap;
         $helpDesk->save();
 
         broadcast(new HelpdeskStatusUpdated([

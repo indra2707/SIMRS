@@ -81,6 +81,7 @@ return new class extends Migration
 
             // Username
             $table->string('foto')->nullable();
+            $table->enum('status', ['0', '1'])->default('1');
             $table->timestamps();
         });
     }

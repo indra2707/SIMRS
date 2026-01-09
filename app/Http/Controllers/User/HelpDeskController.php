@@ -57,17 +57,17 @@ class HelpDeskController extends Controller
                 'keterangan' => $value->keterangan ?? '-',
                 'tanggal' => $value->tanggal ?? '-',
                 'status' => $value->status ?? '-',
-                'created_at' => Carbon::parse($value->created_at)->format('d-M-Y H:i'),
+                'created_at' => Carbon::parse($value->created_at)->format('d-m-Y H:i'),
                 'user_name' => $value->user_name,
                 'updated_by' => $value->updated_by,
                 'lampiran' => $value->gambar ? json_decode($value->gambar, true) : [],
+                'tgl_terima' => $value->tgl_terima ? Carbon::parse($value->tgl_terima)->format('d-m-Y H:i') : '-',
+                'tgl_selesai' => $value->tgl_selesai ? Carbon::parse($value->tgl_selesai)->format('d-m-Y H:i') : '-',
             ];
         });
 
         return response()->json($data);
     }
-
-
 
     // Simpan
     public function store(Request $request)
@@ -98,7 +98,7 @@ class HelpDeskController extends Controller
         Log::info('Total files: ' . count($gambar));
         $helpdesk = HelpDesk::create([
             'user_id' => Auth::id(),
-            'created_by' => Auth::user()->nama_lengkap ?? Auth::user()->username ?? 'Unknown',
+            // 'created_by' => Auth::user()->nama_lengkap ?? Auth::user()->username ?? 'Unknown',
             'tiket' => 'IHC-' . now()->format('YmdHis'),
             'judul_laporan' => $request->judul_laporan,
             'kategori' => $request->kategori,
@@ -138,7 +138,7 @@ class HelpDeskController extends Controller
             $opponentRole = '';
 
             if ($helpdesk->updated_by) {
-                $admin = User::where('nama_lengkap', $helpdesk->updated_by) ->first();
+                $admin = User::where('nama_lengkap', $helpdesk->updated_by)->first();
 
                 if ($admin) {
                     $opponentUsername = $admin->username;

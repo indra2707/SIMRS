@@ -1,6 +1,4 @@
-<html>
 <!DOCTYPE html>
-
 <html lang="id">
 
 <head>
@@ -298,7 +296,7 @@
         <div class="footer">
             <b>RS Otak & Jantung Pertamina Royal Biringkanaya</b><br>
             Jl. Pajjaiyyang Sudiang Raya
-            Kecamatan Biringkanaya Kota madya Ujung Pandang
+            Kecamatan Biringkanaya Kota Makassar
             Sulawesi Selatan
             <br>
             Call Center. (021) 150442 &nbsp;|&nbsp; Telp. (0411) 4821000 &nbsp;|&nbsp; Email: rsoj.prb@ihc.id

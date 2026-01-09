@@ -167,6 +167,7 @@
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
+                                            <th class="f-light"></th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
