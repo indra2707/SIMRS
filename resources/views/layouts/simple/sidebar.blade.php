@@ -226,7 +226,8 @@
                     @endif
                     @endif --}}
 
-                    @if (in_array('Helpdesk', $aksesMenu))
+                    @if (in_array('Helpdesk.Approval', $aksesMenu) ||
+                         in_array('Helpdesk.List', $aksesMenu))
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
@@ -241,14 +242,16 @@
                             </a>
                             <ul class="sidebar-submenu">
 
-                                @if (Auth()->user()->username === 'superadmin' || in_array('Helpdesk.Approval', $aksesMenu))
+                                <!-- @if (Auth()->user()->username === 'superadmin' || in_array('Helpdesk.Approval', $aksesMenu)) -->
+                                @if (in_array('Helpdesk.Approval', $aksesMenu))
                                     <li><a href="{{ route('admin.helpdesk') }}">Approval</a></li>
                                 @endif
 
-                                @if (
+                                <!-- @if (
                                         in_array('Helpdesk.List', $aksesMenu) || Auth()->user()->username
                                         != 'superadmin' || !in_array('Helpdesk.Approval', $aksesMenu)
-                                    )
+                                    ) -->
+                                    @if (in_array('Helpdesk.List', $aksesMenu))
                                     <li><a href="{{ route('user.helpdesk') }}">List</a></li>
                                 @endif
 
