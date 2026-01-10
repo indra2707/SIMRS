@@ -241,17 +241,10 @@
                                 <span>Helpdesk</span>
                             </a>
                             <ul class="sidebar-submenu">
-
-                                <!-- @if (Auth()->user()->username === 'superadmin' || in_array('Helpdesk.Approval', $aksesMenu)) -->
                                 @if (in_array('Helpdesk.Approval', $aksesMenu))
                                     <li><a href="{{ route('admin.helpdesk') }}">Approval</a></li>
                                 @endif
-
-                                <!-- @if (
-                                        in_array('Helpdesk.List', $aksesMenu) || Auth()->user()->username
-                                        != 'superadmin' || !in_array('Helpdesk.Approval', $aksesMenu)
-                                    ) -->
-                                    @if (in_array('Helpdesk.List', $aksesMenu))
+                                @if (in_array('Helpdesk.List', $aksesMenu))
                                     <li><a href="{{ route('user.helpdesk') }}">List</a></li>
                                 @endif
 
