@@ -101,6 +101,15 @@
                             <span class="fa fa-plus"></span>
                             <span> Tambah Data</span>
                         </button>
+                        <button class="btn btn-success import-btn">
+                            <span class="fa fa-upload"></span>
+                            <span> Import Excel</span>
+                        </button>
+
+                        <a href="{{ route('pegawai-download-template') }}" class="btn btn-info" id="btn-download-template">
+                            <span class="fa fa-download"></span>
+                            <span> Download Template</span>
+                        </a>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
@@ -108,7 +117,6 @@
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th class="f-light"></th>
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
@@ -323,7 +331,7 @@
                                     <label for="tanggal_lahir" class="col-form-label col-sm-2">Tanggal Lahir</label>
                                     <div class="col-sm-4">
                                         <input class="form-control js-datepicker digits" placeholder="Tanggal Lahir..."
-                                            name="tanggal_lahir" data-language="en" required>
+                                            name="tanggal_lahir" data-language="en">
                                     </div>
 
                                     <!-- NIK  -->
@@ -525,7 +533,7 @@
                                     <label for="nomor_hp" class="col-form-label col-sm-2">Nomor HP</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control phone-number" name="nomor_hp"
-                                            placeholder="+62 xxx xxx xxxx" >
+                                            placeholder="+62 xxx xxx xxxx">
                                     </div>
 
                                     <!-- Nomor Kontak Darurat -->
@@ -533,7 +541,7 @@
                                         Darurat</label>
                                     <div class="col-md-4">
                                         <input type="text" class="form-control phone-number"
-                                            name="nomor_kontak_darurat" placeholder="+62 xxx xxx xxxx" >
+                                            name="nomor_kontak_darurat" placeholder="+62 xxx xxx xxxx">
                                     </div>
 
                                     <!-- Nama Kontak Darurat -->
@@ -541,7 +549,7 @@
                                         Darurat</label>
                                     <div class="col-md-4">
                                         <input class="form-control" name="nama_kontak_darurat"
-                                            placeholder="Nama Kontak Darurat..." >
+                                            placeholder="Nama Kontak Darurat...">
                                     </div>
 
                                     <!-- Hubungan Kontak Darurat -->
@@ -831,7 +839,49 @@
             </div>
         </div>
     </div>
+    {{-- Modal Import Excel --}}
+    <div class="modal fade" id="modal-import" tabindex="-1" role="dialog" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Import Data Pegawai dari Excel</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="form-import" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="file_excel" class="form-label">Pilih File Excel</label>
+                            <input type="file" class="form-control" id="file_excel" name="file"
+                                accept=".xlsx,.xls" >
+                            <div class="form-text">Format: .xlsx atau .xls (Maksimal 10MB)</div>
+                        </div>
 
+                        <div class="alert alert-info">
+                            <strong>Perhatian:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Pastikan format file sesuai template</li>
+                                <li>Header harus sesuai dengan kolom database</li>
+                                <li>Format tanggal: YYYY-MM-DD</li>
+                            </ul>
+                        </div>
+
+                        <!-- Progress Bar (hidden by default) -->
+                        <div class="progress d-none" id="import-progress" style="height: 25px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary btn-import-submit">
+                            <span class="fa fa-upload"></span> Import
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
