@@ -106,10 +106,7 @@
                             <span> Import Excel</span>
                         </button>
 
-                        <a href="{{ route('pegawai-download-template') }}" class="btn btn-info" id="btn-download-template">
-                            <span class="fa fa-download"></span>
-                            <span> Download Template</span>
-                        </a>
+
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
@@ -846,14 +843,22 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Import Data Pegawai dari Excel</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal"></button>
+
                 </div>
+
                 <form id="form-import" enctype="multipart/form-data">
+                    <div class="d-flex justify-content-end me-2 mb-0">
+                        <a href="{{ route('pegawai-download-template') }}" class="btn btn-success mt-2"
+                            id="btn-download-template">
+                            <span class="fa fa-download"></span> Download Template
+                        </a>
+                    </div>
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="file_excel" class="form-label">Pilih File Excel</label>
                             <input type="file" class="form-control" id="file_excel" name="file"
-                                accept=".xlsx,.xls" >
+                                accept=".xlsx,.xls">
                             <div class="form-text">Format: .xlsx atau .xls (Maksimal 10MB)</div>
                         </div>
 
