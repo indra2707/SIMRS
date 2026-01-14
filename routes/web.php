@@ -344,6 +344,9 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('sdm/destroy/{id}', [PegawaiController::class, 'destroy'])->name('pegawai-delete');
         Route::post('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
         Route::get('sdm/generate-nomor-pekerja', [PegawaiController::class, 'generateNomorPekerjaAjax'])->name('pegawai.generate-nomor-pekerja');
+
+         Route::get('/pegawai/download-template', [PegawaiController::class, 'downloadTemplate'])->name('pegawai-download-template');
+        Route::post('/pegawai/import', [PegawaiController::class, 'import'])->name('pegawai-import');
     });
 
     // Tarif

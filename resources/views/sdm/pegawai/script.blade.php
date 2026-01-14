@@ -12,7 +12,7 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
@@ -35,7 +35,7 @@
                 url: options.url,
                 dataType: 'json',
                 delay: 250,
-                data: function (params) {
+                data: function(params) {
                     let data = {
                         search: params.term
                     };
@@ -44,7 +44,7 @@
                     }
                     return data;
                 },
-                processResults: function (response) {
+                processResults: function(response) {
                     return {
                         results: response.data
                     };
@@ -68,7 +68,7 @@
     // aktifkan saat SK dipilih
     const jabatanSelect = $("select[name='id_jabatan']");
     jabatanSelect.prop('disabled', true);
-    $("select[name='id_sk_struktur']").on('change', function () {
+    $("select[name='id_sk_struktur']").on('change', function() {
         const idSk = $(this).val();
         jabatanSelect.val(null).trigger('change');
         if (idSk) {
@@ -122,17 +122,17 @@
             data: {
                 status_pegawai: status
             },
-            success: function (res) {
+            success: function(res) {
 
                 // set hanya jika masih kosong
                 if (!$nomorPekerja.val()) {
                     $nomorPekerja.val(res.nomor_pekerja);
                 }
             },
-            error: function () {
+            error: function() {
                 alert('Gagal mengambil nomor pekerja');
             },
-            complete: function () {
+            complete: function() {
                 isLoadingNomorPekerja = false;
             }
         });
@@ -160,7 +160,7 @@
 
     imageInput.addEventListener('change', e => {
         // Open File eader
-        reader.onload = function () {
+        reader.onload = function() {
             // Preview Image
             imageViewer.src = reader.result;
         };
@@ -169,7 +169,7 @@
 
 
     // Open Modal Pegawai
-    $(document).on('click', '.add-btn', function () {
+    $(document).on('click', '.add-btn', function() {
         clearAllValidationErrors();
 
         var form = document.querySelector('.form-pegawai');
@@ -187,7 +187,7 @@
         $('input[name="id"]').val('');
 
         // Reset Select2
-        $('.select2').each(function () {
+        $('.select2').each(function() {
             $(this).val(null).trigger('change');
         });
 
@@ -212,7 +212,7 @@
         InitSelect2($("select[name='id_jabatan']"), {
             url: "{{ route('get-select-jabatan') }}",
             dropdownParent: $("#modal-pegawai"),
-            data: function (params) {
+            data: function(params) {
                 return {
                     id_sk_struktur: $("select[name='id_sk_struktur']").val()
                 };
@@ -229,14 +229,14 @@
         }
 
         // Clear validasi KEDUA KALI (setelah init)
-        setTimeout(function () {
+        setTimeout(function() {
             clearAllValidationErrors();
         }, 250);
     });
 
 
     // Save/update
-    $(document).on('click', '.save-btn', function (e) {
+    $(document).on('click', '.save-btn', function(e) {
         e.preventDefault();
 
         let $form = $('.form-pegawai');
@@ -287,9 +287,9 @@
             beforeSend: () => {
                 $('.save-btn').html(
                     '<span class="spinner-border spinner-border-sm"></span> Menyimpan...').prop(
-                        'disabled', true);
+                    'disabled', true);
             },
-            success: function (res) {
+            success: function(res) {
                 if (res.success) {
                     Alert('success', res.message || 'Data berhasil diperbarui!');
                     $('#modal-pegawai').modal('hide');
@@ -298,14 +298,14 @@
                     Alert('warning', res.message || 'Gagal menyimpan data');
                 }
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 let msg = 'Terjadi kesalahan saat menyimpan';
                 if (xhr.responseJSON?.message) msg = xhr.responseJSON.message;
                 Alert('error', msg);
             },
             complete: () => {
                 $('.save-btn').html(id ? '<span class="fa fa-check"></span> Update' :
-                    '<span class="fa fa-check"></span> Simpan')
+                        '<span class="fa fa-check"></span> Simpan')
                     .prop('disabled', false);
             }
         });
@@ -351,7 +351,7 @@
                     sortable: true,
                     align: 'center',
                     width: 50,
-                    formatter: function (value, row, index) {
+                    formatter: function(value, row, index) {
                         return index + 1;
                     }
                 },
@@ -388,7 +388,6 @@
                     title: 'No SK Struktur',
                     sortable: true,
                     width: 120,
-                    visible: false
                 },
                 {
                     field: 'nama_jabatan',
@@ -418,7 +417,7 @@
                     sortable: true,
                     align: 'center',
                     width: 60,
-                    formatter: function (value, row, index) {
+                    formatter: function(value, row, index) {
                         return value == 'Laki-laki' ? 'L' : 'P';
                     }
 
@@ -428,7 +427,6 @@
                     title: 'Agama',
                     sortable: true,
                     width: 100,
-                    visible: false
                 },
                 {
                     field: 'nik',
@@ -781,24 +779,6 @@
                     width: 200,
                     visible: false
                 },
-                {
-                    width: '100%',
-                    field: 'status',
-                    title: 'Status',
-                    sortable: true,
-                    events: window.updateStatusPegawai,
-                    formatter: function (value, row, index) {
-                        return [
-                            '<div class="media-body text-center switch-sm icon-state">',
-                            '<label class="switch">',
-                            '<input type="checkbox" class="update-status" ' + (row.status ===
-                                '1' ? 'checked' : '') + '>',
-                            '<span class="switch-state"></span>',
-                            '</label>',
-                            '</div>'
-                        ].join("");
-                    }
-                },
 
                 // ========== ACTIONS ==========
                 {
@@ -813,25 +793,25 @@
                 }
             ],
 
-            onLoadSuccess: function (data) {
+            onLoadSuccess: function(data) {
                 console.log(' Data loaded:', data.length, 'records');
             },
 
-            onLoadError: function (status, xhr) {
+            onLoadError: function(status, xhr) {
                 console.error(' Load error:', status);
                 console.error('Response:', xhr.responseText);
             },
 
-            responseHandler: function (res) {
+            responseHandler: function(res) {
                 console.log(' Response received:', res);
                 return res; // Return langsung karena sudah array
             }
         });
     }
 
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Handle tombol NEXT dengan validasi hanya untuk field required
-        $(document).on('click', '.btn-next', function (e) {
+        $(document).on('click', '.btn-next', function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
@@ -846,7 +826,7 @@
                 'border border-danger is-invalid-select2');
 
             $currentFieldset.find('input:visible[required], textarea:visible[required]').each(
-                function () {
+                function() {
                     let $input = $(this);
                     let value = $input.val();
 
@@ -885,7 +865,7 @@
 
             // validadsi selcetbiasa
             $currentFieldset.find('select:visible[required]').not('.select2-hidden-accessible').each(
-                function () {
+                function() {
                     if (!$(this).val()) {
                         isValid = false;
                         $(this).addClass('is-invalid');
@@ -899,7 +879,7 @@
                 });
 
             // validasi select2
-            $currentFieldset.find('select.select2[required]').each(function () {
+            $currentFieldset.find('select.select2[required]').each(function() {
                 let $select = $(this);
                 let value = $select.val();
                 let isEmpty = !value || value === '' || value === null || (Array.isArray(
@@ -925,24 +905,43 @@
 
             if (!isValid) {
                 // Scroll halus ke field error pertama + highlight (tanpa buka Select2 otomatis)
-                setTimeout(function () {
+                setTimeout(function() {
                     let $firstInvalid = $currentFieldset.find(
                         '.is-invalid:first, .is-invalid-select2:first').first();
+
                     if ($firstInvalid.length) {
                         let $target = $firstInvalid.hasClass('select2-hidden-accessible') ||
                             $firstInvalid.hasClass('is-invalid-select2') ?
                             $firstInvalid.next('.select2-container') :
                             $firstInvalid;
 
-                        $('.modal-body').animate({
-                            scrollTop: $target.offset().top - $('.modal-body').offset()
-                                .top + $('.modal-body').scrollTop() - 150
-                        }, 600);
+                        // Pastikan elemen visible dan memiliki offset
+                        if ($target.length && $target.is(':visible') && $target.offset()) {
+                            let modalBody = $('.modal-body');
 
-                        // Highlight kuning agar jelas
-                        $target.effect('highlight', {
-                            color: '#f8d7da'
-                        }, 2000); // merah muda agar sesuai error
+                            // Cek apakah modal body ada dan visible
+                            if (modalBody.length && modalBody.offset()) {
+                                let targetOffset = $target.offset().top;
+                                let modalOffset = modalBody.offset().top;
+                                let scrollTop = modalBody.scrollTop();
+
+                                modalBody.animate({
+                                    scrollTop: targetOffset - modalOffset + scrollTop -
+                                        150
+                                }, 600);
+
+                                // Highlight field error
+                                $target.effect('highlight', {
+                                    color: '#f8d7da'
+                                }, 2000);
+                            }
+                        } else {
+                            // Fallback: scroll ke atas jika offset tidak tersedia
+                            $('.modal-body').animate({
+                                scrollTop: 0
+                            }, 400);
+                            console.warn('Target element not visible or has no offset');
+                        }
                     }
                 }, 100);
 
@@ -954,7 +953,7 @@
             // ====== JIKA VALID → LANJUT KE STEP BERIKUTNYA ======
             let $nextFieldset = $currentFieldset.next('fieldset');
             if ($nextFieldset.length) {
-                $currentFieldset.fadeOut(300, function () {
+                $currentFieldset.fadeOut(300, function() {
                     $nextFieldset.fadeIn(300);
                     $('.modal-body').animate({
                         scrollTop: 0
@@ -976,7 +975,7 @@
         });
 
         // Handle tombol PREVIOUS (tanpa validasi)
-        $(document).on('click', '.btn-previous', function (e) {
+        $(document).on('click', '.btn-previous', function(e) {
             e.preventDefault();
             e.stopImmediatePropagation();
 
@@ -984,7 +983,7 @@
             let $prevFieldset = $currentFieldset.prev('fieldset');
 
             if ($prevFieldset.length) {
-                $currentFieldset.fadeOut(300, function () {
+                $currentFieldset.fadeOut(300, function() {
                     $prevFieldset.fadeIn(300);
                     $('.modal-body').animate({
                         scrollTop: 0
@@ -1005,7 +1004,7 @@
         });
 
         // Clear error saat user input/select
-        $('.form-pegawai').on('input change', 'input, select, textarea', function () {
+        $('.form-pegawai').on('input change', 'input, select, textarea', function() {
             $(this).removeClass('is-invalid');
             $(this).next('.invalid-feedback').remove();
 
@@ -1017,7 +1016,7 @@
         });
 
         // Clear error saat Select2 dibuka atau dipilih
-        $(document).on('select2:open select2:select', '.select2', function () {
+        $(document).on('select2:open select2:select', '.select2', function() {
             $(this).removeClass('is-invalid');
             $(this).next('.select2-container').removeClass('is-invalid-select2 border border-danger');
             $(this).next('.select2-container').next('.invalid-feedback').remove();
@@ -1043,7 +1042,7 @@
 
     // Handle events button actions
     window.eventsPegawai = {
-        'click .btn-edit': function (e, value, row, index) {
+        'click .btn-edit': function(e, value, row, index) {
 
             clearAllValidationErrors();
 
@@ -1083,7 +1082,7 @@
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_jabatan,
                 initialText: row.nama_jabatan,
-                data: function () {
+                data: function() {
                     return {
                         id_sk_struktur: $("select[name='id_sk_struktur']").val() || row
                             .id_sk_struktur
@@ -1186,13 +1185,13 @@
             }
 
             console.log('Form populated with data for ID:', row.id);
-            setTimeout(function () {
+            setTimeout(function() {
                 clearAllValidationErrors();
             }, 300);
         },
 
-        'click .btn-delete': function (e, value, row, index) {
-            console.log('Delete button clicked!', row);
+        'click .btn-delete': function(e, value, row, index) {
+            console.log('✅ Delete button clicked!', row);
 
             var url = "{{ route('pegawai-delete', ':id') }}";
             url = url.replace(':id', row.id);
@@ -1214,7 +1213,7 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        beforeSend: function () {
+                        beforeSend: function() {
                             Swal.fire({
                                 title: 'Menghapus...',
                                 allowOutsideClick: false,
@@ -1223,7 +1222,7 @@
                                 }
                             });
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
@@ -1234,7 +1233,7 @@
                             }, 1500);
 
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
@@ -1242,7 +1241,7 @@
                             });
                             console.error('Delete error:', xhr.responseText);
                         }
-                    }).done(function () {
+                    }).done(function() {
                         $tablePegawai.bootstrapTable('refresh');
                     });
                 }
@@ -1252,7 +1251,7 @@
 
     // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
-        'click .update-status': function (e, value, row, index) {
+        'click .update-status': function(e, value, row, index) {
             var url = "{{ route('pegawai.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -1260,10 +1259,10 @@
                 type: "POST",
                 data: {
                     status: e.target.checked ? 1 : 0,
-                    table: 'pegawai',
+                    table: 'tbl_pegawais',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
+                success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -1271,7 +1270,7 @@
                     }
                     $tablePegawai.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
@@ -1315,7 +1314,7 @@
         $('.form-pegawai .select2-container').removeClass('border border-danger is-invalid-select2');
 
         // 5. Reset custom validity (browser native)
-        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea').each(function () {
+        $('.form-pegawai input, .form-pegawai select, .form-pegawai textarea').each(function() {
             this.setCustomValidity('');
         });
 
@@ -1330,27 +1329,27 @@
 
 
     // Saat modal MULAI dibuka
-    $('#modal-pegawai').on('show.bs.modal', function () {
+    $('#modal-pegawai').on('show.bs.modal', function() {
         console.log('▶️ Modal akan dibuka...');
         clearAllValidationErrors();
     });
 
     // Saat modal SUDAH terbuka
-    $('#modal-pegawai').on('shown.bs.modal', function () {
+    $('#modal-pegawai').on('shown.bs.modal', function() {
         console.log('✅ Modal sudah terbuka');
-        setTimeout(function () {
+        setTimeout(function() {
             clearAllValidationErrors();
         }, 100);
     });
 
     // Saat modal MULAI ditutup
-    $('#modal-pegawai').on('hide.bs.modal', function () {
+    $('#modal-pegawai').on('hide.bs.modal', function() {
         console.log('▶️ Modal akan ditutup...');
         clearAllValidationErrors();
     });
 
     // Saat modal SUDAH ditutup
-    $('#modal-pegawai').on('hidden.bs.modal', function () {
+    $('#modal-pegawai').on('hidden.bs.modal', function() {
         console.log('✅ Modal sudah ditutup');
 
         var form = document.querySelector('.form-pegawai');
@@ -1363,28 +1362,165 @@
         $('.modal-body').scrollTop(0);
 
         // Final cleanup dengan delay
-        setTimeout(function () {
+        setTimeout(function() {
             clearAllValidationErrors();
         }, 150);
     });
 
     // Inisialisasi ulang js-datepicker
-    $(document).ready(function () {
+    $(document).ready(function() {
         $('.js-datepicker').datepicker({
             language: 'en',
             dateFormat: 'yyyy-mm-dd',
             autoClose: true,
-            onSelect: function (formattedDate, date, inst) {
+            onSelect: function(formattedDate, date, inst) {
                 $(inst.el).val(formattedDate).trigger('change').trigger('input');
             }
         });
     });
     // Clear error saat user pilih tanggal di datepicker
-    $('.form-pegawai').on('change input', 'input.js-datepicker[required]', function () {
+    $('.form-pegawai').on('change input', 'input.js-datepicker[required]', function() {
         let $el = $(this);
         if ($el.val() && $el.val() !== '' && $el.val() !== '//') {
             $el.removeClass('is-invalid');
             $el.next('.invalid-feedback').remove();
+        }
+    });
+
+
+    // ============================================================
+    // IMPORT EXCEL FUNCTIONALITY
+    // ============================================================
+
+    // Open Modal Import
+    $(document).on('click', '.import-btn', function() {
+        $('#modal-import').modal('show');
+        $('#form-import')[0].reset();
+        $('#import-progress').addClass('d-none');
+        $('.progress-bar').css('width', '0%').text('0%');
+    });
+
+    // Handle Import Submit
+    $(document).on('submit', '#form-import', function(e) {
+        e.preventDefault();
+
+        let formData = new FormData(this);
+        let fileInput = $('#file_excel')[0];
+
+        // Validasi file
+        if (!fileInput.files.length) {
+            Alert('warning', 'Silakan pilih file Excel terlebih dahulu');
+            return;
+        }
+
+        let file = fileInput.files[0];
+        let fileName = file.name;
+        let fileSize = file.size;
+        let fileExt = fileName.split('.').pop().toLowerCase();
+
+        // Validasi ekstensi
+        if (!['xlsx', 'xls', 'csv'].includes(fileExt)) {
+            Alert('warning', 'Format file harus .xlsx atau .xls');
+            return;
+        }
+
+        // Validasi ukuran (10MB)
+        if (fileSize > 10 * 1024 * 1024) {
+            Alert('warning', 'Ukuran file maksimal 10MB');
+            return;
+        }
+
+        // Show progress bar
+        $('#import-progress').removeClass('d-none');
+
+        $.ajax({
+            url: "{{ route('pegawai-import') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhr: function() {
+                let xhr = new window.XMLHttpRequest();
+                // Upload progress
+                xhr.upload.addEventListener("progress", function(evt) {
+                    if (evt.lengthComputable) {
+                        let percentComplete = Math.round((evt.loaded / evt.total) * 100);
+                        $('.progress-bar').css('width', percentComplete + '%')
+                            .text(percentComplete + '%');
+                    }
+                }, false);
+                return xhr;
+            },
+            beforeSend: function() {
+                $('.btn-import-submit').prop('disabled', true)
+                    .html('<span class="spinner-border spinner-border-sm"></span> Mengimport...');
+            },
+            success: function(res) {
+                if (res.success) {
+                    Alert('success', res.message || 'Data berhasil diimport!');
+                    $('#modal-import').modal('hide');
+                    $tablePegawai.bootstrapTable('refresh');
+
+                    // Reset form
+                    $('#form-import')[0].reset();
+                    $('#import-progress').addClass('d-none');
+                    $('.progress-bar').css('width', '0%').text('0%');
+                } else {
+                    Alert('warning', res.message || 'Import gagal');
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = 'Terjadi kesalahan saat import';
+
+                if (xhr.status === 422) {
+                    // Validation errors
+                    let errors = xhr.responseJSON.errors;
+                    let errorList = '<ul class="mb-0">';
+                    $.each(errors, function(key, value) {
+                        errorList += '<li>' + value[0] + '</li>';
+                    });
+                    errorList += '</ul>';
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Validasi Gagal',
+                        html: errorList
+                    });
+                } else if (xhr.status === 500) {
+                    // Server error
+                    let error = xhr.responseJSON?.errors?.exception || 'Server error';
+
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Import Gagal',
+                        html: '<p>' + errorMsg + '</p><small class="text-muted">' + error +
+                            '</small>'
+                    });
+                } else {
+                    Alert('error', errorMsg);
+                }
+
+                console.error('Import error:', xhr.responseText);
+            },
+            complete: function() {
+                $('.btn-import-submit').prop('disabled', false)
+                    .html('<span class="fa fa-upload"></span> Import');
+            }
+        });
+    });
+
+    // Reset form saat modal ditutup
+    $('#modal-import').on('hidden.bs.modal', function() {
+        $('#form-import')[0].reset();
+        $('#import-progress').addClass('d-none');
+        $('.progress-bar').css('width', '0%').text('0%');
+    });
+
+    // Preview file name
+    $(document).on('change', '#file_excel', function() {
+        let fileName = $(this).val().split('\\').pop();
+        if (fileName) {
+            $(this).next('.form-text').text('File dipilih: ' + fileName);
         }
     });
 </script>
