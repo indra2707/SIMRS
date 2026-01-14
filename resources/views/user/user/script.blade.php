@@ -31,6 +31,7 @@
         $('input[name="email"]').val('');
         $('input[name="password"]').val('');
         $('input[name="status"]').prop('checked', true);
+        $('select[name="role"]').val('').trigger('change');
 
 
         InitSelect2($("select[name='role']"), {
