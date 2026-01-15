@@ -15,6 +15,13 @@
         .select2-fixed .select2-container {
             width: 100% !important;
         }
+
+        .select2-container--bootstrap-5 .select2-selection--single {
+            min-height: 38px !important;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+        }
     </style>
 @endsection
 
