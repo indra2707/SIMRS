@@ -6,7 +6,16 @@
 @endsection
 
 @section('style')
- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/photoswipe.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/photoswipe.css') }}">
+    <style>
+        .select2-fixed {
+            width: 250px;
+        }
+
+        .select2-fixed .select2-container {
+            width: 100% !important;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -25,10 +34,20 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-primary add-btn">
-                            <span class="fa fa-plus"></span>
-                            <span> Tambah Kalibrasi</span>
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-primary add-btn">
+                                <span class="fa fa-plus"></span>
+                                <span> Tambah Kalibrasi</span>
+                            </button>
+
+                            <div class="select2-fixed">
+                                <select class="form-select select3" name="status" id="filter-status">
+                                    <option></option>
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
+                            </div>
+                        </div>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">

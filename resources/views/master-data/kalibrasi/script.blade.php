@@ -8,6 +8,22 @@
         allowClear: true
     });
 
+    //Select Tabel
+    $(".select3").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        allowClear: true,
+        width: "100%"
+    });
+    $('#filter-status').val('1').trigger('change');
+
+    // Filter Tabel
+    $('#filter-status').on('change', function () {
+        $table.bootstrapTable('refresh', {
+            silent: true
+        });
+    });
+
     var $table = $('#table_kalibrasi');
 
     // Open Modal
@@ -39,9 +55,9 @@
 
         // Cara 1: gunakan data yang sudah ada dari results (jika kamu menyertakan nama)
         if (selected.nama !== undefined) {
-            $('#nama_aset').val(selected.nama  || '');
-            $('#no_sn').val(selected.no_sn  || '');
-            $('#lokasi_name').val(selected.lokasi_name  || '');
+            $('#nama_aset').val(selected.nama || '');
+            $('#no_sn').val(selected.no_sn || '');
+            $('#lokasi_name').val(selected.lokasi_name || '');
             return;
         }
 
@@ -166,6 +182,10 @@
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.kalibrasi.view') }}",
+            queryParams: function (params) {
+                params.status = $('#filter-status').val();
+                return params;
+            },
             columns: [
                 [
                     {
@@ -174,11 +194,6 @@
                         sortable: true,
                         visible: false,
                     },
-                    // {
-                    //     width: '200%',
-                    //     field: 'id_aset',
-                    //     sortable: true,
-                    // },
                     {
                         width: '350%',
                         field: 'no_aset',

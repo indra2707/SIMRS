@@ -21,93 +21,106 @@ class KalibrasiController extends Controller
         return view('master-data.kalibrasi.kalibrasi', $data);
     }
 
-    // Views Table
-    public function views()
+    public function views(Request $request)
     {
-
-        $query = Db::table('tbl_kalibrasi')
+        $query = DB::table('tbl_kalibrasi')
             ->join('tbl_asets', 'tbl_asets.id', '=', 'tbl_kalibrasi.id_aset')
             ->join('tbl_lokasis', 'tbl_asets.id_lokasi', '=', 'tbl_lokasis.id')
-            ->select('tbl_kalibrasi.*', 'tbl_asets.no_aset as no_aset', 'tbl_asets.nama as nama_aset', 'tbl_asets.merek as merek', 'tbl_asets.no_sn as no_sn', 'tbl_lokasis.nama as nama_lokasi')
-            ->where('aktif', '1')
-            ->get();
+            ->select(
+                'tbl_kalibrasi.*',
+                'tbl_asets.no_aset',
+                'tbl_asets.nama as nama_aset',
+                'tbl_asets.merek',
+                'tbl_asets.no_sn',
+                'tbl_lokasis.nama as nama_lokasi'
+            );
+
+        if ($request->filled('status')) {
+            $query->where('tbl_kalibrasi.aktif', $request->status);
+        }
+
+        $rows = $query->get();
 
         $data = [];
-        foreach ($query as $key => $value) {
-            $currentDate    = Carbon::now(); // Mendapatkan tanggal sekarang
-            $tglKalibrasi   = Carbon::createFromFormat('Y-m-d', $value->tgl_kalibrasi); // Mengonversi tgl_kalibrasi ke Carbon object
-            $diffInDays     = $currentDate->diffInDays($tglKalibrasi); // Menghitung selisih hari
-            $diffInDays = $currentDate->gt($tglKalibrasi) ? -$diffInDays : $diffInDays;  // Menghitung selisih hari dengan mempertimbangkan tanggal yang lebih besar
+        foreach ($rows as $value) {
+
+            $diffInDays = null;
+            if (!empty($value->tgl_kalibrasi)) {
+                $diffInDays = Carbon::now()
+                    ->diffInDays(Carbon::parse($value->tgl_kalibrasi), false);
+            }
 
             $data[] = [
-                'id'                => $value->id,
-                'id_aset'           => $value->id_aset,
-                'no_aset'           => $value->no_aset,
-                'nama_aset'         => $value->nama_aset,
-                'merek'             => $value->merek,
-                'no_sn'             => $value->no_sn,
-                'tgl_kalibrasi'     => convertYmdToDmy($value->tgl_kalibrasi),
-                'nama_lokasi'       => $value->nama_lokasi,
-                'status'            => $value->status,
-                'aktif'             => $value->aktif,
-                'selisih_hari'      => $diffInDays, // Menambahkan selisih hari ke dalam data
+                'id' => $value->id,
+                'id_aset' => $value->id_aset,
+                'no_aset' => $value->no_aset,
+                'nama_aset' => $value->nama_aset,
+                'merek' => $value->merek,
+                'no_sn' => $value->no_sn,
+                'tgl_kalibrasi' => convertYmdToDmy($value->tgl_kalibrasi),
+                'nama_lokasi' => $value->nama_lokasi,
+                'status' => $value->status,
+                'aktif' => $value->aktif,
+                'selisih_hari' => $diffInDays,
             ];
         }
-        return response()->json($data, 200);
+
+        return response()->json($data);
     }
 
-   // Store
-public function store(Request $request)
-{
-    // Ubah nilai aktif menjadi 1 atau 0
-    $aktif = $request->aktif == 'on' ? '1' : '0';
 
-    // 🔍 Cek apakah sudah ada data dengan kode_aset yang sama dan aktif = 1
-    $cekAktif = Kalibrasis::where('id_aset', $request->kode_aset)
-        ->where('aktif', '1')
-        ->exists();
+    // Store
+    public function store(Request $request)
+    {
+        // Ubah nilai aktif menjadi 1 atau 0
+        $aktif = $request->aktif == 'on' ? '1' : '0';
 
-    // Jika ditemukan data aktif untuk aset yang sama → tolak simpan
-    if ($cekAktif && $aktif == '1') {
-        return response()->json([
-            'success' => false,
-            'data' => [],
-            'message' => 'Data gagal disimpan karena aset ini sudah memiliki data dengan status aktif.',
-        ], 400);
+        // 🔍 Cek apakah sudah ada data dengan kode_aset yang sama dan aktif = 1
+        $cekAktif = Kalibrasis::where('id_aset', $request->kode_aset)
+            ->where('aktif', '1')
+            ->exists();
+
+        // Jika ditemukan data aktif untuk aset yang sama → tolak simpan
+        if ($cekAktif && $aktif == '1') {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data gagal disimpan karena aset ini sudah memiliki data dengan status aktif.',
+            ], 400);
+        }
+
+        // 🚀 Simpan data baru jika lolos validasi
+        $query = Kalibrasis::create([
+            'id_aset' => $request->kode_aset,
+            'tgl_kalibrasi' => convertDmyToYmd($request->tgl_kalibrasi),
+            'status' => $request->status,
+            'aktif' => $aktif,
+        ]);
+
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Ditambahkan.',
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Ditambahkan.',
+            ], 400);
+        }
     }
-
-    // 🚀 Simpan data baru jika lolos validasi
-    $query = Kalibrasis::create([
-        'id_aset'       => $request->kode_aset,
-        'tgl_kalibrasi' => convertDmyToYmd($request->tgl_kalibrasi),
-        'status'        => $request->status,
-        'aktif'         => $aktif,
-    ]);
-
-    if ($query) {
-        return response()->json([
-            'success' => true,
-            'data' => [],
-            'message' => 'Data Berhasil Ditambahkan.',
-        ], 200);
-    } else {
-        return response()->json([
-            'success' => false,
-            'data' => [],
-            'message' => 'Data Gagal Ditambahkan.',
-        ], 400);
-    }
-}
 
 
     // Update
     public function update(Request $request, $id)
     {
         $query = Kalibrasis::where('id', $id)->update([
-            'id_aset'       => $request->kode_aset,
+            'id_aset' => $request->kode_aset,
             'tgl_kalibrasi' => convertDmyToYmd($request->tgl_kalibrasi),
-            'status'        => $request->status,
-            'aktif'         => $request->aktif == 'on' ? '1' : '0',
+            'status' => $request->status,
+            'aktif' => $request->aktif == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([
@@ -143,7 +156,7 @@ public function store(Request $request)
         }
     }
 
-      // update status check
+    // update status check
     public function updateStatus(Request $request, $id)
     {
         $query = Kalibrasis::where('id', $id)->update([
