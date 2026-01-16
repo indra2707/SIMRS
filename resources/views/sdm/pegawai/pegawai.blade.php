@@ -173,6 +173,7 @@
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
                                             <th class="f-light"></th>
+                                            <th class="f-light"></th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -328,7 +329,7 @@
                                     <label for="tanggal_lahir" class="col-form-label col-sm-2">Tanggal Lahir</label>
                                     <div class="col-sm-4">
                                         <input class="form-control js-datepicker digits" placeholder="Tanggal Lahir..."
-                                            name="tanggal_lahir" data-language="en">
+                                            name="tanggal_lahir" data-language="en" required>
                                     </div>
 
                                     <!-- NIK  -->

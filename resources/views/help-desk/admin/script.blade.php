@@ -8,6 +8,14 @@
         allowClear: true
 
     });
+
+    $(".select3").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        allowClear: true,
+        width: 'style'
+    });
+    
     var $table = $('#table_helpdesk');
     $('.js-daterangepicker').datepicker({
         dateFormat: 'dd/mm/yyyy',
