@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HelpDeskController extends Controller
 {
@@ -26,6 +27,7 @@ class HelpDeskController extends Controller
         return view('help-desk.Admin.helpDesk', $data);
     }
 
+    //View
     public function views(Request $request)
     {
         $query = HelpDesk::with(['user.rolls']);
@@ -35,7 +37,7 @@ class HelpDeskController extends Controller
                 Carbon::parse($request->tgl_akhir)->endOfDay()
             ]);
         }
-        
+
         $data = $query->get()->map(function ($value) {
             return [
                 'id' => $value->id,
@@ -51,6 +53,7 @@ class HelpDeskController extends Controller
                 'status' => $value->status ?? '-',
                 'created_at' => Carbon::parse($value->created_at)->format('d-m-Y H:i'),
                 'gambar' => $value->gambar,
+                'gambar2' => $value->gambar2 ? json_decode($value->gambar2, true) : [],
                 'tgl_terima' => $value->tgl_terima ? Carbon::parse($value->tgl_terima)->format('d-m-Y H:i') : '-',
                 'tgl_selesai' => $value->tgl_selesai ? Carbon::parse($value->tgl_selesai)->format('d-m-Y H:i') : '-',
                 'updated_by' => $value->updated_by ?? '-'
@@ -65,17 +68,7 @@ class HelpDeskController extends Controller
         return view('pages.admin.helpDesk-edit', compact('helpDesk'));
     }
 
-    public function update(Request $request, HelpDesk $helpDesk)
-    {
-        $item = HelpDesk::findOrFail($helpDesk->id);
-        $item->update($request->only('keterangan')); // field yang bisa diupdate
-        return response()->json([
-            'success' => true,
-            'message' => 'Data berhasil diupdate',
-            'data' => $item // kembalikan row terbaru untuk bootstrap table
-        ]);
-    }
-
+    //Update Status
     public function updateStatus(HelpDesk $helpDesk)
     {
         if ($helpDesk->status === 'accept') {
@@ -113,7 +106,7 @@ class HelpDeskController extends Controller
         ]);
     }
 
-
+    // Hapus
     public function destroy($id)
     {
         $helpdesk = HelpDesk::findOrFail($id);
@@ -138,7 +131,7 @@ class HelpDeskController extends Controller
         ]);
     }
 
-
+    //Info
     public function getHelpdeskInfo($id)
     {
         try {
@@ -168,4 +161,54 @@ class HelpDeskController extends Controller
             ], 404);
         }
     }
+
+
+    // Input Gmbar2
+    public function update(Request $request, HelpDesk $helpDesk)
+    {
+        $request->validate([
+            'lampiran_selesai.*' => 'file|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $path = public_path('uploads/images/help-desk');
+
+        if ($request->hasFile('lampiran_selesai')) {
+            if ($helpDesk->gambar2) {
+                $oldImages = json_decode($helpDesk->gambar2, true);
+
+                if (is_array($oldImages)) {
+                    foreach ($oldImages as $img) {
+                        $filePath = $path . '/' . $img;
+                        if (File::exists($filePath)) {
+                            File::delete($filePath);
+                        }
+                    }
+                }
+            }
+
+            $gambar2 = [];
+            if (!File::exists($path)) {
+                File::makeDirectory($path, 0755, true);
+            }
+
+            foreach ($request->file('lampiran_selesai') as $file) {
+                if ($file->isValid()) {
+                    $filename = uniqid('hd_') . '.' . $file->getClientOriginalExtension();
+                    $file->move($path, $filename);
+                    $gambar2[] = $filename;
+                }
+            }
+
+            $helpDesk->update([
+                'gambar2' => json_encode($gambar2),
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Berhasil update laporan Help Desk',
+            'data' => $helpDesk->fresh()
+        ]);
+    }
+
 }

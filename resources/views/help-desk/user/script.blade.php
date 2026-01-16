@@ -186,6 +186,7 @@
         $(".modal-title").text("Form Tambah Help Desk");
         $('.save-btn').show();
         $('.btn-attach').show();
+        $('.btn-attach2').hide();
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
         $('input[name="id"]').val("");
@@ -495,6 +496,7 @@
             $('.modal-title').text('Nomor Tiket : ' + row.tiket);
             $('.save-btn').hide();
             $('.btn-attach').hide();
+            $('.btn-attach2').hide();
 
             $('input[name="id"]').val(row.id);
             $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
@@ -504,7 +506,32 @@
 
             // reset preview
             $('#preview-images').empty();
+            $('#preview-images2').empty();
             fileBuffer = new DataTransfer();
+
+            //Gambar 2
+            if (Array.isArray(row.gambar2)) {
+                row.gambar2.forEach((img) => {
+                    const imageUrl = `/uploads/images/help-desk/${img}`;
+
+                    $('#preview-images2').append(`
+            <div class="col-md-2 mb-2">
+                <div class="position-relative">
+                    <img src="${imageUrl}"
+                         class="img-thumbnail"
+                         style="height:100px;object-fit:cover;cursor:pointer">
+                    <div class="position-absolute bottom-0 end-0 m-1">
+                        <button type="button"
+                                class="btn btn-light btn-xs btn-preview"
+                                data-src="${imageUrl}">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `);
+                });
+            }
 
             // tampilkan lampiran dari DB
             if (Array.isArray(row.lampiran)) {

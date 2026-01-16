@@ -63,6 +63,7 @@ class HelpDeskController extends Controller
                 'lampiran' => $value->gambar ? json_decode($value->gambar, true) : [],
                 'tgl_terima' => $value->tgl_terima ? Carbon::parse($value->tgl_terima)->format('d-m-Y H:i') : '-',
                 'tgl_selesai' => $value->tgl_selesai ? Carbon::parse($value->tgl_selesai)->format('d-m-Y H:i') : '-',
+                'gambar2' => $value->gambar2 ? json_decode($value->gambar2, true) : [],
             ];
         });
 
@@ -150,7 +151,7 @@ class HelpDeskController extends Controller
                 'success' => true,
                 'nama_lengkap' => $opponentName,
                 'username' => $opponentUsername,
-                'role' => $opponentRole,  // ✅ Kirim role
+                'role' => $opponentRole,  // Kirim role
                 'judul_laporan' => $helpdesk->judul_laporan,
                 'status' => $helpdesk->status,
             ]);
@@ -163,7 +164,6 @@ class HelpDeskController extends Controller
             ], 500);
         }
     }
-
 
     // Hapus
     public function destroy(HelpDesk $helpDesk)

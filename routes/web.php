@@ -63,7 +63,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('help-desk', [AdminHelpDeskController::class, 'index'])->name('admin.helpdesk');
     Route::get('help-desk/views', [AdminHelpDeskController::class, 'views'])->name('admin.helpdesk-views');
     Route::get('help-desk/edit/{helpDesk}', [AdminHelpDeskController::class, 'edit'])->name('admin.helpdesk-edit');
-    Route::put('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'update'])->name('admin.helpdesk-update');
+    Route::post('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'update'])->name('admin.helpdesk-update');
     Route::post('help-desk/update-status/{helpDesk}', [AdminHelpDeskController::class, 'updateStatus'])->name('admin.helpdesk-update-status');
     Route::delete('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'destroy'])->name('admin.helpdesk-destroy');
 

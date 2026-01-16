@@ -353,7 +353,7 @@
                                     placeholder="Deskripsi Masalah..."></textarea>
                             </div>
 
-                            {{-- ATTACH FILE --}}
+                            {{-- Lampiran --}}
                             <label class="col-sm-2 col-form-label">Lampiran</label>
                             <div class="col-sm-10">
 
@@ -367,12 +367,35 @@
                                 <input type="file" id="lampiran" name="lampiran[]" multiple
                                     accept="image/jpeg,image/png" class="d-none">
 
+                                <!-- <small class="text-muted btn-attach">
+                                    Maksimal 5 file (JPG / PNG)
+                                </small> -->
+
+                                {{-- PREVIEW --}}
+                                <div class="row mt-2" id="preview-images"></div>
+                            </div>
+
+
+                            {{-- Lampiran Selesai --}}
+                            <label class="col-sm-2 col-form-label">Lampiran Selesai</label>
+                            <div class="col-sm-10">
+
+                                <!-- Button Attach -->
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach2"
+                                    id="btn-attach2">
+                                    <i class="fa fa-paperclip"></i> Attach File
+                                </button>
+
+                                <!-- Hidden Input -->
+                                <input type="file" id="lampiran_selesai" name="lampiran_selesai[]" multiple
+                                    accept="image/jpeg,image/png" class="d-none">
+
                                 <small class="text-muted btn-attach">
                                     Maksimal 5 file (JPG / PNG)
                                 </small>
 
                                 {{-- PREVIEW --}}
-                                <div class="row mt-2" id="preview-images"></div>
+                                <div class="row mt-2" id="preview-images2"></div>
                             </div>
 
                         </form>
