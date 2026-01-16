@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('kategori', ['IT', 'Medis', 'Teknik']);
             $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi', 'Darurat']);
             $table->text('gambar');
+            $table->text('gambar2');
             $table->date('tanggal');
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();

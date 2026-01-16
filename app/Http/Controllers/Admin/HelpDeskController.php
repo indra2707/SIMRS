@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class HelpDeskController extends Controller
 {
@@ -30,7 +30,17 @@ class HelpDeskController extends Controller
     //View
     public function views(Request $request)
     {
+        $namaRole = Session::get('nama_role');
         $query = HelpDesk::with(['user.rolls']);
+
+        // Filter berdasarkan role
+        if (in_array($namaRole, ['Teknik', 'Medis'])) {
+            $query->whereHas('user.rolls', function ($q) use ($namaRole) {
+                $q->where('kategori', $namaRole);
+            });
+        }
+
+        // Filter tanggal
         if ($request->tgl_awal && $request->tgl_akhir) {
             $query->whereBetween('tanggal', [
                 Carbon::parse($request->tgl_awal)->startOfDay(),
