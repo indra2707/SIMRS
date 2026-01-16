@@ -394,11 +394,7 @@
                                 <!-- Hidden Input -->
                                 <input type="file" id="lampiran_selesai" name="lampiran_selesai[]" multiple
                                     accept="image/jpeg,image/png" class="d-none">
-
-                                <small class="text-muted btn-attach">
-                                    Maksimal 5 file (JPG / PNG)
-                                </small>
-
+                                    
                                 {{-- PREVIEW --}}
                                 <div class="row mt-2" id="preview-images2"></div>
                             </div>

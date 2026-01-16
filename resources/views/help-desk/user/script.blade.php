@@ -187,12 +187,15 @@
         $('.save-btn').show();
         $('.btn-attach').show();
         $('.btn-attach2').hide();
+        $('label:contains("Lampiran Selesai")').hide();
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
+        $('#preview-images2').empty().hide();
         $('input[name="id"]').val("");
         $('textarea[name="keterangan"]').val("").prop('readonly', false);
         $('input[name="judul_laporan"]').val("").prop('readonly', false);
         $('#lampiran').val('');
+        $('#lampiran_selesai').val('');
         $('select[name="kategori"]').val('').trigger('change').prop('disabled', false);
         $('select[name="prioritas"]').val('').trigger('change').prop('disabled', false);
         fileBuffer = new DataTransfer();
@@ -497,6 +500,7 @@
             $('.save-btn').hide();
             $('.btn-attach').hide();
             $('.btn-attach2').hide();
+            $('label:contains("Lampiran Selesai")').show();
 
             $('input[name="id"]').val(row.id);
             $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
@@ -506,7 +510,7 @@
 
             // reset preview
             $('#preview-images').empty();
-            $('#preview-images2').empty();
+            $('#preview-images2').empty().show();
             fileBuffer = new DataTransfer();
 
             //Gambar 2
