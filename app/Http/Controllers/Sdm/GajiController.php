@@ -42,7 +42,7 @@ class GajiController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'nomor_pekerja' => $value->nomor_pekerja,
-                'bulan' => Carbon::parse($value->bulan)->format('d/m/Y'),
+                'bulan' => Carbon::parse($value->bulan)->format('M Y'),
                 'file' => $value->file
             ];
         }
