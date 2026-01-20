@@ -25,6 +25,7 @@ class HelpDesk extends Model
         'tanggal',
         'gambar',
         'gambar2',
+        'catatan',
         'updated_by',
     ];
 

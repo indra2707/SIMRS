@@ -188,6 +188,7 @@
         $('.btn-attach').show();
         $('.btn-attach2').hide();
         $('label:contains("Lampiran Selesai")').hide();
+        $('label:contains("Catatan")').hide();
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
         $('#preview-images2').empty().hide();
@@ -198,6 +199,7 @@
         $('#lampiran_selesai').val('');
         $('select[name="kategori"]').val('').trigger('change').prop('disabled', false);
         $('select[name="prioritas"]').val('').trigger('change').prop('disabled', false);
+        $('textarea[name="catatan"]').hide();
         fileBuffer = new DataTransfer();
     });
 
@@ -501,12 +503,14 @@
             $('.btn-attach').hide();
             $('.btn-attach2').hide();
             $('label:contains("Lampiran Selesai")').show();
+            $('label:contains("Catatan")').show();
 
             $('input[name="id"]').val(row.id);
             $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
             $('input[name="judul_laporan"]').val(row.judul_laporan).prop('readonly', true);
             $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
             $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
+            $('textarea[name="catatan"]').val(row.catatan).prop('readonly', true).show();
 
             // reset preview
             $('#preview-images').empty();

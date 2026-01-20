@@ -355,7 +355,7 @@
                         <!-- Deskripsi Masalah  -->
                         <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50" rows="10" required
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" rows="2" required
                                 placeholder="Deskripsi Masalah..."></textarea>
                         </div>
 
@@ -397,7 +397,14 @@
                                     
                                 {{-- PREVIEW --}}
                                 <div class="row mt-2" id="preview-images2"></div>
-                            </div>
+                            </div><br>
+
+                         <!-- Catatan  -->
+                        <label for="catatan" class="col-form-label col-sm-2">Catatan</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control form-control" name="catatan" id="catatan" rows="3" required
+                                placeholder="Catatan..."></textarea>
+                        </div>
 
                     </form>
                 </div>

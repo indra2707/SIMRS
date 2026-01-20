@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('help_desk', function (Blueprint $table) {
             $table->id();
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->enum('status', ['accept', 'on-progress', 'done'])->default('accept');
             $table->foreignId('user_id');
             $table->string('tiket');
             $table->string('judul_laporan');
             $table->enum('kategori', ['IT', 'Medis', 'Teknik']);
             $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi', 'Darurat']);
-            $table->text('gambar');
-            $table->text('gambar2');
+            $table->text('gambar')->nullable();
+            $table->text('gambar2')->nullable();
             $table->date('tanggal');
+            $table->text(column: 'catatan')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

@@ -292,6 +292,7 @@
                                             <th class="f-light">Selesai</th>
                                             <th class="f-light">Nama Menerima</th>
                                             <th class="f-light">Status</th>
+                                            <th class="f-light">Catatan</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -353,8 +354,8 @@
                         <!-- Deskripsi Masalah  -->
                         <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="50"
-                                rows="10" required placeholder="Deskripsi Masalah..."></textarea>
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" cols="10" rows="2"
+                                required placeholder="Deskripsi Masalah..."></textarea>
                         </div>
 
                         {{-- Lampiran --}}
@@ -371,8 +372,8 @@
                                 class="d-none">
 
                             <!-- <small class="text-muted btn-attach">
-                                            Maksimal 5 file (JPG / PNG)
-                                        </small> -->
+                                                    Maksimal 5 file (JPG / PNG)
+                                                </small> -->
 
                             {{-- PREVIEW --}}
                             <div class="row mt-2" id="preview-images"></div>
@@ -398,6 +399,13 @@
 
                             {{-- PREVIEW --}}
                             <div class="row mt-2" id="preview-images2"></div>
+                        </div>
+
+                        <!-- Catatan  -->
+                        <label for="catatan" class="col-form-label col-sm-2">Catatan</label>
+                        <div class="col-sm-10 mb-3">
+                            <textarea class="form-control" name="catatan" id="catatan" rows="2"
+                                placeholder="Catatan..."></textarea>
                         </div>
 
                     </form>
@@ -687,49 +695,49 @@
                 if (isMe) {
                     // PESAN ADMIN (kanan - hijau WhatsApp)
                     html = `
-                        <li class="clearfix" data-message-id="${msg.id}">
-                            <div style="
-                                background-color: #DCF8C6;
-                                color: #000;
-                                padding: 9px 13px 10px 15px;
-                                border-radius: 18px 18px 7px 18px;
-                                max-width: 75%;
-                                float: right;
-                                clear: both;
-                                margin: 4px 10px 12px 30px;
-                                box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
-                                font-size: 15.8px;
-                                line-height: 1.45;
-                                position: relative;
-                            ">
-                                <div style="word-wrap: break-word; margin-bottom: 12px;">${messageText}</div>
-                                <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
-                            </div>
-                        </li>
-                    `;
+                                <li class="clearfix" data-message-id="${msg.id}">
+                                    <div style="
+                                        background-color: #DCF8C6;
+                                        color: #000;
+                                        padding: 9px 13px 10px 15px;
+                                        border-radius: 18px 18px 7px 18px;
+                                        max-width: 75%;
+                                        float: right;
+                                        clear: both;
+                                        margin: 4px 10px 12px 30px;
+                                        box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+                                        font-size: 15.8px;
+                                        line-height: 1.45;
+                                        position: relative;
+                                    ">
+                                        <div style="word-wrap: break-word; margin-bottom: 12px;">${messageText}</div>
+                                        <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
+                                    </div>
+                                </li>
+                            `;
                 } else {
                     // PESAN USER (kiri - hijau SAMA)
                     html = `
-                        <li class="clearfix" data-message-id="${msg.id}">
-                            <div style="
-                                background-color: #DCF8C6;
-                                color: #000;
-                                padding: 9px 15px 10px 13px;
-                                border-radius: 18px 18px 18px 7px;
-                                max-width: 75%;
-                                float: left;
-                                clear: both;
-                                margin: 4px 30px 12px 10px;
-                                box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
-                                font-size: 15.8px;
-                                line-height: 1.45;
-                                position: relative;
-                            ">
-                                <div style="word-wrap: break-word; margin-bottom: 12px;">${messageText}</div>
-                                <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
-                            </div>
-                        </li>
-                    `;
+                                <li class="clearfix" data-message-id="${msg.id}">
+                                    <div style="
+                                        background-color: #DCF8C6;
+                                        color: #000;
+                                        padding: 9px 15px 10px 13px;
+                                        border-radius: 18px 18px 18px 7px;
+                                        max-width: 75%;
+                                        float: left;
+                                        clear: both;
+                                        margin: 4px 30px 12px 10px;
+                                        box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+                                        font-size: 15.8px;
+                                        line-height: 1.45;
+                                        position: relative;
+                                    ">
+                                        <div style="word-wrap: break-word; margin-bottom: 12px;">${messageText}</div>
+                                        <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
+                                    </div>
+                                </li>
+                            `;
                 }
                 return html;
             }

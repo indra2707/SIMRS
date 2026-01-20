@@ -187,6 +187,7 @@
         const $btn = $(this);
         const form = document.querySelector('.form-helpdesk');
         const id = $('input[name="id"]').val();
+        const catatan = $('textarea[name="catatan"]').val();
 
         if (!form.checkValidity()) {
             form.classList.add("was-validated");
@@ -201,10 +202,10 @@
 
         const formData = new FormData(form);
 
-        // ❗ HAPUS file bawaan (WAJIB)
+        // HAPUS file bawaan (WAJIB)
         formData.delete('lampiran_selesai[]');
 
-        // ❗ APPEND manual (WAJIB)
+        // APPEND manual (WAJIB)
         const inputSelesai = document.getElementById('lampiran_selesai');
         if (inputSelesai && inputSelesai.files.length > 0) {
             Array.from(inputSelesai.files).forEach(file => {
@@ -399,7 +400,12 @@
                     },
                     events: window.operateChange // <-- ini wajib supaya klik bisa dideteksi
                 },
-
+                {
+                    field: 'catatan',
+                    sortable: true,
+                    align: 'center',
+                    visible: false
+                },
                 {
                     field: 'action',
                     align: 'center',
@@ -508,6 +514,7 @@
             $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
             $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
             $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
+            $('textarea[name="catatan"]').val(row.catatan);
 
 
             // tampilkan lampiran dari DB

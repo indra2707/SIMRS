@@ -59,6 +59,7 @@ class HelpDeskController extends Controller
                 'status' => $value->status ?? '-',
                 'created_at' => Carbon::parse($value->created_at)->format('d-m-Y H:i'),
                 'user_name' => $value->user_name,
+                'catatan' => $value->catatan,
                 'updated_by' => $value->updated_by,
                 'lampiran' => $value->gambar ? json_decode($value->gambar, true) : [],
                 'tgl_terima' => $value->tgl_terima ? Carbon::parse($value->tgl_terima)->format('d-m-Y H:i') : '-',

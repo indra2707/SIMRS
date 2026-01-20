@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('help_desk_lampirans', function (Blueprint $table) {
+        Schema::create('tbl_gaji', function (Blueprint $table) {
             $table->id();
+            $table->string('nomor_pekerja');
+            $table->date('bulan');
+            $table->text('file');
+            $table->string('created_by');
             $table->timestamps();
         });
     }
@@ -22,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('help_desk_lampirans');
+        Schema::dropIfExists('tbl_gaji');
     }
 };

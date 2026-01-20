@@ -253,10 +253,6 @@
                     @endif
 
 
-
-
-
-
                     {{-- SDM --}}
                     @if (in_array('Pegawai', $aksesMenu) || in_array('SPD', $aksesMenu) || in_array('Rincian SPD', $aksesMenu))
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
@@ -279,6 +275,7 @@
                                 @if (in_array('Rincian SPD', $aksesMenu))
                                     <li><a href="{{ route('sdm.rincian_spd') }}">Rincian SPD</a></li>
                                 @endif
+                                <li><a href="{{ route('sdm.gaji') }}">Slip Gaji</a></li>
                             </ul>
                         </li>
                     @endif

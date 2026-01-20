@@ -55,6 +55,7 @@ class HelpDeskController extends Controller
                 'username' => $value->user->username ?? '-',
                 'department' => $value->user->rolls->nama ?? '-',
                 'keterangan' => $value->keterangan ?? '-',
+                'catatan' => $value->catatan,
                 'tiket' => $value->tiket ?? '-',
                 'judul_laporan' => $value->judul_laporan ?? '-',
                 'kategori' => $value->kategori ?? '-',
@@ -178,25 +179,27 @@ class HelpDeskController extends Controller
     {
         $request->validate([
             'lampiran_selesai.*' => 'file|mimes:jpg,jpeg,png|max:2048',
+            'catatan' => 'nullable|string',
         ]);
 
         $path = public_path('uploads/images/help-desk');
 
-        if ($request->hasFile('lampiran_selesai')) {
-            if ($helpDesk->gambar2) {
-                $oldImages = json_decode($helpDesk->gambar2, true);
+        $gambar2 = $helpDesk->gambar2 ? json_decode($helpDesk->gambar2, true) : [];
 
-                if (is_array($oldImages)) {
-                    foreach ($oldImages as $img) {
-                        $filePath = $path . '/' . $img;
-                        if (File::exists($filePath)) {
-                            File::delete($filePath);
-                        }
+        if ($request->hasFile('lampiran_selesai')) {
+
+            // hapus file lama
+            if (is_array($gambar2)) {
+                foreach ($gambar2 as $img) {
+                    $filePath = $path . '/' . $img;
+                    if (File::exists($filePath)) {
+                        File::delete($filePath);
                     }
                 }
             }
 
             $gambar2 = [];
+
             if (!File::exists($path)) {
                 File::makeDirectory($path, 0755, true);
             }
@@ -208,11 +211,12 @@ class HelpDeskController extends Controller
                     $gambar2[] = $filename;
                 }
             }
-
-            $helpDesk->update([
-                'gambar2' => json_encode($gambar2),
-            ]);
         }
+
+        $helpDesk->update([
+            'gambar2' => json_encode($gambar2),
+            'catatan' => $request->input('catatan'),
+        ]);
 
         return response()->json([
             'success' => true,
@@ -220,5 +224,6 @@ class HelpDeskController extends Controller
             'data' => $helpDesk->fresh()
         ]);
     }
+
 
 }

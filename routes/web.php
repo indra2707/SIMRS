@@ -11,6 +11,7 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\PegawaiController;
+use App\Http\Controllers\Sdm\GajiController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
@@ -323,6 +324,12 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/spd/delete/{id}', [SpdsController::class, 'destroy'])->name('sdm.spd.delete');
         Route::get('/sdm/spd/get-pengikut/{id}', [SpdsController::class, 'getPengikut'])->name('sdm.spd.get-pengikut');
 
+        // Gaji
+        Route::get('/gaji', [GajiController::class, 'index'])->name('sdm.gaji');
+        Route::get('/gaji/view', [GajiController::class, 'views'])->name('sdm.gaji.view');
+        Route::post('/gaji/store', [GajiController::class, 'store'])->name('sdm.gaji.create');
+        Route::delete('/gaji/delete/{id}', [GajiController::class, 'destroy'])->name('sdm.gaji.delete');
+
         // Rincian SPD
         Route::get('/rincian_spd', [Rincian_spdsController::class, 'index'])->name('sdm.rincian_spd');
         Route::get('/rincian_spd/view', [Rincian_spdsController::class, 'views'])->name('sdm.rincian_spd.view');
@@ -345,7 +352,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('sdm/updateStatus/{id}', [PegawaiController::class, 'updateStatus'])->name('pegawai.update-status');
         Route::get('sdm/generate-nomor-pekerja', [PegawaiController::class, 'generateNomorPekerjaAjax'])->name('pegawai.generate-nomor-pekerja');
 
-         Route::get('/pegawai/download-template', [PegawaiController::class, 'downloadTemplate'])->name('pegawai-download-template');
+        Route::get('/pegawai/download-template', [PegawaiController::class, 'downloadTemplate'])->name('pegawai-download-template');
         Route::post('/pegawai/import', [PegawaiController::class, 'import'])->name('pegawai-import');
     });
 
