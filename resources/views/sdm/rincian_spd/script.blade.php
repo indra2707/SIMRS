@@ -595,7 +595,7 @@
                 '</button>',
                 '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
                 '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Tambah Biaya</a></a>',
-                 btnPrint,
+                btnPrint,
                 '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-danger"></i> Close</a></a>',
                 '</div>',
                 '</div>',
@@ -609,14 +609,6 @@
             $('#modal-rincian').modal('show');
             $('.modal-title').text('Form Rincian');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-            currentGolonganUpah = row.golongan_upah;
-            $('input[name="id"]').val(row.id);
-            $('input[name="no_surat"]').val(row.no_surat);
-            $('input[name="id_pegawai"]').val(row.id_pegawai);
-            $('input[name="nama"]').val(row.nama_pegawai);
-            $('input[name="panjar"]').val(row.panjar ?? '').val('');
-            $('input[name="tanggal"]').val(row.tanggal ?? '');
-            $('select[name="jenis"]').val(row.jenis ?? '').trigger('change');
 
             if (row.id_menyetujui) {
                 InitSelect2($("select[name='id_menyetujui']"), {
@@ -632,7 +624,7 @@
                 $('select[name="id_menyetujui"]').val('').trigger('change');
             }
 
-            if (row.id_menyetujui) {
+            if (row.id_mengajukan) {
                 InitSelect2($("select[name='id_mengajukan']"), {
                     url: "{{ route('get-select-pegawai') }}",
                     dropdownParent: $("#modal-rincian"),
@@ -645,6 +637,17 @@
                 });
                 $('select[name="id_mengajukan"]').val('').trigger('change');
             }
+
+            currentGolonganUpah = row.golongan_upah;
+            $('input[name="id"]').val(row.id);
+            $('input[name="no_surat"]').val(row.no_surat);
+            $('input[name="id_pegawai"]').val(row.id_pegawai);
+            $('input[name="nama"]').val(row.nama_pegawai);
+            $('input[name="panjar"]').val(row.panjar ?? '').val('');
+            $('input[name="tanggal"]').val(row.tanggal ?? '');
+            $('select[name="jenis"]').val(row.jenis ?? '').trigger('change');
+
+
 
             // load table detail
             initTable1(row.id_pegawai, row.no_surat);

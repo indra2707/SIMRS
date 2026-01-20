@@ -65,8 +65,6 @@
     $('#tgl_akhir').val(formatDate(lastDay));
 
 
-
-
     // onclick upload
     $('#btn-attach').on('click', function () {
         $('#lampiran').trigger('click');

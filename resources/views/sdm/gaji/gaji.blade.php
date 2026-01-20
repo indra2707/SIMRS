@@ -34,15 +34,23 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-primary add-btn">
-                            <span class="fa fa-plus"></span>
-                            <span> Tambah Slip Gaji</span>
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-primary add-btn">
+                                <span class="fa fa-plus"></span>
+                                <span> Tambah Slip Gaji</span>
+                            </button>
 
-                        <button class="btn btn-danger hapus-all-btn">
-                            <span class="fa fa-trash"></span>
-                            <span> Hapus All</span>
-                        </button>
+                            <button class="btn btn-danger hapus-all-btn">
+                                <span class="fa fa-trash"></span>
+                                <span> Hapus All</span>
+                            </button>
+
+                            <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
+                                placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+
+                            <input type="hidden" name="tgl_awal" id="tgl_awal">
+                            <input type="hidden" name="tgl_akhir" id="tgl_akhir">
+                        </div>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
@@ -89,7 +97,8 @@
                         <!-- Nomor Upload -->
                         <label for="file_zip" class="col-form-label col-sm-2">Upload</label>
                         <div class="col-sm-10">
-                            <input type="file" name="file_zip" id="file_zip" accept=".zip,.rar" class="form-control" placeholder="Upload" required/>
+                            <input type="file" name="file_zip" id="file_zip" accept=".zip,.rar" class="form-control"
+                                placeholder="Upload" required />
                         </div>
                     </form>
                 </div>

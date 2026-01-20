@@ -25,22 +25,31 @@ class GajiController extends Controller
     }
 
     // Views Table
-    public function views()
+    public function views(Request $request)
     {
-        $query = Gaji::all();
+        $query = Gaji::query();
+
+        // FILTER BERDASARKAN BULAN / RANGE TANGGAL
+        if ($request->tgl_awal && $request->tgl_akhir) {
+            $query->whereBetween('bulan', [
+                $request->tgl_awal,
+                $request->tgl_akhir
+            ]);
+        }
 
         $data = [];
-        foreach ($query as $key => $value) {
+        foreach ($query->get() as $value) {
             $data[] = [
                 'id' => $value->id,
                 'nomor_pekerja' => $value->nomor_pekerja,
-                // 'bulan' => $value->bulan,
                 'bulan' => Carbon::parse($value->bulan)->format('d/m/Y'),
                 'file' => $value->file
             ];
         }
+
         return response()->json($data, 200);
     }
+
 
     // Simpan
     public function store(Request $request)
