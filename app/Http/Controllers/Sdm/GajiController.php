@@ -50,42 +50,45 @@ class GajiController extends Controller
         ]);
 
         DB::beginTransaction();
-
         try {
             $zipFile = $request->file('file_zip');
-
             $zipPath = $zipFile->storeAs(
                 'temp',
                 time() . '_' . $zipFile->getClientOriginalName()
             );
 
             $zip = new ZipArchive;
-
             if ($zip->open(storage_path('app/' . $zipPath)) !== true) {
                 throw new \Exception('ZIP tidak bisa dibuka');
             }
 
+            $bulanFolder = Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m');
+
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $fileName = $zip->getNameIndex($i);
+
                 if (str_ends_with($fileName, '/'))
                     continue;
+
                 if (strtolower(pathinfo($fileName, PATHINFO_EXTENSION)) !== 'pdf')
                     continue;
 
-                $namaPekerja = pathinfo($fileName, PATHINFO_FILENAME);
+                $baseFileName = basename($fileName);
+                $namaPekerja = pathinfo($baseFileName, PATHINFO_FILENAME);
+
                 $content = $zip->getFromIndex($i);
                 if ($content === false) {
                     throw new \Exception("Gagal extract file: {$fileName}");
                 }
 
-                $path = "{$fileName}";
+                $path = "gaji/{$bulanFolder}/{$baseFileName}";
                 Storage::disk('public')->put($path, $content);
 
                 Gaji::create([
                     'bulan' => Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m-d'),
                     'nomor_pekerja' => $namaPekerja,
                     'file' => $path,
-                    'created_by' => Auth::user()->name
+                    'created_by' => Auth::user()->username
                 ]);
             }
 
@@ -93,15 +96,12 @@ class GajiController extends Controller
             Storage::delete($zipPath);
 
             DB::commit();
-
             return response()->json([
                 'success' => true,
                 'message' => 'Import ZIP PDF berhasil'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
-
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()

@@ -95,6 +95,9 @@
             processData: false,
             contentType: false,
             dataType: "json",
+             headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')  // ✅ TAMBAHKAN INI
+        },
 
             beforeSend: function () {
                 $('.save-btn')
