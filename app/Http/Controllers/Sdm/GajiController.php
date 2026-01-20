@@ -95,7 +95,8 @@ class GajiController extends Controller
                 Gaji::create([
                     'bulan' => Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m-d'),
                     'nomor_pekerja' => $namaPekerja,
-                    'file' => $baseFileName,
+                    // 'file' => $baseFileName,
+                    'file' => "uploads/images/slip-gaji/{$bulanFolder}/{$baseFileName}",
                     'created_by' => Auth::user()->username
                 ]);
             }
@@ -120,11 +121,37 @@ class GajiController extends Controller
     // Delete All
     public function deleteMultiple(Request $request)
     {
+        $request->validate([
+            'ids' => 'required|array'
+        ]);
+
+        $dataGaji = Gaji::whereIn('id', $request->ids)->get();
+
+        foreach ($dataGaji as $gaji) {
+            if (!$gaji->file)
+                continue;
+
+            // Bersihkan path
+            $relativePath = ltrim($gaji->file, '/');
+
+            // Kalau tersimpan full URL
+            if (filter_var($relativePath, FILTER_VALIDATE_URL)) {
+                $relativePath = parse_url($relativePath, PHP_URL_PATH);
+                $relativePath = ltrim($relativePath, '/');
+            }
+
+            $filePath = public_path($relativePath);
+
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+
         Gaji::whereIn('id', $request->ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Data berhasil dihapus'
+            'message' => 'Data & file PDF berhasil dihapus'
         ]);
     }
 }

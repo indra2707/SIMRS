@@ -89,7 +89,7 @@
                         <!-- Nomor Upload -->
                         <label for="file_zip" class="col-form-label col-sm-2">Upload</label>
                         <div class="col-sm-10">
-                            <input type="file" name="file_zip" id="file_zip" accept=".zip,.pdf" class="form-control" placeholder="Upload"/>
+                            <input type="file" name="file_zip" id="file_zip" accept=".zip,.rar" class="form-control" placeholder="Upload" required/>
                         </div>
                     </form>
                 </div>
