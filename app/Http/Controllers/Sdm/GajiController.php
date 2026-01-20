@@ -34,7 +34,8 @@ class GajiController extends Controller
             $data[] = [
                 'id' => $value->id,
                 'nomor_pekerja' => $value->nomor_pekerja,
-                'bulan' => $value->bulan,
+                // 'bulan' => $value->bulan,
+                'bulan' => Carbon::parse($value->bulan)->format('d/m/Y'),
                 'file' => $value->file
             ];
         }
@@ -111,6 +112,41 @@ class GajiController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // Delete Single
+    public function delete(Request $request)
+    {
+        try {
+            $gaji = Gaji::findOrFail($request->id);
+
+            if ($gaji->file) {
+                $relativePath = ltrim($gaji->file, '/');
+
+                if (filter_var($relativePath, FILTER_VALIDATE_URL)) {
+                    $relativePath = parse_url($relativePath, PHP_URL_PATH);
+                    $relativePath = ltrim($relativePath, '/');
+                }
+
+                $filePath = public_path($relativePath);
+
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+            }
+
+            $gaji->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data & file berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
