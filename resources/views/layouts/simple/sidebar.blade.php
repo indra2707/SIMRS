@@ -162,7 +162,7 @@
                                     <li><a href="{{ route('master-data.fungsi') }}">Fungsi</a></li>
                                 @endif
                                 @if (in_array('SK Struktur', $aksesMenu))
-                                <li><a href="{{ route('master-data.sk-struktur') }}">SK Struktur</a></li>
+                                    <li><a href="{{ route('master-data.sk-struktur') }}">SK Struktur</a></li>
                                 @endif
                             </ul>
                         </li>
@@ -226,8 +226,10 @@
                     @endif
                     @endif --}}
 
-                    @if (in_array('Helpdesk.Approval', $aksesMenu) ||
-                         in_array('Helpdesk.List', $aksesMenu))
+                    @if (
+                            in_array('Helpdesk.Approval', $aksesMenu) ||
+                            in_array('Helpdesk.List', $aksesMenu)
+                        )
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
@@ -254,7 +256,11 @@
 
 
                     {{-- SDM --}}
-                    @if (in_array('Pegawai', $aksesMenu) || in_array('SPD', $aksesMenu) || in_array('Rincian SPD', $aksesMenu))
+                    @if (in_array('Pegawai', $aksesMenu) || 
+                    in_array('SPD', $aksesMenu) || 
+                    in_array('Rincian SPD', $aksesMenu) ||
+                    in_array('Slip Gaji', $aksesMenu))
+                    
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
@@ -275,7 +281,9 @@
                                 @if (in_array('Rincian SPD', $aksesMenu))
                                     <li><a href="{{ route('sdm.rincian_spd') }}">Rincian SPD</a></li>
                                 @endif
-                                <li><a href="{{ route('sdm.gaji') }}">Slip Gaji</a></li>
+                                @if (in_array('Slip Gaji', $aksesMenu))
+                                    <li><a href="{{ route('sdm.gaji') }}">Slip Gaji</a></li>
+                                @endif
                             </ul>
                         </li>
                     @endif

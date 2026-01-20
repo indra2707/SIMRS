@@ -64,30 +64,38 @@ class GajiController extends Controller
 
             $bulanFolder = Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m');
 
+            $uploadDir = public_path("uploads/images/slip-gaji/{$bulanFolder}");
+            if (!file_exists($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $fileName = $zip->getNameIndex($i);
 
                 if (str_ends_with($fileName, '/'))
                     continue;
-
                 if (strtolower(pathinfo($fileName, PATHINFO_EXTENSION)) !== 'pdf')
                     continue;
 
                 $baseFileName = basename($fileName);
-                $namaPekerja = pathinfo($baseFileName, PATHINFO_FILENAME);
+
+                // ambil nomor pekerja dari belakang setelah "-"
+                $namaTanpaExt = pathinfo($baseFileName, PATHINFO_FILENAME);
+                $parts = explode('-', $namaTanpaExt);
+                $namaPekerja = end($parts);
+
 
                 $content = $zip->getFromIndex($i);
                 if ($content === false) {
                     throw new \Exception("Gagal extract file: {$fileName}");
                 }
 
-                $path = "gaji/{$bulanFolder}/{$baseFileName}";
-                Storage::disk('public')->put($path, $content);
+                file_put_contents($uploadDir . '/' . $baseFileName, $content);
 
                 Gaji::create([
                     'bulan' => Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m-d'),
                     'nomor_pekerja' => $namaPekerja,
-                    'file' => $path,
+                    'file' => $baseFileName,
                     'created_by' => Auth::user()->username
                 ]);
             }

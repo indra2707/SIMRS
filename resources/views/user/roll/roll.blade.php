@@ -257,6 +257,8 @@
                                                 Dinas</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Rincian SPD"> Rincian
                                                 SPD</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Slip Gaji"> Slip Gaji
+                                                </label></li>
                                     </ul>
                                 </li>
                             </ul>
