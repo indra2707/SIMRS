@@ -80,9 +80,7 @@
 
     $(document).on('click', '.save-btn', function (e) {
         e.preventDefault();
-
         const form = $('.form-gaji')[0];
-
         if (!form.checkValidity()) {
             form.classList.add('was-validated');
             return;

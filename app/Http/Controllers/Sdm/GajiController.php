@@ -42,35 +42,6 @@ class GajiController extends Controller
     }
 
     // Simpan
-    // public function store(Request $request)
-    // {
-    //     DB::beginTransaction();
-    //     try {
-    //         $gaji = Gaji::create([
-    //             'nomor_pekerja' => $request->nomor_pekerja,
-    //             'bulan' => Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m-d'),
-    //             'file' => $request->file,
-    //             'created_by' => Auth::user()->name
-    //         ]);
-
-    //         DB::commit();
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'data' => $gaji,
-    //             'message' => 'Data berhasil ditambahkan'
-    //         ], 200);
-    //     } catch (\Exception $e) {
-    //         DB::rollBack();
-
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Data gagal ditambahkan',
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
-
     public function store(Request $request)
     {
         $request->validate([
@@ -89,32 +60,31 @@ class GajiController extends Controller
             );
 
             $zip = new ZipArchive;
-            $zip->open(storage_path('app/' . $zipPath));
+
+            if ($zip->open(storage_path('app/' . $zipPath)) !== true) {
+                throw new \Exception('ZIP tidak bisa dibuka');
+            }
 
             for ($i = 0; $i < $zip->numFiles; $i++) {
                 $fileName = $zip->getNameIndex($i);
-
-                // skip folder
                 if (str_ends_with($fileName, '/'))
                     continue;
-
-                // hanya PDF
                 if (strtolower(pathinfo($fileName, PATHINFO_EXTENSION)) !== 'pdf')
                     continue;
 
                 $namaPekerja = pathinfo($fileName, PATHINFO_FILENAME);
-                $namaPekerjaClean = str_replace(' ', '_', $namaPekerja);
-
                 $content = $zip->getFromIndex($i);
+                if ($content === false) {
+                    throw new \Exception("Gagal extract file: {$fileName}");
+                }
 
-                $path = "gaji/{$namaPekerjaClean}/{$fileName}";
-                Storage::put($path, $content);
+                $path = "{$fileName}";
+                Storage::disk('public')->put($path, $content);
 
                 Gaji::create([
-                    // 'nomor_pekerja' => $namaPekerjaClean,
                     'bulan' => Carbon::createFromFormat('d/m/Y', $request->bulan)->format('Y-m-d'),
-                    'nomor_pekerja' => $fileName, // SIMPAN NAMA FILE
-                    'file' => $path,     // SIMPAN PATH
+                    'nomor_pekerja' => $namaPekerja,
+                    'file' => $path,
                     'created_by' => Auth::user()->name
                 ]);
             }
