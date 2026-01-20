@@ -328,6 +328,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/gaji', [GajiController::class, 'index'])->name('sdm.gaji');
         Route::get('/gaji/view', [GajiController::class, 'views'])->name('sdm.gaji.view');
         Route::post('/gaji/store', [GajiController::class, 'store'])->name('sdm.gaji.create');
+        Route::post('/sdm/gaji/delete', [GajiController::class, 'delete'])->name('sdm.gaji.delete');
         Route::post('/gaji/delete-multiple', [GajiController::class, 'deleteMultiple'])->name('sdm.gaji.deleteMultiple');
 
         // Rincian SPD

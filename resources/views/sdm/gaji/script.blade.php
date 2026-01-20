@@ -244,10 +244,60 @@
 
     // Handle events button actions
     window.eventsGaji = {
-        'click .btn-print': function (e, value, row, index) {
-            var url = "{{ route('sdm.spd.print', ':id') }}";
-            url = url.replace(':id', row.id);
-            window.open(url, '_blank');
+    'click .btn-print': function (e, value, row, index) {
+        if (row.file) {
+            var fileUrl = '{{ url("/") }}/' + row.file;
+            window.open(fileUrl, '_blank');
+        } else {
+            Alert('error', 'File tidak ditemukan');
         }
+    },
+
+    'click .btn-download': function (e, value, row, index) {
+        if (row.file) {
+            var fileUrl = '{{ url("/") }}/' + row.file;
+            var link = document.createElement('a');
+            link.href = fileUrl;
+            link.download = 'Slip_Gaji_' + row.nomor_pekerja + '_' + row.bulan.replace(/\//g, '-') + '.pdf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else {
+            Alert('error', 'File tidak ditemukan');
+        }
+    },
+
+    'click .btn-delete': function (e, value, row, index) {
+        Swal.fire({
+            title: 'Yakin hapus data?',
+            text: "Data yang dihapus tidak bisa dikembalikan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{{ route('sdm.gaji.delete') }}",
+                    type: "POST",
+                    data: {
+                        id: row.id,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            Alert('success', res.message);
+                            $tableGaji.bootstrapTable('refresh');
+                        } else {
+                            Alert('error', res.message);
+                        }
+                    },
+                    error: function() {
+                        Alert('error', 'Gagal menghapus data');
+                    }
+                });
+            }
+        });
     }
+}
 </script>
