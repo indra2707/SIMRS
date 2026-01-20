@@ -22,60 +22,153 @@
     });
 
     // Save Asset
-    $(document).on('click', '.save-btn', function () {
-        var id = $('input[name="id"]').val();
-        var url = "{{ route('sdm.gaji.create') }}";
-        var type = "POST";
-        var forms = document.getElementsByClassName('form-gaji');
-        var validation = Array.prototype.filter.call(forms, function (form) {
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-                $.ajax({
-                    type: type,
-                    url: url,
-                    dataType: "json",
-                    data: $('.form-gaji').serialize(),
-                    beforeSend: function () {
-                        $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                        ).attr('disabled', 'disabled');
-                    },
-                    complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert('success', res.message);
-                            $('#modal-gaji').modal('hide');
-                            $tableGaji.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            form.classList.remove('was-validated');
-                        }
-                    },
+    // $(document).on('click', '.save-btn', function () {
+    //     var id = $('input[name="id"]').val();
+    //     var url = "{{ route('sdm.gaji.create') }}";
+    //     var type = "POST";
+    //     var forms = document.getElementsByClassName('form-gaji');
+    //     var validation = Array.prototype.filter.call(forms, function (form) {
+    //         if (!form.checkValidity()) {
+    //             form.querySelector(".form-control:invalid").focus();
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         } else {
+    //             $.ajax({
+    //                 type: type,
+    //                 url: url,
+    //                 dataType: "json",
+    //                 data: $('.form-gaji').serialize(),
+    //                 beforeSend: function () {
+    //                     $('.save-btn').html(
+    //                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    //                     ).attr('disabled', 'disabled');
+    //                 },
+    //                 complete: function () {
+    //                     $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+    //                         .removeAttr('disabled');
+    //                 },
+    //                 success: function (res, status, xhr) {
+    //                     if (xhr.status == 200 && res.success == true) {
+    //                         Alert('success', res.message);
+    //                         $('#modal-gaji').modal('hide');
+    //                         $tableGaji.bootstrapTable('refresh');
+    //                     } else {
+    //                         $.notify({
+    //                             icon: 'fa fa-check',
+    //                             title: 'Warning',
+    //                             message: res.message
+    //                         }, {
+    //                             type: 'warning',
+    //                             allow_dismiss: true,
+    //                             delay: 2000,
+    //                             showProgressbar: true,
+    //                             timer: 300,
+    //                             z_index: 1127,
+    //                             animate: {
+    //                                 enter: 'animated fadeInDown',
+    //                                 exit: 'animated fadeOutUp'
+    //                             },
+    //                         });
+    //                         form.classList.remove('was-validated');
+    //                     }
+    //                 },
+    //             });
+    //         }
+    //         form.classList.add('was-validated');
+    //     });
+    // });
+
+    $(document).on('click', '.save-btn', function (e) {
+        e.preventDefault();
+
+        const form = $('.form-gaji')[0];
+
+        if (!form.checkValidity()) {
+            form.classList.add('was-validated');
+            return;
+        }
+
+        let formData = new FormData(form);
+
+        $.ajax({
+            url: "{{ route('sdm.gaji.create') }}",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+
+            beforeSend: function () {
+                $('.save-btn')
+                    .html('<span class="spinner-border spinner-border-sm"></span>')
+                    .prop('disabled', true);
+            },
+
+            success: function (res) {
+                if (res.success) {
+                    Alert('success', res.message);
+                    $('#modal-gaji').modal('hide');
+                    $tableGaji.bootstrapTable('refresh');
+                } else {
+                    Alert('warning', res.message);
+                }
+            },
+
+            error: function (xhr) {
+                Alert('error', xhr.responseJSON?.message ?? 'Gagal import file');
+            },
+
+            complete: function () {
+                $('.save-btn')
+                    .html('Simpan')
+                    .prop('disabled', false);
+            }
+        });
+    });
+
+
+
+    // Hapus All (Bulk Delete)
+    $(document).on('click', '.hapus-all-btn', function () {
+        let rows = $tableGaji.bootstrapTable('getSelections');
+        if (!rows.length) {
+            Swal.fire('Peringatan', 'Pilih data terlebih dahulu', 'warning');
+            return;
+        }
+
+        let ids = rows.map(r => r.id);
+
+        Swal.fire({
+            title: 'Yakin hapus data?',
+            text: `${ids.length} data akan dihapus`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus!'
+        }).then(result => {
+            if (result.isConfirmed) {
+                $.post("{{ route('sdm.gaji.deleteMultiple') }}", {
+                    ids: ids,
+                    _token: "{{ csrf_token() }}",
+                }).done(function (res, status, xhr) {
+                    if (xhr.status == 200 && res.success == true) {
+                        Alert('success', res.message);
+                        $tableGaji.bootstrapTable('refresh');
+                    } else {
+                        Alert('warning', res.message);
+                    }
+                }).fail(function () {
+                    Alert('error', 'Gagal menghapus data');
                 });
             }
-            form.classList.add('was-validated');
         });
+    });
+
+    // Enable/Disable Button Hapus All
+    $tableGaji.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+        $('.hapus-all-btn').prop(
+            'disabled',
+            !$tableGaji.bootstrapTable('getSelections').length
+        );
     });
 
     // Page Load Event
@@ -83,59 +176,53 @@
         initTable();
     });
 
-
     // Table Gaji
     function initTable() {
         $tableGaji.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
             search: true,
-            showColumns: true,
-            showPaginationSwitch: true,
-            showToggle: false,
-            showExport: false,
             pagination: true,
             pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
-            stickyHeader: false,
-            fixedColumns: false,
+            showColumns: true,
+            showPaginationSwitch: true,
             fullscreen: true,
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
-            exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('sdm.gaji.view') }}",
             columns: [
-                [
-                    {
-                        field: 'state',
-                        checkbox: true,
-                        align: 'center',
-                        valign: 'middle'
-                    },
-                    {
-                        field: 'nomor_pekerja',
-                        sortable: true,
-                    },
-                    {
-                        field: 'bulan',
-                        sortable: true,
-                    },
-                    {
-                        width: '100%',
-                        field: 'action',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        clickToSelect: false,
-                        events: window.eventsGaji,
-                        formatter: actionsFunctionGaji
-                    }
-                ]
+                {
+                    field: 'state',
+                    checkbox: true,
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    field: 'nomor_pekerja',
+                    title: 'Nomor Pekerja',
+                    sortable: true
+                },
+                {
+                    field: 'bulan',
+                    title: 'Bulan',
+                    sortable: true
+                },
+                {
+                    field: 'action',
+                    title: 'Aksi',
+                    align: 'center',
+                    valign: 'middle',
+                    clickToSelect: false,
+                    events: window.eventsGaji,
+                    formatter: actionsFunctionGaji
+                }
             ],
-            responseHandler: function (data) {
-                return data;
+
+            responseHandler: function (res) {
+                return res;
             }
         });
     }
@@ -156,42 +243,6 @@
 
     // Handle events button actions
     window.eventsGaji = {
-        'click .btn-delete': function (e, value, row, index) {
-            var url = "{{ route('sdm.spd.delete', ':id') }}";
-            url = url.replace(':id', row.id);
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Anda yakin ingin menghapus data ini?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: url,
-                        type: "DELETE",
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            no_surat: row.no_surat // menambah data
-                        },
-                        success: function (res, status, xhr) {
-                            if (xhr.status == 200 && res.success == true) {
-                                Alert('success', res.message);
-                            } else {
-                                Alert('warning', res.message);
-                            }
-                        }
-                    }).done(function () {
-                        $tableSpd.bootstrapTable('refresh');
-                    });
-
-                }
-            })
-        },
         'click .btn-print': function (e, value, row, index) {
             var url = "{{ route('sdm.spd.print', ':id') }}";
             url = url.replace(':id', row.id);

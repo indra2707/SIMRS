@@ -39,7 +39,7 @@
                             <span> Tambah Slip Gaji</span>
                         </button>
 
-                        <button class="btn btn-danger print-all-btn">
+                        <button class="btn btn-danger hapus-all-btn">
                             <span class="fa fa-trash"></span>
                             <span> Hapus All</span>
                         </button>
@@ -76,7 +76,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="row g-2 form-gaji" autocomplete="off">
+                    <form class="row g-2 form-gaji" autocomplete="off" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id">
                         <!-- Bulan -->
@@ -87,10 +87,9 @@
                         </div>
 
                         <!-- Nomor Upload -->
-                        <label for="upload_gaji" class="col-form-label col-sm-2">Upload</label>
+                        <label for="file_zip" class="col-form-label col-sm-2">Upload</label>
                         <div class="col-sm-10">
-                            <input type="file" name="upload" id="upload_gaji" class="form-control" placeholder="Upload"
-                                required />
+                            <input type="file" name="file_zip" id="file_zip" class="form-control" placeholder="Upload"/>
                         </div>
                     </form>
                 </div>
