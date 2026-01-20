@@ -21,63 +21,7 @@
         $('#upload_gaji').val('');
     });
 
-    // Save Asset
-    // $(document).on('click', '.save-btn', function () {
-    //     var id = $('input[name="id"]').val();
-    //     var url = "{{ route('sdm.gaji.create') }}";
-    //     var type = "POST";
-    //     var forms = document.getElementsByClassName('form-gaji');
-    //     var validation = Array.prototype.filter.call(forms, function (form) {
-    //         if (!form.checkValidity()) {
-    //             form.querySelector(".form-control:invalid").focus();
-    //             event.preventDefault();
-    //             event.stopPropagation();
-    //         } else {
-    //             $.ajax({
-    //                 type: type,
-    //                 url: url,
-    //                 dataType: "json",
-    //                 data: $('.form-gaji').serialize(),
-    //                 beforeSend: function () {
-    //                     $('.save-btn').html(
-    //                         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-    //                     ).attr('disabled', 'disabled');
-    //                 },
-    //                 complete: function () {
-    //                     $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-    //                         .removeAttr('disabled');
-    //                 },
-    //                 success: function (res, status, xhr) {
-    //                     if (xhr.status == 200 && res.success == true) {
-    //                         Alert('success', res.message);
-    //                         $('#modal-gaji').modal('hide');
-    //                         $tableGaji.bootstrapTable('refresh');
-    //                     } else {
-    //                         $.notify({
-    //                             icon: 'fa fa-check',
-    //                             title: 'Warning',
-    //                             message: res.message
-    //                         }, {
-    //                             type: 'warning',
-    //                             allow_dismiss: true,
-    //                             delay: 2000,
-    //                             showProgressbar: true,
-    //                             timer: 300,
-    //                             z_index: 1127,
-    //                             animate: {
-    //                                 enter: 'animated fadeInDown',
-    //                                 exit: 'animated fadeOutUp'
-    //                             },
-    //                         });
-    //                         form.classList.remove('was-validated');
-    //                     }
-    //                 },
-    //             });
-    //         }
-    //         form.classList.add('was-validated');
-    //     });
-    // });
-
+    // Save 
     $(document).on('click', '.save-btn', function (e) {
         e.preventDefault();
         const form = $('.form-gaji')[0];
