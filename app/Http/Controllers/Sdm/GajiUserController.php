@@ -24,7 +24,8 @@ class GajiUserController extends Controller
     {
         $query = Gaji::query();
         $query->where('nomor_pekerja', 'like', '%' . Auth::user()->nomor_pekerja . '%')
-              ->orderBy('bulan', 'desc');
+              ->orderBy('bulan', 'desc')
+              ->first();
         $data = [];
         foreach ($query->get() as $value) {
             $data[] = [
