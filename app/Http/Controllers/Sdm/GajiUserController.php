@@ -20,22 +20,22 @@ class GajiUserController extends Controller
         return view('sdm.gaji_user.gaji_user', $data);
     }
 
-        public function views()
-    {
-        $query = Gaji::query();
-        $query->where('nomor_pekerja', 'like', '%' . Auth::user()->nomor_pekerja . '%')
-              ->orderBy('bulan', 'desc')
-              ->first();
-        $data = [];
-        foreach ($query->get() as $value) {
-            $data[] = [
-                'id' => $value->id,
-                'nomor_pekerja' => $value->nomor_pekerja,
-                'bulan' => Carbon::parse($value->bulan)->format('M Y'),
-                'file' => $value->file
-            ];
-        }
+    //     public function views()
+    // {
+    //     $query = Gaji::query();
+    //     $query->where('nomor_pekerja', 'like', '%' . Auth::user()->nomor_pekerja . '%')
+    //           ->orderBy('bulan', 'desc')
+    //           ->first();
+    //     $data = [];
+    //     foreach ($query->get() as $value) {
+    //         $data[] = [
+    //             'id' => $value->id,
+    //             'nomor_pekerja' => $value->nomor_pekerja,
+    //             'bulan' => Carbon::parse($value->bulan)->format('M Y'),
+    //             'file' => $value->file
+    //         ];
+    //     }
 
-        return response()->json($data, 200);
-    }
+    //     return response()->json($data, 200);
+    // }
 }
