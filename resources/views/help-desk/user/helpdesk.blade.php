@@ -681,7 +681,7 @@
 
                 // Get sender info
                 var senderName = msg.display_name ||
-                    (msg.user && msg.user.nama_lengkap) ||
+                    // (msg.user && msg.user.nama_lengkap) ||
                     (msg.user && msg.user.username) ||
                     msg.sender_type || 'Support';
 
@@ -860,7 +860,7 @@
 
             // ✅ Function untuk set default info
             function setDefaultChatInfo() {
-                $('#nama_lengkap').text('Support Team');
+                // $('#nama_lengkap').text('Support Team');
                 $('#chatOpponentUsername').text('');
                 $('#admin-role-badge').hide();
                 // $('#lastSeen').text('Offline');

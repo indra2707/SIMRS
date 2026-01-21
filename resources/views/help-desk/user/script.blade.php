@@ -611,7 +611,7 @@
             url: "/chat/opponent/" + helpdeskId,
             type: "GET",
             success: function (res) {
-                $("#chatOpponentFullName").text(res.nama_lengkap);
+                // $("#chatOpponentFullName").text(res.nama_lengkap);
                 $("#chatOpponentUsername").text(res.username);
             },
             error: function () {

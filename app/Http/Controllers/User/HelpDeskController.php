@@ -127,8 +127,6 @@ class HelpDeskController extends Controller
         ]);
     }
 
-
-
     public function getHelpdeskInfo($id)
     {
         try {
@@ -139,18 +137,18 @@ class HelpDeskController extends Controller
             $opponentUsername = '';
             $opponentRole = '';
 
-            if ($helpdesk->updated_by) {
-                $admin = User::where('nama_lengkap', $helpdesk->updated_by)->first();
+            // if ($helpdesk->updated_by) {
+            //     $admin = User::where('nama_lengkap', $helpdesk->updated_by)->first();
 
-                if ($admin) {
-                    $opponentUsername = $admin->username;
-                    $opponentRole = $admin->role; // superadmin, admin, support, dll
-                }
-            }
+            //     if ($admin) {
+            //         $opponentUsername = $admin->username;
+            //         $opponentRole = $admin->role; // superadmin, admin, support, dll
+            //     }
+            // }
 
             return response()->json([
                 'success' => true,
-                'nama_lengkap' => $opponentName,
+                // 'nama_lengkap' => $opponentName,
                 'username' => $opponentUsername,
                 'role' => $opponentRole,  // Kirim role
                 'judul_laporan' => $helpdesk->judul_laporan,

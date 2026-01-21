@@ -7,48 +7,59 @@
         allowClear: true
     });
 
+    // Select All
     function InitSelect2(element, options) {
+
+        // 🧹 bersihkan select2 lama (kalau ada)
+        if (element.hasClass('select2-hidden-accessible')) {
+            element.select2('destroy');
+            element.empty(); // optional, tapi aman
+        }
+
         element.select2({
             theme: "bootstrap-5",
             allowClear: true,
+            placeholder: options.placeholder || "---- Pilih Salah Satu ----",
             dropdownParent: options.dropdownParent || null,
+            // minimumInputLength: options.minimumInputLength ?? 1,
+
             ajax: {
                 url: options.url,
                 dataType: 'json',
                 delay: 250,
-                data: options.data,
+                data: function (params) {
+                    return options.data
+                        ? options.data(params)
+                        : { search: params.term || '' };
+                },
                 processResults: function (res) {
                     return {
                         results: res.data.map(item => ({
                             id: item.id,
                             text: item.text,
-                            harga: item.harga // 🔥 WAJIB
+                            harga: item.harga ?? null
                         }))
                     };
                 }
             }
         });
 
-        // untuk edit mode
+        // edit mode
         if (options.initialValue) {
             $.ajax({
                 url: options.url,
                 data: { id: options.initialValue },
                 success: function (res) {
+                    if (!res.data || !res.data.length) return;
+
                     let item = res.data[0];
                     let option = new Option(item.text, item.id, true, true);
-                    element.append(option).trigger('change.select2');
-
-                    // 🔑 JANGAN TIMPA jika harga sudah ada (dari row1)
-                    let currentHarga = $('input[name="harga"]').val();
-
-                    if (!currentHarga || currentHarga === '0' || currentHarga === 'Rp 0') {
-                        $('#harga').val(formatRupiah(item.harga));
-                    }
+                    element.append(option).trigger('change');
                 }
             });
         }
     }
+    
 
     // Tabel
     var $tableRincian = $('#table_rincian');
@@ -646,8 +657,6 @@
             $('input[name="panjar"]').val(row.panjar ?? '').val('');
             $('input[name="tanggal"]').val(row.tanggal ?? '');
             $('select[name="jenis"]').val(row.jenis ?? '').trigger('change');
-
-
 
             // load table detail
             initTable1(row.id_pegawai, row.no_surat);
