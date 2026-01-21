@@ -7,6 +7,16 @@
 
 @section('style')
 
+    <style>
+        /* tinggi select tetap */
+        .select2-container--bootstrap-5 .select2-selection--single {
+            min-height: 38px !important;
+            padding: 0.375rem 0.75rem;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+
 @endsection
 
 @section('breadcrumb-title')
@@ -36,10 +46,9 @@
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
-                                            <th class="f-light">Nama Lengkap</th>
+                                            <th class="f-light">Nama Pegawai</th>
                                             <th class="f-light">Username</th>
                                             <th class="f-light">Password</th>
-                                            <th class="f-light">Email</th>
                                             <th class="f-light">Role</th>
                                             <th class="f-light">Status</th>
                                             <th>Action</th>
@@ -71,11 +80,20 @@
                             <input type="hidden" name="id">
                         </div>
                         {{-- Nama --}}
+                        <!-- <div class="mb-2 row">
+                                <label class="col-sm-2 col-form-label" for="nama_lengkap">Nama</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control form-control" name="nama_lengkap" type="text"
+                                        placeholder="Nama..." required>
+                                </div>
+                            </div> -->
+
+                        <!-- Pegawai -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama_lengkap">Nama</label>
+                            <label class="col-sm-2 col-form-label" for="id_pegawai">Pegawai</label>
                             <div class="col-sm-10">
-                                <input class="form-control form-control" name="nama_lengkap" type="text"
-                                    placeholder="Nama..." required>
+                                <select class="form-select form-control" id="id_pegawai" name="id_pegawai"
+                                    data-placeholder="---- Pilih Salah Satu ----" required></select>
                             </div>
                         </div>
 
@@ -100,13 +118,12 @@
                         </div>
 
                         {{-- Email --}}
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="email">Email</label>
-                            <div class="col-sm-10">
-                                <input class="form-control form-control" name="email" type="email" placeholder="Email..."
-                                    required>
-                            </div>
-                        </div>
+                        <!-- <div class="mb-2 row">
+                                <label class="col-sm-2 col-form-label" for="email">Email</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control form-control" name="email" type="email" placeholder="Email...">
+                                </div>
+                            </div> -->
 
                         {{-- kode Roll --}}
                         <div class="mb-2 row">

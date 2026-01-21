@@ -256,11 +256,13 @@
 
 
                     {{-- SDM --}}
-                    @if (in_array('Pegawai', $aksesMenu) || 
-                    in_array('SPD', $aksesMenu) || 
-                    in_array('Rincian SPD', $aksesMenu) ||
-                    in_array('Slip Gaji', $aksesMenu))
-                    
+                    @if (
+                            in_array('Pegawai', $aksesMenu) ||
+                            in_array('SPD', $aksesMenu) ||
+                            in_array('Rincian SPD', $aksesMenu) ||
+                            in_array('Slip Gaji', $aksesMenu)
+                        )
+
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                             <a class="sidebar-link sidebar-title" href="#">
                                 <svg class="stroke-icon">
@@ -282,11 +284,24 @@
                                     <li><a href="{{ route('sdm.rincian_spd') }}">Rincian SPD</a></li>
                                 @endif
                                 @if (in_array('Slip Gaji', $aksesMenu))
-                                    <li><a href="{{ route('sdm.gaji') }}">Slip Gaji</a></li>
+                                    <li><a href="{{ route('sdm.gaji') }}">Upload Slip Gaji</a></li>
                                 @endif
                             </ul>
                         </li>
                     @endif
+
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            class="sidebar-link sidebar-title link-nav" href="{{ route('sdm.gaji.user') }}">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-knowledgebase') }}">
+                                </use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-knowledgebase') }}">
+                                </use>
+                            </svg><span>Slip Gaji</span></a>
+                    </li>
 
                     {{-- Tarif --}}
                     @if (Session::get('username') == 'superadmin')

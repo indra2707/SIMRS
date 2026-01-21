@@ -26,18 +26,20 @@ class UsersController extends Controller
         // $query = Users::all();
         $query = Db::table('users')
             ->join('tbl_rolls', 'tbl_rolls.id', '=', 'users.role')
+            ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
             ->select(
                 'users.*',
                 'tbl_rolls.nama as nama_roll',
+                'pegawai.nama_pekerja as nama_pekerja'
             )
             ->get();
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id' => $value->id,
-                'nama_lengkap' => $value->nama_lengkap,
+                'id_pegawai' => $value->id_pegawai,
+                'nama_pekerja' => $value->nama_pekerja,
                 'username' => $value->username,
-                'email' => $value->email,
                 'role' => $value->role,
                 'nama_roll' => $value->nama_roll,
                 'password' => $value->password ? '●●●●●●●●' : '(Belum diset)',
@@ -51,8 +53,7 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         $query = Users::create([
-            'nama_lengkap'=> $request->nama_lengkap,
-            'email'=> $request->email,
+            'id_pegawai'=> $request->id_pegawai,
             'password'=> bcrypt($request->password),    
             'username'=> $request->username,
             'role'=> $request->role,
@@ -77,8 +78,7 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $query = Users::where('id', $id)->update([
-            'nama_lengkap'=> $request->nama_lengkap,
-            'email'=> $request->email,
+            'id_pegawai'=> $request->id_pegawai,
             'password'=> bcrypt($request->password),    
             'username'=> $request->username,
             'role'=> $request->role,

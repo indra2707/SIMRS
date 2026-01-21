@@ -33,9 +33,13 @@
         $('input[name="status"]').prop('checked', true);
         $('select[name="role"]').val('').trigger('change');
 
-
         InitSelect2($("select[name='role']"), {
             url: "{{ route('get-select-roll') }}",
+            dropdownParent: $("#modal-user")
+        });
+
+        InitSelect2($("select[name='id_pegawai']"), {
+            url: "{{ route('get-select-pegawai') }}",
             dropdownParent: $("#modal-user")
         });
     });
@@ -134,7 +138,7 @@
             columns: [
                 [
                     {
-                        field: 'nama_lengkap',
+                        field: 'nama_pekerja',
                         sortable: true,
                     },
                     {
@@ -143,10 +147,6 @@
                     },
                     {
                         field: 'password',
-                        sortable: true,
-                    },
-                    {
-                        field: 'email',
                         sortable: true,
                     },
                     {
@@ -215,6 +215,12 @@
             $('input[name="password"]').val('');
             $('input[name="email"]').val(row.email);
             $('input[name="status"]').prop('checked', row.status === 'aktif');
+
+            InitSelect2($("select[name='id_pegawai']"), {
+                url: "{{ route('get-select-pegawai') }}",
+                dropdownParent: $("#modal-user"),
+                initialValue: row.id_pegawai
+            });
 
             InitSelect2($("select[name='role']"), {
                 url: "{{ route('get-select-roll') }}",

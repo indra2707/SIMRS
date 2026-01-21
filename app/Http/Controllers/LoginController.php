@@ -42,7 +42,8 @@ class LoginController extends Controller
                         }
                         // $adminData = User::where('username', $request->username)->first();
                         $adminData = User::join('tbl_rolls', 'tbl_rolls.id', '=', 'users.role')
-                            ->select('users.*', 'tbl_rolls.nama as nama_role', 'tbl_rolls.menu as menu')
+                            ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
+                            ->select('users.*', 'tbl_rolls.nama as nama_role', 'tbl_rolls.menu as menu', 'pegawai.nama_pekerja as nama_pekerja', 'pegawai.nomor_pekerja as nomor_pekerja')
                             ->where('users.username', $request->username)->first();
 
                         // --- Pastikan menu valid array ---
@@ -57,8 +58,8 @@ class LoginController extends Controller
                         Session::put('LoginStatus', value: true);
                         Session::put('role', $adminData->role);
                         Session::put('username', $adminData->username);
-                        Session::put('nama_lengkap', $adminData->nama_lengkap);
-                        Session::put('email', $adminData->email);
+                        Session::put('nama_pekerja', $adminData->nama_pekerja);
+                        Session::put('nomor_pekerja', $adminData->nomor_pekerja);
                         Session::put('nama_role', $adminData->nama_role);
                         Session::put('menu', $menu_array);
 

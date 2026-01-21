@@ -16,12 +16,10 @@ class Users extends Model
         'id',
         'role',
         'username',
-        'nama_lengkap',
-        'email_verified_at',
+        'id_pegawai',
         'password',
         'status',
         'remember_token',
-        'email',
         'created_at',
         'updated_at'
     ];

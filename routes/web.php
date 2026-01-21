@@ -12,6 +12,7 @@ use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\GajiController;
+use App\Http\Controllers\Sdm\GajiUserController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
@@ -330,6 +331,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/gaji/store', [GajiController::class, 'store'])->name('sdm.gaji.create');
         Route::post('/sdm/gaji/delete', [GajiController::class, 'delete'])->name('sdm.gaji.delete');
         Route::post('/gaji/delete-multiple', [GajiController::class, 'deleteMultiple'])->name('sdm.gaji.deleteMultiple');
+
+        // Gaji User
+        Route::get('/gaji_user', [GajiUserController::class, 'index'])->name('sdm.gaji.user');
+        Route::get('/gaji_user/view', [GajiUserController::class, 'views'])->name('sdm.gaji.user.view');
 
         // Rincian SPD
         Route::get('/rincian_spd', [Rincian_spdsController::class, 'index'])->name('sdm.rincian_spd');
