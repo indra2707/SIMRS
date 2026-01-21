@@ -20,29 +20,21 @@ class GajiUserController extends Controller
         return view('sdm.gaji_user.gaji_user', $data);
     }
 
-    // Views Table
-    public function views()
+        public function views()
     {
-        $user = Auth::user();
-
-        // pengaman kalau user belum punya nomor_pekerja
-        if (!$user || !$user->nomor_pekerja) {
-            return response()->json([]);
+        $query = Gaji::query();
+        $query->where('nomor_pekerja', 'like', '%' . Auth::user()->nomor_pekerja . '%')
+              ->orderBy('bulan', 'desc');
+        $data = [];
+        foreach ($query->get() as $value) {
+            $data[] = [
+                'id' => $value->id,
+                'nomor_pekerja' => $value->nomor_pekerja,
+                'bulan' => Carbon::parse($value->bulan)->format('M Y'),
+                'file' => $value->file
+            ];
         }
 
-        $data = Gaji::where('nomor_pekerja', $user->nomor_pekerja)
-            ->orderBy('bulan', 'desc')
-            ->get()
-            ->map(function ($value) {
-                return [
-                    'id' => $value->id,
-                    'nomor_pekerja' => $value->nomor_pekerja,
-                    'bulan' => Carbon::parse($value->bulan)->format('M Y'),
-                    'file' => $value->file,
-                ];
-            })
-            ->values(); // reset index
-
-        return response()->json($data);
+        return response()->json($data, 200);
     }
 }
