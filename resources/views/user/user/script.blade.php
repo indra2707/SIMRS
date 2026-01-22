@@ -32,6 +32,7 @@
         $('input[name="password"]').val('');
         $('input[name="status"]').prop('checked', true);
         $('select[name="role"]').val('').trigger('change');
+        $('select[name="id_pegawai"]').val('').trigger('change');
 
         InitSelect2($("select[name='role']"), {
             url: "{{ route('get-select-roll') }}",
