@@ -248,16 +248,11 @@
     }
 
     function actionsFunctionGaji(value, row, index) {
-        return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
-            '<i class="icon-more-alt"></i>',
-            '</button>',
-            '<div class="dropdown-menu dropdown-menu-end">',
-            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a>',
-            '</div>',
-            '</div>',
-        ].join("");
+        return `
+        <button class="btn btn-xs btn-outline-success btn-print" title="Print"> 
+            <i class="fa fa-print"></i> Print
+        </button>
+    `;
     }
 
     // Handle events button actions

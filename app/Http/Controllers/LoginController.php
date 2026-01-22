@@ -62,6 +62,7 @@ class LoginController extends Controller
                         Session::put('nomor_pekerja', $adminData->nomor_pekerja);
                         Session::put('nama_role', $adminData->nama_role);
                         Session::put('menu', $menu_array);
+                        Session::put('id', $adminData->id);
 
                         return response()->json([
                             'success' => true,

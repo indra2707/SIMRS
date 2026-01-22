@@ -14,6 +14,13 @@
             display: flex;
             align-items: center;
         }
+
+        .select2-fixed {
+            width: 220px;
+            /* kunci lebar */
+            min-width: 220px;
+            max-width: 220px;
+        }
     </style>
 
 @endsection
@@ -34,15 +41,23 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <button class="btn btn-primary add-btn">
-                            <span class="fa fa-plus"></span>
-                            <span> Tambah</span>
-                        </button>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-primary add-btn">
+                                <span class="fa fa-plus"></span> Tambah
+                            </button>
 
-                        <button class="btn btn-success print-all-btn">
-                            <span class="fa fa-print"></span>
-                            <span> Print All</span>
-                        </button>
+                            <button class="btn btn-success print-all-btn">
+                                <span class="fa fa-print"></span> Print All
+                            </button>
+
+                            <div class="select2-fixed">
+                                <select class="form-select select3" name="jenis" id="filter-jenis">
+                                    <option></option>
+                                    <option value="Aset">Aset</option>
+                                    <option value="Inventaris">Inventaris</option>
+                                </select>
+                            </div>
+                        </div>
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
@@ -245,9 +260,9 @@
                     </table>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                                                                                                        <span class="fa fa-times"></span> Batal</button>
-                                                                                                </div> -->
+                                                                                                                        <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
+                                                                                                                            <span class="fa fa-times"></span> Batal</button>
+                                                                                                                    </div> -->
             </div>
         </div>
     </div>

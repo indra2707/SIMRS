@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Events\HelpdeskStatusUpdated;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class HelpDeskController extends Controller
@@ -31,7 +30,15 @@ class HelpDeskController extends Controller
     public function views(Request $request)
     {
         $namaRole = Session::get('nama_role');
-        $query = HelpDesk::with(['user.rolls']);
+        $query = HelpDesk::query()
+            ->join('users', 'users.id', '=', 'help_desk.user_id')
+            ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
+            ->select(
+                'help_desk.*',
+                'help_desk.created_at as created_at',
+                'users.username as user_name',
+                'pegawai.nama_pekerja as nama_lengkap'
+            );
 
         // Filter berdasarkan role
         if (in_array($namaRole, ['Teknik', 'Medis'])) {
@@ -51,8 +58,8 @@ class HelpDeskController extends Controller
         $data = $query->get()->map(function ($value) {
             return [
                 'id' => $value->id,
-                'nama_lengkap' => $value->user->nama_lengkap ?? '-',
                 'username' => $value->user->username ?? '-',
+                'nama_lengkap' => $value->nama_lengkap ?? '-',
                 'department' => $value->user->rolls->nama ?? '-',
                 'keterangan' => $value->keterangan ?? '-',
                 'catatan' => $value->catatan,
@@ -99,7 +106,7 @@ class HelpDeskController extends Controller
             ], 400);
         }
 
-        $helpDesk->updated_by = Auth::user()->nama_lengkap;
+        $helpDesk->updated_by = session('nama_pekerja');
         $helpDesk->save();
 
         broadcast(new HelpdeskStatusUpdated([
@@ -172,7 +179,6 @@ class HelpDeskController extends Controller
             ], 404);
         }
     }
-
 
     // Input Gmbar2
     public function update(Request $request, HelpDesk $helpDesk)

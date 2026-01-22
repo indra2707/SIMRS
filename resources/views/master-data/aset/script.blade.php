@@ -8,6 +8,21 @@
 
     });
 
+    //Select Tabel
+    $(".select3").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        allowClear: true,
+        width: "100%"
+    });
+
+    // Filter Tabel
+    $('#filter-jenis').on('change', function () {
+        $tableAset.bootstrapTable('refresh', {
+            silent: true
+        });
+    });
+
     // Tabel
     var $tableAset = $('#table_aset');
     var $tableInfoMutasi = $('#table-info-mutasi');
@@ -154,6 +169,10 @@
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
             url: "{{ route('master-data.aset.view') }}",
+            queryParams: function (params) {
+                params.jenis = $('#filter-jenis').val(); // HARUS jenis
+                return params;
+            },
             columns: [
                 [
                     {

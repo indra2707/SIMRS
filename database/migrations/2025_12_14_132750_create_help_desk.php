@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('gambar')->nullable();
             $table->text('gambar2')->nullable();
             $table->date('tanggal');
-            $table->text(column: 'catatan')->nullable();
+            $table->text('catatan')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->timestamps();

@@ -228,7 +228,7 @@
 
                 // Append file dari fileBuffer
                 if (fileBuffer.files.length > 0) {
-                    console.log('📤 Uploading', fileBuffer.files.length, 'files');
+                    console.log('Uploading', fileBuffer.files.length, 'files');
                     Array.from(fileBuffer.files).forEach((file, index) => {
                         myformData.append('lampiran[]', file, file.name);
                         console.log(

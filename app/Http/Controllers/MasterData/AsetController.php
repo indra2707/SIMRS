@@ -24,7 +24,7 @@ class AsetController extends Controller
     }
 
     // Views Table
-    public function views()
+    public function views(Request $request)
     {
         // $query = Asets::all();
         $query = Db::table('tbl_asets')
@@ -39,11 +39,16 @@ class AsetController extends Controller
                 'tbl_kelompok.nama as nama_kelompok',
                 'tbl_kelompok.bulan as kelompok_bulan',
                 'tbl_vendors.nama as nama_vendor'
-            )
-            ->get();
+            );
+
+        if ($request->filled('jenis')) {
+            $query->where('tbl_asets.jenis', $request->jenis);
+        }
+
+        $rows = $query->get();
 
         $data = [];
-        foreach ($query as $value) {
+        foreach ($rows as $value) {
             $tanggal = Carbon::createFromFormat('Y-m-d', $value->tahun);
             $selisih_bulan = $tanggal->diffInMonths(now());
 
