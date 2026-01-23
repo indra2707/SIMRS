@@ -292,8 +292,6 @@
                                             <th class="f-light">Status</th>
                                             <th class="f-light">Tanggal Dibuat</th>
                                             <th class="f-light">Diterima Oleh</th>
-                                            <th class="f-light">Diterima</th>
-                                            <th class="f-light">Selesai</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -355,8 +353,8 @@
                         <!-- Deskripsi Masalah  -->
                         <label for="keterangan" class="col-form-label col-sm-2">Deskripsi Masalah</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control form-control" name="keterangan" id="keterangan" rows="2" required
-                                placeholder="Deskripsi Masalah..."></textarea>
+                            <textarea class="form-control form-control" name="keterangan" id="keterangan" rows="3" required
+                                placeholder="catatan ..."></textarea>
                         </div>
 
                         {{-- ATTACH FILE --}}
@@ -378,32 +376,6 @@
 
                             {{-- PREVIEW --}}
                             <div class="row mt-2" id="preview-images"></div>
-                        </div>
-
-
-                        {{-- Lampiran Selesai --}}
-                            <label class="col-sm-2 col-form-label">Lampiran Selesai</label>
-                            <div class="col-sm-10">
-
-                                <!-- Button Attach -->
-                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach2"
-                                    id="btn-attach2">
-                                    <i class="fa fa-paperclip"></i> Attach File
-                                </button>
-
-                                <!-- Hidden Input -->
-                                <input type="file" id="lampiran_selesai" name="lampiran_selesai[]" multiple
-                                    accept="image/jpeg,image/png" class="d-none">
-                                    
-                                {{-- PREVIEW --}}
-                                <div class="row mt-2" id="preview-images2"></div>
-                            </div><br>
-
-                         <!-- Catatan  -->
-                        <label for="catatan" class="col-form-label col-sm-2">Catatan</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control form-control" name="catatan" id="catatan" rows="3" required
-                                placeholder="Catatan..."></textarea>
                         </div>
 
                     </form>
@@ -484,7 +456,7 @@
                                                         <div class="message-data text-end">
                                                             <span class="message-data-time">10:12 am</span>
                                                         </div>
-                                                       
+                                                        Are you there?
                                                     </div>
                                                 </li>
                                                 <li class="clearfix">
@@ -494,7 +466,7 @@
                                                         <div class="message-data">
                                                             <span class="message-data-time">10:14 am</span>
                                                         </div>
-                                                        
+                                                        Yes, I'm here!
                                                     </div>
                                                 </li>
                                             </ul>
@@ -782,7 +754,7 @@
 
                         if (data.success) {
                             // Update nama lengkap
-                            $('#nama_lengkap').text(data.nama_lengkap || 'Support Team');
+                            // $('#nama_lengkap').text(data.nama_lengkap || 'Support Team');
 
                             // Update username
                             $('#chatOpponentUsername').text(data.username ? '' + data.username : '');
@@ -806,7 +778,7 @@
                         }
                     },
                     error: function() {
-                        $('#nama_lengkap').text('Support Team');
+                        // $('#nama_lengkap').text('Support Team');
                         $('#chatOpponentUsername').text('');
                         updateLastSeen(); // Tampilkan offline
                     }
@@ -966,18 +938,8 @@
 
                 console.log('📝 Appending message:', message.id);
 
-                var chatList = $('.chat-history ul');
-
-                // ✅ HAPUS PLACEHOLDER "Belum ada pesan" jika ada
-                var placeholder = chatList.find('li.text-center.text-muted');
-                if (placeholder.length > 0) {
-                    console.log('🗑️ Removing placeholder message');
-                    placeholder.remove();
-                }
-
-                // Tambah pesan baru
                 var html = renderSingleMessage(message);
-                chatList.append(html);
+                $('.chat-history ul').append(html);
                 scrollToBottom();
 
                 // Play sound if from admin

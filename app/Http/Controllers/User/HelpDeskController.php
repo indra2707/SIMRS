@@ -99,13 +99,13 @@ class HelpDeskController extends Controller
         }
         Log::info('Total files: ' . count($gambar));
         $helpdesk = HelpDesk::create([
-            'user_id' => session('id'),
+            'user_id' => Auth::id(),
             // 'created_by' => Auth::user()->nama_lengkap ?? Auth::user()->username ?? 'Unknown',
             'tiket' => 'IHC-' . now()->format('YmdHis'),
             'judul_laporan' => $request->judul_laporan,
             'kategori' => $request->kategori,
             'prioritas' => $request->prioritas,
-            // 'keterangan' => $request->keterangan,
+            'keterangan' => $request->keterangan,
             'status' => 'accept',
             'tanggal' => now(),
             'gambar' => !empty($gambar) ? json_encode($gambar) : null,
@@ -113,12 +113,12 @@ class HelpDeskController extends Controller
 
         broadcast(new HelpdeskCreated([
             'id' => $helpdesk->id,
-            // 'tiket' => $helpdesk->tiket,
-            // 'judul_laporan' => $helpdesk->judul_laporan,
+            'tiket' => $helpdesk->tiket,
+            'judul_laporan' => $helpdesk->judul_laporan,
             'kategori' => $helpdesk->kategori,
             'prioritas' => $helpdesk->prioritas,
             'status' => $helpdesk->status,
-            // 'tanggal' => $helpdesk->tanggal,
+            'tanggal' => $helpdesk->tanggal,
         ]))->toOthers();
         return response()->json([
             'success' => true,
@@ -137,18 +137,18 @@ class HelpDeskController extends Controller
             $opponentUsername = '';
             $opponentRole = '';
 
-            if ($helpdesk->updated_by) {
-                $admin = User::where('nama_lengkap', $helpdesk->updated_by)->first();
+            // if ($helpdesk->updated_by) {
+            //     $admin = User::where('nama_lengkap', $helpdesk->updated_by)->first();
 
-                if ($admin) {
-                    $opponentUsername = $admin->username;
-                    $opponentRole = $admin->role; // superadmin, admin, support, dll
-                }
-            }
+            //     if ($admin) {
+            //         $opponentUsername = $admin->username;
+            //         $opponentRole = $admin->role; // superadmin, admin, support, dll
+            //     }
+            // }
 
             return response()->json([
                 'success' => true,
-                'nama_lengkap' => $opponentName,
+                // 'nama_lengkap' => $opponentName,
                 'username' => $opponentUsername,
                 'role' => $opponentRole,  // Kirim role
                 'judul_laporan' => $helpdesk->judul_laporan,
