@@ -30,7 +30,15 @@ class HelpDeskController extends Controller
     {
         try {
             $namaRole = Session::get('nama_role');
-            $query = HelpDesk::with(['user.rolls']);
+            $query = HelpDesk::with(['user.rolls'])
+                ->join('users', 'users.id', '=', 'help_desk.user_id')
+                ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
+                ->select(
+                    'help_desk.*',
+                    'help_desk.created_at as created_at',
+                    'users.username as user_name',
+                    'pegawai.nama_pekerja as nama_lengkap'
+                );
 
             // Filter berdasarkan role
             if (in_array($namaRole, ['Teknik', 'Medis'])) {
@@ -51,7 +59,7 @@ class HelpDeskController extends Controller
                 return [
                     'id' => $value->id,
                     'username' => $value->user->username ?? '-',
-                    'department' => $value->user->rolls->nama ?? '-',
+                    'nama_lengkap' => $value->nama_lengkap ?? '-',
                     'keterangan' => $value->keterangan ?? '-',
                     'catatan' => $value->catatan,
                     'tiket' => $value->tiket ?? '-',
@@ -105,7 +113,7 @@ class HelpDeskController extends Controller
             }
 
             // SIMPLE: Hanya pakai username
-            $updatedBy = Auth::user()->username ?? 'Admin';
+            $updatedBy = session('nama_pekerja');
 
             Log::info('Update status by: ' . $updatedBy, [
                 'user_id' => Auth::id(),

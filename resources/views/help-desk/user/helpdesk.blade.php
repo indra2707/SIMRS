@@ -269,8 +269,8 @@
                             </button>
 
                             <div class="bs-bars">
-                                <input type="text" class="form-control js-daterangepicker text-center"
-                                    style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                                <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
+                                    placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
                             </div>
                         </div>
                         <input type="hidden" name="tgl_awal" id="tgl_awal">
@@ -292,6 +292,8 @@
                                             <th class="f-light">Status</th>
                                             <th class="f-light">Tanggal Dibuat</th>
                                             <th class="f-light">Diterima Oleh</th>
+                                            <th class="f-light">tgl Diterima</th>
+                                            <th class="f-light">Tgl Selesai</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -367,8 +369,8 @@
                             </button>
 
                             <!-- Hidden Input -->
-                            <input type="file" id="lampiran" name="lampiran[]" multiple
-                                accept="image/jpeg,image/png" class="d-none">
+                            <input type="file" id="lampiran" name="lampiran[]" multiple accept="image/jpeg,image/png"
+                                class="d-none">
 
                             <small class="text-muted btn-attach">
                                 Maksimal 5 file (JPG / PNG)
@@ -405,8 +407,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
-        data-keyboard="false">
+    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <!-- Modal Header -->
@@ -435,10 +436,9 @@
                                                 <!-- Sudah langsung pakai id="lastSeen" di div status -->
                                             </div>
                                             <ul class="list-inline float-start float-sm-end chat-menu-icons">
-                                                <li class="list-inline-item"><a href="#"><i
-                                                            class="icon-search"></i></a></li>
-                                                <li class="list-inline-item"><a href="#"><i
-                                                            class="icon-clip"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i class="icon-search"></i></a>
+                                                </li>
+                                                <li class="list-inline-item"><a href="#"><i class="icon-clip"></i></a></li>
                                                 <li class="list-inline-item"><a href="#"><i
                                                             class="icon-headphone-alt"></i></a></li>
                                                 <li class="list-inline-item"><a href="#"><i
@@ -488,7 +488,8 @@
                                                             😊
                                                         </button>
 
-                                                        <textarea id="input-box" class="form-control" placeholder="Ketik pesan..." rows="1"></textarea>
+                                                        <textarea id="input-box" class="form-control"
+                                                            placeholder="Ketik pesan..." rows="1"></textarea>
 
                                                         <button type="button" id="send-chat-btn" class="chat-btn">
                                                             <i class="fa fa-paper-plane"></i>
@@ -514,7 +515,7 @@
 
     <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             var currentHelpdeskId = null;
             var chatChannel = null;
 
@@ -528,7 +529,7 @@
             });
 
             // ========== OPEN CHAT MODAL ==========
-            $(document).on('click', '.btn-chat', function() {
+            $(document).on('click', '.btn-chat', function () {
                 var helpdeskId = $(this).data('helpdesk-id');
                 if (!helpdeskId) {
                     console.error('Helpdesk ID tidak ditemukan');
@@ -583,7 +584,7 @@
 
 
             // Toggle emoji picker
-            $(document).on('click', '#emoji-btn', function() {
+            $(document).on('click', '#emoji-btn', function () {
                 const picker = document.getElementById('emoji-picker');
                 picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
             });
@@ -617,12 +618,12 @@
                     headers: {
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
-                    success: function(messages) {
+                    success: function (messages) {
                         console.log('✅ Messages loaded:', messages.length, 'messages');
                         renderMessages(messages);
                         scrollToBottom();
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('❌ Failed to load messages:', xhr);
                         $('.chat-history ul').html(
                             '<li class="text-center text-danger py-4">Failed to load messages</li>'
@@ -638,7 +639,7 @@
                 if (!messages || messages.length === 0) {
                     html = '<li class="text-center text-muted py-4">Belum ada pesan. Mulai percakapan!</li>';
                 } else {
-                    messages.forEach(function(msg) {
+                    messages.forEach(function (msg) {
                         html += renderSingleMessage(msg);
                     });
                 }
@@ -672,73 +673,73 @@
                 if (isMe) {
                     // PESAN DARI DIRI SENDIRI (kanan - hijau WhatsApp)
                     html = `
-            <li class="clearfix" data-message-id="${msg.id}">
-                <div style="
-                    background-color: #DCF8C6;
-                    color: #000;
-                    padding: 9px 13px 10px 15px;
-                    border-radius: 18px 18px 7px 18px;
-                    max-width: 75%;
-                    float: right;
-                    clear: both;
-                    margin: 4px 10px 12px 30px;
-                    box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
-                    font-size: 15.8px;
-                    line-height: 1.45;
-                    position: relative;
-                ">
-                    <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
-                    <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
-                </div>
-            </li>
-        `;
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div style="
+                        background-color: #DCF8C6;
+                        color: #000;
+                        padding: 9px 13px 10px 15px;
+                        border-radius: 18px 18px 7px 18px;
+                        max-width: 75%;
+                        float: right;
+                        clear: both;
+                        margin: 4px 10px 12px 30px;
+                        box-shadow: 0 1px 0.5px rgba(11,20,26,.13);
+                        font-size: 15.8px;
+                        line-height: 1.45;
+                        position: relative;
+                    ">
+                        <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
+                        <span style="font-size: 11.5px; color: #667781; position: absolute; bottom: 7px; right: 12px;">${time}</span>
+                    </div>
+                </li>
+            `;
                 } else if (isAdmin) {
                     // PESAN ADMIN (kiri - hijau sama seperti punya kamu)
                     html = `
-            <li class="clearfix" data-message-id="${msg.id}">
-                <div style="
-                    background-color: #DCF8C6;
-                    color: #000;
-                    padding: 10px 14px;
-                    border-radius: 18px 18px 18px 7px;
-                    max-width: 75%;
-                    float: left;
-                    clear: both;
-                    margin: 6px 30px 12px 12px;
-                    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
-                    font-size: 16px;
-                    line-height: 1.45;
-                    position: relative;
-                ">
-                    <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
-                    <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
-                </div>
-            </li>
-        `;
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div style="
+                        background-color: #DCF8C6;
+                        color: #000;
+                        padding: 10px 14px;
+                        border-radius: 18px 18px 18px 7px;
+                        max-width: 75%;
+                        float: left;
+                        clear: both;
+                        margin: 6px 30px 12px 12px;
+                        box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+                        font-size: 16px;
+                        line-height: 1.45;
+                        position: relative;
+                    ">
+                        <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
+                        <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
+                    </div>
+                </li>
+            `;
                 } else {
                     // PESAN DARI USER LAIN (kiri - abu-abu)
                     html = `
-            <li class="clearfix" data-message-id="${msg.id}">
-                <div class="message other-message" style="
-                    background-color: #f1f1f1;
-                    color: #333;
-                    padding: 10px 15px;
-                    border-radius: 15px;
-                    display: inline-block;
-                    max-width: 75%;
-                    float: left;
-                    clear: both;
-                    margin-bottom: 10px;
-                ">
-                    <div class="message-data mb-1">
-                        <span class="message-data-time" style="color: #999; font-size: 11px;">
-                            ${senderName} • ${time}
-                        </span>
+                <li class="clearfix" data-message-id="${msg.id}">
+                    <div class="message other-message" style="
+                        background-color: #f1f1f1;
+                        color: #333;
+                        padding: 10px 15px;
+                        border-radius: 15px;
+                        display: inline-block;
+                        max-width: 75%;
+                        float: left;
+                        clear: both;
+                        margin-bottom: 10px;
+                    ">
+                        <div class="message-data mb-1">
+                            <span class="message-data-time" style="color: #999; font-size: 11px;">
+                                ${senderName} • ${time}
+                            </span>
+                        </div>
+                        <div style="word-wrap: break-word;">${messageContent}</div>
                     </div>
-                    <div style="word-wrap: break-word;">${messageContent}</div>
-                </div>
-            </li>
-        `;
+                </li>
+            `;
                 }
 
                 return html;
@@ -749,7 +750,7 @@
                 $.ajax({
                     url: '/user/helpdesk/' + helpdeskId + '/info',
                     type: 'GET',
-                    success: function(data) {
+                    success: function (data) {
                         console.log('📋 Chat opponent data:', data);
 
                         if (data.success) {
@@ -777,7 +778,7 @@
                             }
                         }
                     },
-                    error: function() {
+                    error: function () {
                         // $('#nama_lengkap').text('Support Team');
                         $('#chatOpponentUsername').text('');
                         updateLastSeen(); // Tampilkan offline
@@ -847,17 +848,17 @@
                     '"': '&quot;',
                     "'": '&#039;'
                 };
-                return text.replace(/[&<>"']/g, function(m) {
+                return text.replace(/[&<>"']/g, function (m) {
                     return map[m];
                 });
             }
 
             // ========== SEND MESSAGE ==========
-            $(document).on('click', '#send-chat-btn', function() {
+            $(document).on('click', '#send-chat-btn', function () {
                 sendMessage();
             });
 
-            $(document).on('keypress', '#input-box', function(e) {
+            $(document).on('keypress', '#input-box', function (e) {
                 if (e.which === 13 && !e.shiftKey) {
                     e.preventDefault();
                     sendMessage();
@@ -886,10 +887,10 @@
                         message: message,
                         _token: "{{ csrf_token() }}"
                     },
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('#send-chat-btn').prop('disabled', true);
                     },
-                    success: function(response) {
+                    success: function (response) {
                         console.log('✅ Message sent:', response);
 
                         if (response.success) {
@@ -906,7 +907,7 @@
                             alert(response.message || 'Gagal mengirim pesan');
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         console.error('❌ Send message error:', xhr);
 
                         var errorMessage = 'Gagal mengirim pesan';
@@ -921,7 +922,7 @@
 
                         alert(errorMessage);
                     },
-                    complete: function() {
+                    complete: function () {
                         $('#send-chat-btn').prop('disabled', false);
                         $('#input-box').focus();
                     }
@@ -950,7 +951,7 @@
 
             // ========== SCROLL TO BOTTOM ==========
             function scrollToBottom() {
-                setTimeout(function() {
+                setTimeout(function () {
                     var chatBox = $('.chat-history');
                     if (chatBox.length) {
                         chatBox.animate({
@@ -973,7 +974,7 @@
 
                 // Subscribe to channel
                 window.Echo.channel(chatChannel)
-                    .listen('.MessageSent', function(e) {
+                    .listen('.MessageSent', function (e) {
                         console.log('🔔 NEW MESSAGE RECEIVED:', e);
 
                         if (e.message) {
@@ -990,7 +991,7 @@
             }
 
             // ========== CLEAN UP ON MODAL CLOSE ==========
-            $('#chatModal').on('hidden.bs.modal', function() {
+            $('#chatModal').on('hidden.bs.modal', function () {
                 console.log('❌ Chat modal closed');
 
                 if (chatChannel) {
@@ -1009,7 +1010,7 @@
                     var audio = new Audio(
                         'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBzKM0fPTgjMGHm7A7+OZQQ0PVKXh8bhnHQQ4lNXzzn8rBSN0x+/glkAKE16y6OuoVhMJR53e8L9uIQcxjM7z04U2Bhxqvu7mnUIND1Ol4PG4aB4ENpPU8tGAKgUjcsXv45hCDBBbr+frq1kUCUWZ2+/CcSMGMIrL8daIOQcZZrfs6KFODwxPoup8tWYdBDGPzvLPgysFI3DD7+adQgsQ'
                     );
-                    audio.play().catch(function(e) {
+                    audio.play().catch(function (e) {
                         console.log('🔇 Cannot play sound:', e);
                     });
                 } catch (e) {
@@ -1047,7 +1048,7 @@
                 }
 
                 // Auto-resize textarea DENGAN adjust chat height
-                inputBox.addEventListener('input', function() {
+                inputBox.addEventListener('input', function () {
                     this.style.height = 'auto';
                     this.style.height = this.scrollHeight + 'px';
 
@@ -1063,7 +1064,7 @@
                 });
 
                 // Shift + Enter = baris baru, Enter = kirim
-                inputBox.addEventListener('keydown', function(e) {
+                inputBox.addEventListener('keydown', function (e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
                         e.preventDefault();
                         sendMessage();
@@ -1071,13 +1072,13 @@
                 });
 
                 // Adjust saat modal dibuka
-                $('#chatModal').on('shown.bs.modal', function() {
+                $('#chatModal').on('shown.bs.modal', function () {
                     adjustChatHeight();
                     inputBox.focus();
                 });
 
                 // Adjust saat window resize
-                $(window).on('resize', function() {
+                $(window).on('resize', function () {
                     if ($('#chatModal').hasClass('show')) {
                         adjustChatHeight();
                     }
@@ -1085,7 +1086,7 @@
 
                 // Override fungsi sendMessage yang sudah ada
                 const originalSendMessage = window.sendMessage || sendMessage;
-                window.sendMessage = function() {
+                window.sendMessage = function () {
                     const message = $('#input-box').val().trim();
                     if (!message) return;
 
@@ -1096,10 +1097,10 @@
                             message: message,
                             _token: "{{ csrf_token() }}"
                         },
-                        beforeSend: function() {
+                        beforeSend: function () {
                             $('#send-chat-btn').prop('disabled', true);
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.success) {
                                 $('#input-box').val('');
                                 inputBox.style.height = '40px';
@@ -1115,10 +1116,10 @@
                                 alert(response.message || 'Gagal mengirim pesan');
                             }
                         },
-                        error: function() {
+                        error: function () {
                             alert('Gagal mengirim pesan');
                         },
-                        complete: function() {
+                        complete: function () {
                             $('#send-chat-btn').prop('disabled', false);
                             inputBox.focus();
                         }
