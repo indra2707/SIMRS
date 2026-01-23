@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Models\User\Users;
+use Illuminate\Http\Request;
 
 class UserspekerjaController extends Controller
 {
@@ -46,5 +48,26 @@ class UserspekerjaController extends Controller
             ];
         }
         return response()->json($data, 200);
+    }
+
+     // Update
+    public function update(Request $request, $id)
+    {
+        $query = Users::where('id', $id)->update([
+            'password'=> bcrypt($request->password),
+        ]);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Diubah.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Diubah.',
+            ], status: 400);
+        }
     }
 }

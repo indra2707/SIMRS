@@ -14,7 +14,7 @@
     $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('user.user.update', ':id') }}";
+            var url = "{{ route('user.user-pekerja.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {

@@ -316,6 +316,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         // User pekerja
         Route::get('/user-pekerja', [UserspekerjaController::class, 'index'])->name('user.user-pekerja');
         Route::get('/user-pekerja/view', [UserspekerjaController::class, 'views'])->name('user.user-pekerja.view');
+        Route::put('/user-pekerja/update/{id}', [UserspekerjaController::class, 'update'])->name('user.user-pekerja.update');
 
         //Rolls
         Route::get('/roll', [RollsController::class, 'index'])->name('user.roll');
