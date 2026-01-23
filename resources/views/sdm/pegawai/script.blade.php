@@ -220,8 +220,7 @@
         });
 
         // Reset inputs
-        $('input[type="checkbox"]').prop('checked', false);
-        $('input[type="radio"]').prop('checked', false);
+        $('#modal-pegawai').find('input[type="checkbox"], input[type="radio"]').prop('checked', false).trigger('change');
         $('input[type="file"]').val('');
 
         if (typeof imageViewer !== 'undefined') {
@@ -971,27 +970,83 @@
 
             // ====== JIKA VALID → LANJUT KE STEP BERIKUTNYA ======
             let $nextFieldset = $currentFieldset.next('fieldset');
+
             if ($nextFieldset.length) {
                 $currentFieldset.fadeOut(300, function () {
                     $nextFieldset.fadeIn(300);
-                    $('.modal-body').animate({
-                        scrollTop: 0
-                    }, 300);
+                    $('.modal-body').animate({ scrollTop: 0 }, 300);
                 });
 
-                // Update progress bar
-                let stepIndex = $nextFieldset.index('fieldset');
+                // Ambil index fieldset tujuan
+                let stepIndex = $('fieldset').index($nextFieldset);
                 let totalSteps = $('fieldset').length;
+
+                // Update progress bar
                 let progressPercentage = ((stepIndex + 1) / totalSteps) * 100;
                 $('.f1-progress-line').css('width', progressPercentage + '%');
 
-                // Update step indicator
+                // Update step indicator (FIXED)
                 $('.f1-step').removeClass('active activated');
-                $('.f1-step').eq(stepIndex + 1).addClass(
-                    'active'); // +1 karena index fieldset mulai dari 0
-                $('.f1-step').eq(stepIndex + 1).prevAll().addClass('activated');
+                $('.f1-step').eq(stepIndex).addClass('active').prevAll().addClass('activated');
             }
         });
+
+        //klik icon f1 step
+        $(document).on('click', '.f1-step', function () {
+            let targetIndex = $('.f1-step').index(this);
+            let $fieldsets = $('fieldset');
+
+            // fieldset aktif sekarang
+            let $currentFieldset = $fieldsets.filter(':visible');
+            let currentIndex = $fieldsets.index($currentFieldset);
+
+            // klik step yang sama
+            if (targetIndex === currentIndex) return;
+
+            // jika mau maju → VALIDASI dulu
+            if (targetIndex > currentIndex) {
+                let isValid = true;
+
+                $currentFieldset.find('input, select, textarea').each(function () {
+                    // cek required
+                    if ($(this).prop('required')) {
+                        if (!$(this).val()) {
+                            isValid = false;
+                            $(this).addClass('is-invalid');
+                        } else {
+                            $(this).removeClass('is-invalid');
+                        }
+                    }
+                });
+
+                // kalau tidak valid → STOP
+                if (!isValid) {
+                    // optional: scroll ke field error
+                    $currentFieldset.find('.is-invalid').first()[0]
+                        ?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return;
+                }
+            }
+
+            // Fieldset tujuan
+            let $targetFieldset = $fieldsets.eq(targetIndex);
+
+            // Animasi aman
+            $currentFieldset.fadeOut(200, function () {
+                $targetFieldset.fadeIn(300);
+                $('.modal-body').animate({ scrollTop: 0 }, 300);
+            });
+
+            // Update progress bar
+            let totalSteps = $fieldsets.length;
+            let progressPercentage = ((targetIndex + 1) / totalSteps) * 100;
+            $('.f1-progress-line').css('width', progressPercentage + '%');
+
+            // Update step indicator
+            $('.f1-step').removeClass('active activated');
+            $('.f1-step').eq(targetIndex).addClass('active').prevAll().addClass('activated');
+        });
+
 
         // Handle tombol PREVIOUS (tanpa validasi)
         $(document).on('click', '.btn-previous', function (e) {
@@ -1265,7 +1320,7 @@
         }
     };
 
-     // Window operateChange Status Pegawai
+    // Window operateChange Status Pegawai
     window.updateStatusPegawai = {
         'click .update-status': function (e, value, row, index) {
             var url = "{{ route('pegawai.update-status', ':id') }}";

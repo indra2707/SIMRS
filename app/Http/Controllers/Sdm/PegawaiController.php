@@ -539,7 +539,7 @@ class PegawaiController extends Controller
             'Mitra Pegawai' => 'MP',
             'Mitra Dokter' => 'MD',
             'Outsourcing' => 'OS',
-            'Internship' => 'INT',
+            'Internship' => 'MG',
         ];
 
         $prefix = $prefixMap[$status] ?? 'IHC';

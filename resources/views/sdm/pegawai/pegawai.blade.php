@@ -206,7 +206,7 @@
                             <!-- ===================== STEP HEADER ===================== -->
                             <div class="f1-steps">
                                 <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="0" data-number-of-steps="4"></div>
+                                    <div class="f1-progress-line" data-now-value="0" data-number-of-steps="5"></div>
                                 </div>
 
                                 <div class="f1-step active">
