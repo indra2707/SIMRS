@@ -110,7 +110,8 @@
                             in_array('Kota', $aksesMenu) ||
                             in_array('Bank', $aksesMenu) ||
                             in_array('Fungsi', $aksesMenu) ||
-                            in_array('SK Struktur', $aksesMenu)
+                            in_array('SK Struktur', $aksesMenu) ||
+                            in_array('Unit', $aksesMenu)
                         )
 
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
@@ -160,6 +161,9 @@
                                 @endif
                                 @if (in_array('Fungsi', $aksesMenu))
                                     <li><a href="{{ route('master-data.fungsi') }}">Fungsi</a></li>
+                                @endif
+                                @if (in_array('Unit', $aksesMenu))
+                                    <li><a href="{{ route('master-data.unit') }}">Unit</a></li>
                                 @endif
                                 @if (in_array('SK Struktur', $aksesMenu))
                                     <li><a href="{{ route('master-data.sk-struktur') }}">SK Struktur</a></li>
@@ -290,15 +294,14 @@
                         </li>
                     @endif
 
-
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                             class="sidebar-link sidebar-title link-nav" href="{{ route('sdm.gaji.user') }}">
                             <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-knowledgebase') }}">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
                                 </use>
                             </svg>
                             <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-knowledgebase') }}">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
                                 </use>
                             </svg><span>Slip Gaji</span></a>
                     </li>

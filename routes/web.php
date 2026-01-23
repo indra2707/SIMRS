@@ -38,6 +38,7 @@ use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\CustomerController;
 
 use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\UnitController;
 use App\Http\Controllers\MasterData\MutasiController;
 use App\Http\Controllers\MasterData\PenjaminController;
 use App\Http\Controllers\MasterData\KalibrasiController;
@@ -210,6 +211,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/lokasi/update/{id}', [LokasiController::class, 'update'])->name('master-data.lokasi.update');
         Route::delete('/lokasi/delete/{id}', [LokasiController::class, 'destroy'])->name('master-data.lokasi.delete');
         Route::post('/lokasi/update-status/{id}', [LokasiController::class, 'updateStatus'])->name('master-data.lokasi.update-status');
+
+         // unit
+        Route::get('/unit', [UnitController::class, 'index'])->name('master-data.unit');
+        Route::get('/unit/view', [UnitController::class, 'views'])->name('master-data.unit.view');
+        Route::post('/unit/store', [UnitController::class, 'store'])->name('master-data.unit.create');
+        Route::put('/unit/update/{id}', [UnitController::class, 'update'])->name('master-data.unit.update');
+        Route::delete('/unit/delete/{id}', [UnitController::class, 'destroy'])->name('master-data.unit.delete');
+        Route::post('/unit/update-status/{id}', [UnitController::class, 'updateStatus'])->name('master-data.unit.update-status');
 
         // Kota
         Route::get('/kota', [KotaController::class, 'index'])->name('master-data.kota');
@@ -434,6 +443,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-sk-struktur', [GlobalController::class, 'optionsSelectSKStruktur'])->name('get-select-sk-struktur');
         // Jabatan
         Route::get('/get-select-jabatan', [GlobalController::class, 'optionsSelectJabatan'])->name('get-select-jabatan');
+        // Unit
+        Route::get('/get-select-unit', [GlobalController::class, 'optionsSelectUnit'])->name('get-select-unit');
     });
 });
 

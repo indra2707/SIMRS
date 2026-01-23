@@ -209,6 +209,8 @@
                                                 Bank</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Fungsi">
                                                 Fungsi</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Unit">
+                                                Unit</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="SK Struktur">
                                                 SK Struktur</label></li>
                                     </ul>
@@ -258,7 +260,7 @@
                                         <li><label><input type="checkbox" name="permissions[]" value="Rincian SPD"> Rincian
                                                 SPD</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Slip Gaji"> Slip Gaji
-                                                </label></li>
+                                            </label></li>
                                     </ul>
                                 </li>
                             </ul>

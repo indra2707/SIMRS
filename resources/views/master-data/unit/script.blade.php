@@ -1,49 +1,31 @@
 <script type="text/javascript">
     // Tabel
-    var $tableLokasi = $('#table_lokasi');
+    var $tableUnit = $('#table_unit');
 
-    // select2 global
-    $(".select2").select2({
-        placeholder: "---- Pilih Salah Satu ----",
-        theme: "bootstrap-5",
-        dropdownParent: $("#modal-lokasi"),
-        allowClear: true
-
-    });
-
-
-    // Open Modal Lokasi
-    $(document).on('click', '.add-btn', function () {
-        $('.form-lokasi').removeClass('was-validated');
-        $('#modal-lokasi').modal('show');
-        $('.modal-title').text('Form Tambah Lokasi');
+    // Open Modal Unit
+    $(document).on('click', '.add-btn', function() {
+        $('.form-unit').removeClass('was-validated');
+        $('#modal-unit').modal('show');
+        $('.modal-title').text('Form Tambah Unit');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="nama"]').val('');
         $('input[name="status"]').prop('checked', true);
-        $('select[name="id_unit"]').val('').trigger('change');
-        $('select[name="lantai"]').val('').trigger('change');
-
-        // Init Select2
-        InitSelect2($("select[name='id_unit']"), {
-            url: "{{ route('get-select-unit') }}",
-            dropdownParent: $("#modal-lokasi")
-        })
     });
 
     // Save Asset
-    $(document).on('click', '.save-btn', function () {
+    $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
         if (id) {
-            var url = "{{ route('master-data.lokasi.update', ':id') }}";
+            var url = "{{ route('master-data.unit.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('master-data.lokasi.create') }}";
+            var url = "{{ route('master-data.unit.create') }}";
             var type = "POST";
         }
-        var forms = document.getElementsByClassName('form-lokasi');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var forms = document.getElementsByClassName('form-unit');
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -53,21 +35,21 @@
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $('.form-lokasi').serialize(),
-                    beforeSend: function () {
+                    data: $('.form-unit').serialize(),
+                    beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function () {
+                    complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
-                            $('#modal-lokasi').modal('hide');
-                            $tableLokasi.bootstrapTable('refresh');
+                            $('#modal-unit').modal('hide');
+                            $tableUnit.bootstrapTable('refresh');
                         } else {
                             $.notify({
                                 icon: 'fa fa-check',
@@ -85,8 +67,8 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                            form.classList.remove('was-validated');
-                        }
+                        form.classList.remove('was-validated');
+                    }
                     },
                 });
             }
@@ -95,14 +77,14 @@
     });
 
     // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
 
-    // Table Lokasi
+    // Table Unit
     function initTable() {
-        $tableLokasi.bootstrapTable('destroy').bootstrapTable({
+        $tableUnit.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
             search: true,
@@ -121,7 +103,7 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.lokasi.view') }}",
+            url: "{{ route('master-data.unit.view') }}",
             columns: [
                 [
                     {
@@ -129,19 +111,11 @@
                         sortable: true,
                     },
                     {
-                        field: 'lantai',
-                        sortable: true,
-                    },
-                    {
-                        field: 'id_unit',
-                        sortable: true,
-                    },
-                    {
                         width: '100%',
                         field: 'status',
                         sortable: true,
-                        events: window.updateStatusLokasi,
-                        formatter: function (value, row, index) {
+                        events: window.updateStatusUnit,
+                        formatter: function(value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
@@ -160,19 +134,19 @@
                         valign: 'middle',
                         sortable: true,
                         clickToSelect: false,
-                        events: window.eventsLokasi,
-                        formatter: actionsFunctionLokasi
+                        events: window.eventsUnit,
+                        formatter: actionsFunctionUnit
                     }
                 ]
             ],
-            responseHandler: function (data) {
+            responseHandler: function(data) {
                 return data;
             }
         });
     }
 
 
-    function actionsFunctionLokasi(value, row, index) {
+    function actionsFunctionUnit(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
@@ -187,24 +161,17 @@
     }
 
     // Handle events button actions
-    window.eventsLokasi = {
-        'click .btn-edit': function (e, value, row, index) {
-            $('#modal-lokasi').modal('show');
-            $('.modal-title').text('Form Edit Lokasi');
+    window.eventsUnit = {
+        'click .btn-edit': function(e, value, row, index) {
+            $('#modal-unit').modal('show');
+            $('.modal-title').text('Form Edit Unit');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
-            $('select[name="lantai"]').val(row.lantai);
-
-            InitSelect2($("select[name='id_unit']"), {
-                url: "{{ route('get-select-unit') }}",
-                dropdownParent: $("#modal-lokasi"),
-                initialValue: row.id_unit,
-            });
         },
-        'click .btn-delete': function (e, value, row, index) {
-            var url = "{{ route('master-data.lokasi.delete', ':id') }}";
+        'click .btn-delete': function(e, value, row, index) {
+            var url = "{{ route('master-data.unit.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -224,15 +191,15 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function () {
-                        $tableLokasi.bootstrapTable('refresh');
+                    }).done(function() {
+                        $tableUnit.bootstrapTable('refresh');
                     });
 
                 }
@@ -240,10 +207,10 @@
         }
     }
 
-    // Window operateChange Status lokasi
-    window.updateStatusLokasi = {
-        'click .update-status': function (e, value, row, index) {
-            var url = "{{ route('master-data.lokasi.update-status', ':id') }}";
+    // Window operateChange Status unit
+    window.updateStatusUnit = {
+        'click .update-status': function(e, value, row, index) {
+            var url = "{{ route('master-data.unit.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
                 url: url,
@@ -253,15 +220,15 @@
                     table: 'tbl_lokasis',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
+                success: function(res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
                         Alert('warning', res.message);
                     }
-                    $tableLokasi.bootstrapTable('refresh');
+                    $tableUnit.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
@@ -273,5 +240,4 @@
             });
         }
     }
-
 </script>

@@ -274,11 +274,36 @@ class GlobalController extends Controller
         ]);
     }
 
-
     // select lokasi
     public function optionsSelectLokasi(Request $request)
     {
         $query = DB::table('tbl_lokasis')
+            ->where('status', '=', '1')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('nama', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->limit(10)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->nama;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+    // select Unit
+    public function optionsSelectUnit(Request $request)
+    {
+        $query = DB::table('tbl_unit')
             ->where('status', '=', '1')
             ->when($request->values != '', function ($q) use ($request) {
                 $q->where('id', '=', $request->values);

@@ -3,33 +3,31 @@
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
-use App\Models\MaterData\Lokasis;
+use App\Models\MaterData\Unit;;
 use Illuminate\Http\Request;
 
-class LokasiController extends Controller
+class UnitController extends Controller
 {
     // Index
     public function index()
     {
         $data = [
-            'title' => 'Lokasi',
+            'title' => 'Unit',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Lokasi',
+            'menuSubtitle' => 'Unit',
         ];
-        return view('master-data.lokasi.lokasi', $data);
+        return view('master-data.unit.unit', $data);
     }
 
     // Views Table
     public function views()
     {
-        $query = Lokasis::all();
+        $query = Unit::all();
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
                 'id'        => $value->id,
                 'nama'      => $value->nama,
-                'lantai'   => $value->lantai,
-                'id_unit'  => $value->id_unit, 
                 'status'    => $value->status,
             ];
         }
@@ -39,7 +37,7 @@ class LokasiController extends Controller
     // Simpan
     public function store(Request $request)
     {
-        $query = Lokasis::create([
+        $query = Unit::create([
             'nama'      => $request->nama,
             'status'    => $request->status == 'on' ? '1' : '0',
         ]);
@@ -61,10 +59,8 @@ class LokasiController extends Controller
     // Update
     public function update(Request $request, $id)
     {
-        $query = Lokasis::where('id', $id)->update([
+        $query = Unit::where('id', $id)->update([
             'nama'      => $request->nama,
-            'lantai'   => $request->lantai,
-            'id_unit'  => $request->id_unit,
             'status'    => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
@@ -85,7 +81,7 @@ class LokasiController extends Controller
     // Delete
     public function destroy($id)
     {
-        $query = Lokasis::where('id', $id)->delete();
+        $query = Unit::where('id', $id)->delete();
         if ($query) {
             return response()->json([
                 'success' => true,
@@ -104,7 +100,7 @@ class LokasiController extends Controller
      // update status check
     public function updateStatus(Request $request, $id)
     {
-        $query = Lokasis::where('id', $id)->update([
+        $query = Unit::where('id', $id)->update([
             'status' => $request->status,
         ]);
         if ($query) {
