@@ -17,6 +17,7 @@ use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\User\UserspekerjaController;
 
 use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
@@ -311,6 +312,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/user/update/{id}', [UsersController::class, 'update'])->name('user.user.update');
         Route::delete('/user/delete/{id}', [UsersController::class, 'destroy'])->name('user.user.delete');
         Route::post('/user/update-status/{id}', [UsersController::class, 'updateStatus'])->name('user.user.update-status');
+
+        // User pekerja
+        Route::get('/user-pekerja', [UserspekerjaController::class, 'index'])->name('user.user-pekerja');
+        Route::get('/user-pekerja/view', [UserspekerjaController::class, 'views'])->name('user.user-pekerja.view');
 
         //Rolls
         Route::get('/roll', [RollsController::class, 'index'])->name('user.roll');

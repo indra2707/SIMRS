@@ -187,8 +187,7 @@
     </div>
 
     {{-- Modal Form store pegawai --}}
-    <div class="modal fade" id="modal-pegawai" tabindex="-1" role="dialog" data-bs-backdrop="static"
-        data-keyboard="false">
+    <div class="modal fade" id="modal-pegawai" tabindex="-1" role="dialog" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
 
@@ -243,9 +242,8 @@
                                     <!-- Anak Perusahaan -->
                                     <label for="anak_perusahaan" class="col-form-label col-sm-2">Anak Perusahaan</label>
                                     <div class="col-sm-10">
-                                        <input type="text" id="anak_perusahaan" name="anak_perusahaan"
-                                            class="form-control" placeholder="Anak Perusahaan..." required
-                                            value="PT Pertamina Bina Medika IHC">
+                                        <input type="text" id="anak_perusahaan" name="anak_perusahaan" class="form-control"
+                                            placeholder="Anak Perusahaan..." required value="PT Pertamina Bina Medika IHC">
                                     </div>
 
                                     <!-- Penempatan -->
@@ -259,8 +257,7 @@
                                     <label for="lokasi_kerja" class="col-form-label col-sm-2">Lokasi Kerja</label>
                                     <div class="col-sm-4">
                                         <input type="text" id="lokasi_kerja" name="lokasi_kerja" class="form-control"
-                                            placeholder="Lokasi Kerja..." required
-                                            value="RS Pertamina Royal Biringkanaya">
+                                            placeholder="Lokasi Kerja..." required value="RS Pertamina Royal Biringkanaya">
                                     </div>
 
                                     <!-- Nomor SK Struktur  -->
@@ -289,8 +286,7 @@
                                     <!-- Status Pegawai -->
                                     <label for="status_kepegawaian" class="col-form-label col-sm-2">Status Pegawai</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select form-control select2" name="status_kepegawaian"
-                                            required>
+                                        <select class="form-select form-control select2" name="status_kepegawaian" required>
                                             <option></option>
                                             <option value="PWTT">PWTT</option>
                                             <option value="PWT">PWT</option>
@@ -304,8 +300,8 @@
                                     <!-- Nomor Pekerja  -->
                                     <label for="nomor_pekerja" class="col-form-label col-sm-2">Nomor Pekerja</label>
                                     <div class="col-sm-4">
-                                        <input type="text" id="nomor_pekerja" name="nomor_pekerja"
-                                            class="form-control" placeholder="Nomor Pekerja..." required>
+                                        <input type="text" id="nomor_pekerja" name="nomor_pekerja" class="form-control"
+                                            placeholder="Nomor Pekerja..." required>
                                     </div>
 
                                     <!-- Nama Pekerja  -->
@@ -335,15 +331,14 @@
                                     <!-- NIK  -->
                                     <label for="nik" class="col-form-label col-sm-2">NIK</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control ktp-number" id="nik" name="nik"
-                                            placeholder="NIK..." required>
+                                        <input class="form-control ktp-number" id="nik" name="nik" placeholder="NIK..."
+                                            required>
                                     </div>
 
                                     <!-- Agama -->
                                     <label for="agama" class="col-form-label col-sm-2">Agama</label>
                                     <div class="col-sm-4">
-                                        <select class="form-select form-control select2" id="agama" name="agama"
-                                            required>
+                                        <select class="form-select form-control select2" id="agama" name="agama" required>
                                             <option value=""></option>
                                             <option value="Islam">Islam</option>
                                             <option value="Kristen">Kristen</option>
@@ -428,8 +423,8 @@
                                     <!-- Masa Kerja  -->
                                     <label for="masa_kerja" class="col-form-label col-sm-2">Masa Kerja</label>
                                     <div class="col-sm-4">
-                                        <input class="form-control js-datepicker digits" id="masa_kerja"
-                                            name="masa_kerja" data-language="en" placeholder="Masa Kerja...">
+                                        <input class="form-control js-datepicker digits" id="masa_kerja" name="masa_kerja"
+                                            data-language="en" placeholder="Masa Kerja...">
                                     </div>
 
                                     <!-- TMT Status Kepegawaian -->
@@ -538,8 +533,8 @@
                                     <label for="nomor_kontak_darurat" class="col-form-label col-sm-2">Nomor Kontak
                                         Darurat</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control phone-number"
-                                            name="nomor_kontak_darurat" placeholder="+62 xxx xxx xxxx">
+                                        <input type="text" class="form-control phone-number" name="nomor_kontak_darurat"
+                                            placeholder="+62 xxx xxx xxxx">
                                     </div>
 
                                     <!-- Nama Kontak Darurat -->
@@ -572,8 +567,7 @@
                                     <!-- Email-->
                                     <label for="email" class="col-form-label col-sm-2">Email</label>
                                     <div class="col-md-4">
-                                        <input type="email" class="form-control" name="email"
-                                            placeholder="Email...">
+                                        <input type="email" class="form-control" name="email" placeholder="Email...">
                                     </div>
 
                                     <!-- Email Dinas-->
@@ -591,19 +585,22 @@
                                     <!-- Alamat KTP-->
                                     <label for="alamat_ktp" class="col-form-label col-sm-2">Alamat KTP</label>
                                     <div class="col-md-4">
-                                        <textarea class="form-control" name="alamat_ktp" placeholder="Alamat KTP..."></textarea>
+                                        <textarea class="form-control" name="alamat_ktp"
+                                            placeholder="Alamat KTP..."></textarea>
                                     </div>
 
                                     <!-- Alamat Domisili-->
                                     <label for="alamat_domisili" class="col-form-label col-sm-2">Alamat Domisili</label>
                                     <div class="col-md-4">
-                                        <textarea class="form-control" name="alamat_domisili" placeholder="Alamat Domisili..."></textarea>
+                                        <textarea class="form-control" name="alamat_domisili"
+                                            placeholder="Alamat Domisili..."></textarea>
                                     </div>
 
                                     <!-- Alamat NPWP-->
                                     <label for="alamat_npwp" class="col-form-label col-sm-2">Alamat NPWP</label>
                                     <div class="col-md-10">
-                                        <textarea class="form-control" name="alamat_npwp" placeholder="Alamat NPWP..."></textarea>
+                                        <textarea class="form-control" name="alamat_npwp"
+                                            placeholder="Alamat NPWP..."></textarea>
                                     </div>
 
                                     <div class="f1-buttons">
@@ -621,8 +618,7 @@
                                     <!-- Nomor STR-->
                                     <label for="nomor_str" class="col-form-label col-sm-2">Nomor STR</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="nomor_str"
-                                            placeholder="Nomor STR...">
+                                        <input type="text" class="form-control" name="nomor_str" placeholder="Nomor STR...">
                                     </div>
 
                                     <!-- STR Seumur Hidup -->
@@ -639,22 +635,21 @@
                                     <!-- Masa Berlaku STR-->
                                     <label for="masa_berlaku_str" class="col-form-label col-sm-2">Masa Berlaku STR</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            name="masa_berlaku_str" placeholder="Masa Berlaku STR..." data-language="en">
+                                        <input type="text" class="form-control js-datepicker digits" name="masa_berlaku_str"
+                                            placeholder="Masa Berlaku STR..." data-language="en">
                                     </div>
 
                                     <!-- Nomor SIP-->
                                     <label for="nomor_sip" class="col-form-label col-sm-2">Nomor SIP</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="nomor_sip"
-                                            placeholder="Nomor SIP...">
+                                        <input type="text" class="form-control" name="nomor_sip" placeholder="Nomor SIP...">
                                     </div>
 
                                     <!-- Masa Berlaku SIP-->
                                     <label for="masa_berlaku_sip" class="col-form-label col-sm-2">Masa Berlaku SIP</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control js-datepicker digits"
-                                            name="masa_berlaku_sip" placeholder="Masa Berlaku SIP..." data-language="en">
+                                        <input type="text" class="form-control js-datepicker digits" name="masa_berlaku_sip"
+                                            placeholder="Masa Berlaku SIP..." data-language="en">
                                     </div>
 
                                     <!-- Asuransi Profesi-->
@@ -695,29 +690,26 @@
                                     <!-- Pendidikan S1 -->
                                     <label for="pend_s1" class="col-form-label col-sm-2">Pend. S1</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="pend_s1"
-                                            placeholder="Pend. S1...">
+                                        <input type="text" class="form-control" name="pend_s1" placeholder="Pend. S1...">
                                     </div>
 
                                     <!-- Pendidikan S2 -->
                                     <label for="pend_s2" class="col-form-label col-sm-2">Pend. S2</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="pend_s2"
-                                            placeholder="Pend. S2...">
+                                        <input type="text" class="form-control" name="pend_s2" placeholder="Pend. S2...">
                                     </div>
 
                                     <!-- Pendidikan S3 -->
                                     <label for="pend_s3" class="col-form-label col-sm-2">Pend. S3</label>
                                     <div class="col-md-4">
-                                        <input type="text" class="form-control" name="pend_s3"
-                                            placeholder="Pend. S3...">
+                                        <input type="text" class="form-control" name="pend_s3" placeholder="Pend. S3...">
                                     </div>
 
                                     <!-- Kampus Terakhir -->
                                     <label for="kampus_terakhir" class="col-form-label col-sm-2">Kampus Terakhir</label>
                                     <div class="col-md-4">
-                                        <input class="form-control" name="kampus_terakhir"
-                                            placeholder="Kampus Terakhir..." required>
+                                        <input class="form-control" name="kampus_terakhir" placeholder="Kampus Terakhir..."
+                                            required>
                                     </div>
 
                                     <!-- Pendidikan Terakhir -->
@@ -739,7 +731,8 @@
                                     <!-- Keterangan -->
                                     <label for="keterangan" class="col-form-label col-sm-2">Keterangan</label>
                                     <div class="col-md-10">
-                                        <textarea class="form-control" name="keterangan" placeholder="Keterangan..."></textarea>
+                                        <textarea class="form-control" name="keterangan"
+                                            placeholder="Keterangan..."></textarea>
                                     </div>
 
                                     <div class="f1-buttons">
@@ -813,8 +806,8 @@
                                                     <!-- Image Preview Wrapper -->
                                                     <!-- Browse Image to Upload Wrapper -->
                                                     <div class="avatar-selector">
-                                                        <input type="file" accept="images/jpg, images/png"
-                                                            id="foto" name="foto">
+                                                        <input type="file" accept="images/jpg, images/png" id="foto"
+                                                            name="foto">
                                                         <a href="#" class="avatar-selector-btn">
                                                             <i class="icofont icofont-pencil-alt-5"></i>
                                                         </a>
@@ -858,8 +851,7 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="file_excel" class="form-label">Pilih File Excel</label>
-                            <input type="file" class="form-control" id="file_excel" name="file"
-                                accept=".xlsx,.xls">
+                            <input type="file" class="form-control" id="file_excel" name="file" accept=".xlsx,.xls">
                             <div class="form-text">Format: .xlsx atau .xls (Maksimal 10MB)</div>
                         </div>
 
@@ -895,6 +887,7 @@
 @section('script')
     <script></script>
     @include('sdm.pegawai.script')
-    {{-- <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
+    {{--
+    <script src="{{ asset('assets/js/form-wizard/form-wizard-three.js') }}"></script>
     <script src="{{ asset('assets/js/form-wizard/jquery.backstretch.min.js') }}"></script> --}}
 @endsection

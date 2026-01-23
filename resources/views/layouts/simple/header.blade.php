@@ -182,7 +182,7 @@
                             <use href="{{ asset('assets/svg/icon-sprite.svg#notification') }}"></use>
                         </svg><span class="badge rounded-pill badge-secondary">4 </span>
                     </div>
-                    <div class="onhover-show-div notification-dropdown">
+                    <!-- <div class="onhover-show-div notification-dropdown">
                         <h6 class="f-18 mb-0 dropdown-title">Notitications </h6>
                         <ul>
                             <li class="b-l-primary border-4">
@@ -199,7 +199,7 @@
                             </li>
                             <li><a class="f-w-700" href="#">Check all</a></li>
                         </ul>
-                    </div>
+                    </div> -->
                 </li>
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
                     <div class="media profile-media">
@@ -211,10 +211,10 @@
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
-                        <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
-                        <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
-                        <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
-                        <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
+                        <!-- <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
+                        <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li> -->
+                        <li><a href="{{ route('user.user-pekerja') }}"><i data-feather="settings"></i><span>Password</span></a></li>
+                        <!-- <li><a href="#"><i data-feather="file-text"></i><span>Settings</span></a></li> -->
                         <li><a href="{{ route('admin.logout') }}"><i data-feather="log-in"> </i><span>Log Out</span></a>
                         </li>
                     </ul>

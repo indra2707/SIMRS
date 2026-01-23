@@ -28,7 +28,7 @@
 			<div class="media">
 			  <div class="media-body">
 				<div class="greeting-user">
-				  <h3 class="f-w-600">Welcome to {{ Session::get('nama_lengkap') }}</h3>
+				  <h3 class="f-w-600">Welcome to {{ Session::get('nama_pekerja') }}</h3>
 				  <p>Here whats happing in your account today</p>
 				  <div class="whatsnew-btn"><a class="btn btn-outline-white">Whats New !</a></div>
 				</div>
