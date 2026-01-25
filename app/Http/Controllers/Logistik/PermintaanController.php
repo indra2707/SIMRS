@@ -1,0 +1,406 @@
+<?php
+
+namespace App\Http\Controllers\Logistik;
+
+use App\Http\Controllers\Controller;
+use App\Models\Logistik\Permintaan;
+use Illuminate\Http\Request;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB as Db;
+use Illuminate\Support\Facades\Auth;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+class PermintaanController extends Controller
+{
+    // Index
+    public function index()
+    {
+        $data = [
+            'title' => 'Surat Perjalanan Dinas',
+            'menuTitle' => 'Master Data',
+            'menuSubtitle' => 'Surat Perjalanan Dinas',
+        ];
+        return view('logistik.permintaan.permintaan', $data);
+    }
+
+    // Views Table
+    public function views()
+    {
+        // $query = Spds::all();
+
+        $query = Db::table('tbl_spds')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
+            ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
+            ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+            ->select(
+                'tbl_spds.*',
+                'pegawai.nama_pekerja as nama_pegawai',
+                'tbl_kotas.nama as nama_kota1',
+                'kota2.nama as nama_kota2'
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id' => $value->id,
+                'no_surat' => $value->no_surat,
+                'id_pegawai' => $value->id_pegawai,
+                'pelaksanaan' => $value->pelaksanaan,
+                'nama_pegawai' => $value->nama_pegawai,
+                'id_kota1' => $value->id_kota1,
+                'id_kota2' => $value->id_kota2,
+                'nama_kota1' => $value->nama_kota1,
+                'nama_kota2' => $value->nama_kota2,
+                'tgl_awal' => $value->tgl_awal,
+                'tgl_akhir' => $value->tgl_akhir,
+                'tgl_masuk' => Carbon::parse($value->tgl_masuk)->format('d/m/Y'),
+                'kendaraan' => $value->kendaraan,
+                'ditanggung' => $value->ditanggung,
+                'hak_cuti' => $value->hak_cuti,
+                'cuti_lalu' => $value->cuti_lalu,
+                'jatuh_tempo' => $value->jatuh_tempo,
+                'panjar_cuti' => $value->panjar_cuti,
+                'keterangan' => $value->keterangan,
+                'id_pimpinan' => $value->id_pimpinan,
+                'pengikut1' => ($value->pengikut == '0') ? 'Tidak Ada' : 'Ada',
+                'status' => $value->status,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+    // Simpan
+    public function store(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            $noSurat = $request->no_surat . $request->format_no_surat;
+
+            $exists = Spds::where('no_surat', $noSurat)->exists();
+            if ($exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Nomor surat sudah ada, silakan gunakan nomor lain'
+                ], 422);
+            }
+
+            // SIMPAN KE TABEL SPDS
+            $spd = Spds::create([
+                'no_surat' => $noSurat,
+                'id_pegawai' => $request->id_pegawai,
+                'pelaksanaan' => $request->pelaksanaan,
+                'id_kota1' => $request->id_kota1,
+                'id_kota2' => $request->id_kota2,
+                'tgl_awal' => $request->tgl_awal,
+                'tgl_akhir' => $request->tgl_akhir,
+                'tgl_masuk' => $request->tgl_masuk ? Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d') : null,
+                'kendaraan' => $request->kendaraan,
+                'ditanggung' => $request->ditanggung,
+                'hak_cuti' => $request->hak_cuti,
+                'cuti_lalu' => $request->cuti_lalu,
+                'jatuh_tempo' => $request->jatuh_tempo,
+                'panjar_cuti' => $request->panjar_cuti,
+                'keterangan' => $request->keterangan,
+                'id_pimpinan' => $request->id_pimpinan,
+                'pengikut' => $request->pengikut1,
+                'status' => 'Draft',
+                'created_by' => Auth::user()->username
+            ]);
+
+            DB::table('tbl_spd_details')->insert([
+                'no_surat' => $noSurat,
+                'id_pegawai' => $request->id_pegawai,
+                'status' => 'Draft',
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => Auth::user()->username
+            ]);
+
+            // SIMPAN DETAIL SPD
+            $pengikutData = json_decode($request->pengikut_data, true);
+
+            if (!empty($pengikutData) && is_array($pengikutData)) {
+                foreach ($pengikutData as $pengikut) {
+                    DB::table('tbl_spd_details')->insert([
+                        'no_surat' => $noSurat,
+                        'id_pegawai' => $pengikut['id_pegawai'],
+                        'status' => 'Draft',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'created_by' => Auth::user()->username
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'data' => $spd,
+                'message' => 'Data berhasil ditambahkan'
+            ], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data gagal ditambahkan',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    // Update
+    public function update(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $query = Spds::where('id', $id)->update([
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'pelaksanaan' => $request->pelaksanaan,
+                'id_kota1' => $request->id_kota1,
+                'id_kota2' => $request->id_kota2,
+                'tgl_awal' => $request->tgl_awal,
+                'tgl_akhir' => $request->tgl_akhir,
+                'tgl_masuk' => Carbon::createFromFormat('d/m/Y', $request->tgl_masuk)->format('Y-m-d'),
+                'kendaraan' => $request->kendaraan,
+                'ditanggung' => $request->ditanggung,
+                'hak_cuti' => $request->hak_cuti,
+                'cuti_lalu' => $request->cuti_lalu,
+                'jatuh_tempo' => $request->jatuh_tempo,
+                'panjar_cuti' => $request->panjar_cuti,
+                'keterangan' => $request->keterangan,
+                'id_pimpinan' => $request->id_pimpinan,
+                'pengikut' => $request->pengikut1,
+                'status' => 'Draft',
+                'updated_by' => Auth::user()->username
+            ]);
+
+
+            DB::table('tbl_spd_details')
+                ->where('no_surat', $request->no_surat)
+                ->delete();
+
+            DB::table('tbl_spd_details')->insert([
+                'no_surat' => $request->no_surat,
+                'id_pegawai' => $request->id_pegawai,
+                'status' => 'Draft',
+                'created_at' => now(),
+                'updated_at' => now(),
+                'created_by' => Auth::user()->username
+            ]);
+
+            $pengikutData = json_decode($request->pengikut_data, true);
+
+            if (!empty($pengikutData) && is_array($pengikutData)) {
+                foreach ($pengikutData as $pengikut) {
+                    DB::table('tbl_spd_details')->insert([
+                        'no_surat' => $request->no_surat,
+                        'id_pegawai' => $pengikut['id_pegawai'],
+                        'status' => 'Draft',
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'created_by' => Auth::user()->username
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            if ($query) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'Data Berhasil Diubah.',
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'data' => [],
+                    'message' => 'Data Gagal Diubah.',
+                ], 400);
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data gagal diubah',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+
+    // Delete
+    public function destroy(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        try {
+            // hapus tabel utama
+            $deleteSpd = Spds::where('id', $id)->delete();
+
+            // hapus tabel detail
+            $deleteDetail = DB::table('tbl_spd_details')
+                ->where('no_surat', $request->no_surat)
+                ->delete();
+
+            if ($deleteSpd === 0) {
+                throw new \Exception('Data utama tidak ditemukan');
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data berhasil dihapus'
+            ], 200);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Data gagal dihapus',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // update status
+    public function updateStatus(Request $request, $id)
+    {
+        $spd = Spds::find($id);
+
+        if (!$spd) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data SPD tidak ditemukan'
+            ], 404);
+        }
+
+        $spd->status = $request->status;
+        $spd->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status berhasil diubah menjadi ' . $request->status,
+            'data' => []
+        ], 200);
+    }
+
+    public function getPengikut($id)
+    {
+        try {
+            // Ambil no_surat dari tabel spds
+            $spd = Spds::find($id);
+
+            if (!$spd) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'SPD tidak ditemukan',
+                    'data' => []
+                ], 404);
+            }
+
+            // Ambil data pengikut dari tbl_spd_details
+            $pengikut = DB::table('tbl_spd_details')
+                ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+                ->where('tbl_spd_details.no_surat', $spd->no_surat)
+                ->select(
+                    'tbl_spd_details.id',
+                    'tbl_spd_details.id_pegawai',
+                    'pegawai.nomor_pekerja as nip',
+                    'pegawai.nama_pekerja as nama_pegawai'
+                )
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $pengikut,
+                'message' => 'Data pengikut berhasil dimuat'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error mengambil data pengikut',
+                'error' => $e->getMessage(),
+                'data' => []
+            ], 500);
+        }
+    }
+
+    // Print
+    public function print($id)
+    {
+        // Ambil data SPD header
+        $spd = DB::table('tbl_spds')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spds.id_pegawai')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
+            ->join('tbl_kotas', 'tbl_kotas.id', '=', 'tbl_spds.id_kota1')
+            ->join('tbl_kotas as kota2', 'kota2.id', '=', 'tbl_spds.id_kota2')
+            ->leftJoin('pegawai as pegawai2', 'pegawai2.id', '=', 'tbl_spds.id_pimpinan')
+            ->leftJoin('tbl_jabatan as jabatan_pimpinan', 'jabatan_pimpinan.id', '=', 'pegawai2.id_jabatan')
+            ->select(
+                'tbl_spds.*',
+                'pegawai.nama_pekerja as nama_pegawai',
+                'pegawai.nomor_pekerja as nomor_pekerja',
+                'pegawai.golongan_upah as golongan_upah',
+                'tbl_jabatan.nama_jabatan as jabatan',
+                'tbl_kotas.nama as nama_kota1',
+                'kota2.nama as nama_kota2',
+                'pegawai2.nama_pekerja as nama_pimpinan',
+                'jabatan_pimpinan.nama_jabatan as jabatan_pimpinan'
+            )
+            ->where('tbl_spds.id', $id)
+            ->first();
+
+        if (!$spd) {
+            abort(404, 'SPD tidak ditemukan.');
+        }
+
+        // TAMBAHKAN: Ambil data pengikut
+        $pengikut = DB::table('tbl_spd_details')
+            ->join('pegawai', 'pegawai.id', '=', 'tbl_spd_details.id_pegawai')
+            ->join('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
+            ->where('tbl_spd_details.no_surat', $spd->no_surat)
+            ->where('pegawai.id', '!=', $spd->id_pegawai)
+            ->select(
+                'tbl_spd_details.id',
+                'pegawai.nama_pekerja as nama_pengikut',
+                'pegawai.nomor_pekerja as nopek',
+                'tbl_jabatan.nama_jabatan as jabatan'
+            )
+            ->get();
+
+        $data = [
+            'title' => 'Print Preview SPD',
+            'spd' => $spd,
+            'pengikut' => $pengikut // Kirim data pengikut ke view
+        ];
+
+        $html = view('sdm.spd.print', $data)->render();
+
+        // Optional: setting Dompdf
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->render();
+
+        $filename = preg_replace('/[^A-Za-z0-9\-_.]/', '-', $spd->no_surat) . '.pdf';
+
+        return $dompdf->stream($filename, [
+            'Attachment' => false,
+        ]);
+    }
+}

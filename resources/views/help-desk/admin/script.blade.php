@@ -15,7 +15,7 @@
         allowClear: true,
         width: 'style'
     });
-    
+
     var $table = $('#table_helpdesk');
     $('.js-daterangepicker').datepicker({
         dateFormat: 'dd/mm/yyyy',
@@ -690,77 +690,87 @@
     window.operateChange = {
         'click .update-status': function (e, value, row, index) {
             e.preventDefault();
-            var $badge = $(e.target); // cegah event bubbling
-            if (btnProcessing) return;
-            btnProcessing = true;
-            $badge.prop('disabled', true)
-                .html('<span class="spinner-border spinner-border-sm"></span>');
 
-            var url = "{{ route('admin.helpdesk-update-status', ':id') }}";
-            url = url.replace(':id', row.id);
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    status: e.target.checked ? 1 : 0,
-                    _token: "{{ csrf_token() }}"
-                },
-                success: function (res, status, xhr) {
-                    if (xhr.status == 200 && res.success == true) {
-                        Alert('success', res.message);
-                    } else {
-                        Alert('warnig', res.message);
-                    }
-                    $table.bootstrapTable('refresh');
-                },
-                error: function (xhr, status, error) {
-                    if (xhr.status == 400) {
-                        var errors = xhr.responseJSON.errors;
-                        $.notify({
-                            icon: 'fa fa-check',
-                            title: error,
-                            message: xhr.responseJSON.message
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
-                    } else if (xhr.status == 500) {
-                        $.notify({
-                            icon: 'icon-info-alt',
-                            title: 'error',
-                            message: "Silahkan hubungi IT Rumah Sakit!"
-                        }, {
-                            type: 'danger',
-                            allow_dismiss: true,
-                            delay: 2000,
-                            showProgressbar: true,
-                            timer: 300,
-                            z_index: 1127,
-                            animate: {
-                                enter: 'animated fadeInDown',
-                                exit: 'animated fadeOutUp'
-                            },
-                        });
-                    }
-                },
-                complete: function () {
-                    // Tahan spinner selama 800ms supaya terlihat lebih jelas
-                    setTimeout(function () {
-                        btnProcessing = false;
-                        // Badge akan otomatis kembali normal setelah refresh table
-                    }, 800);
+            var $el = $(e.target);
+            var isChecked = e.target.checked;   // status baru
+            var oldStatus = !isChecked;         // status lama (rollback)
+
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Status helpdesk akan diperbarui',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, update',
+                cancelButtonText: 'Batal',
+                reverseButtons: true
+            }).then(function (result) {
+
+                if (!result.isConfirmed) {
+                    // rollback jika batal
+                    e.target.checked = oldStatus;
+                    return;
                 }
+
+                if (typeof btnProcessing !== 'undefined' && btnProcessing) return;
+                btnProcessing = true;
+
+                $el.prop('disabled', true);
+
+                var url = "{{ route('admin.helpdesk-update-status', ':id') }}"
+                    .replace(':id', row.id);
+
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        status: isChecked ? 1 : 0,
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function (res, status, xhr) {
+                        if (xhr.status === 200 && res.success === true) {
+                            Alert('success', res.message);
+                        } else {
+                            Alert('warning', res.message);
+                        }
+                        $table.bootstrapTable('refresh');
+                    },
+                    error: function (xhr) {
+                        // rollback jika error
+                        e.target.checked = oldStatus;
+
+                        if (xhr.status === 400) {
+                            $.notify({
+                                icon: 'fa fa-times',
+                                title: 'Error',
+                                message: xhr.responseJSON.message
+                            }, {
+                                type: 'danger',
+                                delay: 2000,
+                                z_index: 1127
+                            });
+                        } else if (xhr.status === 500) {
+                            $.notify({
+                                icon: 'icon-info-alt',
+                                title: 'Error',
+                                message: 'Silahkan hubungi IT Rumah Sakit!'
+                            }, {
+                                type: 'danger',
+                                delay: 2000,
+                                z_index: 1127
+                            });
+                        }
+                    },
+                    complete: function () {
+                        setTimeout(function () {
+                            btnProcessing = false;
+                            $el.prop('disabled', false);
+                        }, 800);
+                    }
+                });
             });
         }
-    }
+    };
+
     window.addEventListener('refresh-admin-table', function () {
         $('#table_helpdesk').bootstrapTable('refresh');
     });

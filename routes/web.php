@@ -14,6 +14,8 @@ use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 
+use App\Http\Controllers\Logistik\PermintaanController;
+
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\HelpDeskController;
@@ -375,6 +377,17 @@ Route::group(['middleware' => 'loggedin'], function () {
 
         Route::get('/pegawai/download-template', [PegawaiController::class, 'downloadTemplate'])->name('pegawai-download-template');
         Route::post('/pegawai/import', [PegawaiController::class, 'import'])->name('pegawai-import');
+    });
+
+    // Logistik
+     Route::prefix('logistik')->group(function () {
+        // Permintaan
+        Route::get('/permintaan', [PermintaanController::class, 'index'])->name('logistik.permintaan');
+        Route::get('/permintaan/view', [PermintaanController::class, 'views'])->name('logistik.permintaan.view');
+        Route::post('/permintaan/store', [PermintaanController::class, 'store'])->name('logistik.permintaan.create');
+        Route::put('/permintaan/update/{id}', [PermintaanController::class, 'update'])->name('logistik.permintaan.update');
+        Route::post('/permintaan/update-status/{id}', [PermintaanController::class, 'updateStatus'])->name('logistik.permintaan.update-status');
+        Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'destroy'])->name('logistik.permintaan.delete');
     });
 
     // Tarif
