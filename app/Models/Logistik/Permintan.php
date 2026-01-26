@@ -14,7 +14,9 @@ class Permintaan extends Model
     protected $fillable = [
         'id',
         'no_agenda',
+        'no_surat',
         'nama_permintaan',
+        'tanggal',
         'id_unit',
         'status',
         'catatan',
