@@ -64,13 +64,49 @@
     `;
     }
 
+
+    const PASSWORD_PDF = "{{ session('tanggal_lahir') ? \Carbon\Carbon::parse(session('tanggal_lahir'))->format('dmY') : '' }}";
     window.eventsGaji = {
         'click .btn-print': function (e, value, row, index) {
-            if (row.file) {
-                window.open('{{ url("/") }}/' + row.file, '_blank');
-            } else {
-                alert('File tidak ditemukan');
+
+            if (!row.file) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal',
+                    text: 'File tidak ditemukan'
+                });
+                return;
             }
+
+            Swal.fire({
+                title: 'Masukkan Password',
+                input: 'password',
+                inputLabel: 'Password PDF',
+                inputPlaceholder: 'Format: DDMMYYYY',
+                showCancelButton: true,
+                confirmButtonText: 'Buka PDF',
+                cancelButtonText: 'Batal',
+                preConfirm: (password) => {
+                    if (!password) {
+                        Swal.showValidationMessage('Password wajib diisi');
+                    }
+                    return password;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+
+                    if (result.value === PASSWORD_PDF) {
+                        window.open('{{ url("/") }}/' + row.file, '_blank');
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Password Salah',
+                            text: 'Gunakan tanggal lahir (DDMMYYYY)'
+                        });
+                    }
+                }
+            });
         }
-    }
+    };
+
 </script>
