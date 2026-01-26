@@ -81,7 +81,7 @@
             Swal.fire({
                 title: 'Masukkan Password',
                 input: 'password',
-                inputLabel: 'Password PDF',
+                inputLabel: 'Menggunakan tanggal lahir Anda', 
                 inputPlaceholder: 'Format: DDMMYYYY',
                 showCancelButton: true,
                 confirmButtonText: 'Buka PDF',

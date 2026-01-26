@@ -78,11 +78,25 @@
 
                         <input type="hidden" name="id">
 
-                        <!-- Nomor Permintaan -->
-                        <label for="no_permintaan" class="col-form-label col-sm-2">Nomor Permintaan</label>
+                        <!-- Nomor Agenda -->
+                        <label for="no_agenda" class="col-form-label col-sm-2">Nomor Agenda</label>
+                        <div class="col-sm-4">
+                            <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4"
+                                placeholder="Nomor Agenda..." required>
+                        </div>
+
+                        <!-- Nomor Surat -->
+                        <label for="no_surat" class="col-form-label col-sm-1">Nomor Surat</label>
+                        <div class="col-sm-5">
+                            <input type="text" id="no_surat" name="no_surat" class="form-control"
+                                placeholder="Nomor Surat..." required>
+                        </div>
+
+                         <!-- Tanggal -->
+                        <label for="tanggal" class="col-form-label col-sm-2">Tanggal </label>
                         <div class="col-sm-10">
-                            <input type="text" id="no_permintaan" name="no_permintaan" class="form-control" maxlength="4"
-                                placeholder="Nomor Permintaan..." required>
+                            <input type="text" name="tanggal" id="tanggal" class="form-control js-datepicker digits"
+                                placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 
                         <!-- Nama Permintaan -->
