@@ -82,7 +82,7 @@
                         <label for="no_agenda" class="col-form-label col-sm-2">Nomor Agenda</label>
                         <div class="col-sm-4">
                             <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4"
-                                placeholder="Nomor Agenda..." required>
+                                placeholder="Nomor Agenda...">
                         </div>
 
                         <!-- Nomor Surat -->
@@ -95,7 +95,7 @@
                          <!-- Tanggal -->
                         <label for="tanggal" class="col-form-label col-sm-2">Tanggal </label>
                         <div class="col-sm-10">
-                            <input type="text" name="tanggal" id="tanggal" class="form-control js-datepicker digits"
+                            <input type="text" name="tgl" id="tanggal" class="form-control js-datepicker digits"
                                 placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 
@@ -131,22 +131,22 @@
                         <div class="col-sm-10">
                             <div class="d-flex flex-wrap gap-4">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="ICT" value="ICT">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="ICT" name="tembusan[]"  value="ICT">
                                     <label class="form-check-label" for="ICT">ICT</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="Teknik" value="Teknik">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Teknik" name="tembusan[]"  value="Teknik">
                                     <label class="form-check-label" for="Teknik">Teknik</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="Alkes" value="Alkes">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Alkes" name="tembusan[]" value="Alkes">
                                     <label class="form-check-label" for="Alkes">Alkes</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="Umum" value="Umum">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Umum" name="tembusan[]" value="Umum">
                                     <label class="form-check-label" for="Umum">Umum</label>
                                 </div>
                             </div>

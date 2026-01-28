@@ -10,9 +10,27 @@
     // Tabel
     var $tablePermintaan = $('#table_permintaan');
 
+    $('#modal-permintaan').on('hidden.bs.modal', function() {
+        // Reset form validation
+        $('.form-permintaan').removeClass('was-validated');
 
-    // Open Modal permintaan
-    $(document).on('click', '.add-btn', function () {
+        $('.form-permintaan input[type="text"]').val('');
+        $('.form-permintaan input[type="hidden"]').val('');
+        $('.form-permintaan textarea').val('');
+
+        $('.form-permintaan select').val(null).trigger('change');
+
+        if ($("select[name='id_unit[]']").hasClass("select2-hidden-accessible")) {
+            $("select[name='id_unit[]']").select2('destroy');
+        }
+
+        $('.tembusan-checkbox').prop('checked', false);
+
+        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+
+        console.log('Modal closed - Form cleared');
+    });
+    $(document).on('click', '.add-btn', function() {
         $('.form-permintaan').removeClass('was-validated');
         $('#modal-permintaan').modal('show');
         $('.modal-title').text('Form Tambah Permintaan');
@@ -22,20 +40,21 @@
         $('input[name="no_permintaan"]').val('');
         $('input[name="nama_permintaan"]').val('');
         $('textarea[name="catatan"]').val('');
-        $('select[name="id_unit[]"]').val('').trigger('change');
-        $('select[name="status"]').val('Pengajuan Panjar').trigger('change');
-        $('input[type="checkbox"]').prop('checked', false);
+        $('select[name="id_unit[]"]').val(null).trigger('change');
+
+        $('.tembusan-checkbox').prop('checked', false);
 
         InitSelect2($("select[name='id_unit[]']"), {
             url: "{{ route('get-select-unit') }}",
             dropdownParent: $("#modal-permintaan"),
-            placeholder: "---- Pilih Salah Satu ----",
-            allowClear: true
+            placeholder: "---- Pilih Unit ----",
+            allowClear: true,
+            multiple: true
         });
     });
 
 
-    window.actionFormatter = function (value, row, index) {
+    window.actionFormatter = function(value, row, index) {
         return [
             '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id +
             '" data-field_id="' + row.field_id + '">',
@@ -48,86 +67,73 @@
     };
 
 
-    // Save spd
-    $(document).on('click', '.save-btn', function () {
-
-        if (!$('#ditanggung').val()) {
-            let activeValue = $('.biaya-group button.active').data('value');
-            $('#ditanggung').val(activeValue);
-        }
-
+    // Save Permintaan
+    $(document).on('click', '.save-btn', function() {
         var id = $('input[name="id"]').val();
 
         if (id) {
-            var url = "{{ route('sdm.spd.update', ':id') }}";
+            var url = "{{ route('logistik.permintaan.update', ':id') }}";
             url = url.replace(':id', id);
             var type = "PUT";
         } else {
-            var url = "{{ route('sdm.spd.create') }}";
+            var url = "{{ route('logistik.permintaan.create') }}";
             var type = "POST";
         }
 
-        var forms = document.getElementsByClassName('form-spd');
-        var validation = Array.prototype.filter.call(forms, function (form) {
+        var forms = document.getElementsByClassName('form-permintaan');
+        var validation = Array.prototype.filter.call(forms, function(form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
                 event.stopPropagation();
             } else {
-
-                var pengikutData = getPengikutData();
-
-                // Serialize form data
-                var formData = $('.form-spd').serializeArray();
-
-                // Tambahkan data pengikut ke formData
-                formData.push({
-                    name: 'pengikut_data',
-                    value: JSON.stringify(pengikutData)
-                });
-
+                var formData = $('.form-permintaan').serialize();
                 $.ajax({
                     type: type,
                     url: url,
                     dataType: "json",
-                    data: $.param(formData),
+                    data: formData,
 
-                    beforeSend: function () {
+                    beforeSend: function() {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
 
-                    complete: function () {
+                    complete: function() {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
 
-                    success: function (res, status, xhr) {
+                    success: function(res, status, xhr) {
                         if (xhr.status == 200 && res.success === true) {
                             Alert('success', res.message);
-                            $('#modal-spd').modal('hide');
-                            $tableSpd.bootstrapTable('refresh');
+                            $('#modal-permintaan').modal('hide');
+                            $tablePermintaan.bootstrapTable('refresh');
                         }
                     },
 
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let message = 'Terjadi kesalahan';
 
                         if (xhr.status === 422) {
-                            message = xhr.responseJSON?.message || 'Nomor surat sudah ada';
+                            let errors = xhr.responseJSON?.errors;
+                            if (errors) {
+                                message = Object.values(errors).flat().join('<br>');
+                            } else {
+                                message = xhr.responseJSON?.message || 'Validasi gagal';
+                            }
                         } else if (xhr.status === 500) {
                             message = 'Kesalahan server';
                         }
 
                         $.notify({
-                            // icon: 'fa fa-warning',
                             title: 'Peringatan',
                             message: message
                         }, {
                             type: 'warning',
                             allow_dismiss: true,
-                            delay: 2000,
+                            delay: 3000,
                             showProgressbar: true,
                             timer: 300,
                             z_index: 1127,
@@ -143,15 +149,14 @@
         });
     });
 
-    // Page Load Event
-    $(function () {
+    $(function() {
         initTable();
     });
 
 
-    // Table SPD
+    // Table PERMINTAAN
     function initTable() {
-        $tableSpd.bootstrapTable('destroy').bootstrapTable({
+        $tablePermintaan.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
             search: true,
@@ -170,83 +175,84 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('sdm.spd.view') }}",
+            url: "{{ route('logistik.permintaan.view') }}",
             columns: [
                 [{
-                    title: 'No',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    width: '5%',
-                    formatter: function (value, row, index) {
-                        return index + 1
-                    }
-                },
-                {
-                    field: 'no_surat',
-                    sortable: true,
-                },
-                {
-                    field: 'nama_pegawai',
-                    sortable: true,
-                },
-                {
-                    field: 'pelaksanaan',
-                    sortable: true,
-                },
-                {
-                    field: 'nama_kota1',
-                    sortable: true,
-                },
-                {
-                    field: 'nama_kota2',
-                    sortable: true,
-                },
-                {
-                    field: 'pengikut1',
-                    sortable: true,
-                },
-                {
-                    width: '50%',
-                    align: 'center',
-                    valign: 'middle',
-                    formatter: function (value, row, index) {
-                        let buttons = ''; // Tombol yang akan ditampilkan
-
-                        // Kondisi untuk menampilkan tombol berdasarkan 'selisih_hari'
-                        if (row.status == 'Draft') {
-                            buttons += `
-                                    <button class="btn btn-pill btn-xs btn-success action-btn">${row.status}</button>
-                                `;
-                        } else {
-                            buttons += `
-                                    <button class="btn btn-pill btn-xs btn-danger action-btn">${row.status}</button>
-                                `;
+                        title: 'No',
+                        align: 'center',
+                        valign: 'middle',
+                        sortable: true,
+                        width: 50,
+                        formatter: function(value, row, index) {
+                            return index + 1
                         }
-
-                        return buttons;
+                    },
+                    {
+                        field: 'no_agenda',
+                        title: 'No Agenda',
+                        sortable: true,
+                    },
+                    {
+                        field: 'no_surat',
+                        title: 'No Surat',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama_permintaan',
+                        title: 'Nama Permintaan',
+                        sortable: true,
+                    },
+                    {
+                        field: 'tgl',
+                        title: 'Tanggal',
+                        sortable: true,
+                    },
+                    {
+                        field: 'unit',
+                        title: 'Unit',
+                        sortable: true,
+                    },
+                    {
+                        field: 'catatan',
+                        title: 'Catatan',
+                        sortable: true,
+                    },
+                    {
+                        field: 'status',
+                        title: 'Status',
+                        sortable: true,
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            let btnClass = 'btn-success';
+                            if (value === 'Draft') {
+                                btnClass = 'btn-secondary';
+                            } else if (value === 'Close') {
+                                btnClass = 'btn-danger';
+                            }
+                            return `<button class="btn btn-pill btn-xs ${btnClass}">${value}</button>`;
+                        }
+                    },
+                    {
+                        field: 'action',
+                        title: 'Action',
+                        align: 'center',
+                        valign: 'middle',
+                        width: 100,
+                        clickToSelect: false,
+                        events: window.eventsPermintaan,
+                        formatter: actionsFunctionPermintaan
                     }
-                },
-                {
-                    width: '100%',
-                    field: 'action',
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    clickToSelect: false,
-                    events: window.eventsSpd,
-                    formatter: actionsFunctionSpd
-                }
                 ]
             ],
-            responseHandler: function (data) {
+            responseHandler: function(data) {
+                console.log('Response data:', data);
                 return data;
             }
         });
     }
 
 
-    function actionsFunctionSpd(value, row, index) {
+    function actionsFunctionPermintaan(value, row, index) {
         const currentUsername = "{{ Auth::user()->username }}";
 
         if (currentUsername === 'superadmin') {
@@ -279,7 +285,6 @@
                 '</div>',
             ].join("");
         } else {
-            // User biasa
             if (row.status === 'Close') {
                 return [
                     '<div class="dropdown icon-dropdown">',
@@ -312,109 +317,59 @@
     }
 
 
-    // Handle events button actions
-    window.eventsSpd = {
-        'click .btn-edit': function (e, value, row, index) {
-            $('#modal-spd').modal('show');
-            $('.modal-title').text('Form Edit SPD');
-            let pengikutValue = (row.pengikut1 === 'Tidak Ada') ? '0' : '1';
+    window.eventsPermintaan = {
+        'click .btn-edit': function(e, value, row, index) {
+            $('#modal-permintaan').modal('show');
+            $('.modal-title').text('Form Edit Permintaan');
 
-            // Reset tabel pengikut
-            $table_employee.bootstrapTable('removeAll');
-
-            $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="no_surat"]').val(row.no_surat);
-            $('select[name="pelaksanaan"]').val(row.pelaksanaan).trigger('change');
-            $('select[name="kendaraan"]').val(row.kendaraan).trigger('change');
-            $('input[name="tgl_masuk"]').val(row.tgl_masuk);
-            $('input[name="ditanggung"]').val(row.ditanggung);
-            $('input[name="hak_cuti"]').val(row.hak_cuti);
-            $('input[name="cuti_lalu"]').val(row.cuti_lalu);
-            $('input[name="jatuh_tempo"]').val(row.jatuh_tempo);
-            $('input[name="panjar_cuti"]').val(row.panjar_cuti);
-            $('textarea[name="keterangan"]').val(row.keterangan);
-            $('input[name="id_pimpinan"]').val(row.id_pimpinan);
-            $('select[name="pengikut1"]').val(pengikutValue).trigger('change');
-            $('input[name="format_no_surat"]').val('').hide();
+            $('input[name="no_agenda"]').val(row.no_agenda);
+            $('input[name="tanggal"]').val(row.tanggal);
+            $('select[name="status"]').val(row.status).trigger('change');
+            $('input[name="nama_permintaan"]').val(row.nama_permintaan);
+            $('textarea[name="catatan"]').val(row.catatan);
+            $('input[name="tgl"]').val(row.tgl_raw);
 
-            // format tampilan
-            let startDisplay = formatDateDMY(row.tgl_awal);
-            let endDisplay = formatDateDMY(row.tgl_akhir);
+            $('input[name="status"]').val(row.status);
 
-            // isi input text
-            $('input[name="tgl"]').val(startDisplay + ' - ' + endDisplay);
+            // Parse id_unit
+            let selectedUnits = row.id_unit || [];
+            if (typeof selectedUnits === 'string') {
+                try {
+                    selectedUnits = JSON.parse(selectedUnits);
+                } catch (e) {
+                    selectedUnits = [];
+                }
+            }
+            selectedUnits = selectedUnits.map(id => parseInt(id));
 
-            // isi hidden input
-            $('#tgl_awal').val(row.tgl_awal);
-            $('#tgl_akhir').val(row.tgl_akhir);
+            // Parse tembusan
+            let selectedTembusan = row.tembusan || [];
+            if (typeof selectedTembusan === 'string') {
+                try {
+                    selectedTembusan = JSON.parse(selectedTembusan);
+                } catch (e) {
+                    selectedTembusan = [];
+                }
+            }
 
-            // set ke datepicker (WAJIB)
-            $('.js-daterangepicker')
-                .datepicker()
-                .data('datepicker')
-                .selectDate([
-                    new Date(row.tgl_awal),
-                    new Date(row.tgl_akhir)
-                ]);
+            console.log('Selected Units:', selectedUnits);
+            console.log('Selected Tembusan:', selectedTembusan);
 
-            InitSelect2($("select[name='id_pegawai']"), {
-                url: "{{ route('get-select-pegawai') }}",
-                dropdownParent: $("#modal-spd"),
-                initialValue: row.id_pegawai
-            });
+            $('.tembusan-checkbox').prop('checked', false);
 
-            InitSelect2($("select[name='id_pimpinan']"), {
-                url: "{{ route('get-select-pegawai') }}",
-                dropdownParent: $("#modal-spd"),
-                initialValue: row.id_pimpinan
-            });
-
-            InitSelect2($("select[name='id_kota1']"), {
-                url: "{{ route('get-select-kota') }}",
-                dropdownParent: $("#modal-spd"),
-                initialValue: row.id_kota1
-            });
-
-            InitSelect2($("select[name='id_kota2']"), {
-                url: "{{ route('get-select-kota') }}",
-                dropdownParent: $("#modal-spd"),
-                initialValue: row.id_kota2
-            });
-
-            // ==========================================
-            // TAMBAHKAN: Load data pengikut dari server
-            // ==========================================
-            if (pengikutValue === '1') {
-                $.ajax({
-                    url: "{{ route('sdm.spd.get-pengikut', ':id') }}".replace(':id', row.id),
-                    type: "GET",
-                    dataType: "json",
-                    success: function (response) {
-                        if (response.success && response.data.length > 0) {
-                            // Loop data pengikut dan tambahkan ke tabel
-                            response.data.forEach(function (pengikut) {
-                                $table_employee.bootstrapTable('append', {
-                                    id: pengikut.id,
-                                    field_id: pengikut.id_pegawai,
-                                    field_nip: pengikut.nip || '',
-                                    field_employee: pengikut.nama_pegawai
-                                });
-                            });
-
-                            // Tampilkan tabel
-                            $('#hidden_div').removeClass('d-none').show();
-                            $table_employee.bootstrapTable('resetView');
-                        }
-                    },
-                    error: function (xhr) {
-                        console.error('Error loading pengikut:', xhr);
-                    }
+            if (Array.isArray(selectedTembusan) && selectedTembusan.length > 0) {
+                selectedTembusan.forEach(function(value) {
+                    $('input.tembusan-checkbox[value="' + value + '"]').prop('checked', true);
                 });
             }
+
+            loadMultipleSelect($("select[name='id_unit[]']"), selectedUnits);
         },
-        'click .btn-delete': function (e, value, row, index) {
-            var url = "{{ route('sdm.spd.delete', ':id') }}";
+
+        'click .btn-delete': function(e, value, row, index) {
+            var url = "{{ route('logistik.permintaan.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
                 icon: 'warning',
@@ -433,26 +388,25 @@
                         type: "DELETE",
                         data: {
                             _token: "{{ csrf_token() }}",
-                            no_surat: row.no_surat // menambah data
+                            no_surat: row.no_surat
                         },
-                        success: function (res, status, xhr) {
+                        success: function(res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function () {
-                        $tableSpd.bootstrapTable('refresh');
+                    }).done(function() {
+                        $tablePermintaan.bootstrapTable('refresh');
                     });
-
                 }
             })
         },
-        'click .btn-tutup': function (e, value, row, index) {
-            e.preventDefault();
 
-            let url = "{{ route('sdm.spd.update-status', ':id') }}";
+        'click .btn-tutup': function(e, value, row, index) {
+            e.preventDefault();
+            let url = "{{ route('logistik.permintaan.update-status', ':id') }}";
             url = url.replace(':id', row.id);
 
             Swal.fire({
@@ -472,29 +426,29 @@
                     type: 'POST',
                     data: {
                         status: 'Close',
-                        table: 'tbl_spds',
+                        table: 'tbl_permintaan',
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function (res) {
+                    success: function(res) {
                         if (res.success) {
                             Alert('success', res.message);
                         } else {
                             Alert('warning', res.message);
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Alert('error', 'Terjadi kesalahan server');
                     },
-                    complete: function () {
-                        $tableSpd.bootstrapTable('refresh');
+                    complete: function() {
+                        $tablePermintaan.bootstrapTable('refresh');
                     }
                 });
             });
         },
-        'click .btn-draft': function (e, value, row, index) {
-            e.preventDefault();
 
-            let url = "{{ route('sdm.spd.update-status', ':id') }}";
+        'click .btn-draft': function(e, value, row, index) {
+            e.preventDefault();
+            let url = "{{ route('logistik.permintaan.update-status', ':id') }}";
             url = url.replace(':id', row.id);
 
             Swal.fire({
@@ -514,29 +468,123 @@
                     type: 'POST',
                     data: {
                         status: 'Draft',
-                        table: 'tbl_spds',
+                        table: 'tbl_permintaan',
                         _token: "{{ csrf_token() }}"
                     },
-                    success: function (res) {
+                    success: function(res) {
                         if (res.success) {
                             Alert('success', res.message);
                         } else {
                             Alert('warning', res.message);
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Alert('error', 'Terjadi kesalahan server');
                     },
-                    complete: function () {
-                        $tableSpd.bootstrapTable('refresh');
+                    complete: function() {
+                        $tablePermintaan.bootstrapTable('refresh');
                     }
                 });
             });
-        },
-        'click .btn-print': function (e, value, row, index) {
-            var url = "{{ route('sdm.spd.print', ':id') }}";
-            url = url.replace(':id', row.id);
-            window.open(url, '_blank');
+        }
+    }
+
+    function loadMultipleSelect($selectElement, selectedIds) {
+        if ($selectElement.hasClass("select2-hidden-accessible")) {
+            $selectElement.select2('destroy');
+        }
+        $selectElement.empty();
+
+        if (selectedIds && selectedIds.length > 0) {
+            $.ajax({
+                url: "{{ route('get-select-unit') }}",
+                type: 'GET',
+                data: {
+                    ids: selectedIds
+                },
+                dataType: 'json',
+                success: function(response) {
+                    let units = response.results || response.data || response;
+
+                    if (Array.isArray(units)) {
+                        units.forEach(function(item) {
+                            let id = item.id;
+                            let text = item.text || item.nama || item.name;
+                            var option = new Option(text, id, true, true);
+                            $selectElement.append(option);
+                        });
+                    }
+
+                    $selectElement.select2({
+                        ajax: {
+                            url: "{{ route('get-select-unit') }}",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function(params) {
+                                return {
+                                    q: params.term,
+                                    page: params.page || 1
+                                };
+                            },
+                            processResults: function(data) {
+                                let results = data.results || data.data || data;
+                                if (Array.isArray(results)) {
+                                    return {
+                                        results: results.map(item => ({
+                                            id: item.id,
+                                            text: item.text || item.nama || item
+                                                .name
+                                        }))
+                                    };
+                                }
+                                return {
+                                    results: []
+                                };
+                            }
+                        },
+                        dropdownParent: $("#modal-permintaan"),
+                        placeholder: "---- Pilih Unit ----",
+                        allowClear: true,
+                        multiple: true,
+                        theme: "bootstrap-5"
+                    });
+
+                    $selectElement.val(selectedIds).trigger('change.select2');
+                }
+            });
+        } else {
+            $selectElement.select2({
+                ajax: {
+                    url: "{{ route('get-select-unit') }}",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function(params) {
+                        return {
+                            q: params.term,
+                            page: params.page || 1
+                        };
+                    },
+                    processResults: function(data) {
+                        let results = data.results || data.data || data;
+                        if (Array.isArray(results)) {
+                            return {
+                                results: results.map(item => ({
+                                    id: item.id,
+                                    text: item.text || item.nama || item.name
+                                }))
+                            };
+                        }
+                        return {
+                            results: []
+                        };
+                    }
+                },
+                dropdownParent: $("#modal-permintaan"),
+                placeholder: "---- Pilih Unit ----",
+                allowClear: true,
+                multiple: true,
+                theme: "bootstrap-5"
+            });
         }
     }
 </script>

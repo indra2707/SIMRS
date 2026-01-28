@@ -394,6 +394,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/permintaan/update/{id}', [PermintaanController::class, 'update'])->name('logistik.permintaan.update');
         Route::post('/permintaan/update-status/{id}', [PermintaanController::class, 'updateStatus'])->name('logistik.permintaan.update-status');
         Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'destroy'])->name('logistik.permintaan.delete');
+        Route::get('/get-select-unit', [PermintaanController::class, 'getSelectUnit'])->name('get-select-unit');
     });
 
     // Tarif
