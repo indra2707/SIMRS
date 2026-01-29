@@ -82,7 +82,7 @@
         }
 
         // load pertama kali
-        // loadHelpdeskCount();
+        loadHelpdeskCount();
 
         // interval setiap 1 menit (60.000 ms)
         setInterval(loadHelpdeskCount, 60000);
