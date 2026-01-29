@@ -73,6 +73,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'update'])->name('admin.helpdesk-update');
     Route::post('help-desk/update-status/{helpDesk}', [AdminHelpDeskController::class, 'updateStatus'])->name('admin.helpdesk-update-status');
     Route::delete('help-desk/{helpDesk}', [AdminHelpDeskController::class, 'destroy'])->name('admin.helpdesk-destroy');
+    Route::get('help-desk/count', [AdminHelpDeskController::class, 'count'])->name('admin.helpdesk-count');
 
     Route::get('helpdesk/info/{id}', [AdminHelpDeskController::class, 'getHelpdeskInfo'])->name('admin.helpdesk-info');
     Route::get('chat/{helpdeskId}', [AdminChatController::class, 'index'])->name('admin.chat');
@@ -216,7 +217,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/lokasi/delete/{id}', [LokasiController::class, 'destroy'])->name('master-data.lokasi.delete');
         Route::post('/lokasi/update-status/{id}', [LokasiController::class, 'updateStatus'])->name('master-data.lokasi.update-status');
 
-         // unit
+        // unit
         Route::get('/unit', [UnitController::class, 'index'])->name('master-data.unit');
         Route::get('/unit/view', [UnitController::class, 'views'])->name('master-data.unit.view');
         Route::post('/unit/store', [UnitController::class, 'store'])->name('master-data.unit.create');
@@ -305,7 +306,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/jabatan/delete/{id}', [JabatanController::class, 'destroy'])->name('master-data.jabatan.delete');
         Route::post('/jabatan/update-status/{id}', [JabatanController::class, 'updateStatus'])->name('master-data.jabatan.update-status');
 
-         // Account
+        // Account
         Route::get('/account', [AccountController::class, 'index'])->name('master-data.account');
         Route::get('/account/view', [AccountController::class, 'views'])->name('master-data.account.view');
         Route::put('/account/update/{id}', [AccountController::class, 'update'])->name('master-data.account.update');
@@ -386,7 +387,7 @@ Route::group(['middleware' => 'loggedin'], function () {
     });
 
     // Logistik
-     Route::prefix('logistik')->group(function () {
+    Route::prefix('logistik')->group(function () {
         // Permintaan
         Route::get('/permintaan', [PermintaanController::class, 'index'])->name('logistik.permintaan');
         Route::get('/permintaan/view', [PermintaanController::class, 'views'])->name('logistik.permintaan.view');

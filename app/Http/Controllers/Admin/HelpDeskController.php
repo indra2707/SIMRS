@@ -25,6 +25,38 @@ class HelpDeskController extends Controller
         return view('help-desk.Admin.helpDesk', $data);
     }
 
+    // view jumlah data
+    public function count()
+    {
+        try {
+            $namaRole = Session::get('nama_role');
+
+            $query = HelpDesk::query();
+
+            // Filter berdasarkan role
+            if (in_array($namaRole, ['Teknik', 'Medis'])) {
+                $query->whereHas('user.rolls', function ($q) use ($namaRole) {
+                    $q->where('kategori', $namaRole);
+                });
+            }
+
+            $countAccept = (clone $query)
+                ->where('status', 'accept')
+                ->count();
+
+            return response()->json([
+                'status' => true,
+                'count_accept' => $countAccept
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
     //View
     public function views(Request $request)
     {
@@ -88,6 +120,7 @@ class HelpDeskController extends Controller
         }
     }
 
+    // Edit
     public function edit(HelpDesk $helpDesk)
     {
         return view('pages.admin.helpDesk-edit', compact('helpDesk'));
