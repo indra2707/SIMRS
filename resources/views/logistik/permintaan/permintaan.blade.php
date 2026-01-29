@@ -159,7 +159,7 @@
                         <label for="catatan" class="col-form-label col-sm-2">Catatan</label>
                         <div class="col-sm-10">
                             <textarea name="catatan" id="catatan" class="form-control" style="resize: none;" rows="3"
-                                placeholder="Catatan..." required></textarea>
+                                placeholder="Catatan..."></textarea>
                         </div>
                     </form>
                 </div>

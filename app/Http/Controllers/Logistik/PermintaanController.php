@@ -196,4 +196,23 @@ class PermintaanController extends Controller
             ], 500);
         }
     }
+
+    // Delete
+    public function destroy($id)
+    {
+        $query = Permintaan::where('id', $id)->delete();
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'data' => [],
+                'message' => 'Data Berhasil Dihapus.',
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Dihapus.',
+            ], status: 400);
+        }
+    }
 }
