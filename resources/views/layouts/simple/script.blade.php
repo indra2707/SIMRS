@@ -35,29 +35,60 @@
 <script src="{{ asset(path: 'assets/js/cleave/custom-cleave.js') }}"></script>
 
 {{-- Signature Pad --}}
-<script type="text/javascript" src="{{ asset(path: 'assets/vendor/jquery.signature.package-1.2.1/js/jquery.signature.js') }}"></script>
+<script type="text/javascript"
+    src="{{ asset(path: 'assets/vendor/jquery.signature.package-1.2.1/js/jquery.signature.js') }}"></script>
 
 
 
 {{-- Dropzone --}}
 
 {{-- Select2 --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script> --}}
-{{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
+{{--
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script> --}}
+{{--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script> --}}
 <script src="{{ asset('assets/js/select2/select2.full.min.js') }}"></script>
 
 
-{{-- <script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
+{{--
+<script src="{{asset('assets/js/sweet-alert/app.js')}}"></script> --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @if (Route::current()->getName() != 'popover')
-<script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
+    <script src="{{ asset('assets/js/tooltip-init.js') }}"></script>
 @endif
 
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
 <script src="{{ asset('assets/js/script.js') }}"></script>
 <script src="{{ asset('assets/js/theme-customizer/customizer.js') }}"></script>
+
+<!-- notif helpdesk approval -->
+<script>
+    $(document).ready(function () {
+
+        function loadHelpdeskCount() {
+            $.get("{{ route('admin.helpdesk-count') }}", function (res) {
+                if (res.status && res.count_accept > 0) {
+                    $('#count-approval')
+                        .removeClass('d-none')
+                        .text(res.count_accept + ' New');
+                } else {
+                    $('#count-approval')
+                        .addClass('d-none')
+                        .text('0 New');
+                }
+            });
+        }
+
+        // load pertama kali
+        loadHelpdeskCount();
+
+        // interval setiap 1 menit (60.000 ms)
+        setInterval(loadHelpdeskCount, 600);
+
+    });
+</script>
 
 
 @if (Route::current()->getName() == 'index')
@@ -68,7 +99,7 @@
     <script>
         new WOW().init();
     </script>
-@endif'
+@endif
 {{-- Custom JS --}}
 <script src="{{ asset('assets/js/custom-script.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>

@@ -248,7 +248,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @if (in_array('Helpdesk.Approval', $aksesMenu))
-                                    <li><a href="{{ route('admin.helpdesk') }}">Approval <label class="badge badge-light-secondary" id="count-approval"> New</label> </a></li>
+                                    <li><a href="{{ route('admin.helpdesk') }}">Approval <label class="badge badge-light-secondary" id="count-approval"> 0</label> </a></li>
                                 @endif
                                 @if (in_array('Helpdesk.List', $aksesMenu))
                                     <li><a href="{{ route('user.helpdesk') }}">List</a></li>
@@ -1077,16 +1077,3 @@
         </nav>
     </div>
 </div>
-
-
-<script>
-$(document).ready(function () {
-    $.get("{{ route('admin.helpdesk-count') }}", function (res) {
-        if (res.status && res.count_accept > 0) {
-            $('#count-approval')
-                .removeClass('d-none')
-                .text(res.count_accept + ' New');
-        }
-    });
-});
-</script>
