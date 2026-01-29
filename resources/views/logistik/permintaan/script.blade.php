@@ -10,65 +10,47 @@
     // Tabel
     var $tablePermintaan = $('#table_permintaan');
 
-    $('#modal-permintaan').on('hidden.bs.modal', function() {
-        // Reset form validation
-        $('.form-permintaan').removeClass('was-validated');
+    // $('#modal-permintaan').on('hidden.bs.modal', function () {
+    //     // Reset form validation
+    //     $('.form-permintaan').removeClass('was-validated');
+    //     $('.form-permintaan input[type="text"]').val('');
+    //     $('.form-permintaan input[type="hidden"]').val('');
+    //     $('.form-permintaan textarea').val('');
+    //     $('.form-permintaan select').val(null).trigger('change');
 
-        $('.form-permintaan input[type="text"]').val('');
-        $('.form-permintaan input[type="hidden"]').val('');
-        $('.form-permintaan textarea').val('');
+    //     if ($("select[name='id_unit[]']").hasClass("select2-hidden-accessible")) {
+    //         $("select[name='id_unit[]']").select2('destroy');
+    //     }
+    //     $('.tembusan-checkbox').prop('checked', false);
+    //     $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+    //     console.log('Modal closed - Form cleared');
+    // });
 
-        $('.form-permintaan select').val(null).trigger('change');
 
-        if ($("select[name='id_unit[]']").hasClass("select2-hidden-accessible")) {
-            $("select[name='id_unit[]']").select2('destroy');
-        }
-
-        $('.tembusan-checkbox').prop('checked', false);
-
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-
-        console.log('Modal closed - Form cleared');
-    });
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-permintaan').removeClass('was-validated');
         $('#modal-permintaan').modal('show');
         $('.modal-title').text('Form Tambah Permintaan');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
 
         $('input[name="id"]').val('');
-        $('input[name="no_permintaan"]').val('');
+        $('input[name="no_surat"]').val('');
+        $('input[name="no_agenda"]').val('');
         $('input[name="nama_permintaan"]').val('');
+        $('input[name="tgl"]').val('');
+        $('select[name="status"]').val('Pengajuan Panjar').trigger('change');
         $('textarea[name="catatan"]').val('');
         $('select[name="id_unit[]"]').val(null).trigger('change');
-
         $('.tembusan-checkbox').prop('checked', false);
 
         InitSelect2($("select[name='id_unit[]']"), {
             url: "{{ route('get-select-unit') }}",
-            dropdownParent: $("#modal-permintaan"),
-            placeholder: "---- Pilih Unit ----",
-            allowClear: true,
-            multiple: true
+            dropdownParent: $("#modal-permintaan")
         });
     });
 
-
-    window.actionFormatter = function(value, row, index) {
-        return [
-            '<a class="edit-employee-btn me-2" href="javascript:void(0)" data-id="' + row.id +
-            '" data-field_id="' + row.field_id + '">',
-            '<i class="fa fa-edit text-primary"></i>',
-            '</a>  ',
-            '<a class="remove-employee-btn" href="javascript:void(0)" data-id="' + row.id + '">',
-            '<i class="fa fa-trash text-danger"></i>',
-            '</a>'
-        ].join('')
-    };
-
-
     // Save Permintaan
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
 
         if (id) {
@@ -81,7 +63,7 @@
         }
 
         var forms = document.getElementsByClassName('form-permintaan');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -94,18 +76,18 @@
                     dataType: "json",
                     data: formData,
 
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
 
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
 
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success === true) {
                             Alert('success', res.message);
                             $('#modal-permintaan').modal('hide');
@@ -113,7 +95,7 @@
                         }
                     },
 
-                    error: function(xhr) {
+                    error: function (xhr) {
                         let message = 'Terjadi kesalahan';
 
                         if (xhr.status === 422) {
@@ -149,10 +131,9 @@
         });
     });
 
-    $(function() {
+    $(function () {
         initTable();
     });
-
 
     // Table PERMINTAAN
     function initTable() {
@@ -178,150 +159,106 @@
             url: "{{ route('logistik.permintaan.view') }}",
             columns: [
                 [{
-                        title: 'No',
-                        align: 'center',
-                        valign: 'middle',
-                        sortable: true,
-                        width: 50,
-                        formatter: function(value, row, index) {
-                            return index + 1
-                        }
-                    },
-                    {
-                        field: 'no_agenda',
-                        title: 'No Agenda',
-                        sortable: true,
-                    },
-                    {
-                        field: 'no_surat',
-                        title: 'No Surat',
-                        sortable: true,
-                    },
-                    {
-                        field: 'nama_permintaan',
-                        title: 'Nama Permintaan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'tgl',
-                        title: 'Tanggal',
-                        sortable: true,
-                    },
-                    {
-                        field: 'unit',
-                        title: 'Unit',
-                        sortable: true,
-                    },
-                    {
-                        field: 'catatan',
-                        title: 'Catatan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'status',
-                        title: 'Status',
-                        sortable: true,
-                        align: 'center',
-                        formatter: function(value, row, index) {
-                            let btnClass = 'btn-success';
-                            if (value === 'Draft') {
-                                btnClass = 'btn-secondary';
-                            } else if (value === 'Close') {
-                                btnClass = 'btn-danger';
-                            }
-                            return `<button class="btn btn-pill btn-xs ${btnClass}">${value}</button>`;
-                        }
-                    },
-                    {
-                        field: 'action',
-                        title: 'Action',
-                        align: 'center',
-                        valign: 'middle',
-                        width: 100,
-                        clickToSelect: false,
-                        events: window.eventsPermintaan,
-                        formatter: actionsFunctionPermintaan
+                    title: 'No',
+                    align: 'center',
+                    valign: 'middle',
+                    sortable: true,
+                    width: 50,
+                    formatter: function (value, row, index) {
+                        return index + 1
                     }
+                },
+                {
+                    field: 'no_agenda',
+                    title: 'No Agenda',
+                    sortable: true,
+                },
+                {
+                    field: 'no_surat',
+                    title: 'No Surat',
+                    sortable: true,
+                },
+                {
+                    field: 'nama_permintaan',
+                    title: 'Nama Permintaan',
+                    sortable: true,
+                },
+                {
+                    field: 'tgl',
+                    title: 'Tanggal',
+                    sortable: true,
+                },
+                {
+                    field: 'unit',
+                    title: 'Unit',
+                    sortable: true,
+                },
+                {
+                    field: 'tembusan',
+                    title: 'Tembusan',
+                    sortable: true,
+                    visible: false,
+                },
+                {
+                    field: 'catatan',
+                    title: 'Catatan',
+                    sortable: true,
+                    visible: false,
+                },
+                {
+                    field: 'status',
+                    title: 'Status',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        let btnClass = 'btn-success';
+                        if (value === 'Pengajuan Panjar') {
+                            btnClass = 'btn-primary';
+                        } else if (value === 'Pengadaan') {
+                            btnClass = 'btn-warning';
+                        } else if (value === 'Serah Terima') {
+                            btnClass = 'btn-info';
+                        }
+                        return `<button class="btn btn-pill btn-xs ${btnClass} text-center" style="width: 140px;"> ${value} </button>`;
+                    }
+                },
+                {
+                    field: 'action',
+                    title: 'Action',
+                    align: 'center',
+                    valign: 'middle',
+                    width: 100,
+                    clickToSelect: false,
+                    events: window.eventsPermintaan,
+                    formatter: actionsFunctionPermintaan
+                }
                 ]
             ],
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 console.log('Response data:', data);
                 return data;
             }
         });
     }
 
-
     function actionsFunctionPermintaan(value, row, index) {
-        const currentUsername = "{{ Auth::user()->username }}";
-
-        if (currentUsername === 'superadmin') {
-            if (row.status === 'Draft') {
-                return [
-                    '<div class="dropdown icon-dropdown">',
-                    '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
-                    '<i class="icon-more-alt"></i>',
-                    '</button>',
-                    '<div class="dropdown-menu dropdown-menu-end">',
-                    '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-warning"></i> Close</a>',
-                    '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a>',
-                    '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-                    '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-                    '</div>',
-                    '</div>',
-                ].join("");
-            }
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
-                '<i class="icon-more-alt"></i>',
-                '</button>',
-                '<div class="dropdown-menu dropdown-menu-end">',
-                '<a class="dropdown-item btn-draft" href="javascript:void(0)"><i class="fa fa-lock text-warning"></i> Draft</a>',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a>',
-                '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-                '</div>',
-                '</div>',
-            ].join("");
-        } else {
-            if (row.status === 'Close') {
-                return [
-                    '<div class="dropdown icon-dropdown">',
-                    '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
-                    '<i class="icon-more-alt"></i>',
-                    '</button>',
-                    '<div class="dropdown-menu dropdown-menu-end">',
-                    '<a class="dropdown-item btn-print" href="javascript:void(0)">',
-                    '<i class="fa fa-print text-secondary"></i> Print',
-                    '</a>',
-                    '</div>',
-                    '</div>',
-                ].join("");
-            }
-
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
-                '<i class="icon-more-alt"></i>',
-                '</button>',
-                '<div class="dropdown-menu dropdown-menu-end">',
-                '<a class="dropdown-item btn-tutup" href="javascript:void(0)"><i class="fa fa-lock text-warning"></i> Close</a>',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a>',
-                '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-                '</div>',
-                '</div>',
-            ].join("");
-        }
+        return [
+            '<div class="dropdown icon-dropdown">',
+            '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
+            '<i class="icon-more-alt"></i>',
+            '</button>',
+            '<div class="dropdown-menu dropdown-menu-end">',
+            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+            '</div>',
+            '</div>',
+        ].join("");
     }
 
-
     window.eventsPermintaan = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-permintaan').modal('show');
             $('.modal-title').text('Form Edit Permintaan');
-
             $('input[name="id"]').val(row.id);
             $('input[name="no_surat"]').val(row.no_surat);
             $('input[name="no_agenda"]').val(row.no_agenda);
@@ -329,7 +266,7 @@
             $('select[name="status"]').val(row.status).trigger('change');
             $('input[name="nama_permintaan"]').val(row.nama_permintaan);
             $('textarea[name="catatan"]').val(row.catatan);
-            $('input[name="tgl"]').val(row.tgl_raw);
+            $('input[name="tgl"]').val(row.tgl);
 
             $('input[name="status"]').val(row.status);
 
@@ -360,7 +297,7 @@
             $('.tembusan-checkbox').prop('checked', false);
 
             if (Array.isArray(selectedTembusan) && selectedTembusan.length > 0) {
-                selectedTembusan.forEach(function(value) {
+                selectedTembusan.forEach(function (value) {
                     $('input.tembusan-checkbox[value="' + value + '"]').prop('checked', true);
                 });
             }
@@ -368,7 +305,7 @@
             loadMultipleSelect($("select[name='id_unit[]']"), selectedUnits);
         },
 
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('logistik.permintaan.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -390,103 +327,19 @@
                             _token: "{{ csrf_token() }}",
                             no_surat: row.no_surat
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $tablePermintaan.bootstrapTable('refresh');
                     });
                 }
             })
         },
-
-        'click .btn-tutup': function(e, value, row, index) {
-            e.preventDefault();
-            let url = "{{ route('logistik.permintaan.update-status', ':id') }}";
-            url = url.replace(':id', row.id);
-
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Anda yakin ingin Close data ini?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Close!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (!result.isConfirmed) return;
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        status: 'Close',
-                        table: 'tbl_permintaan',
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(res) {
-                        if (res.success) {
-                            Alert('success', res.message);
-                        } else {
-                            Alert('warning', res.message);
-                        }
-                    },
-                    error: function() {
-                        Alert('error', 'Terjadi kesalahan server');
-                    },
-                    complete: function() {
-                        $tablePermintaan.bootstrapTable('refresh');
-                    }
-                });
-            });
-        },
-
-        'click .btn-draft': function(e, value, row, index) {
-            e.preventDefault();
-            let url = "{{ route('logistik.permintaan.update-status', ':id') }}";
-            url = url.replace(':id', row.id);
-
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Anda yakin ingin Draft data ini?',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Draft!',
-                cancelButtonText: 'Batal'
-            }).then((result) => {
-                if (!result.isConfirmed) return;
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {
-                        status: 'Draft',
-                        table: 'tbl_permintaan',
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(res) {
-                        if (res.success) {
-                            Alert('success', res.message);
-                        } else {
-                            Alert('warning', res.message);
-                        }
-                    },
-                    error: function() {
-                        Alert('error', 'Terjadi kesalahan server');
-                    },
-                    complete: function() {
-                        $tablePermintaan.bootstrapTable('refresh');
-                    }
-                });
-            });
-        }
     }
 
     function loadMultipleSelect($selectElement, selectedIds) {
@@ -503,11 +356,11 @@
                     ids: selectedIds
                 },
                 dataType: 'json',
-                success: function(response) {
+                success: function (response) {
                     let units = response.results || response.data || response;
 
                     if (Array.isArray(units)) {
-                        units.forEach(function(item) {
+                        units.forEach(function (item) {
                             let id = item.id;
                             let text = item.text || item.nama || item.name;
                             var option = new Option(text, id, true, true);
@@ -520,13 +373,13 @@
                             url: "{{ route('get-select-unit') }}",
                             dataType: 'json',
                             delay: 250,
-                            data: function(params) {
+                            data: function (params) {
                                 return {
                                     q: params.term,
                                     page: params.page || 1
                                 };
                             },
-                            processResults: function(data) {
+                            processResults: function (data) {
                                 let results = data.results || data.data || data;
                                 if (Array.isArray(results)) {
                                     return {
@@ -558,13 +411,13 @@
                     url: "{{ route('get-select-unit') }}",
                     dataType: 'json',
                     delay: 250,
-                    data: function(params) {
+                    data: function (params) {
                         return {
                             q: params.term,
                             page: params.page || 1
                         };
                     },
-                    processResults: function(data) {
+                    processResults: function (data) {
                         let results = data.results || data.data || data;
                         if (Array.isArray(results)) {
                             return {

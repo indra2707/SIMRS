@@ -62,6 +62,7 @@
 		  </div>
 		</div>
 	  </div>
+	  
 	  <!-- <div class="col-xxl-auto col-xl-3 col-sm-6 box-col-6">
 		<div class="row">
 		  <div class="col-xl-12">
@@ -533,10 +534,11 @@
 				  <h5 class="mb-0 font-primary f-18 me-1">$239,098</h5><span class="f-light f-w-500">(Budget)</span>
 				</div>
 				</div>
-			</div> -->
-		  <!-- </div>
+			</div>
+		  </div>
 		</div>
 	  </div> -->
+
 	</div>
   </div>
     <script type="text/javascript">

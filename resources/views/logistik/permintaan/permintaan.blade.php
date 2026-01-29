@@ -46,9 +46,12 @@
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">No</th>
+                                            <th class="f-light">No Agenda</th>
                                             <th class="f-light">Nomor Permintaan</th>
                                             <th class="f-light">Nama Permintaan</th>
+                                            <th class="f-light">Tanggal</th>
                                             <th class="f-light">Unit</th>
+                                            <th class="f-light">Tembusan</th>
                                             <th class="f-light">Status</th>
                                             <th class="f-light">Catatan</th>
                                             <th>Action</th>
@@ -81,7 +84,7 @@
                         <!-- Nomor Agenda -->
                         <label for="no_agenda" class="col-form-label col-sm-2">Nomor Agenda</label>
                         <div class="col-sm-4">
-                            <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4"
+                            <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4" required
                                 placeholder="Nomor Agenda...">
                         </div>
 
@@ -95,7 +98,7 @@
                          <!-- Tanggal -->
                         <label for="tanggal" class="col-form-label col-sm-2">Tanggal </label>
                         <div class="col-sm-10">
-                            <input type="text" name="tgl" id="tanggal" class="form-control js-datepicker digits"
+                            <input type="text" name="tgl" id="tgl" class="form-control js-datepicker digits"
                                 placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 

@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class PermintaanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $data = [
@@ -26,10 +24,8 @@ class PermintaanController extends Controller
         return view('logistik.permintaan.permintaan', $data);
     }
 
-    /**
-     * Get data for table view
-     */
-    public function views(Request $request)
+    // View
+    public function views()
     {
         $permintaans = Permintaan::all();
 
@@ -62,8 +58,8 @@ class PermintaanController extends Controller
                     'tembusan_text' => !empty($tembusanArray) ? implode(', ', $tembusanArray) : '-',
                     'created_by' => $value->created_by,
                     'updated_by' => $value->updated_by,
-                    'tgl'      => $value->tgl?->format('d-m-Y'),
-                    'tgl_raw'  => $value->tgl?->format('Y-m-d'),
+                    'tgl' => Carbon::parse($value->tgl)->format('d/m/Y'),
+                    // 'tgl_raw' => Carbon::parse($value->tgl)->format('d/m/Y'),
                     'catatan' => $value->catatan,
                     'id_unit' => $unitIds,
                     'tembusan' => $tembusanArray,
@@ -72,9 +68,9 @@ class PermintaanController extends Controller
         );
     }
 
+    // simpan 
     public function store(Request $request)
     {
-
         $request->validate([
             'nama_permintaan' => 'required|string|max:255',
             'id_unit' => 'required|array',
@@ -90,7 +86,7 @@ class PermintaanController extends Controller
             $tembusan = [];
         }
         $permintaan = Permintaan::create([
-            'no_agenda' => $this->generateNoAgenda(),
+            'no_agenda' => $request->no_agenda,
             'no_surat' => $request->no_surat,
             'nama_permintaan' => $request->nama_permintaan,
             'id_unit' => $request->id_unit,
@@ -108,6 +104,7 @@ class PermintaanController extends Controller
         ]);
     }
 
+    // Select Unit 
     public function getSelectUnit(Request $request)
     {
         $ids = $request->input('ids', []);
@@ -157,46 +154,22 @@ class PermintaanController extends Controller
             'total_count' => $total
         ]);
     }
-    private function generateNoAgenda()
-    {
-        $year = now()->format('Y');
-        $lastAgenda = Permintaan::whereYear('tgl', $year)
-            ->orderBy('id', 'desc')
-            ->first();
 
-        $number = $lastAgenda ? ((int) substr($lastAgenda->no_agenda, -4)) + 1 : 1;
-        return 'AGD-' . $year . '-' . str_pad($number, 4, '0', STR_PAD_LEFT);
-    }
-
+    // Update
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
 
         try {
             $permintaan = Permintaan::findOrFail($id);
-
-            $tanggal = $permintaan->tgl;
-
-            if ($request->filled('tgl') && !empty($request->tgl)) {
-                try {
-                    $tanggal = Carbon::parse($request->tgl)->format('Y-m-d');
-                } catch (\Exception $e) {
-                    Log::warning('Failed to parse date: ' . $request->tgl . ' - Error: ' . $e->getMessage());
-                }
-            }
-
-            // Update data
             $permintaan->update([
                 'no_surat' => $request->no_surat,
                 'nama_permintaan' => $request->nama_permintaan,
-                'tgl' => $tanggal,
+                'tgl' => Carbon::createFromFormat('d/m/Y', $request->tgl)->format('Y-m-d'),
                 'id_unit' => $request->id_unit,
                 'status' => $request->status ?? $permintaan->status,
                 'catatan' => $request->catatan,
-                'tembusan' => $request->has('tembusan')
-                    ? $request->tembusan
-                    : $permintaan->tembusan,
-
+                'tembusan' => $request->has('tembusan') ? $request->tembusan : $permintaan->tembusan,
                 'updated_by' => Auth::user()->username ?? 'system'
             ]);
 
@@ -220,88 +193,6 @@ class PermintaanController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Data gagal diubah: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function destroy($id)
-    {
-        DB::beginTransaction();
-
-        try {
-            $permintaan = Permintaan::findOrFail($id);
-            $permintaan->delete();
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Data berhasil dihapus'
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error deleting Permintaan: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Data gagal dihapus: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function updateStatus(Request $request, $id)
-    {
-        try {
-            $permintaan = Permintaan::findOrFail($id);
-
-            $permintaan->status = $request->status;
-            $permintaan->updated_by = Auth::user()->username ?? 'system';
-            $permintaan->save();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Status berhasil diubah menjadi ' . $request->status,
-                'data' => $permintaan
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        } catch (\Exception $e) {
-            Log::error('Error updating status: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Status gagal diubah: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    public function show($id)
-    {
-        try {
-            $permintaan = Permintaan::with('unit')->findOrFail($id);
-
-            return response()->json([
-                'success' => true,
-                'data' => $permintaan
-            ], 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data tidak ditemukan'
-            ], 404);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage()
             ], 500);
         }
     }
