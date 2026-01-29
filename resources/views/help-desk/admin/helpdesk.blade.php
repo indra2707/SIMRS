@@ -336,6 +336,7 @@
                                 <option value="IT">IT / Sistem Informasi</option>
                                 <option value="Medis">Peralatan Medis / Atem </option>
                                 <option value="Teknik">Sarana & Prasarana / Teknik </option>
+                                <option value="General Affair">Umum / GA </option>
                             </select>
                         </div>
 

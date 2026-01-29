@@ -337,6 +337,7 @@
                                 <option value="IT">IT / Sistem Informasi</option>
                                 <option value="Medis">Peralatan Medis / Atem </option>
                                 <option value="Teknik">Sarana & Prasarana / Teknik </option>
+                                <option value="General Affair">Umum / GA </option>
                             </select>
                         </div>
 
@@ -379,7 +380,34 @@
                             {{-- PREVIEW --}}
                             <div class="row mt-2" id="preview-images"></div>
                         </div>
+                    
 
+                         {{-- Lampiran Selesai --}}
+                        <label class="col-sm-2 col-form-label">Lampiran Selesai</label>
+                        <div class="col-sm-10">
+
+                            <!-- Button Attach -->
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach2" id="btn-attach2">
+                                <i class="fa fa-paperclip"></i> Attach File
+                            </button>
+
+                            <!-- Hidden Input -->
+                            <input type="file" id="lampiran_selesai" name="lampiran_selesai[]" multiple
+                                accept="image/jpeg,image/png" class="d-none">
+
+                            <small class="text-muted btn-attach">
+                            </small>
+
+                            {{-- PREVIEW --}}
+                            <div class="row mt-2" id="preview-images2"></div>
+                        </div>
+
+                        <!-- Catatan  -->
+                        <label for="catatan" class="col-form-label col-sm-2">Catatan</label>
+                        <div class="col-sm-10 mb-3">
+                            <textarea class="form-control" name="catatan" id="catatan" rows="2"
+                                placeholder="Catatan..."></textarea>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

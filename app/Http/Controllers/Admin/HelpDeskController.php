@@ -34,7 +34,7 @@ class HelpDeskController extends Controller
             $query = HelpDesk::query();
 
             // Filter berdasarkan role
-            if (in_array($namaRole, ['Teknik', 'Medis'])) {
+            if (in_array($namaRole, ['Teknik', 'Medis', 'General Affair'])) {
                 $query->whereHas('user.rolls', function ($q) use ($namaRole) {
                     $q->where('kategori', $namaRole);
                 });
@@ -73,7 +73,7 @@ class HelpDeskController extends Controller
                 );
 
             // Filter berdasarkan role
-            if (in_array($namaRole, ['Teknik', 'Medis'])) {
+            if (in_array($namaRole, ['Teknik', 'Medis', 'General Affair'])) {
                 $query->whereHas('user.rolls', function ($q) use ($namaRole) {
                     $q->where('kategori', $namaRole);
                 });
