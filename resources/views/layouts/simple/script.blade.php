@@ -65,28 +65,41 @@
 
 <!-- notif helpdesk approval -->
 <script>
-    $(document).ready(function () {
+    // $(document).ready(function () {
 
-        function loadHelpdeskCount() {
-            $.get("{{ route('admin.helpdesk-count') }}", function (res) {
+    //     function loadHelpdeskCount() {
+    //         $.get("{{ route('admin.helpdesk-count') }}", function (res) {
+    //             if (res.status && res.count_accept > 0) {
+    //                 $('#count-approval')
+    //                     .removeClass('d-none')
+    //                     .text(res.count_accept + ' New');
+    //             } else {
+    //                 $('#count-approval')
+    //                     .addClass('d-none')
+    //                     .text('0 New');
+    //             }
+    //         });
+    //     }
+
+    //     // load pertama kali
+    //     loadHelpdeskCount();
+
+    //     // interval setiap 1 menit (60.000 ms)
+    //     setInterval(loadHelpdeskCount, 60000);
+
+    // });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetch("{{ route('admin.helpdesk-count') }}")
+            .then(response => response.json())
+            .then(res => {
                 if (res.status && res.count_accept > 0) {
-                    $('#count-approval')
-                        .removeClass('d-none')
-                        .text(res.count_accept + ' New');
-                } else {
-                    $('#count-approval')
-                        .addClass('d-none')
-                        .text('0 New');
+                    const badge = document.getElementById('count-approval');
+                    badge.classList.remove('d-none');
+                    badge.textContent = res.count_accept + ' New';
                 }
-            });
-        }
-
-        // load pertama kali
-        loadHelpdeskCount();
-
-        // interval setiap 1 menit (60.000 ms)
-        setInterval(loadHelpdeskCount, 60000);
-
+            })
+            .catch(err => console.error(err));
     });
 </script>
 
