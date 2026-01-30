@@ -14,6 +14,234 @@
             display: flex;
             align-items: center;
         }
+
+        /* Layout chat flexible */
+        .chat-box,
+        .chat-right-aside,
+        .chat {
+            height: 100%;
+        }
+
+        .chat {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Chat history - area scrollable */
+        .chat-history {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            padding: 10px;
+
+            /* min-height: 200px; */
+            max-height: none;
+            /* Hapus batas tinggi */
+        }
+
+        /* Padding bawah dinamis untuk chat history */
+        .chat-history::after {
+            /* content: ''; */
+            display: block;
+            /* height: 20px; */
+        }
+
+        /* Chat message input area - fixed di bawah */
+        .chat-message {
+            flex-shrink: 0;
+            background: #f8f9fa;
+            padding: 6px 8px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        /* Container input pill */
+        .input-pill-container {
+            background: white;
+            border-radius: 24px;
+            padding: 8px 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        /* Textarea WhatsApp-style */
+        #input-box {
+            flex: 1;
+            min-height: 38px;
+            max-height: 120px;
+            height: 38px;
+            padding: 6px 8px;
+            resize: none;
+            overflow-y: auto;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            line-height: 20px;
+            padding: 10px 8px;
+            font-family: inherit;
+            box-shadow: none !important;
+        }
+
+        #input-box:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        #input-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #input-box::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        /* Buttons */
+        .chat-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+
+        .chat-btn:hover {
+            transform: scale(1.05);
+        }
+
+        #emoji-btn {
+            background: #f5f5f5;
+            font-size: 20px;
+        }
+
+        #send-chat-btn {
+            background: #0d6efd;
+            color: white;
+        }
+
+        #send-chat-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Emoji picker */
+        #emoji-picker {
+            margin-top: 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Chat messages styling */
+        .chat-history ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .chat-history li {
+            margin-bottom: 5px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom scrollbar untuk chat history */
+        .chat-history::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-history::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .chat-history::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .chat-history::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Modal full height - PENTING! */
+        #chatModal .modal-dialog {
+            height: 90vh;
+            max-height: 90vh;
+        }
+
+        #chatModal .modal-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .modal-body {
+            padding: 0;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .card {
+            height: 100%;
+            margin: 0;
+        }
+
+        #chatModal .card-body {
+            height: 100%;
+            padding: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .chat-box {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #chatModal .chat-right-aside {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chat header - fixed height */
+        .chat-header {
+            flex-shrink: 0;
+            height: auto;
+        }
+
+        .chat-history {
+            padding-bottom: 0px !important;
+        }
+
+        .chat-message {
+            padding-top: 0px !important;
+        }
+
+        .card-body,
+        .modal-body {
+            padding-bottom: 0 !important;
+        }
     </style>
 
 @endsection
@@ -84,8 +312,8 @@
                         <!-- Nomor Agenda -->
                         <label for="no_agenda" class="col-form-label col-sm-2">Nomor Agenda</label>
                         <div class="col-sm-4">
-                            <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4" required
-                                placeholder="Nomor Agenda...">
+                            <input type="text" id="no_agenda" name="no_agenda" class="form-control" maxlength="4"
+                                required placeholder="Nomor Agenda...">
                         </div>
 
                         <!-- Nomor Surat -->
@@ -95,7 +323,7 @@
                                 placeholder="Nomor Surat..." required>
                         </div>
 
-                         <!-- Tanggal -->
+                        <!-- Tanggal -->
                         <label for="tanggal" class="col-form-label col-sm-2">Tanggal </label>
                         <div class="col-sm-10">
                             <input type="text" name="tgl" id="tgl" class="form-control js-datepicker digits"
@@ -134,22 +362,26 @@
                         <div class="col-sm-10">
                             <div class="d-flex flex-wrap gap-4">
                                 <div class="form-check">
-                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="ICT" name="tembusan[]"  value="ICT">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="ICT"
+                                        name="tembusan[]" value="ICT">
                                     <label class="form-check-label" for="ICT">ICT</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Teknik" name="tembusan[]"  value="Teknik">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Teknik"
+                                        name="tembusan[]" value="Teknik">
                                     <label class="form-check-label" for="Teknik">Teknik</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Alkes" name="tembusan[]" value="Alkes">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Alkes"
+                                        name="tembusan[]" value="Alkes">
                                     <label class="form-check-label" for="Alkes">Alkes</label>
                                 </div>
 
                                 <div class="form-check">
-                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Umum" name="tembusan[]" value="Umum">
+                                    <input class="form-check-input tembusan-checkbox" type="checkbox" id="Umum"
+                                        name="tembusan[]" value="Umum">
                                     <label class="form-check-label" for="Umum">Umum</label>
                                 </div>
                             </div>
@@ -170,10 +402,146 @@
             </div>
         </div>
     </div>
+    {{-- modal chat --}}
+    <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+        data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Chat</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="row chat-box">
+                                <div class="col-12 pe-0 chat-right-aside">
+                                    <div class="chat">
+                                        <!-- Chat Header -->
+                                        <div class="chat-header clearfix">
+                                            <img class="rounded-circle" src="{{ asset('assets/images/user/8.jpg') }}"
+                                                alt="">
+                                            <div class="about">
+                                                <div class="name">
+                                                    <div id="nama_lengkap"></div>
+                                                    <small class="text-muted" id="chatOpponentUsername"></small>
+                                                </div>
+                                                <div class="status" id="lastSeen"></div>
+                                                <!-- Sudah langsung pakai id="lastSeen" di div status -->
+                                            </div>
+                                            <ul class="list-inline float-start float-sm-end chat-menu-icons">
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-search"></i></a>
+                                                </li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-clip"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-headphone-alt"></i></a></li>
+                                                <li class="list-inline-item"><a href="#"><i
+                                                            class="icon-video-camera"></i></a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Chat History -->
+                                        <div class="chat-history chat-msg-box custom-scrollbar">
+                                            <ul>
+                                                <li class="clearfix">
+                                                    <div class="message my-message">
+                                                        <img class="rounded-circle float-start chat-user-img img-30"
+                                                            src="{{ asset('assets/images/user/3.png') }}" alt="">
+                                                        <div class="message-data text-end">
+                                                            <span class="message-data-time">10:12 am</span>
+                                                        </div>
+                                                        Are you there?
+                                                    </div>
+                                                </li>
+                                                <li class="clearfix">
+                                                    <div class="message other-message pull-right">
+                                                        <img class="rounded-circle float-end chat-user-img img-30"
+                                                            src="{{ asset('assets/images/user/12.png') }}" alt="">
+                                                        <div class="message-data">
+                                                            <span class="message-data-time">10:14 am</span>
+                                                        </div>
+                                                        Yes, I'm here!
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Chat Message Input -->
+                                        <div class="chat-message clearfix">
+                                            <div class="row m-0">
+                                                <div class="col-12">
+                                                    <!-- Emoji Picker -->
+                                                    <div class="px-2">
+                                                        <emoji-picker id="emoji-picker"
+                                                            style="display: none; width: 100%; height: 350px;"></emoji-picker>
+                                                    </div>
+
+                                                    <!-- Input Container -->
+                                                    <div class="input-pill-container mx-2 mb-2">
+                                                        <button type="button" id="emoji-btn" class="chat-btn">
+                                                            😊
+                                                        </button>
+
+                                                        <textarea id="input-box" class="form-control" placeholder="Ketik pesan..." rows="1"></textarea>
+
+                                                        <button type="button" id="send-chat-btn" class="chat-btn">
+                                                            <i class="fa fa-paper-plane"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @section('script')
     @include('logistik.permintaan.script')
+    <style>
+        .chat-header .about .name .font-primary {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Smooth message appearance */
+        .chat-history li {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 @endsection
