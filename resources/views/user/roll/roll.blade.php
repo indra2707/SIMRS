@@ -236,6 +236,7 @@
                                                     value="Kalibrasi Alat Kesehatan"> Kalibrasi Alat Kesehatan</label></li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" name="permissions[]" value="Helpdesk" class="parent"><b>
@@ -248,6 +249,7 @@
                                                 Approval</label></li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" class="parent"><b> SDM</b>
@@ -261,6 +263,26 @@
                                                 SPD</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="Slip Gaji"> Slip Gaji
                                             </label></li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"><b> Logistik</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Permintaan"> Permintaan</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Tembusan"> Tembusan</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Disposisi"> Disposisi</label></li>
+                                    </ul>
+                                </li>
+
+                                 <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"><b> Slip Gaji</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Gaji"> Gaji</label></li>
                                     </ul>
                                 </li>
                             </ul>

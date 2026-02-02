@@ -15,6 +15,7 @@ use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 
 use App\Http\Controllers\Logistik\PermintaanController;
+use App\Http\Controllers\Logistik\TembusanController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
@@ -396,6 +397,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/permintaan/update-status/{id}', [PermintaanController::class, 'updateStatus'])->name('logistik.permintaan.update-status');
         Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'destroy'])->name('logistik.permintaan.delete');
         Route::get('/get-select-unit', [PermintaanController::class, 'getSelectUnit'])->name('get-select-unit');
+
+        // Tembusan
+        Route::get('/tembusan', [TembusanController::class, 'index'])->name('logistik.tembusan');
+        Route::get('/tembusan/view', [TembusanController::class, 'views'])->name('logistik.tembusan.view');
     });
 
     // Tarif
