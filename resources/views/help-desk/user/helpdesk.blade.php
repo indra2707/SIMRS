@@ -380,7 +380,7 @@
                             {{-- PREVIEW --}}
                             <div class="row mt-2" id="preview-images"></div>
                         </div>
-                    
+
 
                          {{-- Lampiran Selesai --}}
                         <label class="col-sm-2 col-form-label">Lampiran Selesai</label>
@@ -434,7 +434,7 @@
             </div>
         </div>
     </div>
-
+{{-- modal chat --}}
     <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
