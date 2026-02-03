@@ -31,17 +31,16 @@ use App\Http\Controllers\MasterData\BiayaController;
 
 use App\Http\Controllers\MasterData\Icd10Controller;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
-use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
-use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
-
+use App\Http\Controllers\Logistik\TembusanController;
 use App\http\Controllers\MasterData\FungsiController;
+
 use App\Http\Controllers\MasterData\LokasiController;
 use App\Http\Controllers\MasterData\MutasiController;
 use App\Http\Controllers\MasterData\PasienController;
 use App\Http\Controllers\User\UserspekerjaController;
 use App\http\Controllers\MasterData\AccountController;
-
 use App\http\Controllers\MasterData\JabatanController;
+
 use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\MasterData\CustomerController;
@@ -55,10 +54,12 @@ use App\http\Controllers\MasterData\SKStrukturController;
 use App\Http\Controllers\MasterData\KondisiAsetController;
 use App\http\Controllers\MasterData\KelompokAsetController;
 use App\Http\Controllers\MasterData\Jadwal_dokterController;
-
 use App\Http\Controllers\MasterData\Poli_tindakanController;
+
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
+use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
+use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -398,32 +399,29 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/permintaan/update-status/{id}', [PermintaanController::class, 'updateStatus'])->name('logistik.permintaan.update-status');
         Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'destroy'])->name('logistik.permintaan.delete');
         Route::get('/get-select-unit', [PermintaanController::class, 'getSelectUnit'])->name('get-select-unit');
-
-        // Get all messages untuk permintaan tertentu
+        // USER
         Route::get('/chat/{permintaan_id}', [LogistikUserChatController::class, 'index'])
             ->name('user.logistik.chat.index');
-
-        // Send message
         Route::post('/chat/{permintaan_id}/send', [LogistikUserChatController::class, 'send'])
             ->name('user.logistik.chat.send');
-
-        // Get info permintaan untuk header chat
         Route::get('/permintaan/{permintaan_id}/info', [LogistikUserChatController::class, 'getPermintaanInfo'])
             ->name('user.logistik.permintaan.info');
 
 
-
-
+        // ADMIN
         Route::get('/admin/chat/{permintaan_id}', [AdminChatController::class, 'index'])
             ->name('admin.logistik.chat.index');
 
-        // Send message
         Route::post('/admin/chat/{permintaan_id}/send', [AdminChatController::class, 'send'])
             ->name('admin.logistik.chat.send');
 
-        // Get info user (pembuat permintaan) untuk header chat
         Route::get('/admin/permintaan/{permintaan_id}/user-info', [AdminChatController::class, 'getUserInfo'])
             ->name('admin.logistik.permintaan.user-info');
+
+
+        // TEMBUSAN
+        Route::get('/tembusan', [TembusanController::class, 'index'])->name('logistik.tembusan');
+        Route::get('/tembusan/view', [TembusanController::class, 'views'])->name('logistik.tembusan.view');
     });
 
     // Tarif
