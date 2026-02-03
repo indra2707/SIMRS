@@ -181,7 +181,7 @@ class ChatController extends Controller
 
         // fallback jika belum ada pesan
         if (!$opponent) {
-            $helpdesk = \App\Models\HelpDesk::with('user')->find($helpdeskId);
+            $helpdesk = HelpDesk::with('user')->find($helpdeskId);
 
             if ($helpdesk && $helpdesk->user) {
                 $opponent = (object) [

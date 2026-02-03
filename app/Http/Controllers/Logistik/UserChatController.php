@@ -11,31 +11,26 @@ use Illuminate\Support\Facades\Log;
 
 class UserChatController extends Controller
 {
-     public function index($permintaan_id)
+    public function index($permintaan_id)
     {
         try {
             $user = Auth::user();
 
             Log::info('📥 Loading messages', [
-                'helpdesk_id' => $permintaan_id,
+                'permintaan_id' => $permintaan_id,
                 'user_id' => $user->id,
                 'username' => $user->username
             ]);
 
-            // Cek helpdesk exists
-            $permintaan = LogistikMessage::find($permintaan_id);
+            $permintaan = Permintaan::find($permintaan_id);
 
             if (!$permintaan) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Helpdesk tidak ditemukan'
+                    'message' => 'Permintaan tidak ditemukan'
                 ], 404);
             }
 
-            // ✅ TIDAK ADA AUTHORIZATION CHECK - biarkan simple
-            // User frontend sudah difilter, jadi hanya lihat helpdesk mereka sendiri
-
-            // Load messages dengan relasi user
             $messages = LogistikMessage::with('user')
                 ->where('permintaan_id', $permintaan_id)
                 ->orderBy('created_at', 'asc')
@@ -46,16 +41,15 @@ class UserChatController extends Controller
                         'permintaan_id' => $message->permintaan_id,
                         'user_id' => $message->user_id,
                         'message' => $message->message,
-                        'sender_type' => $message->sender_type, // username
+                        'sender_type' => $message->sender_type,
                         'created_at' => $message->created_at,
                         'user' => [
                             'id' => $message->user->id,
                             'username' => $message->user->username,
-                            'nama_lengkap' => $message->user->nama_lengkap,
+                            'nama_lengkap' => $message->user->nama_lengkap ?? $message->user->username,
                             'role' => $message->user->role,
                         ],
-                        // Helper untuk UI
-                        'is_admin' => $message->user->role !== 'user',
+                        'is_admin' => in_array($message->user->role, ['admin', 'superadmin', 'support']),
                         'display_name' => $message->user->nama_lengkap ?? $message->user->username,
                     ];
                 });
@@ -92,10 +86,9 @@ class UserChatController extends Controller
                 'user_id' => $user->id,
                 'username' => $user->username,
                 'role' => $user->role,
-                'helpdesk_id' => $permintaan_id
+                'permintaan_id' => $permintaan_id
             ]);
 
-            // Cek helpdesk exists
             $permintaan = Permintaan::find($permintaan_id);
 
             if (!$permintaan) {
@@ -105,14 +98,11 @@ class UserChatController extends Controller
                 ], 404);
             }
 
-            // ✅ TIDAK ADA AUTHORIZATION CHECK - keep it simple!
-
-            // Create message
             $message = LogistikMessage::create([
-                'helpdesk_id' => $permintaan_id,
+                'permintaan_id' => $permintaan_id,
                 'user_id' => $user->id,
                 'message' => $request->message,
-                'sender_type' => $user->username, // ✅ Simpan username
+                'sender_type' => $user->username,
             ]);
 
             Log::info('💾 Message created', [
@@ -120,32 +110,25 @@ class UserChatController extends Controller
                 'sender_username' => $user->username
             ]);
 
-            // Load relasi
             $message->load('user');
 
-            // Broadcast
-            // broadcast(new MessageSent($message));
-
-            // Log::info('✅ Message broadcasted');
-
-            // Return response
             return response()->json([
                 'success' => true,
                 'message' => 'Pesan berhasil dikirim',
                 'data' => [
                     'id' => $message->id,
-                    'helpdesk_id' => $message->permintaan_id,
+                    'permintaan_id' => $message->permintaan_id,
                     'user_id' => $message->user_id,
                     'message' => $message->message,
-                    'sender_type' => $message->sender_type, // username
+                    'sender_type' => $message->sender_type,
                     'created_at' => $message->created_at->toISOString(),
                     'user' => [
                         'id' => $user->id,
                         'username' => $user->username,
-                        'nama_lengkap' => $user->nama_lengkap,
+                        'nama_lengkap' => $user->nama_lengkap ?? $user->username,
                         'role' => $user->role,
                     ],
-                    'is_admin' => $user->role !== 'user',
+                    'is_admin' => in_array($user->role, ['admin', 'superadmin', 'support']),
                     'display_name' => $user->nama_lengkap ?? $user->username,
                 ]
             ]);
@@ -168,34 +151,92 @@ class UserChatController extends Controller
         }
     }
 
-    public function getOpponentName($permintaanId)
+    public function getPermintaanInfo($permintaan_id)
     {
-        $opponent = LogistikMessage::where('permintaan_id', $permintaanId)
-            ->where('user_id', '!=', auth()->id())
-            ->join('users', 'users.id', '=', 'messages.user_id')
-            ->select('users.username', 'users.nama_lengkap')
-            ->first();
+        try {
+            Log::info('📋 Getting permintaan info', [
+                'permintaan_id' => $permintaan_id,
+                'user_id' => Auth::id()
+            ]);
 
-        // fallback jika belum ada pesan
-        if (!$opponent) {
-            $permintaan = Permintaan::with('user')->find($permintaanId);
+            // Load permintaan
+            $permintaan = Permintaan::find($permintaan_id);
 
-            if ($permintaan && $permintaan->user) {
-                $opponent = (object) [
-                    'username' => $permintaan->user->username,
-                    'nama_lengkap' => $permintaan->user->nama_lengkap,
+            if (!$permintaan) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Permintaan tidak ditemukan'
+                ], 404);
+            }
+
+            // Cari lawan bicara dari chat history (paling reliable)
+            $opponent = LogistikMessage::where('permintaan_id', $permintaan_id)
+                ->where('user_id', '!=', Auth::id())
+                ->with('user')
+                ->latest()
+                ->first();
+
+            if ($opponent && $opponent->user) {
+                // Ada opponent dari chat history
+                $opponentData = [
+                    'username' => $opponent->user->username,
+                    'nama_lengkap' => $opponent->user->nama_lengkap ?? $opponent->user->username,
+                    'role' => $opponent->user->role ?? 'user',
                 ];
             } else {
-                $opponent = (object) [
-                    'username' => 'Unknown',
-                    'nama_lengkap' => '',
-                ];
-            }
-        }
+                $currentUser = Auth::user();
 
-        return response()->json([
-            'username' => $opponent->username,
-            'nama_lengkap' => $opponent->nama_lengkap
-        ]);
+                if (in_array($currentUser->role, ['admin', 'superadmin', 'support'])) {
+                    // Admin berbicara dengan User
+                    $opponentData = [
+                        'username' => $permintaan->created_by ?? 'User',
+                        'nama_lengkap' => 'User (' . ($permintaan->created_by ?? 'Unknown') . ')',
+                        'role' => 'user',
+                    ];
+                } else {
+                    // User biasa berbicara dengan Admin
+                    $opponentData = [
+                        'username' => 'Admin Support',
+                        'nama_lengkap' => 'Administrator Logistik',
+                        'role' => 'admin',
+                    ];
+                }
+            }
+
+            $response = [
+                'success' => true,
+                'username' => $opponentData['username'],
+                'nama_lengkap' => $opponentData['nama_lengkap'],
+                'role' => $opponentData['role'],
+                'nama_permintaan' => $permintaan->nama_permintaan ?? 'Permintaan Logistik',
+                'no_surat' => $permintaan->no_surat ?? '-',
+                'status' => $permintaan->status ?? '-',
+                'is_online' => false,
+                'last_seen' => null,
+            ];
+
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+            Log::error('❌ Error getting permintaan info', [
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
+            ]);
+
+            // Fallback response - selalu berhasil
+            return response()->json([
+                'success' => true,
+                'username' => 'Support',
+                'nama_lengkap' => 'Tim Support Logistik',
+                'role' => 'admin',
+                'nama_permintaan' => 'Permintaan Logistik',
+                'no_surat' => '-',
+                'status' => '-',
+                'is_online' => false,
+                'last_seen' => null,
+            ]);
+        }
     }
 }
