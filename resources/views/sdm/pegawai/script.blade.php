@@ -199,6 +199,13 @@
             dropdownParent: $("#modal-pegawai")
         });
 
+        // unit
+        InitSelect2($("select[name='id_unit']"), {
+            url: "{{ route('get-select-unit') }}",
+            dropdownParent: $("#modal-pegawai")
+        });
+
+        // fungsi
         InitSelect2($("select[name='id_sub_fungsi']"), {
             url: "{{ route('get-select-fungsi') }}",
             dropdownParent: $("#modal-pegawai")
@@ -1195,6 +1202,14 @@
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_sub_fungsi,
                 initialText: row.nama_fungsi
+            });
+
+            // unit
+            InitSelect2($("select[name='id_unit']"), {
+                url: "{{ route('get-select-unit') }}",
+                dropdownParent: $("#modal-pegawai"),
+                initialValue: row.id_unit,
+                initialText: row.nama_unit
             });
 
             // BANKING INFO

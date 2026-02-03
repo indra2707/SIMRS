@@ -510,6 +510,14 @@
                                             placeholder="Tanggal Akhir Kontrak" data-language="en">
                                     </div>
 
+                                    <!-- Unit -->
+                                    <label for="id_unit" class="col-form-label col-sm-2">Unit</label>
+                                    <div class="col-md-10">
+                                        <select class="form-select select2" name="id_unit"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                        </select>
+                                    </div>
+
                                     <div class="f1-buttons">
                                         <button class="btn btn-primary btn-previous" type="button">Previous</button>
                                         <button class="btn btn-primary btn-next" type="button">Next</button>

@@ -218,7 +218,8 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @if (in_array('Helpdesk.Approval', $aksesMenu))
-                                    <li><a href="{{ route('admin.helpdesk') }}">Approval <label class="badge badge-light-secondary" id="count-approval"> 0</label> </a></li>
+                                    <li><a href="{{ route('admin.helpdesk') }}">Approval <label
+                                                class="badge badge-light-secondary" id="count-approval"> 0</label> </a></li>
                                 @endif
                                 @if (in_array('Helpdesk.List', $aksesMenu))
                                     <li><a href="{{ route('user.helpdesk') }}">List</a></li>
@@ -264,29 +265,49 @@
                         </li>
                     @endif
 
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('logistik.permintaan') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
-                                </use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
-                                </use>
-                            </svg><span>Info Permintaan Logistik</span></a>
-                    </li>
+                    @if (
+                            in_array('Permintaan', $aksesMenu) ||
+                            in_array('Tembusan', $aksesMenu) ||
+                            in_array('Disposisi', $aksesMenu)
+                        )
+                        <!-- Logistik -->
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                            <a class="sidebar-link sidebar-title" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
+                                </svg>
+                                <span>Logistik</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                @if (in_array('Permintaan', $aksesMenu))
+                                    <li><a href="{{ route('logistik.permintaan') }}">Data Permintaan</a></li>
+                                @endif
+                                @if (in_array('Tembusan', $aksesMenu))
+                                    <li><a href="{{ route('logistik.tembusan') }}">Data Tembusan</a></li>
+                                @endif
+                                @if (in_array('Disposisi', $aksesMenu))
+                                    <li><a href="#">Data Disposisi</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
 
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('sdm.gaji.user') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
-                                </use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
-                                </use>
-                            </svg><span>Slip Gaji</span></a>
-                    </li>
+                    @if (in_array('Gaji', $aksesMenu))
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                class="sidebar-link sidebar-title link-nav" href="{{ route('sdm.gaji.user') }}">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
+                                    </use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
+                                    </use>
+                                </svg><span>Slip Gaji</span></a>
+                        </li>
+                    @endif
 
                     {{-- Tarif --}}
                     @if (Session::get('username') == 'superadmin')
