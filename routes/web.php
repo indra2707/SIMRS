@@ -16,6 +16,7 @@ use App\Http\Controllers\Sdm\GajiUserController;
 
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\Logistik\TembusanController;
+use App\Http\Controllers\Logistik\DisposisiController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
@@ -401,6 +402,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Tembusan
         Route::get('/tembusan', [TembusanController::class, 'index'])->name('logistik.tembusan');
         Route::get('/tembusan/view', [TembusanController::class, 'views'])->name('logistik.tembusan.view');
+
+        // Disposisi
+        Route::get('/disposisi', [DisposisiController::class, 'index'])->name('logistik.disposisi');
+        Route::get('/disposisi/view', [DisposisiController::class, 'views'])->name('logistik.disposisi.view');
     });
 
     // Tarif

@@ -289,7 +289,7 @@
                                     <li><a href="{{ route('logistik.tembusan') }}">Data Tembusan</a></li>
                                 @endif
                                 @if (in_array('Disposisi', $aksesMenu))
-                                    <li><a href="#">Data Disposisi</a></li>
+                                    <li><a href="{{ route('logistik.disposisi') }}">Data Disposisi</a></li>
                                 @endif
                             </ul>
                         </li>
