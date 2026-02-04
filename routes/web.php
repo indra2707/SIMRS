@@ -11,6 +11,8 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
+use App\Http\Controllers\Sdm\Rincian_spdsController;
+use App\Http\Controllers\Sdm\SpdsController;
 
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\Logistik\TembusanController;
@@ -18,37 +20,31 @@ use App\Http\Controllers\Logistik\DisposisiController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
+use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\User\UserspekerjaController;
 
 use App\Http\Controllers\Tarif\SKTarifController;
-use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\Tarif\HargaTindakanController;
+use App\Http\Controllers\Tarif\TarifTindakanController;
+
 use App\Http\Controllers\MasterData\CoaController;
 use App\Http\Controllers\MasterData\AsetController;
-
 use App\http\Controllers\MasterData\BankController;
 use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\KotaController;
-
 use App\Http\Controllers\MasterData\PoliController;
 use App\Http\Controllers\MasterData\UnitController;
 use App\Http\Controllers\MasterData\BiayaController;
-
 use App\Http\Controllers\MasterData\Icd10Controller;
-use App\Http\Controllers\Sdm\Rincian_spdsController;
-use App\Http\Controllers\Sdm\SpdsController;
 use App\http\Controllers\MasterData\FungsiController;
-
 use App\Http\Controllers\MasterData\LokasiController;
 use App\Http\Controllers\MasterData\MutasiController;
 use App\Http\Controllers\MasterData\PasienController;
-use App\Http\Controllers\User\UserspekerjaController;
 use App\http\Controllers\MasterData\AccountController;
 use App\http\Controllers\MasterData\JabatanController;
-
 use App\Http\Controllers\MasterData\PetugasController;
 use App\Http\Controllers\MasterData\CustomerController;
 use App\Http\Controllers\MasterData\PenjaminController;
-use App\Http\Controllers\Tarif\HargaTindakanController;
-use App\Http\Controllers\Tarif\TarifTindakanController;
 use App\Http\Controllers\MasterData\KalibrasiController;
 use App\Http\Controllers\MasterData\Poli_obatController;
 use App\Http\Controllers\MasterData\SpesialisController;
