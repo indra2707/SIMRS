@@ -131,6 +131,128 @@
         });
     });
 
+
+    window.eventsPermintaan = {
+        'click .btn-chat': function(e, value, row, index) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            console.log('🎯 Chat clicked via window.events:', {
+                row: row,
+                id: row.id,
+                index: index
+            });
+
+            var permintaanId = row.id;
+
+            if (!permintaanId) {
+                console.error('❌ ID tidak ada di row data:', row);
+                alert('ID Permintaan tidak valid');
+                return;
+            }
+
+            currentPermintaanId = permintaanId;
+            console.log('✅ Opening chat for permintaan:', permintaanId);
+
+            loadChatOpponent(permintaanId);
+            loadTicketInfo(permintaanId);
+            loadChatMessages(permintaanId);
+
+            startChatRefresh();
+
+            $('#chatModal').modal('show');
+        },
+
+        'click .btn-edit': function(e, value, row, index) {
+            e.preventDefault();
+            console.log('✏️ Edit clicked for ID:', row.id);
+
+            $('#modal-permintaan').modal('show');
+            $('.modal-title').text('Form Edit Permintaan');
+            $('input[name="id"]').val(row.id);
+            $('input[name="no_surat"]').val(row.no_surat);
+            $('input[name="no_agenda"]').val(row.no_agenda);
+            $('input[name="tanggal"]').val(row.tanggal);
+            $('select[name="status"]').val(row.status).trigger('change');
+            $('input[name="nama_permintaan"]').val(row.nama_permintaan);
+            $('textarea[name="catatan"]').val(row.catatan);
+            $('input[name="tgl"]').val(row.tgl);
+
+            let selectedUnits = row.id_unit || [];
+            if (typeof selectedUnits === 'string') {
+                try {
+                    selectedUnits = JSON.parse(selectedUnits);
+                } catch (e) {
+                    selectedUnits = [];
+                }
+            }
+            selectedUnits = selectedUnits.map(id => parseInt(id));
+
+            let selectedTembusan = row.tembusan || [];
+            if (typeof selectedTembusan === 'string') {
+                try {
+                    selectedTembusan = JSON.parse(selectedTembusan);
+                } catch (e) {
+                    selectedTembusan = [];
+                }
+            }
+
+            $('.tembusan-checkbox').prop('checked', false);
+
+            if (Array.isArray(selectedTembusan) && selectedTembusan.length > 0) {
+                selectedTembusan.forEach(function(value) {
+                    $('input.tembusan-checkbox[value="' + value + '"]').prop('checked', true);
+                });
+            }
+
+            loadMultipleSelect($("select[name='id_unit[]']"), selectedUnits);
+        },
+
+        'click .btn-delete': function(e, value, row, index) {
+            e.preventDefault();
+
+            console.log('🗑️ Delete clicked for ID:', row.id);
+
+            var url = "{{ route('logistik.permintaan.delete', ':id') }}";
+            url = url.replace(':id', row.id);
+
+            Swal.fire({
+                icon: 'warning',
+                title: 'Peringatan',
+                text: 'Anda yakin ingin menghapus data ini?',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            no_surat: row.no_surat
+                        },
+                        success: function(res, status, xhr) {
+                            if (xhr.status == 200 && res.success == true) {
+                                Alert('success', res.message);
+                            } else {
+                                Alert('warning', res.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            Alert('error', 'Gagal menghapus data');
+                        }
+                    }).done(function() {
+                        $tablePermintaan.bootstrapTable('refresh');
+                    });
+                }
+            });
+        }
+    };
+
+
     $(function() {
         initTable();
     });
@@ -167,6 +289,12 @@
                         formatter: function(value, row, index) {
                             return index + 1
                         }
+                    },
+                    {
+                        field: 'id',
+                        title: 'ID',
+                        visible: false,
+                        sortable: true,
                     },
                     {
                         field: 'no_agenda',
@@ -242,15 +370,22 @@
     }
 
     function actionsFunctionPermintaan(value, row, index) {
+
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">',
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end">',
-            `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-permintaan-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+            `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-permintaan-id="${row.id}">`,
+            '<i class="fa fa-comment text-primary"></i> Chat',
+            '</a>',
+            '<a class="dropdown-item btn-edit" href="javascript:void(0)">',
+            '<i class="fa fa-edit text-primary"></i> Edit',
+            '</a>',
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)">',
+            '<i class="fa fa-trash text-danger"></i> Hapus',
+            '</a>',
             '</div>',
             '</div>',
         ].join("");
@@ -466,119 +601,182 @@
 
 
 <script>
+    // ========================================
+    // CHAT NON-REALTIME UNTUK PERMINTAAN LOGISTIK
+    // ========================================
+
     $(document).ready(function() {
-        var currentpermintaanId = null;
-        var chatChannel = null;
+        var currentPermintaanId = null;
+        var chatRefreshInterval = null; // Untuk auto-refresh pesan
 
         // ✅ Get current user info
         var currentUserId = parseInt("{{ auth()->user()->id }}");
         var currentUsername = "{{ auth()->user()->username }}";
 
-        console.log('🟢 User Chat Initialized', {
+        console.log('🟢 User Chat Initialized (Non-Realtime)', {
             userId: currentUserId,
             username: currentUsername
         });
 
-        // ========== OPEN CHAT MODAL ==========
-        $(document).on('click', '.btn-chat', function() {
-            var permintaanId = $(this).data('permintaan-id');
+        $(document).on('click', '.btn-chat', function(e) {
+            e.preventDefault();
+            e.stopPropagation(); // ✅ Cegah event bubbling
+
+            // Coba berbagai cara mendapatkan ID
+            var permintaanId = $(this).data('permintaan-id') ||
+                $(this).attr('data-permintaan-id') ||
+                $(this).closest('tr').data('uniqueid');
+
+            console.log('🔍 Debug Chat Button:', {
+                'data()': $(this).data('permintaan-id'),
+                'attr()': $(this).attr('data-permintaan-id'),
+                'closest tr': $(this).closest('tr').data('uniqueid'),
+                'final ID': permintaanId,
+                'element': this,
+                'all data': $(this).data()
+            });
+
             if (!permintaanId) {
-                console.error('permintaan ID tidak ditemukan');
+                console.error('❌ Permintaan ID tidak ditemukan!');
+
+                // Fallback: cari dari row table
+                var $row = $(this).closest('tr');
+                var rowIndex = $row.data('index');
+
+                if (typeof rowIndex !== 'undefined') {
+                    var rowData = $tablePermintaan.bootstrapTable('getData')[rowIndex];
+                    permintaanId = rowData?.id;
+                    console.log('🔄 Fallback: ID dari row data:', permintaanId);
+                }
+            }
+
+            if (!permintaanId) {
+                alert('❌ ID Permintaan tidak ditemukan. Silakan refresh halaman dan coba lagi.');
                 return;
             }
-            currentpermintaanId = permintaanId;
 
-            currentpermintaanId = permintaanId;
-            console.log('📂 Opening chat for ticket:', permintaanId);
+            currentPermintaanId = permintaanId;
+            console.log('✅ Opening chat for permintaan ID:', permintaanId);
+
             loadChatOpponent(permintaanId);
             loadTicketInfo(permintaanId);
             loadChatMessages(permintaanId);
-            initChatChannel(permintaanId);
+
+            startChatRefresh();
 
             $('#chatModal').modal('show');
         });
 
+        // ========== AUTO REFRESH CHAT (NON-REALTIME) ==========
+        function startChatRefresh() {
+            // Clear interval sebelumnya jika ada
+            if (chatRefreshInterval) {
+                clearInterval(chatRefreshInterval);
+            }
+            console.log('🔄 Auto-refresh started (every 5 seconds)');
+            // Refresh pesan setiap 5 detik
+            chatRefreshInterval = setInterval(function() {
+                if (currentPermintaanId && $('#chatModal').hasClass('show')) {
+                    loadChatMessages(currentPermintaanId, true); // true = silent refresh
+                }
+            }, 5000); // 5 detik
+        }
+
+        function stopChatRefresh() {
+            if (chatRefreshInterval) {
+                clearInterval(chatRefreshInterval);
+                chatRefreshInterval = null;
+            }
+        }
+
         // ========== LOAD TICKET INFO ==========
         function loadTicketInfo(permintaanId) {
-            // Load dari Bootstrap Table
             var rowData = $('#table_permintaan').bootstrapTable('getRowByUniqueId', permintaanId);
 
             if (rowData) {
                 $('#ticket-id').text('#' + rowData.id);
-                $('#ticket-department').text(rowData.department || '-');
-                $('#ticket-description').text(rowData.keterangan || '-');
+                $('#ticket-department').text(rowData.unit || '-');
+                $('#ticket-description').text(rowData.nama_permintaan || '-');
 
-                // Format status badge
                 var statusBadge = '';
                 switch (rowData.status) {
-                    case 'accept':
-                        statusBadge = '<span class="badge bg-primary">Accepted</span>';
+                    case 'Pengajuan Panjar':
+                        statusBadge = '<span class="badge bg-primary">Pengajuan Panjar</span>';
                         break;
-                    case 'on-progress':
-                        statusBadge = '<span class="badge bg-warning">In Progress</span>';
+                    case 'Pengadaan':
+                        statusBadge = '<span class="badge bg-warning">Pengadaan</span>';
                         break;
-                    case 'done':
-                        statusBadge = '<span class="badge bg-success">Completed</span>';
+                    case 'Serah Terima':
+                        statusBadge = '<span class="badge bg-info">Serah Terima</span>';
+                        break;
+                    case 'Selesai':
+                        statusBadge = '<span class="badge bg-success">Selesai</span>';
                         break;
                     default:
-                        statusBadge = '<span class="badge bg-secondary">Pending</span>';
+                        statusBadge = '<span class="badge bg-secondary">-</span>';
                 }
                 $('#ticket-status').html(statusBadge);
 
-                // Format date
-                if (rowData.created_at) {
-                    var date = new Date(rowData.created_at);
-                    $('#ticket-created').text(date.toLocaleString('id-ID'));
+                if (rowData.tgl) {
+                    $('#ticket-created').text(rowData.tgl);
                 }
             }
         }
 
-
-        // Toggle emoji picker
+        // ========== EMOJI PICKER ==========
         $(document).on('click', '#emoji-btn', function() {
             const picker = document.getElementById('emoji-picker');
             picker.style.display = picker.style.display === 'none' ? 'block' : 'none';
         });
 
-        // Tunggu picker siap baru attach event
         customElements.whenDefined('emoji-picker').then(() => {
             const picker = document.getElementById('emoji-picker');
             picker.addEventListener('emoji-click', event => {
                 const emoji = event.detail.unicode;
                 const input = document.getElementById('input-box');
-
                 const start = input.selectionStart;
                 const end = input.selectionEnd;
                 const text = input.value;
                 input.value = text.substring(0, start) + emoji + text.substring(end);
-
                 input.focus();
                 const newPos = start + emoji.length;
                 input.setSelectionRange(newPos, newPos);
-
                 picker.style.display = 'none';
             });
         });
 
-
         // ========== LOAD CHAT MESSAGES ==========
-        function loadChatMessages(permintaanId) {
+        function loadChatMessages(permintaanId, silentRefresh = false) {
             $.ajax({
-                url: '/user/chat/' + permintaanId,
+                url: '/logistik/chat/' + permintaanId,
                 type: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
                 success: function(messages) {
-                    console.log('✅ Messages loaded:', messages.length, 'messages');
+                    if (!silentRefresh) {
+                        console.log('✅ Messages loaded:', messages.length, 'messages');
+                    }
+
+                    // Simpan posisi scroll sebelum update
+                    var chatBox = $('.chat-history');
+                    var wasAtBottom = chatBox[0].scrollHeight - chatBox.scrollTop() <= chatBox
+                        .outerHeight() + 50;
+
                     renderMessages(messages);
-                    scrollToBottom();
+
+                    // Scroll ke bawah hanya jika sebelumnya sudah di bawah atau bukan silent refresh
+                    if (!silentRefresh || wasAtBottom) {
+                        scrollToBottom();
+                    }
                 },
                 error: function(xhr) {
-                    console.error('❌ Failed to load messages:', xhr);
-                    $('.chat-history ul').html(
-                        '<li class="text-center text-danger py-4">Failed to load messages</li>'
-                    );
+                    if (!silentRefresh) {
+                        console.error('❌ Failed to load messages:', xhr);
+                        $('.chat-history ul').html(
+                            '<li class="text-center text-danger py-4">Gagal memuat pesan</li>'
+                        );
+                    }
                 }
             });
         }
@@ -603,9 +801,7 @@
             var messageUserId = parseInt(msg.user_id);
             var isMe = messageUserId === currentUserId;
 
-            // Get sender info
             var senderName = msg.display_name ||
-                // (msg.user && msg.user.nama_lengkap) ||
                 (msg.user && msg.user.username) ||
                 msg.sender_type || 'Support';
 
@@ -616,7 +812,6 @@
                 minute: '2-digit'
             });
 
-            // Pastikan isi pesan di-escape dan newline diganti <br>
             var messageContent = escapeHtml(msg.message || '').replace(/\n/g, '<br>');
 
             var html = '';
@@ -645,14 +840,14 @@
                 </li>
             `;
             } else if (isAdmin) {
-                // PESAN ADMIN (kiri - hijau sama seperti punya kamu)
+                // PESAN ADMIN (kiri - abu-abu)
                 html = `
                 <li class="clearfix" data-message-id="${msg.id}">
                     <div style="
-                        background-color: #DCF8C6;
+                        background-color: #FFFFFF;
                         color: #000;
                         padding: 10px 14px;
-                        border-radius: 18px 18px 18px 7px;
+                        border-radius: 7px 18px 18px 18px;
                         max-width: 75%;
                         float: left;
                         clear: both;
@@ -662,6 +857,7 @@
                         line-height: 1.45;
                         position: relative;
                     ">
+                        <div style="font-weight: 600; color: #0d6efd; font-size: 13px; margin-bottom: 4px;">${senderName}</div>
                         <div style="word-wrap: break-word; margin-bottom: 12px;">${messageContent}</div>
                         <span style="font-size: 11px; color: #888; position: absolute; bottom: 6px; right: 12px;">${time}</span>
                     </div>
@@ -671,19 +867,18 @@
                 // PESAN DARI USER LAIN (kiri - abu-abu)
                 html = `
                 <li class="clearfix" data-message-id="${msg.id}">
-                    <div class="message other-message" style="
+                    <div style="
                         background-color: #f1f1f1;
                         color: #333;
                         padding: 10px 15px;
                         border-radius: 15px;
-                        display: inline-block;
                         max-width: 75%;
                         float: left;
                         clear: both;
                         margin-bottom: 10px;
                     ">
                         <div class="message-data mb-1">
-                            <span class="message-data-time" style="color: #999; font-size: 11px;">
+                            <span style="color: #999; font-size: 11px;">
                                 ${senderName} • ${time}
                             </span>
                         </div>
@@ -696,43 +891,45 @@
             return html;
         }
 
-        // ========== LOAD INFO LAWAN CHAT (ADMIN/SUPPORT) ==========
+        // ========== LOAD CHAT OPPONENT INFO ==========
         function loadChatOpponent(permintaanId) {
             $.ajax({
-                url: '/user/permintaan/' + permintaanId + '/info',
+                url: '/logistik/permintaan/' + permintaanId + '/info',
                 type: 'GET',
                 success: function(data) {
                     console.log('📋 Chat opponent data:', data);
 
                     if (data.success) {
-                        // Update nama lengkap
-                        // $('#nama_lengkap').text(data.nama_lengkap || 'Support Team');
+                        $('#chatOpponentUsername').text(data.username ? '@' + data.username : '');
+                        $('.modal-title').text('Chat - ' + (data.nama_permintaan ||
+                            'Permintaan Logistik'));
 
-                        // Update username
-                        $('#chatOpponentUsername').text(data.username ? '' + data.username : '');
-
-                        // Update judul modal
-                        $('.modal-title').text('Chat - ' + (data.judul_laporan || 'Support'));
-
-                        // Update last seen dengan status
                         if (data.is_online) {
-                            updateLastSeen('online');
+                            $('#lastSeen').html('<span class="text-success">● Online</span>');
                         } else if (data.last_seen) {
-                            updateLastSeen(null, data.last_seen);
+                            var lastSeenDate = new Date(data.last_seen);
+                            var now = new Date();
+                            var diff = Math.floor((now - lastSeenDate) / 1000 / 60);
+
+                            if (diff < 1) {
+                                $('#lastSeen').text('Baru saja aktif');
+                            } else if (diff < 60) {
+                                $('#lastSeen').text(diff + ' menit yang lalu');
+                            } else {
+                                $('#lastSeen').text(lastSeenDate.toLocaleString('id-ID'));
+                            }
                         } else {
-                            updateLastSeen();
+                            $('#lastSeen').text('Offline');
                         }
 
-                        // Update role badge jika ada
                         if (data.role && data.role !== 'user') {
                             updateAdminRoleBadge(data.role);
                         }
                     }
                 },
                 error: function() {
-                    // $('#nama_lengkap').text('Support Team');
                     $('#chatOpponentUsername').text('');
-                    updateLastSeen(); // Tampilkan offline
+                    $('#lastSeen').text('Offline');
                 }
             });
         }
@@ -745,49 +942,23 @@
                 return;
             }
 
-            // Reset class
-            badge.removeClass('bg-danger bg-primary bg-success bg-warning bg-info');
+            badge.removeClass('bg-danger bg-primary bg-success bg-warning bg-info bg-secondary');
 
-            // Set warna dan text berdasarkan role
             switch (role.toLowerCase()) {
                 case 'superadmin':
-                    badge.addClass('bg-danger');
-                    badge.text('Super Admin');
+                    badge.addClass('bg-danger').text('Super Admin');
                     break;
                 case 'admin':
-                    badge.addClass('bg-primary');
-                    badge.text('Admin');
+                    badge.addClass('bg-primary').text('Admin');
                     break;
                 case 'support':
-                    badge.addClass('bg-success');
-                    badge.text('Support');
-                    break;
-                case 'it':
-                    badge.addClass('bg-info');
-                    badge.text('IT');
-                    break;
-                case 'medis':
-                    badge.addClass('bg-warning');
-                    badge.text('Medis');
-                    break;
-                case 'teknik':
-                    badge.addClass('bg-secondary');
-                    badge.text('Teknik');
+                    badge.addClass('bg-success').text('Support');
                     break;
                 default:
-                    badge.addClass('bg-secondary');
-                    badge.text(role.toUpperCase());
+                    badge.addClass('bg-secondary').text(role.toUpperCase());
             }
 
-            badge.show(); // Tampilkan badge
-        }
-
-        // ✅ Function untuk set default info
-        function setDefaultChatInfo() {
-            // $('#nama_lengkap').text('Support Team');
-            $('#chatOpponentUsername').text('');
-            $('#admin-role-badge').hide();
-            // $('#lastSeen').text('Offline');
+            badge.show();
         }
 
         // ========== ESCAPE HTML ==========
@@ -823,7 +994,7 @@
                 return;
             }
 
-            if (!currentpermintaanId) {
+            if (!currentPermintaanId) {
                 console.error('❌ No permintaan ID set');
                 alert('ID permintaan tidak valid');
                 return;
@@ -832,7 +1003,7 @@
             console.log('📤 Sending message:', message);
 
             $.ajax({
-                url: '/user/chat/' + currentpermintaanId + '/send',
+                url: '/logistik/chat/' + currentPermintaanId + '/send',
                 type: 'POST',
                 data: {
                     message: message,
@@ -845,15 +1016,17 @@
                     console.log('✅ Message sent:', response);
 
                     if (response.success) {
-                        $('#input-box').val(''); // Clear input
+                        $('#input-box').val('');
 
-                        // Append message to UI
-                        if (response.data) {
-                            appendMessage(response.data);
-                        } else {
-                            console.warn('⚠️ No data in response, reloading...');
-                            loadChatMessages(currentpermintaanId);
-                        }
+                        // Reset textarea height
+                        var inputBox = document.getElementById('input-box');
+                        inputBox.style.height = 'auto';
+
+                        // Reload semua pesan untuk memastikan sinkronisasi
+                        loadChatMessages(currentPermintaanId);
+
+                        // Play sound
+                        playNotificationSound();
                     } else {
                         alert(response.message || 'Gagal mengirim pesan');
                     }
@@ -880,26 +1053,6 @@
             });
         }
 
-        // ========== APPEND MESSAGE ==========
-        function appendMessage(message) {
-            // Check duplicate
-            if ($('.chat-history ul li[data-message-id="' + message.id + '"]').length > 0) {
-                console.log('⚠️ Message already exists');
-                return;
-            }
-
-            console.log('📝 Appending message:', message.id);
-
-            var html = renderSingleMessage(message);
-            $('.chat-history ul').append(html);
-            scrollToBottom();
-
-            // Play sound if from admin
-            if (message.is_admin) {
-                playNotificationSound();
-            }
-        }
-
         // ========== SCROLL TO BOTTOM ==========
         function scrollToBottom() {
             setTimeout(function() {
@@ -912,45 +1065,14 @@
             }, 100);
         }
 
-        // ========== INITIALIZE ECHO CHANNEL ==========
-        function initChatChannel(permintaanId) {
-            // Leave previous channel
-            if (chatChannel) {
-                console.log('⬅️ Leaving channel:', chatChannel);
-                window.Echo.leave(chatChannel);
-            }
-
-            chatChannel = 'chat.' + permintaanId;
-            console.log('🟢 USER JOINING CHANNEL:', chatChannel);
-
-            // Subscribe to channel
-            window.Echo.channel(chatChannel)
-                .listen('.MessageSent', function(e) {
-                    console.log('🔔 NEW MESSAGE RECEIVED:', e);
-
-                    if (e.message) {
-                        appendMessage(e.message);
-
-                        // Update status indicator if from admin
-                        if (e.message.is_admin) {
-                            $('#support-status').html('<span class="text-success">● Active</span>');
-                        }
-                    }
-                });
-
-            console.log('✅ Echo channel initialized');
-        }
-
         // ========== CLEAN UP ON MODAL CLOSE ==========
         $('#chatModal').on('hidden.bs.modal', function() {
             console.log('❌ Chat modal closed');
 
-            if (chatChannel) {
-                window.Echo.leave(chatChannel);
-                chatChannel = null;
-            }
+            // Stop auto-refresh
+            stopChatRefresh();
 
-            currentpermintaanId = null;
+            currentPermintaanId = null;
             $('.chat-history ul').html('');
             $('#input-box').val('');
         });
@@ -968,12 +1090,12 @@
                 console.log('🔇 Audio error:', e);
             }
         }
+
+        // ========== AUTO RESIZE TEXTAREA ==========
         const inputBox = document.getElementById('input-box');
         const chatHistory = document.querySelector('.chat-history');
 
         if (inputBox && chatHistory) {
-
-            // Function untuk adjust chat history height
             function adjustChatHeight() {
                 const inputHeight = inputBox.scrollHeight;
                 const modalBody = document.querySelector('#chatModal .modal-body');
@@ -984,21 +1106,16 @@
                     const modalHeight = modalBody.offsetHeight;
                     const headerHeight = chatHeader.offsetHeight;
                     const messageHeight = chatMessage.offsetHeight;
-
-                    // Calculate available height untuk chat history
                     const availableHeight = modalHeight - headerHeight - messageHeight;
-                    // 40px buffer
 
                     chatHistory.style.maxHeight = availableHeight + 'px';
 
-                    // Auto scroll ke bawah
                     setTimeout(() => {
                         chatHistory.scrollTop = chatHistory.scrollHeight;
                     }, 50);
                 }
             }
 
-            // Auto-resize textarea DENGAN adjust chat height
             inputBox.addEventListener('input', function() {
                 this.style.height = 'auto';
                 this.style.height = this.scrollHeight + 'px';
@@ -1010,11 +1127,9 @@
                     this.style.overflowY = 'hidden';
                 }
 
-                // KUNCI: Adjust chat height setiap kali textarea berubah
                 adjustChatHeight();
             });
 
-            // Shift + Enter = baris baru, Enter = kirim
             inputBox.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -1022,60 +1137,16 @@
                 }
             });
 
-            // Adjust saat modal dibuka
             $('#chatModal').on('shown.bs.modal', function() {
                 adjustChatHeight();
                 inputBox.focus();
             });
 
-            // Adjust saat window resize
             $(window).on('resize', function() {
                 if ($('#chatModal').hasClass('show')) {
                     adjustChatHeight();
                 }
             });
-
-            // Override fungsi sendMessage yang sudah ada
-            const originalSendMessage = window.sendMessage || sendMessage;
-            window.sendMessage = function() {
-                const message = $('#input-box').val().trim();
-                if (!message) return;
-
-                $.ajax({
-                    url: '/admin/chat/' + currentpermintaanId + '/send',
-                    type: 'POST',
-                    data: {
-                        message: message,
-                        _token: "{{ csrf_token() }}"
-                    },
-                    beforeSend: function() {
-                        $('#send-chat-btn').prop('disabled', true);
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#input-box').val('');
-                            inputBox.style.height = '40px';
-                            inputBox.style.overflowY = 'hidden';
-
-                            if (response.data) {
-                                appendMessage(response.data);
-                            }
-
-                            // KUNCI: Adjust height setelah kirim
-                            adjustChatHeight();
-                        } else {
-                            alert(response.message || 'Gagal mengirim pesan');
-                        }
-                    },
-                    error: function() {
-                        alert('Gagal mengirim pesan');
-                    },
-                    complete: function() {
-                        $('#send-chat-btn').prop('disabled', false);
-                        inputBox.focus();
-                    }
-                });
-            };
         }
     });
 </script>

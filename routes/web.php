@@ -8,11 +8,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GlobalController;
 
-use App\Http\Controllers\Sdm\SpdsController;
-use App\Http\Controllers\Sdm\Rincian_spdsController;
-use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
+use App\Http\Controllers\Sdm\PegawaiController;
 
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\Logistik\TembusanController;
@@ -20,45 +18,50 @@ use App\Http\Controllers\Logistik\DisposisiController;
 
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
-use App\Http\Controllers\User\HelpDeskController;
-use App\Http\Controllers\User\UserspekerjaController;
 
 use App\Http\Controllers\Tarif\SKTarifController;
+use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\MasterData\CoaController;
+use App\Http\Controllers\MasterData\AsetController;
+
+use App\http\Controllers\MasterData\BankController;
+use App\Http\Controllers\MasterData\Icd9Controller;
+use App\Http\Controllers\MasterData\KotaController;
+
+use App\Http\Controllers\MasterData\PoliController;
+use App\Http\Controllers\MasterData\UnitController;
+use App\Http\Controllers\MasterData\BiayaController;
+
+use App\Http\Controllers\MasterData\Icd10Controller;
+use App\Http\Controllers\Sdm\Rincian_spdsController;
+use App\Http\Controllers\Sdm\SpdsController;
+use App\http\Controllers\MasterData\FungsiController;
+
+use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\MutasiController;
+use App\Http\Controllers\MasterData\PasienController;
+use App\Http\Controllers\User\UserspekerjaController;
+use App\http\Controllers\MasterData\AccountController;
+use App\http\Controllers\MasterData\JabatanController;
+
+use App\Http\Controllers\MasterData\PetugasController;
+use App\Http\Controllers\MasterData\CustomerController;
+use App\Http\Controllers\MasterData\PenjaminController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\Tarif\TarifTindakanController;
-
-use App\Http\Controllers\MasterData\CoaController;
+use App\Http\Controllers\MasterData\KalibrasiController;
+use App\Http\Controllers\MasterData\Poli_obatController;
+use App\Http\Controllers\MasterData\SpesialisController;
+use App\http\Controllers\MasterData\SKStrukturController;
+use App\Http\Controllers\MasterData\KondisiAsetController;
+use App\http\Controllers\MasterData\KelompokAsetController;
 use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 
-use App\Http\Controllers\MasterData\Icd9Controller;
-use App\Http\Controllers\MasterData\Poli_obatController;
-use App\Http\Controllers\MasterData\SpesialisController;
-
-use App\Http\Controllers\MasterData\PoliController;
-use App\Http\Controllers\MasterData\BiayaController;
-use App\Http\Controllers\MasterData\Icd10Controller;
-use App\Http\Controllers\MasterData\PasienController;
-use App\Http\Controllers\MasterData\PetugasController;
-use App\Http\Controllers\MasterData\CustomerController;
-
-use App\Http\Controllers\MasterData\LokasiController;
-use App\Http\Controllers\MasterData\UnitController;
-use App\Http\Controllers\MasterData\MutasiController;
-use App\Http\Controllers\MasterData\PenjaminController;
-use App\Http\Controllers\MasterData\KalibrasiController;
-use App\Http\Controllers\MasterData\KotaController;
-use App\Http\Controllers\MasterData\KondisiAsetController;
-use App\http\Controllers\MasterData\KelompokAsetController;
-use App\Http\Controllers\MasterData\AsetController;
-use App\http\Controllers\MasterData\BankController;
-use App\http\Controllers\MasterData\FungsiController;
-use App\http\Controllers\MasterData\SKStrukturController;
-use App\http\Controllers\MasterData\JabatanController;
-use App\http\Controllers\MasterData\AccountController;
-
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
+use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
+use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -389,7 +392,7 @@ Route::group(['middleware' => 'loggedin'], function () {
     });
 
     // Logistik
-    Route::prefix('logistik')->group(function () {
+    Route::prefix('logistik')->middleware('auth')->group(function () {
         // Permintaan
         Route::get('/permintaan', [PermintaanController::class, 'index'])->name('logistik.permintaan');
         Route::get('/permintaan/view', [PermintaanController::class, 'views'])->name('logistik.permintaan.view');
@@ -398,8 +401,27 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/permintaan/update-status/{id}', [PermintaanController::class, 'updateStatus'])->name('logistik.permintaan.update-status');
         Route::delete('/permintaan/delete/{id}', [PermintaanController::class, 'destroy'])->name('logistik.permintaan.delete');
         Route::get('/get-select-unit', [PermintaanController::class, 'getSelectUnit'])->name('get-select-unit');
+        // USER
+        Route::get('/chat/{permintaan_id}', [LogistikUserChatController::class, 'index'])
+            ->name('user.logistik.chat.index');
+        Route::post('/chat/{permintaan_id}/send', [LogistikUserChatController::class, 'send'])
+            ->name('user.logistik.chat.send');
+        Route::get('/permintaan/{permintaan_id}/info', [LogistikUserChatController::class, 'getPermintaanInfo'])
+            ->name('user.logistik.permintaan.info');
 
-        // Tembusan
+
+        // ADMIN
+        Route::get('/admin/chat/{permintaan_id}', [AdminChatController::class, 'index'])
+            ->name('admin.logistik.chat.index');
+
+        Route::post('/admin/chat/{permintaan_id}/send', [AdminChatController::class, 'send'])
+            ->name('admin.logistik.chat.send');
+
+        Route::get('/admin/permintaan/{permintaan_id}/user-info', [AdminChatController::class, 'getUserInfo'])
+            ->name('admin.logistik.permintaan.user-info');
+
+
+        // TEMBUSAN
         Route::get('/tembusan', [TembusanController::class, 'index'])->name('logistik.tembusan');
         Route::get('/tembusan/view', [TembusanController::class, 'views'])->name('logistik.tembusan.view');
 
