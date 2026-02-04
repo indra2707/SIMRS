@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Crypt;
 
 class AccountController extends Controller
 {
@@ -35,7 +34,7 @@ class AccountController extends Controller
         }
 
         return response()->json([
-           'nik' => Crypt::encryptString($pegawai->nik),
+            'nik' => substr($pegawai->nik, 0, 6) . '******' . substr($pegawai->nik, -4),
             'nama_pekerja' => $pegawai->nama_pekerja,
             'tanggal_lahir' => Carbon::parse($pegawai->tanggal_lahir)->format('d/m/Y'),
             'email' => $pegawai->email,
