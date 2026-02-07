@@ -52,36 +52,38 @@ class UsersController extends Controller
     // Simpan
     public function store(Request $request)
     {
+        $request->validate([
+            'id_pegawai' => 'required|unique:users,id_pegawai',
+            'username' => 'required|unique:users,username',
+        ], [
+            'id_pegawai.unique' => 'Pegawai sudah terdaftar.',
+            'username.unique' => 'Username sudah terdaftar.',
+        ]);
+
         $query = Users::create([
-            'id_pegawai'=> $request->id_pegawai,
-            'password'=> bcrypt($request->password),    
-            'username'=> $request->username,
-            'role'=> $request->role,
+            'id_pegawai' => $request->id_pegawai,
+            'password' => bcrypt($request->password),
+            'username' => $request->username,
+            'role' => $request->role,
             'status' => $request->status == 'on' ? 'aktif' : 'tidak aktif',
         ]);
-        if ($query) {
-            return response()->json([
-                'success' => true,
-                'data' => [],
-                'message' => 'Data Berhasil Ditambahkan.',
-            ], status: 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'data' => [],
-                'message' => 'Data Gagal Ditambahkan.',
-            ], status: 400);
-        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [],
+            'message' => 'Data Berhasil Ditambahkan.',
+        ], 200);
     }
+
 
     // Update
     public function update(Request $request, $id)
     {
         $query = Users::where('id', $id)->update([
-            'id_pegawai'=> $request->id_pegawai,
-            'password'=> bcrypt($request->password),    
-            'username'=> $request->username,
-            'role'=> $request->role,
+            'id_pegawai' => $request->id_pegawai,
+            'password' => bcrypt($request->password),
+            'username' => $request->username,
+            'role' => $request->role,
             'status' => $request->status == 'on' ? 'aktif' : 'tidak aktif',
         ]);
         if ($query) {

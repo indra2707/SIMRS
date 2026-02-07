@@ -70,38 +70,32 @@
                     data: $('.form-user').serialize(),
                     beforeSend: function () {
                         $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+                            '<span class="spinner-border spinner-border-sm"></span>'
                         ).attr('disabled', 'disabled');
                     },
                     complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert('success', res.message);
-                            $('#modal-user').modal('hide');
-                            $tableUser.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-check',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning',
-                                allow_dismiss: true,
-                                delay: 2000,
-                                showProgressbar: true,
-                                timer: 300,
-                                z_index: 1127,
-                                animate: {
-                                    enter: 'animated fadeInDown',
-                                    exit: 'animated fadeOutUp'
-                                },
-                            });
-                            form.classList.remove('was-validated');
-                        }
+
+                    success: function (res) {
+                        Alert('success', res.message);
+                        $('#modal-user').modal('hide');
+                        $tableUser.bootstrapTable('refresh');
                     },
+
+                    error: function (xhr) {
+                        if (xhr.status === 422) {
+                            let errors = xhr.responseJSON.errors;
+                            let message = Object.values(errors)
+                                .map(e => e[0])
+                                .join('<br>');
+
+                            Alert('warning', message);
+                        } else {
+                            Alert('error', 'Terjadi kesalahan pada server.');
+                        }
+                    }
                 });
             }
             form.classList.add('was-validated');
