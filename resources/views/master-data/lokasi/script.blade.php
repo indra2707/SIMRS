@@ -195,7 +195,7 @@
             $('input[name="id"]').val(row.id);
             $('input[name="nama"]').val(row.nama);
             $('input[name="status"]').prop('checked', row.status === '1');
-            $('select[name="lantai"]').val(row.lantai);
+            $('select[name="lantai"]').val(row.lantai).trigger('change');
 
             InitSelect2($("select[name='id_unit']"), {
                 url: "{{ route('get-select-unit') }}",
