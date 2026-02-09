@@ -293,7 +293,7 @@ class GlobalController extends Controller
         $data = [];
         foreach ($query as $key => $value) {
             $data[$key]['id'] = $value->id;
-            $data[$key]['text'] = $value->nama;
+            $data[$key]['text'] = $value->lantai . ' - ' . $value->nama;
         }
         return response()->json([
             'data' => $data
