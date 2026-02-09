@@ -1209,7 +1209,7 @@
                 url: "{{ route('get-select-unit') }}",
                 dropdownParent: $("#modal-pegawai"),
                 initialValue: row.id_unit,
-                initialText: row.nama_unit
+                initialText: row.id_unit
             });
 
             // BANKING INFO

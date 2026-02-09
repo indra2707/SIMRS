@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\HelpDesk;
+use Illuminate\Support\Facades\Session;
 use PHPUnit\TextUI\Help;
 use Illuminate\Http\Request;
 use App\Events\HelpdeskCreated;
@@ -32,7 +33,7 @@ class HelpDeskController extends Controller
     {
         $query = HelpDesk::query()
             ->join('users', 'users.id', '=', 'help_desk.user_id')
-            ->where('help_desk.user_id', auth()->id())
+            ->where('help_desk.id_unit', session('id_unit'))
             ->select(
                 'help_desk.*',
                 'help_desk.created_at as created_at',
@@ -100,6 +101,7 @@ class HelpDeskController extends Controller
         Log::info('Total files: ' . count($gambar));
         $helpdesk = HelpDesk::create([
             'user_id' => Auth::id(),
+            'id_unit' => session('id_unit'),
             // 'created_by' => Auth::user()->nama_lengkap ?? Auth::user()->username ?? 'Unknown',
             'tiket' => 'IHC-' . now()->format('YmdHis'),
             'judul_laporan' => $request->judul_laporan,

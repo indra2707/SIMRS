@@ -102,6 +102,7 @@ class PegawaiController extends Controller
 
                     // Function & Grade
                     'fungsi' => $value->fungsi ?? null,
+                    'id_unit' => $value->id_unit ?? null,
                     'nama_fungsi' => $value->nama_fungsi ?? '-',
                     'tmt_jabatan' => $value->tmt_jabatan ?? null,
                     'tmt_jabatan_formatted' => $value->tmt_jabatan ? Carbon::parse($value->tmt_jabatan)->format('d M Y') : null,

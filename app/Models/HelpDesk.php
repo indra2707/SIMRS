@@ -16,6 +16,7 @@ class HelpDesk extends Model
 
     protected $fillable = [
         'user_id',
+        'id_unit',
         'tiket',
         'judul_laporan',
         'kategori',
