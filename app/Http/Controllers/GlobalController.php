@@ -285,6 +285,7 @@ class GlobalController extends Controller
             ->where(function ($q) use ($request) {
                 $search = $request->search;
                 $q->where('nama', 'like', "%$search%");
+                $q->where('lantai', 'like', "%$search%");
                 // Tambah kolom lain jika dibutuhkan
             })
             ->limit(100)
