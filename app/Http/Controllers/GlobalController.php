@@ -278,15 +278,16 @@ class GlobalController extends Controller
     public function optionsSelectLokasi(Request $request)
     {
         $query = DB::table('tbl_lokasis')
-            ->where('status', '=', '1')
-            ->when($request->values != '', function ($q) use ($request) {
-                $q->where('id', '=', $request->values);
+            ->where('status', '1')
+            ->when(!empty($request->values), function ($q) use ($request) {
+                $q->where('id', $request->values);
             })
-            ->where(function ($q) use ($request) {
+            ->when(!empty($request->search), function ($q) use ($request) {
                 $search = $request->search;
-                $q->where('nama', 'like', "%$search%");
-                $q->where('lantai', 'like', "%$search%");
-                // Tambah kolom lain jika dibutuhkan
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('nama', 'like', "%{$search}%")
+                        ->orWhere('lantai', 'like', "%{$search}%");
+                });
             })
             ->limit(100)
             ->get();
@@ -296,10 +297,12 @@ class GlobalController extends Controller
             $data[$key]['id'] = $value->id;
             $data[$key]['text'] = $value->lantai . ' - ' . $value->nama;
         }
+
         return response()->json([
             'data' => $data
         ], 200);
     }
+
 
     // select Unit
     public function optionsSelectUnit(Request $request)
