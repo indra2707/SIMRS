@@ -214,7 +214,7 @@
                                     <use href="{{ asset('assets/svg/icon-sprite.svg#fill-knowledgebase') }}">
                                     </use>
                                 </svg>
-                                <span>Helpdesk</span>
+                                <span>Pemeliharaan & Perbaikan</span>
                             </a>
                             <ul class="sidebar-submenu">
                                 @if (in_array('Helpdesk.Approval', $aksesMenu))
