@@ -354,6 +354,8 @@
                                 <option value="Pengadaan">Pengadaan</option>
                                 <option value="Serah Terima">Serah Terima</option>
                                 <option value="Selesai">Selesai</option>
+                                <option value="Tunda">Tunda</option>
+                                <option value="Batal">Batal</option>
                             </select>
                         </div>
 
