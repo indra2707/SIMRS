@@ -80,63 +80,63 @@
 
 
     // disabled nomor pekerja input
-    const $statusPegawai = $("select[name='status_kepegawaian']");
-    const $nomorPekerja = $("input[name='nomor_pekerja']");
+    // const $statusPegawai = $("select[name='status_kepegawaian']");
+    // const $nomorPekerja = $("input[name='nomor_pekerja']");
 
-    function toggleNomorPekerja() {
-        const status = $statusPegawai.val();
-        const hideList = ['PWTT', 'PWT'];
-        const disableList = [
-            'Mitra Pegawai',
-            'Mitra Dokter',
-            'Outsourcing',
-            'Internship'
-        ];
+    // function toggleNomorPekerja() {
+    //     const status = $statusPegawai.val();
+    //     const hideList = ['PWTT', 'PWT'];
+    //     const disableList = [
+    //         'Mitra Pegawai',
+    //         'Mitra Dokter',
+    //         'Outsourcing',
+    //         'Internship'
+    //     ];
 
-        if (hideList.includes(status)) {
-            $nomorPekerja.val('').prop('readonly', false).removeAttr('required');
-            return;
-        }
+    //     if (hideList.includes(status)) {
+    //         $nomorPekerja.val('').prop('readonly', false).removeAttr('required');
+    //         return;
+    //     }
 
-        if (disableList.includes(status)) {
-            $nomorPekerja.val('').prop('readonly', true).removeAttr('required');
-            loadNomorPekerja(status);
-        } else {
-            $nomorPekerja.prop('readonly', false).attr('required', true);
-        }
-    }
-    $statusPegawai.on('change', toggleNomorPekerja);
-    toggleNomorPekerja();
-    let isLoadingNomorPekerja = false;
+    //     if (disableList.includes(status)) {
+    //         $nomorPekerja.val('').prop('readonly', true).removeAttr('required');
+    //         loadNomorPekerja(status);
+    //     } else {
+    //         $nomorPekerja.prop('readonly', false).attr('required', true);
+    //     }
+    // }
+    // $statusPegawai.on('change', toggleNomorPekerja);
+    // toggleNomorPekerja();
+    // let isLoadingNomorPekerja = false;
 
 
-    // Nomor Otomatis
-    function loadNomorPekerja(status) {
-        if (isLoadingNomorPekerja) return;
-        isLoadingNomorPekerja = true;
+    // // Nomor Otomatis
+    // function loadNomorPekerja(status) {
+    //     if (isLoadingNomorPekerja) return;
+    //     isLoadingNomorPekerja = true;
 
-        $.ajax({
-            url: "{{ route('pegawai.generate-nomor-pekerja') }}",
-            type: "GET",
-            dataType: "json",
-            data: {
-                status_pegawai: status
-            },
-            success: function (res) {
+    //     $.ajax({
+    //         url: "{{ route('pegawai.generate-nomor-pekerja') }}",
+    //         type: "GET",
+    //         dataType: "json",
+    //         data: {
+    //             status_pegawai: status
+    //         },
+    //         success: function (res) {
 
-                // set hanya jika masih kosong
-                if (!$nomorPekerja.val()) {
-                    $nomorPekerja.val(res.nomor_pekerja);
-                }
-            },
-            error: function () {
-                alert('Gagal mengambil nomor pekerja');
-            },
-            complete: function () {
-                isLoadingNomorPekerja = false;
-            }
-        });
-    }
+    //             // set hanya jika masih kosong
+    //             if (!$nomorPekerja.val()) {
+    //                 $nomorPekerja.val(res.nomor_pekerja);
+    //             }
+    //         },
+    //         error: function () {
+    //             alert('Gagal mengambil nomor pekerja');
+    //         },
+    //         complete: function () {
+    //             isLoadingNomorPekerja = false;
+    //         }
+    //     });
+    // }
 
 
 
