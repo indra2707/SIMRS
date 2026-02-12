@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Logistik;
 
-use App\Http\Controllers\Controller;
-use App\Models\Logistik\Permintaan;
-use App\Models\MaterData\Unit;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Session;
 use function Psy\debug;
+use App\Models\MaterData\Unit;
+use App\Models\Logistik\Permintaan;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class TembusanController extends Controller
 {
@@ -73,8 +74,9 @@ class TembusanController extends Controller
 
     public function views()
     {
-        $namaRole = Session::get('nama_role');
-
+        //    dd(Auth::user());
+        $namaRole = Auth::user()->rolls->nama;
+        // dd($namaRole);
         $query = Permintaan::query();
 
         $roleMap = [
@@ -87,10 +89,7 @@ class TembusanController extends Controller
         if (isset($roleMap[$namaRole])) {
             $kategori = $roleMap[$namaRole];
 
-            $query->where(function ($q) use ($kategori) {
-                $q->whereJsonContains('tembusan', $kategori)
-                    ->orWhere('tembusan', 'LIKE', '%"' . $kategori . '"%');
-            });
+            $query->where('tembusan', 'LIKE', '%' . $kategori . '%');
         }
 
         $permintaans = $query->get();
@@ -148,5 +147,4 @@ class TembusanController extends Controller
 
         return response()->json($data, 200);
     }
-
 }

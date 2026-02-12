@@ -900,7 +900,7 @@
                     console.log('📋 Chat opponent data:', data);
 
                     if (data.success) {
-                        $('#chatOpponentUsername').text(data.username ? '@' + data.username : '');
+                        $('#chatOpponentUsername').text(data.username ?  data.username : '');
                         $('.modal-title').text('Chat - ' + (data.nama_permintaan ||
                             'Permintaan Logistik'));
 
@@ -919,7 +919,7 @@
                                 $('#lastSeen').text(lastSeenDate.toLocaleString('id-ID'));
                             }
                         } else {
-                            $('#lastSeen').text('Offline');
+                            // $('#lastSeen').text('Offline'); 
                         }
 
                         if (data.role && data.role !== 'user') {
@@ -929,7 +929,7 @@
                 },
                 error: function() {
                     $('#chatOpponentUsername').text('');
-                    $('#lastSeen').text('Offline');
+                    // $('#lastSeen').text('Offline');
                 }
             });
         }
