@@ -326,7 +326,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="#">Perizinan</a></li>
-                            <li><a href="#">Kontrak</a></li>
+                            <li><a href="{{ route('legal.pks') }}">Kontrak</a></li>
                         </ul>
                     </li>
 

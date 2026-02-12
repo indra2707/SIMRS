@@ -1,12 +1,12 @@
 <script type="text/javascript">
     // Variable Name
-    var $table = $("#table_helpdesk");
+    var $tablePks = $("#table_pks");
 
     // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
         theme: "bootstrap-5",
-        dropdownParent: $("#helpdesk-modal"),
+        dropdownParent: $("#modal-pks"),
         allowClear: true
     });
 
@@ -33,7 +33,7 @@
             $('#tgl_awal').val(formatDate(start));
             $('#tgl_akhir').val(formatDate(end));
 
-            $table.bootstrapTable("refresh");
+            $tablePks.bootstrapTable("refresh");
         }
     });
 
@@ -139,7 +139,7 @@
     $(document).on('click', '.btn-preview', function () {
         $('#preview-large').attr('src', $(this).data('src'));
         $('#modal-preview-image').modal('show');
-        $('#helpdesk-modal').modal('hide');
+        $('#modal-pks').modal('hide');
     });
 
     // HAPUS FOTO
@@ -174,30 +174,23 @@
 
     // close modal
     $('#modal-preview-image').on('hidden.bs.modal', function () {
-        $('#helpdesk-modal').modal('show');
+        $('#modal-pks').modal('show');
     });
 
 
     $(document).on("click", ".add-btn", function () {
-        $(".form-helpdesk").removeClass("was-validated");
-        $("#helpdesk-modal").modal("show");
-        $(".modal-title").text("Form Tambah Help Desk");
-        $('.save-btn').show();
-        $('.btn-attach').show();
-        $('.btn-attach2').hide();
-        $('label:contains("Lampiran Selesai")').hide();
-        $('label:contains("Catatan")').hide();
+        $(".form-pks").removeClass("was-validated");
+        $("#modal-pks").modal("show");
+        $(".modal-title").text("Form Tambah PKS");
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
-        $('#preview-images2').empty().hide();
         $('input[name="id"]').val("");
-        $('textarea[name="keterangan"]').val("").prop('readonly', false);
-        $('input[name="judul_laporan"]').val("").prop('readonly', false);
+        $('input[name="lampiran"]').val("");
+        $('input[name="nomor_pks"]').val("");
+        $('input[name="judul"]').val("");
+        $('select[name="jenis_kontrak"]').val('').trigger('change');
+        $('input[name="pihak"]').val("");
         $('#lampiran').val('');
-        $('#lampiran_selesai').val('');
-        $('select[name="kategori"]').val('').trigger('change').prop('disabled', false);
-        $('select[name="prioritas"]').val('').trigger('change').prop('disabled', false);
-        $('textarea[name="catatan"]').hide();
         fileBuffer = new DataTransfer();
     });
 

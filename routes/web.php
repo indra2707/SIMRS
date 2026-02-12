@@ -55,6 +55,8 @@ use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\JeniskontrakController;
 
+use App\Http\Controllers\Legal\PksController;
+
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
@@ -434,6 +436,19 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Disposisi
         Route::get('/disposisi', [DisposisiController::class, 'index'])->name('logistik.disposisi');
         Route::get('/disposisi/view', [DisposisiController::class, 'views'])->name('logistik.disposisi.view');
+    });
+
+
+    // Legal
+    Route::prefix('legal')->group(function () {
+        // PKS
+        Route::get('/pks', [PksController::class, 'index'])->name('legal.pks');
+        Route::get('/pks/view', [PksController::class, 'views'])->name('legal.pks.view');
+        Route::post('/pks/store', [PksController::class, 'store'])->name('legal.pks.create');
+        Route::put('/pks/update/{id}', [PksController::class, 'update'])->name('legal.pks.update');
+        Route::delete('/pks/delete/{id}', [PksController::class, 'destroy'])->name('legal.pks.delete');
+        Route::post('/pks/update-status/{id}', [PksController::class, 'updateStatus'])->name('legal.pks.update-status');
+
     });
 
     // Tarif
