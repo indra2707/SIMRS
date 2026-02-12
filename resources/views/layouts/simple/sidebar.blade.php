@@ -111,7 +111,8 @@
                             in_array('Bank', $aksesMenu) ||
                             in_array('Fungsi', $aksesMenu) ||
                             in_array('SK Struktur', $aksesMenu) ||
-                            in_array('Unit', $aksesMenu)
+                            in_array('Unit', $aksesMenu) ||
+                            in_array('Jenis Kontrak', $aksesMenu)
                         )
 
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
@@ -167,6 +168,9 @@
                                 @endif
                                 @if (in_array('SK Struktur', $aksesMenu))
                                     <li><a href="{{ route('master-data.sk-struktur') }}">SK Struktur</a></li>
+                                @endif
+                                @if (in_array('Jenis Kontrak', $aksesMenu))
+                                    <li><a href="{{ route('master-data.jenis-kontrak') }}">Jenis Kontrak</a></li>
                                 @endif
                             </ul>
                         </li>

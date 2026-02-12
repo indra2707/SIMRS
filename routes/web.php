@@ -53,6 +53,7 @@ use App\Http\Controllers\MasterData\KondisiAsetController;
 use App\http\Controllers\MasterData\KelompokAsetController;
 use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
+use App\Http\Controllers\MasterData\JeniskontrakController;
 
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
@@ -311,6 +312,15 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/account', [AccountController::class, 'index'])->name('master-data.account');
         Route::get('/account/view', [AccountController::class, 'views'])->name('master-data.account.view');
         Route::put('/account/update/{id}', [AccountController::class, 'update'])->name('master-data.account.update');
+
+        // Jenis Kontrak
+        Route::get('/jenis-kontrak', [JenisKontrakController::class, 'index'])->name('master-data.jenis-kontrak');
+        Route::get('/jenis-kontrak/view', [JenisKontrakController::class, 'views'])->name('master-data.jenis-kontrak.view');
+        Route::post('/jenis-kontrak/store', [JenisKontrakController::class, 'store'])->name('master-data.jenis-kontrak.create');
+        Route::put('/jenis-kontrak/update/{id}', [JenisKontrakController::class, 'update'])->name('master-data.jenis-kontrak.update');
+        Route::delete('/jenis-kontrak/delete/{id}', [JenisKontrakController::class, 'destroy'])->name('master-data.jenis-kontrak.delete');
+        Route::post('/jenis-kontrak/update-status/{id}', [JenisKontrakController::class, 'updateStatus'])->name('master-data.jenis-kontrak.update-status');
+
     });
 
     // User Management
@@ -500,6 +510,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-jabatan', [GlobalController::class, 'optionsSelectJabatan'])->name('get-select-jabatan');
         // Unit
         Route::get('/get-select-unit', [GlobalController::class, 'optionsSelectUnit'])->name('get-select-unit');
+        // Jenis Kontrak
+        Route::get('/get-select-jenis-kontrak', [GlobalController::class, 'optionsSelectJenisKontrak'])->name('get-select-jenis-kontrak');
     });
 });
 

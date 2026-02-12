@@ -213,6 +213,8 @@
                                                 Unit</label></li>
                                         <li><label><input type="checkbox" name="permissions[]" value="SK Struktur">
                                                 SK Struktur</label></li>
+                                         <li><label><input type="checkbox" name="permissions[]" value="Jenis Kontrak">
+                                                Jenis Kontrak</label></li>
                                     </ul>
                                 </li>
 
