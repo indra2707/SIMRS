@@ -313,6 +313,23 @@
                         </li>
                     @endif
 
+                    <!-- Legal -->
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
+                            </svg>
+                            <span>Legal</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="#">Perizinan</a></li>
+                            <li><a href="#">Kontrak</a></li>
+                        </ul>
+                    </li>
+
                     {{-- Tarif --}}
                     @if (Session::get('username') == 'superadmin')
                                 <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
