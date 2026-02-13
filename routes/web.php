@@ -448,6 +448,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/pks/update/{id}', [PksController::class, 'update'])->name('legal.pks.update');
         Route::delete('/pks/delete/{id}', [PksController::class, 'destroy'])->name('legal.pks.delete');
         Route::post('/pks/update-status/{id}', [PksController::class, 'updateStatus'])->name('legal.pks.update-status');
+        Route::post('/pks/notify', [PksController::class, 'notify'])->name('legal.pks.notify');
 
         //Perisinan
 

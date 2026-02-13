@@ -345,7 +345,8 @@
                 formatter: function (value, row, index) {
 
                     if (value <= 0) {
-                        return '<button class="btn btn-secondary btn-sm">Kontrak Berakhir</button>';
+                        return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Kontrak Berakhir</button>';
+
                     }
                     else if (value <= 30) {
                         return '<button class="btn btn-pill btn-danger btn-xs">' + value + ' Hari</button>';
@@ -494,7 +495,7 @@
                         </div>
                     </div>
                 `);
-                    }
+            }
 
             InitSelect2($("select[name='id_jenis_kontrak']"), {
                 url: "{{ route('get-select-jenis-kontrak') }}",
@@ -571,5 +572,75 @@
             });
         }
     }
+
+
+    // notif
+    window.addEventListener("load", function () {
+        fetch("{{ route('legal.pks.notify') }}", {
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Accept": "application/json"
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+
+                console.log("DATA:", data);
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Menu PKS',
+                        text: 'Tidak ada kontrak yang akan berakhir dalam 60 hari.'
+                    });
+                    return;
+                }
+
+                let html = `
+        <div style="max-height:400px; overflow-y:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px">
+            <thead>
+                <tr style="background:#f8f9fa">
+                    <th style="padding:6px; border:1px solid #ddd">Judul</th>
+                    <th style="padding:6px; border:1px solid #ddd">Pihak</th>
+                    <th style="padding:6px; border:1px solid #ddd">Berakhir</th>
+                    <th style="padding:6px; border:1px solid #ddd">Sisa</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+                data.forEach(item => {
+
+                    let warna = "#0d6efd";
+                    if (item.sisa_hari <= 7) warna = "#dc3545";
+                    else if (item.sisa_hari <= 30) warna = "#ffc107";
+
+                    html += `
+                <tr>
+                    <td style="padding:6px; border:1px solid #ddd">${item.judul}</td>
+                    <td style="padding:6px; border:1px solid #ddd">${item.pihak}</td>
+                    <td style="padding:6px; border:1px solid #ddd">${item.tanggal_selesai}</td>
+                    <td style="padding:6px; border:1px solid #ddd; font-weight:bold; color:${warna}">
+                        ${item.sisa_hari} hari
+                    </td>
+                </tr>
+            `;
+                });
+
+                html += "</tbody></table></div>";
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '⚠ Kontrak PKS Akan Berakhir',
+                    html: html,
+                    width: 850,
+                    confirmButtonText: "Mengerti",
+                    showCloseButton: true
+                });
+
+            })
+            .catch(err => console.log("ERROR:", err));
+    });
 
 </script>

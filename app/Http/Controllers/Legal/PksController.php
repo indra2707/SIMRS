@@ -82,6 +82,44 @@ class PksController extends Controller
     }
 
 
+    //notifikasi
+    public function notify()
+    {
+        $today = Carbon::today();
+        $batas = Carbon::today()->addDays(60);
+
+        $data = Pks::query()
+            ->from('tbl_pks')
+            ->join('tbl_jenis_kontrak', 'tbl_pks.id_jenis_kontrak', '=', 'tbl_jenis_kontrak.id')
+            ->select(
+                'tbl_pks.*',
+                'tbl_jenis_kontrak.nama as nama_jenis_kontrak'
+            )
+            ->where('tbl_pks.status', '1')
+            ->whereNotNull('tbl_pks.tanggal_selesai')
+            ->whereDate('tbl_pks.tanggal_selesai', '>=', $today)
+            ->whereDate('tbl_pks.tanggal_selesai', '<=', $batas)
+            ->orderBy('tbl_pks.tanggal_selesai', 'asc')
+            ->get()
+            ->map(function ($value) use ($today) {
+
+                $selesai = Carbon::parse($value->tanggal_selesai);
+                $sisa_hari = $today->diffInDays($selesai, false);
+
+                return [
+                    'id' => $value->id,
+                    'judul' => $value->judul,
+                    'nama_jenis_kontrak' => $value->nama_jenis_kontrak,
+                    'pihak' => $value->pihak,
+                    'tanggal_selesai' => $selesai->format('d/m/Y'),
+                    'sisa_hari' => $sisa_hari,
+                ];
+            });
+
+        return response()->json($data);
+    }
+
+
     // Simpan
     public function store(Request $request)
     {
