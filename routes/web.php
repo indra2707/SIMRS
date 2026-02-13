@@ -449,6 +449,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/pks/delete/{id}', [PksController::class, 'destroy'])->name('legal.pks.delete');
         Route::post('/pks/update-status/{id}', [PksController::class, 'updateStatus'])->name('legal.pks.update-status');
 
+        //Perisinan
+
     });
 
     // Tarif

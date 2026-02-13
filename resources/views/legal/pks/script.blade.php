@@ -10,6 +10,22 @@
         allowClear: true
     });
 
+    // filter status
+    $(".select3").select2({
+        placeholder: "---- Pilih Salah Satu ----",
+        theme: "bootstrap-5",
+        allowClear: true,
+        width: "100%"
+    });
+    $('#filter-status').val('1').trigger('change');
+
+    // Filter Tabel
+    $('#filter-status').on('change', function () {
+        $tablePks.bootstrapTable('refresh', {
+            silent: true
+        });
+    });
+
     //tanggal
     $('.js-daterangepicker').datepicker({
         dateFormat: 'dd/mm/yyyy',
@@ -18,28 +34,36 @@
         multipleDatesSeparator: ' - ',
         autoClose: true,
         toggleSelected: false,
+        clearButton: true,
 
         onSelect: function (formattedDate, date, inst) {
-            // jika belum pilih 2 tanggal, hentikan
-            if (!date || date.length < 2) {
-                return;
-            }
 
-            // date berupa array [startDate, endDate]
+            if (!date || date.length < 2) return;
+
             let start = date[0];
             let end = date[1];
 
-            // format ke Y-m-d untuk database
             $('#tgl_awal').val(formatDate(start));
             $('#tgl_akhir').val(formatDate(end));
 
-            $tablePks.bootstrapTable("refresh");
+            $tablePks.bootstrapTable('refresh', {
+                pageNumber: 1
+            });
+        },
+
+        onHide: function (inst) {
+            if (!$('.js-daterangepicker').val()) {
+
+                $('#tgl_awal').val(null);
+                $('#tgl_akhir').val(null);
+
+                $tablePks.bootstrapTable('refresh', {
+                    pageNumber: 1
+                });
+            }
         }
     });
 
-    let now = new Date();
-    let firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-    let lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
     // helper format dd/mm/yyyy (untuk tampilan datepicker)
     function formatDisplay(date) {
@@ -57,241 +81,188 @@
         return `${y}-${m}-${d}`;
     }
 
-    $('.js-daterangepicker').val(
-        formatDisplay(firstDay) + ' - ' + formatDisplay(lastDay)
-    );
-
-    $('#tgl_awal').val(formatDate(firstDay));
-    $('#tgl_akhir').val(formatDate(lastDay));
-
 
     // onclick upload
     $('#btn-attach').on('click', function () {
         $('#lampiran').trigger('click');
     });
 
-    //upload foto multiple
+    //upload dokumen
     let fileBuffer = new DataTransfer();
-    $(document).on('change', 'input[name="lampiran[]"]', function () {
+    $(document).on('change', '#lampiran', function () {
         const input = this;
-        const newFiles = Array.from(input.files);
+        const file = input.files[0];
 
-        // validasi total maksimal 5
-        if ((fileBuffer.files.length + newFiles.length) > 5) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Maksimal 5 gambar',
-            });
-            input.value = '';
+        if (!file) return;
+
+        if (file.type !== "application/pdf") {
+            Swal.fire("Error", "File harus PDF", "error");
+            input.value = "";
             return;
         }
 
-        // tambahkan file baru
-        newFiles.forEach((file) => {
-            fileBuffer.items.add(file);
-            renderPreview(file, fileBuffer.files.length - 1);
-        });
-
-        // sinkron ke input
+        fileBuffer = new DataTransfer();
+        fileBuffer.items.add(file);
         input.files = fileBuffer.files;
 
-        // reset input supaya bisa upload file yg sama lagi
-        // input.value = '';
+        $('#preview-images').empty();
+        renderPreviewPDF(file);
     });
 
 
-    // perview gambar
-    function renderPreview(file, index) {
-        const reader = new FileReader();
 
-        reader.onload = function (e) {
-            $('#preview-images').append(`
-            <div class="col-md-2 mb-2" data-index="${index}">
-                <div class="position-relative">
-                    <img src="${e.target.result}"
-                         class="img-thumbnail preview-img"
-                         style="height:100px;object-fit:cover;cursor:pointer">
+    // perview File Pdf
+    function renderPreviewPDF(file) {
+        const fileURL = URL.createObjectURL(file);
 
-                    <div class="position-absolute bottom-0 end-0 m-1 d-flex gap-1">
-                        <button type="button"
-                                class="btn btn-light btn-xs btn-preview"
-                                data-src="${e.target.result}">
-                            <i class="fa fa-eye"></i>
-                        </button>
+        $('#preview-images').append(`
+        <div class="col-md-4 mb-2">
+            <div class="position-relative border rounded overflow-hidden">
 
-                        <button type="button"
-                                class="btn btn-light btn-xs btn-remove"
-                                data-index="${index}">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </div>
+                <!-- Preview PDF -->
+                <iframe src="${fileURL}"
+                        style="width:100%; height:200px; border:none;">
+                </iframe>
+
+                <!-- Action Button -->
+                <div class="position-absolute bottom-0 end-0 m-2 d-flex gap-1">
+                    
+                    <button type="button"
+                            class="btn btn-primary btn-xs btn-preview-pdf"
+                            data-src="${fileURL}"
+                            style="opacity:0.7;">
+                        <i class="fa fa-eye"></i>
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-danger btn-xs btn-remove-pdf"
+                            style="opacity:0.7;">
+                        <i class="fa fa-trash"></i>
+                    </button>
+
                 </div>
-            </div>
-        `);
-        };
 
-        reader.readAsDataURL(file);
+            </div>
+        </div>
+    `);
     }
 
-
-    // LIHAT FOTO
-    $(document).on('click', '.btn-preview', function () {
-        $('#preview-large').attr('src', $(this).data('src'));
-        $('#modal-preview-image').modal('show');
+    // Lihat FIle PDF
+    $(document).on('click', '.btn-preview-pdf', function () {
+        $('#preview-pdf').attr('src', $(this).data('src'));
+        $('#modal-preview-pdf').modal('show');
         $('#modal-pks').modal('hide');
     });
 
-    // HAPUS FOTO
-    $(document).on('click', '.btn-remove', function () {
-
-        const $item = $(this).closest('.col-md-2');
-
-        // ambil index yang BENAR hanya dari preview
-        const removeIndex = $('#preview-images')
-            .children('.col-md-2')
-            .index($item);
-
-        const input = document.querySelector('input[name="lampiran[]"]');
-
-        let newBuffer = new DataTransfer();
-
-        Array.from(fileBuffer.files).forEach((file, i) => {
-            if (i !== removeIndex) {
-                newBuffer.items.add(file);
-            }
-        });
-
-        fileBuffer = newBuffer;
-        input.files = fileBuffer.files;
-
-        // refresh preview
+    // hapus dokumen
+    $(document).on('click', '.btn-remove-pdf', function () {
+        fileBuffer = new DataTransfer();
+        $('#lampiran').val('');
         $('#preview-images').empty();
-        Array.from(fileBuffer.files).forEach((file, index) => {
-            renderPreview(file, index);
-        });
     });
 
     // close modal
-    $('#modal-preview-image').on('hidden.bs.modal', function () {
+    $('#modal-preview-pdf').on('hidden.bs.modal', function () {
         $('#modal-pks').modal('show');
     });
 
-
+    // Add Button
     $(document).on("click", ".add-btn", function () {
         $(".form-pks").removeClass("was-validated");
         $("#modal-pks").modal("show");
         $(".modal-title").text("Form Tambah PKS");
+        $('.save-btn').show();
         $(".save-btn").html('<span class="fa fa-check"></span> Simpan').removeAttr("disabled");
         $('#preview-images').empty();
         $('input[name="id"]').val("");
         $('input[name="lampiran"]').val("");
-        $('input[name="nomor_pks"]').val("");
+        $('input[name="nomor_kontrak"]').val("");
         $('input[name="judul"]').val("");
-        $('select[name="jenis_kontrak"]').val('').trigger('change');
+        $('select[name="id_jenis_kontrak"]').val('').trigger('change');
         $('input[name="pihak"]').val("");
+        $('input[name="tanggal_mulai"]').val("");
+        $('input[name="tanggal_selesai"]').val("");
         $('#lampiran').val('');
         fileBuffer = new DataTransfer();
+
+        InitSelect2($("select[name='id_jenis_kontrak']"), {
+            url: "{{ route('get-select-jenis-kontrak') }}",
+            dropdownParent: $("#modal-pks")
+        });
     });
 
 
     // Save
-    let saveBtnProcessing = false;
-    $(document).on("click", ".save-btn", function (event) {
-        event.preventDefault();
-        if (saveBtnProcessing) return; // kalau sedang proses, langsung stop
-        saveBtnProcessing = true;
-        var $btn = $(this);
-        if ($btn.prop('disabled')) return;
-        $btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Memproses...');
-        var forms = document.getElementsByClassName("form-helpdesk");
-        var validation = Array.prototype.filter.call(forms, function (form) {
+    $(document).on('click', '.save-btn', function (event) {
+
+        var id = $('input[name="id"]').val();
+        var url, type;
+
+        if (id) {
+            url = "{{ route('legal.pks.update', ':id') }}".replace(':id', id);
+            type = "POST"; // FormData harus POST
+        } else {
+            url = "{{ route('legal.pks.create') }}";
+            type = "POST";
+        }
+
+        var forms = document.getElementsByClassName('form-pks');
+
+        Array.prototype.filter.call(forms, function (form) {
+
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
+                event.preventDefault();
                 event.stopPropagation();
-                saveBtnProcessing = false;
             } else {
-                var url = "{{ route('user.helpdesk-store') }}";
-                var type = "POST";
 
-                // FormData dari form
-                let myformData = new FormData(form);
-                myformData.delete('lampiran[]');
+                var formData = new FormData(form);
 
-
-                // Append file dari fileBuffer
-                if (fileBuffer.files.length > 0) {
-                    console.log('Uploading', fileBuffer.files.length, 'files');
-                    Array.from(fileBuffer.files).forEach((file, index) => {
-                        myformData.append('lampiran[]', file, file.name);
-                        console.log(
-                            `  ${index + 1}. ${file.name} (${(file.size / 1024).toFixed(2)} KB)`
-                        );
-                    });
-                } else {
-                    console.log('No files selected');
-                }
-
-                // Debug FormData
-                console.log('=== FormData Contents ===');
-                for (let pair of myformData.entries()) {
-                    if (pair[1] instanceof File) {
-                        console.log(`${pair[0]} => FILE: ${pair[1].name}`);
-                    } else {
-                        console.log(`${pair[0]} => ${pair[1]}`);
-                    }
+                // method spoofing untuk update
+                if (id) {
+                    formData.append('_method', 'PUT');
                 }
 
                 $.ajax({
                     type: type,
                     url: url,
-                    dataType: "json",
+                    data: formData,
                     processData: false,
                     contentType: false,
-                    cache: false,
-                    data: myformData,
-                    beforeSend: function () {
-                        $(".save-btn")
-                            .html(
-                                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-                            )
-                            .attr("disabled", "disabled");
-                    },
-                    complete: function () {
-                        $(".save-btn")
-                            .html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr("disabled");
-                        saveBtnProcessing = false;
-                    },
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success == true) {
-                            Alert("success", res.message);
-                            $table.bootstrapTable("refresh");
-                        } else {
-                            Alert("warning", res.message);
-                        }
-                        $("#helpdesk-modal").modal("hide");
-                        form.classList.remove("was-validated");
+                    dataType: "json",
 
-                        // Reset fileBuffer agar bisa upload lagi
-                        fileBuffer = new DataTransfer();
-                        $('#lampiran').val('');
-                        $('#preview-images').empty();
+                    beforeSend: function () {
+                        $('.save-btn').html(
+                            '<span class="spinner-border spinner-border-sm"></span>'
+                        ).attr('disabled', true);
                     },
-                    error: function (xhr, status, error) {
-                        if (xhr.status == 400) {
-                            Alert("error", xhr.responseJSON.message);
-                        } else if (xhr.status == 500) {
-                            Alert("info",
-                                "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                            );
+
+                    complete: function () {
+                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+                            .removeAttr('disabled');
+                    },
+
+                    success: function (res, status, xhr) {
+                        if (xhr.status == 200 && res.success) {
+                            Alert('success', res.message);
+                            $('#modal-pks').modal('hide');
+                            $tablePks.bootstrapTable('refresh');
+                        } else {
+                            $.notify({
+                                icon: 'fa fa-warning',
+                                title: 'Warning',
+                                message: res.message
+                            }, { type: 'warning' });
+
+                            form.classList.remove('was-validated');
                         }
-                        form.classList.remove("was-validated");
-                    },
+                    }
                 });
             }
-            form.classList.add("was-validated");
+
+            form.classList.add('was-validated');
         });
+
     });
 
 
@@ -303,7 +274,7 @@
 
     // init table
     function initTable() {
-        $table.bootstrapTable("destroy").bootstrapTable({
+        $tablePks.bootstrapTable("destroy").bootstrapTable({
             height: 500,
             locale: "en-US",
             search: true,
@@ -321,17 +292,17 @@
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
-            exportTypes: ["json", "csv", "txt", "excel"],
-            url: "{{ route('user.helpdesk-views') }}",
+            exportTypes: ["excel", "pdf"],
+            url: "{{ route('legal.pks.view') }}",
 
             queryParams: function (params) {
-                return {
-                    limit: params.limit,
-                    offset: params.offset,
-                    search: params.search,
+                console.log("Filter:", $('#tgl_awal').val(), $('#tgl_akhir').val());
 
-                    tgl_awal: $('#tgl_awal').val(),
-                    tgl_akhir: $('#tgl_akhir').val()
+                return {
+                    ...params,
+                    tgl_awal: $('#tgl_awal').val() || null,
+                    tgl_akhir: $('#tgl_akhir').val() || null,
+                    status: $('#filter-status').val() || null
                 };
             },
 
@@ -344,66 +315,66 @@
                 },
             },
             {
-                field: "tiket",
+                field: "nomor_kontrak",
                 sortable: true,
             },
             {
-                field: "judul_laporan",
+                field: "nama_jenis_kontrak",
                 sortable: true,
             },
             {
-                field: "kategori",
+                field: "judul",
                 sortable: true,
             },
             {
-                field: "prioritas",
+                field: "pihak",
                 sortable: true,
             },
             {
-                field: "status",
+                field: "tanggal_mulai",
+                sortable: true,
+            },
+            {
+                field: "tanggal_selesai",
+                sortable: true,
+            },
+            {
+                field: "sisa_hari",
                 sortable: true,
                 align: "center",
-                formatter: function (value, row) {
-                    let badgeClass = "";
-                    switch (row.status) {
-                        case "accept":
-                            badgeClass =
-                                "badge rounded-pill bg-primary fs-9";
-                            break;
-                        case "on-progress":
-                            badgeClass =
-                                "badge rounded-pill bg-warning fs-9";
-                            break;
-                        case "done":
-                            badgeClass =
-                                "badge rounded-pill bg-success fs-9";
-                            break;
-                        default:
-                            badgeClass = "badge rounded-pill bg-light";
+                formatter: function (value, row, index) {
+
+                    if (value <= 0) {
+                        return '<button class="btn btn-secondary btn-sm">Kontrak Berakhir</button>';
                     }
-                    return `<span class="${badgeClass}" style="cursor:pointer; display:inline-block; width:75px; text-align:center;">${row.status}</span>`;
-                },
-                events: window.operateChange,
+                    else if (value <= 30) {
+                        return '<button class="btn btn-pill btn-danger btn-xs">' + value +' Hari</button>';
+                    }
+                    else if (value <= 90) {
+                        return '<button class="btn btn-pill btn-warning btn-xs">' + value + ' Hari</button>';
+                    }
+                    else {
+                        return '<button class="btn btn-pill btn-success btn-xs">' + value + ' Hari</button>';
+                    }
+
+                }
             },
             {
-                field: "created_at",
+                width: '100%',
+                field: 'status1',
                 sortable: true,
-                align: "center",
-            },
-            {
-                field: "updated_by",
-                sortable: true,
-                align: "center",
-            },
-            {
-                field: 'tgl_terima',
-                sortable: true,
-                align: 'center',
-            },
-            {
-                field: 'tgl_selesai',
-                sortable: true,
-                align: 'center',
+                events: window.updateStatusPks,
+                formatter: function (value, row, index) {
+                    return [
+                        '<div class="media-body text-center switch-sm icon-state">',
+                        '<label class="switch">',
+                        '<input type="checkbox" class="update-status" ' + (row.status ===
+                            '1' ? 'checked' : '') + '>',
+                        '<span class="switch-state"></span>',
+                        '</label>',
+                        '</div>'
+                    ].join("");
+                }
             },
             {
                 field: "action",
@@ -457,108 +428,52 @@
     }
 
     function actionsFunction(value, row, index) {
-        if (row.status === 'accept') {
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-                '<i class="icon-more-alt"></i>',
-                "</button>",
-                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-                '<a class="dropdown-item btn-infoo" href="javascript:void(0)"><i class="fa fa-info text-secondary"></i> Informasi</a>',
-                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-                '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-                "</div>",
-                "</div>",
-            ].join("");
-        } else {
-            return [
-                '<div class="dropdown icon-dropdown">',
-                '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-                '<i class="icon-more-alt"></i>',
-                "</button>",
-                '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-                '<a class="dropdown-item btn-infoo" href="javascript:void(0)"><i class="fa fa-info text-secondary"></i> Informasi</a>',
-                `<a class="dropdown-item btn-chat" href="javascript:void(0)" data-helpdesk-id="${row.id}"><i class="fa fa-comment text-primary"></i> Chat</a>`,
-                "</div>",
-                "</div>",
-            ].join("");
-        }
+        return [
+            '<div class="dropdown icon-dropdown">',
+            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
+            '<i class="icon-more-alt"></i>',
+            "</button>",
+            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-primary"></i> Print</a>',
+            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
+            "</div>",
+            "</div>",
+        ].join("");
     }
 
     // Handle events button actions
     window.operateEvents = {
-        "click .btn-infoo": function (e, value, row, index) {
-            $('#helpdesk-modal').modal('show');
-            $('.modal-title').text('Nomor Tiket : ' + row.tiket);
-            $('.save-btn').hide();
-            $('.btn-attach').hide();
-            $('.btn-attach2').hide();
-            $('label:contains("Lampiran Selesai")').show();
-            $('label:contains("Catatan")').show();
-
-            $('input[name="id"]').val(row.id);
-            $('textarea[name="keterangan"]').val(row.keterangan).prop('readonly', true);
-            $('input[name="judul_laporan"]').val(row.judul_laporan).prop('readonly', true);
-            $('select[name="kategori"]').val(row.kategori).trigger('change').prop('disabled', true);
-            $('select[name="prioritas"]').val(row.prioritas).trigger('change').prop('disabled', true);
-            $('textarea[name="catatan"]').val(row.catatan).prop('readonly', true).show();
-
-            // reset preview
-            $('#preview-images').empty();
-            $('#preview-images2').empty().show();
-            fileBuffer = new DataTransfer();
-
-            //Gambar 2
-            if (Array.isArray(row.gambar2)) {
-                row.gambar2.forEach((img) => {
-                    const imageUrl = `/uploads/images/help-desk/${img}`;
-
-                    $('#preview-images2').append(`
-            <div class="col-md-2 mb-2">
-                <div class="position-relative">
-                    <img src="${imageUrl}"
-                         class="img-thumbnail"
-                         style="height:100px;object-fit:cover;cursor:pointer">
-                    <div class="position-absolute bottom-0 end-0 m-1">
-                        <button type="button"
-                                class="btn btn-light btn-xs btn-preview"
-                                data-src="${imageUrl}">
-                            <i class="fa fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `);
-                });
-            }
-
-            // tampilkan lampiran dari DB
-            if (Array.isArray(row.lampiran)) {
-                row.lampiran.forEach((img, index) => {
-                    const imageUrl = `/uploads/images/help-desk/${img}`; // SESUAIKAN PATH
-
-                    $('#preview-images').append(`
-                <div class="col-md-2 mb-2">
-                    <div class="position-relative">
-                        <img src="${imageUrl}"
-                             class="img-thumbnail"
-                             style="height:100px;object-fit:cover;cursor:pointer">
-
-                        <div class="position-absolute bottom-0 end-0 m-1">
-                            <button type="button"
-                                    class="btn btn-light btn-xs btn-preview"
-                                    data-src="${imageUrl}">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `);
-                });
+        'click .btn-print': function (e, value, row, index) {
+            if (row.file) {
+                var fileUrl = '{{ url("uploads/images/pks") }}/' + row.file;
+                window.open(fileUrl, '_blank');
+            } else {
+                Alert('error', 'File tidak ditemukan');
             }
         },
+        'click .btn-edit': function (e, value, row, index) {
+            $('#modal-pks').modal('show');
+            $('.modal-title').text('Form Edit PKS');
+            $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+
+            $('input[name="id"]').val(row.id);
+            $('input[name="lampiran"]').val(row.lampiran);
+            $('input[name="nomor_kontrak"]').val(row.nomor_kontrak);
+            $('input[name="judul"]').val(row.judul);
+            $('input[name="pihak"]').val(row.pihak);
+            $('input[name="tanggal_mulai"]').val(row.tanggal_mulai);
+            $('input[name="tanggal_selesai"]').val(row.tanggal_selesai);
+            $('#lampiran').val('');
+
+            InitSelect2($("select[name='id_jenis_kontrak']"), {
+                url: "{{ route('get-select-jenis-kontrak') }}",
+                dropdownParent: $("#modal-pks"),
+                initialValue: row.id_jenis_kontrak
+            });
+        },
         "click .btn-delete": function (e, value, row, index) {
-            var url = "{{ route('user.helpdesk-delete', ':id') }}";
+            var url = "{{ route('legal.pks.delete', ':id') }}";
             url = url.replace(":id", row.id);
             Swal.fire({
                 icon: "warning",
@@ -586,90 +501,45 @@
                             }
                         },
                     }).done(function () {
-                        $table.bootstrapTable("refresh");
+                        $tablePks.bootstrapTable("refresh");
                     });
                 }
             });
         },
     };
-    $(document).on("click", ".btn-chat", function () {
-        var helpdeskId = $(this).data("helpdesk-id");
-        if (!helpdeskId) return;
-        // $("#chatOpponentUsername").text(row.user_name);
 
-        $("#chatOpponentName").text("Loading...");
-        $("#chatTypingStatus").text("");
-
-        $.ajax({
-            url: "/chat/opponent/" + helpdeskId,
-            type: "GET",
-            success: function (res) {
-                // $("#chatOpponentFullName").text(res.nama_lengkap);
-                $("#chatOpponentUsername").text(res.username);
-            },
-            error: function () {
-                $("#chatOpponentName").text("Unknown");
-            }
-        });
-
-        $("#chatModal").modal("show");
-    });
-
-    // Mengambil data jam sekarang
-    function updateLastSeen() {
-        const now = new Date();
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12; // jam 0 jadi 12
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-
-        $('#lastSeen').text(`Last Seen ${hours}:${minutes} ${ampm}`);
-    }
-</script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/laravel-echo/1.16.1/echo.iife.js"></script>
-
-<script>
-    window.Echo = new Echo({
-        broadcaster: "pusher",
-        key: "local",
-        wsHost: window.location.hostname,
-        wsPort: 6001,
-        forceTLS: false,
-        encrypted: false,
-        disableStats: true,
-    });
-
-    // Subscribe channel untuk user
-    window.Echo.channel("helpdesk-user").listen(
-        "HelpdeskStatusUpdated",
-        (e) => {
-            console.log("Helpdesk diupdate oleh admin:", e);
-
-            $.notify({
-                message: `
-                <div class="d-flex align-items-start">
-                    <i class="fa fa-info-circle text-white me-2 fs-5"></i>
-                    <div>
-                        <strong>Helpdesk Diperbarui!</strong><br>
-                        Status: <b>${e.status}</b><br>
-                        Tiket: <b>${e.tiket}</b><br>
-                        Laporan: ${e.judul_laporan || "-"}
-                    </div>
-                </div>
-            `,
-            }, {
-                type: "primary", // ubah sesuai kebutuhan: info, warning, danger
-                allow_dismiss: true,
-                delay: 4000,
-                showProgressbar: true,
-                timer: 300,
-                z_index: 1127,
+    // Window operateChange Status Pks
+    window.updateStatusPks = {
+        'click .update-status': function (e, value, row, index) {
+            var url = "{{ route('legal.pks.update-status', ':id') }}";
+            url = url.replace(':id', row.id);
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: {
+                    status: e.target.checked ? 1 : 0,
+                    table: 'tbl_pks',
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (res, status, xhr) {
+                    if (xhr.status == 200 && res.success == true) {
+                        Alert('success', res.message);
+                    } else {
+                        Alert('warning', res.message);
+                    }
+                    $tableKota.bootstrapTable('refresh');
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status == 400) {
+                        Alert('error', xhr.responseJSON.message);
+                    } else if (xhr.status == 500) {
+                        Alert('info',
+                            "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
+                        );
+                    }
+                }
             });
-
-            // Opsional: refresh tabel user
-            $table.bootstrapTable("refresh");
         }
-    );
+    }
+
 </script>

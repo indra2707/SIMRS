@@ -21,6 +21,7 @@ class Pks extends Model
         'tanggal_selesai',
         'file',
         'created_by',
-        'updated_by'
+        'updated_by',
+        'status'
     ];
 }

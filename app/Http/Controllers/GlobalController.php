@@ -330,7 +330,7 @@ class GlobalController extends Controller
         ], 200);
     }
 
-
+    
     // jenis kontrak
     public function optionsSelectJenisKontrak(Request $request)
     {
@@ -344,7 +344,7 @@ class GlobalController extends Controller
                 $q->where('nama', 'like', "%$search%");
                 // Tambah kolom lain jika dibutuhkan
             })
-            ->limit(10)
+            ->limit(100)
             ->get();
 
         $data = [];

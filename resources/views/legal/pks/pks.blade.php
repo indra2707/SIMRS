@@ -7,6 +7,14 @@
 
 @section('style')
     <style>
+        .select2-fixed {
+            width: 210px;
+        }
+
+        .select2-fixed .select2-container {
+            width: 100% !important;
+        }
+
         /* tinggi select tetap */
         .select2-container--bootstrap-5 .select2-selection--single {
             min-height: 38px !important;
@@ -37,8 +45,16 @@
                         <div class="d-flex align-items-center gap-2">
                             <button class="btn btn-primary add-btn">
                                 <span class="fa fa-plus"></span>
-                                <span> Tambah PKS</span>
+                                <span> Tambah PKS Baru</span>
                             </button>
+
+                            <div class="select2-fixed">
+                                <select class="form-select select3" name="status" id="filter-status">
+                                    <option></option>
+                                    <option value="1">Aktif</option>
+                                    <option value="0">Tidak Aktif</option>
+                                </select>
+                            </div>
 
                             <div class="bs-bars">
                                 <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
@@ -52,17 +68,19 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_helpdesk" class="table table-hover" data-buttons-class="primary"
+                                <table id="table_pks" class="table table-hover" data-buttons-class="primary"
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">No</th>
-                                            <th class="f-light">Tiket</th>
+                                            <th class="f-light">Nomor PKS</th>
                                             <th class="f-light">Judul PKS</th>
                                             <th class="f-light">Jenis Kontrak</th>
                                             <th class="f-light">Pihak</th>
                                             <th class="f-light">Tanggal mulai</th>
                                             <th class="f-light">Tanggal selesai</th>
+                                            <th class="f-light">Sisa Hari</th>
+                                            <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -90,9 +108,9 @@
                         <input type="hidden" name="id">
 
                         <!-- Nomor PKS  -->
-                        <label for="nomor_pks" class="col-form-label col-sm-2">Nomor PKS</label>
+                        <label for="nomor_kontrak" class="col-form-label col-sm-2">Nomor PKS</label>
                         <div class="col-sm-10">
-                            <input class="form-control form-control" name="nomor_pks" type="text" placeholder="Nomor PKS..."
+                            <input class="form-control form-control" name="nomor_kontrak" type="text" placeholder="Nomor PKS..."
                                 required>
                         </div>
 
@@ -103,18 +121,32 @@
                                 required>
                         </div>
 
-                        <!-- Jenis Kontrak  -->
-                        <label for="jenis_kontrak" class="col-form-label col-sm-2">Jenis Kontrak</label>
-                        <div class="col-sm-10">
-                            <select class="form-select form-control" id="jenis_kontrak" name="jenis_kontrak"
-                                data-placeholder="---- Pilih Salah Satu ----" required></select>
-                        </div>
-
                         <!-- Pihak  -->
                         <label for="pihak" class="col-form-label col-sm-2">Pihak</label>
                         <div class="col-sm-10">
                             <input class="form-control form-control" name="pihak" type="text" placeholder="Pihak..."
                                 required>
+                        </div>
+
+                        <!-- Jenis Kontrak  -->
+                        <label for="id_jenis_kontrak" class="col-form-label col-sm-2">Jenis Kontrak</label>
+                        <div class="col-sm-10">
+                            <select class="form-select form-control" id="id_jenis_kontrak" name="id_jenis_kontrak"
+                                data-placeholder="---- Pilih Salah Satu ----" required></select>
+                        </div>
+
+                        <!-- Tanggal Awal  -->
+                        <label for="tanggal_mulai" class="col-form-label col-sm-2">Tanggal Awal</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control js-datepicker digits" name="tanggal_mulai" type="text"
+                                placeholder="Tanggal Awal..." data-language="en" required>
+                        </div>
+
+                        <!-- Tanggal Akhir  -->
+                        <label for="tanggal_selesai" class="col-form-label col-sm-2">Tanggal Akhir</label>
+                        <div class="col-sm-4">
+                            <input class="form-control form-control js-datepicker digits" name="tanggal_selesai" type="text"
+                                placeholder="Tanggal Akhir..." data-language="en" required>
                         </div>
 
                         {{-- ATTACH FILE --}}
@@ -150,7 +182,7 @@
     </div>
 
     <!-- Modal lihat foto -->
-    <div class="modal fade" id="modal-preview-image" tabindex="-1">
+    <div class="modal fade" id="modal-preview-pdf" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -158,7 +190,7 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="preview-large" class="img-fluid rounded">
+                    <iframe id="preview-pdf" width="100%" height="700px"></iframe>
                 </div>
             </div>
         </div>
