@@ -281,6 +281,19 @@
 
                                  <li>
                                     <label class="caret">
+                                        <input type="checkbox" name="permissions[]" value="Legal" class="parent"><b>
+                                            Legal</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="PKS">
+                                                PKS</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Perizinan">
+                                                Perizinan</label></li>
+                                    </ul>
+                                </li>
+
+                                 <li>
+                                    <label class="caret">
                                         <input type="checkbox" class="parent"><b> Slip Gaji</b>
                                     </label>
                                     <ul class="nested">
