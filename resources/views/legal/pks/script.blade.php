@@ -558,7 +558,7 @@
                     } else {
                         Alert('warning', res.message);
                     }
-                    $tableKota.bootstrapTable('refresh');
+                    $tablePks.bootstrapTable('refresh');
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status == 400) {
