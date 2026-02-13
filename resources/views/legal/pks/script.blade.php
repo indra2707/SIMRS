@@ -348,7 +348,7 @@
                         return '<button class="btn btn-secondary btn-sm">Kontrak Berakhir</button>';
                     }
                     else if (value <= 30) {
-                        return '<button class="btn btn-pill btn-danger btn-xs">' + value +' Hari</button>';
+                        return '<button class="btn btn-pill btn-danger btn-xs">' + value + ' Hari</button>';
                     }
                     else if (value <= 90) {
                         return '<button class="btn btn-pill btn-warning btn-xs">' + value + ' Hari</button>';
@@ -464,7 +464,37 @@
             $('input[name="pihak"]').val(row.pihak);
             $('input[name="tanggal_mulai"]').val(row.tanggal_mulai);
             $('input[name="tanggal_selesai"]').val(row.tanggal_selesai);
-            $('#lampiran').val('');
+
+            // reset preview
+            $('#preview-images').empty();
+
+            // tampilkan file lama
+            if (row.file) {
+                let fileURL = "/uploads/images/pks/" + row.file;
+                $('#preview-images').append(`
+                    <div class="col-md-4 mb-2">
+                        <div class="position-relative border rounded overflow-hidden">
+                            
+                            <iframe src="${fileURL}"
+                                    style="width:100%; height:200px; border:none;">
+                            </iframe>
+
+                            <div class="position-absolute bottom-0 end-0 m-2 d-flex gap-1">
+                                <button type="button"
+                                        class="btn btn-primary btn-xs btn-preview-pdf"
+                                        data-src="${fileURL}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-xs btn-remove-pdf">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+                    }
 
             InitSelect2($("select[name='id_jenis_kontrak']"), {
                 url: "{{ route('get-select-jenis-kontrak') }}",
