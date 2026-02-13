@@ -368,35 +368,28 @@
             responseHandler: function(res) {
                 return res;
             }
-        });
+        }); 
     }
 
-    function actionsFunction(value, row, index) {
+    function actionsFunctionPerizinan(value, row, index) {
         return [
             '<div class="dropdown icon-dropdown">',
             '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
             '<i class="icon-more-alt"></i>',
-            "</button>",
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu">',
-            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-primary"></i> Print</a>',
+            '</button>',
+            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            "</div>",
-            "</div>",
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
+            '</div>',
+            '</div>',
         ].join("");
     }
 
     // Handle events button actions
     window.eventsPerizinan = {
 
-        'click .btn-print': function(e, value, row, index) {
-            if (row.file) {
-                var fileUrl = '{{ url('uploads/images/pks') }}/' + row.file;
-                window.open(fileUrl, '_blank');
-            } else {
-                Alert('error', 'File tidak ditemukan');
-            }
-        },
+
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-perizinan').modal('show');
             $('.modal-title').text('Form Edit Perizinan');

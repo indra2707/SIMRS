@@ -330,7 +330,7 @@
                             </a>
                             <ul class="sidebar-submenu">
                                 @if (in_array('Perizinan', $aksesMenu))
-                                    <li><a href="#">Perizinan</a></li>
+                                    <li><a href="{{ route('legal.perizinan') }}">Perizinan</a></li>
                                 @endif
                                 @if (in_array('PKS', $aksesMenu))
                                     <li><a href="{{ route('legal.pks') }}">Kontrak</a></li>

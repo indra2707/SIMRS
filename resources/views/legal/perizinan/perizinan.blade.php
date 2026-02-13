@@ -46,10 +46,6 @@
                                 <span class="fa fa-plus"></span> Tambah
                             </button>
 
-                            <button class="btn btn-success print-all-btn">
-                                <span class="fa fa-print"></span> Print All
-                            </button>
-
                             <div class="select2-fixed">
                                 <select class="form-select select3" name="status" id="filter-status">
                                     <option></option>
