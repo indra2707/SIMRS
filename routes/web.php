@@ -56,6 +56,7 @@ use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\JeniskontrakController;
 
 use App\Http\Controllers\Legal\PksController;
+use App\Http\Controllers\Legal\PerizinanController;
 
 use App\Http\Controllers\Admin\ChatController as AdminChatController;
 use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
@@ -451,6 +452,12 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/pks/notify', [PksController::class, 'notify'])->name('legal.pks.notify');
 
         //Perisinan
+        Route::get('/perizinan', [PerizinanController::class, 'index'])->name('legal.perizinan');
+        Route::get('/perizinan/view', [PerizinanController::class, 'views'])->name('legal.perizinan.view');
+        Route::post('/perizinan/store', [PerizinanController::class, 'store'])->name('legal.perizinan.create');
+        Route::put('/perizinan/update/{id}', [PerizinanController::class, 'update'])->name('legal.perizinan.update');
+        Route::delete('/perizinan/delete/{id}', [PerizinanController::class, 'destroy'])->name('legal.perizinan.delete');
+        Route::post('/perizinan/update-status/{id}', [PerizinanController::class, 'updateStatus'])->name('legal.perizinan.update-status');
 
     });
 
