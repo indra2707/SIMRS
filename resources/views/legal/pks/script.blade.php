@@ -38,6 +38,24 @@
 
         onSelect: function (formattedDate, date, inst) {
 
+            // Jika tombol clear diklik
+            if (!formattedDate) {
+
+                $('#tgl_awal').val(null);
+                $('#tgl_akhir').val(null);
+
+                $tablePks.bootstrapTable('refresh', {
+                    pageNumber: 1
+                });
+
+                // Hilangkan autofocus setelah clear
+                setTimeout(function () {
+                    $('.js-daterangepicker').blur();
+                }, 100);
+
+                return;
+            }
+
             if (!date || date.length < 2) return;
 
             let start = date[0];
@@ -52,17 +70,12 @@
         },
 
         onHide: function (inst) {
-            if (!$('.js-daterangepicker').val()) {
-
-                $('#tgl_awal').val(null);
-                $('#tgl_akhir').val(null);
-
-                $tablePks.bootstrapTable('refresh', {
-                    pageNumber: 1
-                });
-            }
+            setTimeout(function () {
+                $('.js-daterangepicker').blur();
+            }, 100);
         }
     });
+
 
 
     // helper format dd/mm/yyyy (untuk tampilan datepicker)
