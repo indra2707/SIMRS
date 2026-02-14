@@ -42,25 +42,54 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-primary add-btn">
-                                <span class="fa fa-plus"></span>
-                                <span> Tambah PKS Baru</span>
-                            </button>
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
 
-                            <div class="select2-fixed">
-                                <select class="form-select select3" name="status" id="filter-status">
-                                    <option></option>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak Aktif</option>
-                                </select>
+                            <!-- Kiri: Tombol & Filter -->
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-primary add-btn">
+                                    <span class="fa fa-plus"></span>
+                                    <span> Tambah PKS Baru</span>
+                                </button>
+
+                                <div class="select2-fixed">
+                                    <select class="form-select select3" name="status" id="filter-status">
+                                        <option></option>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
+                                    </select>
+                                </div>
+
+                                <div class="bs-bars">
+                                    <input type="text" class="form-control js-daterangepicker text-center"
+                                        style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                                </div>
                             </div>
 
-                            <div class="bs-bars">
-                                <input type="text" class="form-control js-daterangepicker text-center" style="width:220px"
-                                    placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                            <!-- Kanan: Informasi Warna -->
+                            <div class="d-flex align-items-center gap-3 small fw-semibold">
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #ffaa05; display:inline-block;"></span>
+                                    <span>Kontrak akan berakhir dalam 3 Bulan</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #FF0000; display:inline-block;"></span>
+                                    <span>Kontrak akan berakhir dalam 1 Bulan</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #808080; display:inline-block;"></span>
+                                    <span>Kontrak sudah berakhir</span>
+                                </div>
+
                             </div>
+
                         </div>
+
                         <input type="hidden" name="tgl_awal" id="tgl_awal">
                         <input type="hidden" name="tgl_akhir" id="tgl_akhir">
 
@@ -110,8 +139,8 @@
                         <!-- Nomor PKS  -->
                         <label for="nomor_kontrak" class="col-form-label col-sm-2">Nomor PKS</label>
                         <div class="col-sm-10">
-                            <input class="form-control form-control" name="nomor_kontrak" type="text" placeholder="Nomor PKS..."
-                                required>
+                            <input class="form-control form-control" name="nomor_kontrak" type="text"
+                                placeholder="Nomor PKS..." required>
                         </div>
 
                         <!-- Judul  -->

@@ -47,8 +47,8 @@ class PksController extends Controller
             $query->where('tbl_pks.status', $request->status);
         }
 
-        $query->groupBy('tbl_pks.judul');
-        $query->orderBy('tbl_pks.tanggal_mulai', 'desc');
+        // $query->groupBy('tbl_pks.judul');
+        $query->orderBy('tbl_pks.tanggal_selesai', 'desc');
 
 
         $data = [];

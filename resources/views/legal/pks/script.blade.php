@@ -346,7 +346,6 @@
 
                     if (value <= 0) {
                         return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Kontrak Berakhir</button>';
-
                     }
                     else if (value <= 30) {
                         return '<button class="btn btn-pill btn-danger btn-xs">' + value + ' Hari</button>';
@@ -592,7 +591,10 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Menu PKS',
-                        text: 'Tidak ada kontrak yang akan berakhir dalam 60 hari.'
+                        text: 'Tidak ada kontrak yang akan berakhir dalam 60 hari.',
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
                     });
                     return;
                 }
@@ -636,7 +638,9 @@
                     html: html,
                     width: 850,
                     confirmButtonText: "Mengerti",
-                    showCloseButton: true
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
                 });
 
             })
