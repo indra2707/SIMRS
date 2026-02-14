@@ -291,7 +291,7 @@
             height: 500,
             locale: "en-US",
             search: true,
-            // showColumns: true,
+            showColumns: true,
             showPaginationSwitch: true,
             // showToggle: true,
             showExport: true,
@@ -332,11 +332,11 @@
                 sortable: true,
             },
             {
-                field: "nama_jenis_kontrak",
+                field: "judul",
                 sortable: true,
             },
             {
-                field: "judul",
+                field: "nama_jenis_kontrak",
                 sortable: true,
             },
             {
@@ -620,7 +620,7 @@
                     <th style="padding:6px; border:1px solid #ddd">Judul</th>
                     <th style="padding:6px; border:1px solid #ddd">Pihak</th>
                     <th style="padding:6px; border:1px solid #ddd">Berakhir</th>
-                    <th style="padding:6px; border:1px solid #ddd">Sisa</th>
+                    <th style="padding:6px; border:1px solid #ddd">Sisa Hari</th>
                 </tr>
             </thead>
             <tbody>
@@ -633,9 +633,9 @@
 
                     html += `
                 <tr>
-                    <td style="padding:6px; border:1px solid #ddd">${item.judul}</td>
-                    <td style="padding:6px; border:1px solid #ddd">${item.pihak}</td>
-                    <td style="padding:6px; border:1px solid #ddd">${item.tanggal_selesai}</td>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.judul}</td>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.pihak}</td>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.tanggal_selesai}</td>
                     <td style="padding:6px; border:1px solid #ddd; font-weight:bold; color:${warna}">
                         ${item.sisa_hari} hari
                     </td>
