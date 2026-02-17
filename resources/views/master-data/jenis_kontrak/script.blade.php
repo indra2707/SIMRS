@@ -209,7 +209,7 @@
                             }
                         }
                     }).done(function () {
-                        $tableKota.bootstrapTable('refresh');
+                        $table_jenis_kontrak.bootstrapTable('refresh');
                     });
 
                 }
