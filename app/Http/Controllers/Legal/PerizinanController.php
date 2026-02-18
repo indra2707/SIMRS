@@ -112,4 +112,72 @@ class PerizinanController extends Controller
             ], 400);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        $perizinan = Perizinan::find($id);
+
+        if (!$perizinan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+        }
+
+        $fileName = $perizinan->upload;
+
+        if ($request->hasFile('upload')) {
+
+            if (!empty($perizinan->upload)) {
+                $oldFile = public_path('uploads/legal/perizinan/' . $perizinan->upload);
+                if (file_exists($oldFile)) {
+                    unlink($oldFile);
+                }
+            }
+
+            $file = $request->file('upload');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/legal/perizinan'), $fileName);
+        }
+
+        $perizinan->update([
+            'nomor_perizinan' => $request->nomor_perizinan,
+            'jenis_perizinan' => $request->jenis_perizinan,
+            'status' => $request->status,
+            'tgl_awal' => $request->tgl_awal ? Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') : null,
+            'tgl_akhir' => $request->tgl_akhir ? Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') : null,
+            'upload' => $fileName,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Diupdate.',
+        ], 200);
+    }
+
+    public function destroy($id)
+    {
+        $perizinan = Perizinan::find($id);
+
+        if (!$perizinan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data tidak ditemukan'
+            ], 404);
+        }
+
+        if (!empty($perizinan->upload)) {
+            $oldFile = public_path('uploads/legal/perizinan/' . $perizinan->upload);
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+        }
+
+        $perizinan->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Berhasil Dihapus.'
+        ], 200);
+    }
 }

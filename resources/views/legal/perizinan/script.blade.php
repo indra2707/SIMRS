@@ -68,26 +68,26 @@
     });
 
     //upload dokumen
-    let fileBuffer = new DataTransfer();
-    $(document).on('change', '#upload', function() {
-        const input = this;
-        const file = input.files[0];
+    // let fileBuffer = new DataTransfer();
+    // $(document).on('change', '#upload', function() {
+    //     const input = this;
+    //     const file = input.files[0];
 
-        if (!file) return;
+    //     if (!file) return;
 
-        if (file.type !== "application/pdf") {
-            Swal.fire("Error", "File harus PDF", "error");
-            input.value = "";
-            return;
-        }
+    //     if (file.type !== "application/pdf") {
+    //         Swal.fire("Error", "File harus PDF", "error");
+    //         input.value = "";
+    //         return;
+    //     }
 
-        fileBuffer = new DataTransfer();
-        fileBuffer.items.add(file);
-        input.files = fileBuffer.files;
+    //     fileBuffer = new DataTransfer();
+    //     fileBuffer.items.add(file);
+    //     input.files = fileBuffer.files;
 
-        $('#preview-images').empty();
-        renderPreviewPDF(file);
-    });
+    //     $('#preview-images').empty();
+    //     renderPreviewPDF(file);
+    // });
 
     function renderPreviewPDF(file) {
         const fileURL = URL.createObjectURL(file);
@@ -103,7 +103,7 @@
 
                 <!-- Action Button -->
                 <div class="position-absolute bottom-0 end-0 m-2 d-flex gap-1">
-                    
+
                     <button type="button"
                             class="btn btn-primary btn-xs btn-preview-pdf"
                             data-src="${fileURL}"
@@ -132,7 +132,7 @@
 
     // hapus dokumen
     $(document).on('click', '.btn-remove-pdf', function() {
-        fileBuffer = new DataTransfer();
+        // fileBuffer = new DataTransfer();
         $('#upload').val('');
         $('#preview-images').empty();
     });
@@ -148,12 +148,13 @@
         $('#modal-perizinan').modal('show');
         $('.modal-title').text('Form Tambah Perizinan');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        $('#preview-images').empty();
         $('input[name="id"]').val('');
         $('input[name="nomor_perizinan"]').val('');
         $('input[name="jenis_perizinan"]').val('');
         $('input[name="status"]').val('');
-        $('input[name="tgl_awal"]').val('');
-        $('input[name="tgl_akhir"]').val('');
+        $('.form-perizinan input[name="tgl_awal"]').val('');
+        $('.form-perizinan input[name="tgl_akhir"]').val('');
         $('#upload').val('');
     });
 
@@ -298,18 +299,17 @@
                         sortable: true,
                     },
                     {
-                        title: 'Status',
-                        field: 'status',
+                        field: "sisa_hari",
                         sortable: true,
-                        events: window.updateStatusPerizinan,
+                        align: "center",
                         formatter: function(value, row, index) {
 
                             if (value <= 0) {
-                                return '<button class="btn btn-secondary btn-sm">Kontrak Berakhir</button>';
-                            } else if (value <= 30) {
+                                return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Kontrak Berakhir</button>';
+                            } else if (value <= 90) {
                                 return '<button class="btn btn-pill btn-danger btn-xs">' + value +
                                     ' Hari</button>';
-                            } else if (value <= 90) {
+                            } else if (value <= 180) {
                                 return '<button class="btn btn-pill btn-warning btn-xs">' + value +
                                     ' Hari</button>';
                             } else {
@@ -368,7 +368,7 @@
             responseHandler: function(res) {
                 return res;
             }
-        }); 
+        });
     }
 
     function actionsFunctionPerizinan(value, row, index) {
@@ -388,7 +388,14 @@
 
     // Handle events button actions
     window.eventsPerizinan = {
-
+        'click .btn-print': function(e, value, row, index) {
+            if (row.upload) {
+                var fileUrl = '{{ url('uploads/legal/perizinan') }}/' + row.upload;
+                window.open(fileUrl, '_blank');
+            } else {
+                Alert('error', 'File tidak ditemukan');
+            }
+        },
 
         'click .btn-edit': function(e, value, row, index) {
             $('#modal-perizinan').modal('show');
@@ -399,18 +406,40 @@
             $('input[name="nomor_perizinan"]').val(row.nomor_perizinan);
             $('input[name="jenis_perizinan"]').val(row.jenis_perizinan);
 
-            if (row.tgl_awal && row.tgl_awal !== '-') {
-                var tglAwal = convertToDatetimeLocal(row.tgl_awal);
-                $('input[name="tgl_awal"]').val(tglAwal);
+            $('.form-perizinan input[name="tgl_awal"]').val(row.tgl_awal);
+            $('.form-perizinan input[name="tgl_akhir"]').val(row.tgl_akhir);
+
+
+            // $('input[name="upload"]').val(row.upload);
+            $('#preview-images').empty();
+            if (row.upload) {
+                let fileURL = "/uploads/legal/perizinan/" + row.upload;
+                $('#preview-images').append(`
+                    <div class="col-md-4 mb-2">
+                        <div class="position-relative border rounded overflow-hidden">
+
+                            <iframe src="${fileURL}"
+                                    style="width:100%; height:200px; border:none;">
+                            </iframe>
+
+                            <div class="position-absolute bottom-0 end-0 m-2 d-flex gap-1">
+                                <button type="button"
+                                        class="btn btn-primary btn-xs btn-preview-pdf"
+                                        data-src="${fileURL}">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-danger btn-xs btn-remove-pdf">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
             }
+            console.log(row);
 
-            if (row.tgl_akhir && row.tgl_akhir !== '-') {
-                var tglAkhir = convertToDatetimeLocal(row.tgl_akhir);
-                $('input[name="tgl_akhir"]').val(tglAkhir);
-            }
-
-
-            $('input[name="upload"]').removeAttr('required');
         },
         'click .btn-delete': function(e, value, row, index) {
             var url = "{{ route('legal.perizinan.delete', ':id') }}";

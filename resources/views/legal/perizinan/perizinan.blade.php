@@ -41,23 +41,48 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-                        <div class="d-flex align-items-center gap-2">
-                            <button class="btn btn-primary add-btn">
-                                <span class="fa fa-plus"></span> Tambah
-                            </button>
 
-                            <div class="select2-fixed">
-                                <select class="form-select select3" name="status" id="filter-status">
-                                    <option></option>
-                                    <option value="1">Aktif</option>
-                                    <option value="0">Tidak Aktif</option>
-                                </select>
+                        <div class="d-flex align-item-center justify-content-between flex-wrap gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-primary add-btn">
+                                    <span class="fa fa-plus"></span> Tambah
+                                </button>
+
+                                <div class="select2-fixed">
+                                    <select class="form-select select3" name="status" id="filter-status">
+                                        <option></option>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                                <div class="bs-bars">
+                                    <input type="text" class="form-control js-daterangepicker text-center"
+                                        style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                                </div>
                             </div>
-                            <div class="bs-bars">
-                                <input type="text" class="form-control js-daterangepicker text-center"
-                                    style="width:220px" placeholder="dd/mm/yyyy - dd/mm/yyyy" data-language="en">
+                            <div class="d-flex align-items-center gap-3 small fw-semibold">
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #ffaa05; display:inline-block;"></span>
+                                    <span>Perizinan akan berakhir dalam 180 Hari</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #FF0000; display:inline-block;"></span>
+                                    <span>Perizinan akan berakhir dalam 90 hari</span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <span
+                                        style="width:15px; height:15px; background-color: #808080; display:inline-block;"></span>
+                                    <span>Perizinan sudah berakhir</span>
+                                </div>
+
                             </div>
                         </div>
+
                         <input type="hidden" name="tgl_awal" id="tgl_awal">
                         <input type="hidden" name="tgl_akhir" id="tgl_akhir">
                         {{-- Table View --}}
@@ -68,7 +93,6 @@
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">#</th>
-                                            <th class="f-light">No</th>
                                             <th class="f-light">Nomor Perizinan</th>
                                             <th class="f-light">Jenis Perizinan</th>
                                             <th class="f-light">Tanggal Awal</th>
@@ -133,7 +157,8 @@
                         <div class="col-sm-10">
 
                             <!-- Button Attach -->
-                            <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach" id="btn-attach">
+                            <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach"
+                                id="btn-attach">
                                 <i class="fa fa-paperclip"></i> Attach File
                             </button>
 
