@@ -427,9 +427,9 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
+                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
             '</div>',
             '</div>',
         ].join("");
