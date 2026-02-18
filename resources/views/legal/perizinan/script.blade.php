@@ -5,6 +5,12 @@
             silent: true
         });
     });
+    $(".select3").select2({
+        placeholder: "--- Pilih Salah Satu ---",
+        theme: "bootstrap-5",
+        allowClear: true,
+        width: "100%"
+    });
 
     // Tabel
     var $tablePerizinan = $('#table_perizinan');
@@ -19,7 +25,22 @@
         clearButton: true,
 
         onSelect: function(formattedDate, date, inst) {
+            if (!formattedDate) {
 
+                $('#tgl_awal').val(null);
+                $('#tgl_akhir').val(null);
+
+                $tablePerizinan.bootstrapTable('refresh', {
+                    pageNumber: 1
+                });
+
+                // Hilangkan autofocus setelah clear
+                setTimeout(function() {
+                    $('.js-daterangepicker').blur();
+                }, 100);
+
+                return;
+            }
             if (!date || date.length < 2) return;
 
             let start = date[0];
@@ -66,6 +87,15 @@
     $('#btn-attach').on('click', function() {
         $('#upload').trigger('click');
     });
+    //  $('#filter-status').val('1').trigger('change');
+    // Filter Tabel
+    $('#filter-status').on('change', function() {
+        $tablePerizinan.bootstrapTable('refresh', {
+            silent: true
+        });
+    });
+
+
 
     //upload dokumen
     // let fileBuffer = new DataTransfer();
@@ -88,6 +118,8 @@
     //     $('#preview-images').empty();
     //     renderPreviewPDF(file);
     // });
+
+
 
     function renderPreviewPDF(file) {
         const fileURL = URL.createObjectURL(file);
@@ -305,7 +337,7 @@
                         formatter: function(value, row, index) {
 
                             if (value <= 0) {
-                                return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Kontrak Berakhir</button>';
+                                return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Perizinan Berakhir</button>';
                             } else if (value <= 90) {
                                 return '<button class="btn btn-pill btn-danger btn-xs">' + value +
                                     ' Hari</button>';
@@ -317,6 +349,23 @@
                                     ' Hari</button>';
                             }
 
+                        }
+                    },
+                    {
+                        width: '100%',
+                        field: 'status1',
+                        sortable: true,
+                        events: window.updateStatusPerizinan,
+                        formatter: function(value, row, index) {
+                            return [
+                                '<div class="media-body text-center switch-sm icon-state">',
+                                '<label class="switch">',
+                                '<input type="checkbox" class="update-status" ' + (row.status ===
+                                    '1' ? 'checked' : '') + '>',
+                                '<span class="switch-state"></span>',
+                                '</label>',
+                                '</div>'
+                            ].join("");
                         }
                     },
                     {

@@ -97,6 +97,7 @@
                                             <th class="f-light">Jenis Perizinan</th>
                                             <th class="f-light">Tanggal Awal</th>
                                             <th class="f-light">Tanggal Akhir</th>
+                                            <th class="f-light">Sisa Hari</th>
                                             <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>

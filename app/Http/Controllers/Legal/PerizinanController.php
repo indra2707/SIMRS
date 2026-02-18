@@ -39,7 +39,7 @@ class PerizinanController extends Controller
             $query->where('status', $request->status);
         }
 
-        $query->orderBy('tgl_awal', 'desc');
+        $query->orderBy('tgl_awal', 'asc');
 
         $data = [];
 
@@ -181,6 +181,26 @@ class PerizinanController extends Controller
         ], 200);
     }
 
+
+    public function updateStatus(Request $request, $id)
+    {
+        $query = Perizinan::where('id', $id)->update([
+            'status' => $request->status,
+        ]);
+        if ($query) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Sukses mengubah status menjadi ' . ($request->status === '1' ? 'Aktif' : 'Tidak Aktif'),
+                'data' => [],
+            ], status: 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengubah status.',
+                'data' => [],
+            ], status: 400);
+        }
+    }
     public function notify()
     {
         $today = Carbon::today();
