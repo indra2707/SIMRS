@@ -180,4 +180,37 @@ class PerizinanController extends Controller
             'message' => 'Data Berhasil Dihapus.'
         ], 200);
     }
+
+    public function notify()
+    {
+        $today = Carbon::today();
+        $batas = Carbon::today()->addDays(60);
+
+        $data = Perizinan::query()
+            ->from('perizinan')
+            ->select(
+                'perizinan.*'
+            )
+            ->whereNotNull('perizinan.tgl_akhir')
+            ->whereDate('perizinan.tgl_akhir', '>=', $today)
+            ->whereDate('perizinan.tgl_akhir', '<=', $batas)
+            ->orderBy('perizinan.tgl_akhir', 'asc')
+            ->get()
+            ->map(function ($value) use ($today) {
+
+                $selesai = Carbon::parse($value->tgl_akhir);
+                $sisa_hari = $today->diffInDays($selesai, false);
+
+                return [
+                    'id' => $value->id,
+                    'nomor_perizinan' => $value->nomor_perizinan,
+                    'jenis_perizinan' => $value->jenis_perizinan,
+                    'status' => $value->statuss,
+                    'tgl_akhir' => $selesai->format('d/m/Y'),
+                    'sisa_hari' => $sisa_hari,
+                ];
+            });
+
+        return response()->json($data);
+    }
 }

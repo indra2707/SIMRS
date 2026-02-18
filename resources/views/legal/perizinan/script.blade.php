@@ -511,4 +511,78 @@
             });
         }
     }
+
+
+    window.addEventListener("load", function() {
+        fetch("{{ route('legal.perizinan.notify') }}", {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                    "Accept": "application/json"
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+
+                console.log("DATA:", data);
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Menu Perizinan',
+                        text: 'Tidak ada Perizinan yang akan berakhir dalam 60 hari.',
+                        showCloseButton: true,
+                        allowOutsideClick: false,
+                        allowEscapeKey: false
+                    });
+                    return;
+                }
+
+                let html = `
+        <div style="max-height:400px; overflow-y:auto;">
+        <table style="width:100%; border-collapse:collapse; font-size:13px">
+            <thead>
+                <tr style="background:#f8f9fa">
+                    <th style="padding:6px; border:1px solid #ddd">Nomor Perizinan</th>
+                    <th style="padding:6px; border:1px solid #ddd">Jenis Perizinan</th>
+                    <th style="padding:6px; border:1px solid #ddd">Berakhir</th>
+                    <th style="padding:6px; border:1px solid #ddd">Sisa Hari</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+                data.forEach(item => {
+
+                    let warna = "#0d6efd";
+                    if (item.sisa_hari <= 7) warna = "#dc3545";
+                    else if (item.sisa_hari <= 30) warna = "#ffc107";
+
+                    html += `
+                <tr>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.nomor_perizinan}</td>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.jenis_perizinan}</td>
+                    <td style="padding:6px; border:1px solid #ddd" align="left">${item.tgl_akhir}</td>
+                    <td style="padding:6px; border:1px solid #ddd; font-weight:bold; color:${warna}">
+                        ${item.sisa_hari} hari
+                    </td>
+                </tr>
+            `;
+                });
+
+                html += "</tbody></table></div>";
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: '⚠ Perizinan Akan Berakhir',
+                    html: html,
+                    width: 850,
+                    confirmButtonText: "Mengerti",
+                    showCloseButton: true,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                });
+
+            })
+            .catch(err => console.log("ERROR:", err));
+    });
 </script>

@@ -323,7 +323,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/jenis-kontrak/update/{id}', [JenisKontrakController::class, 'update'])->name('master-data.jenis-kontrak.update');
         Route::delete('/jenis-kontrak/delete/{id}', [JenisKontrakController::class, 'destroy'])->name('master-data.jenis-kontrak.delete');
         Route::post('/jenis-kontrak/update-status/{id}', [JenisKontrakController::class, 'updateStatus'])->name('master-data.jenis-kontrak.update-status');
-
     });
 
     // User Management
@@ -458,7 +457,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/perizinan/update/{id}', [PerizinanController::class, 'update'])->name('legal.perizinan.update');
         Route::delete('/perizinan/delete/{id}', [PerizinanController::class, 'destroy'])->name('legal.perizinan.delete');
         Route::post('/perizinan/update-status/{id}', [PerizinanController::class, 'updateStatus'])->name('legal.perizinan.update-status');
-
+        Route::post('/perizinan/notify', [PerizinanController::class, 'notify'])->name('legal.perizinan.notify');
     });
 
     // Tarif
