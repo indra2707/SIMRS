@@ -19,6 +19,7 @@ class PerizinanController extends Controller
         return view('legal.perizinan.perizinan', $data);
     }
 
+    // View
     public function views(Request $request)
     {
         $query = Perizinan::query();
@@ -39,7 +40,7 @@ class PerizinanController extends Controller
             $query->where('status', $request->status);
         }
 
-        $query->orderBy('tgl_awal', 'asc');
+        $query->orderBy('tgl_akhir', 'asc');
 
         $data = [];
 
@@ -60,12 +61,8 @@ class PerizinanController extends Controller
                 'jenis_perizinan' => $value->jenis_perizinan,
                 'upload' => $value->upload,
                 'status' => $value->status,
-                'tgl_awal' => $value->tgl_awal
-                    ? Carbon::parse($value->tgl_awal)->format('d/m/Y')
-                    : null,
-                'tgl_akhir' => $value->tgl_akhir
-                    ? Carbon::parse($value->tgl_akhir)->format('d/m/Y')
-                    : null,
+                'tgl_awal' => $value->tgl_awal ? Carbon::parse($value->tgl_awal)->format('d/m/Y') : null,
+                'tgl_akhir' => $value->tgl_akhir ? Carbon::parse($value->tgl_akhir)->format('d/m/Y') : null,
                 'sisa_hari' => $sisa_hari,
             ];
         }
@@ -73,7 +70,7 @@ class PerizinanController extends Controller
         return response()->json($data, 200);
     }
 
-
+    // Simpan
     public function store(Request $request)
     {
         if (!is_dir('uploads/legal/perizinan/')) {
@@ -113,6 +110,7 @@ class PerizinanController extends Controller
         }
     }
 
+    //Update
     public function update(Request $request, $id)
     {
         $perizinan = Perizinan::find($id);
@@ -143,7 +141,6 @@ class PerizinanController extends Controller
         $perizinan->update([
             'nomor_perizinan' => $request->nomor_perizinan,
             'jenis_perizinan' => $request->jenis_perizinan,
-            'status' => $request->status,
             'tgl_awal' => $request->tgl_awal ? Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') : null,
             'tgl_akhir' => $request->tgl_akhir ? Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') : null,
             'upload' => $fileName,
@@ -155,6 +152,7 @@ class PerizinanController extends Controller
         ], 200);
     }
 
+    // Delete
     public function destroy($id)
     {
         $perizinan = Perizinan::find($id);
@@ -181,7 +179,7 @@ class PerizinanController extends Controller
         ], 200);
     }
 
-
+    // Update Status
     public function updateStatus(Request $request, $id)
     {
         $query = Perizinan::where('id', $id)->update([
@@ -201,10 +199,12 @@ class PerizinanController extends Controller
             ], status: 400);
         }
     }
+
+    // Notifikasi
     public function notify()
     {
         $today = Carbon::today();
-        $batas = Carbon::today()->addDays(60);
+        $batas = Carbon::today()->addDays(90);
 
         $data = Perizinan::query()
             ->from('perizinan')

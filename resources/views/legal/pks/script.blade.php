@@ -77,7 +77,6 @@
     });
 
 
-
     // helper format dd/mm/yyyy (untuk tampilan datepicker)
     function formatDisplay(date) {
         let d = String(date.getDate()).padStart(2, '0');
@@ -121,8 +120,6 @@
         $('#preview-images').empty();
         renderPreviewPDF(file);
     });
-
-
 
     // perview File Pdf
     function renderPreviewPDF(file) {
@@ -358,7 +355,7 @@
                 formatter: function (value, row, index) {
 
                     if (value <= 0) {
-                        return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Kontrak Berakhir</button>';
+                        return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Berakhir</button>';
                     }
                     else if (value <= 30) {
                         return '<button class="btn btn-pill btn-danger btn-xs">' + value + ' Hari</button>';

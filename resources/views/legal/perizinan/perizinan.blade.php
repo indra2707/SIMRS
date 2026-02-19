@@ -41,7 +41,6 @@
                 <div class="card">
                     <div class="card-body">
                         {{-- Add Button --}}
-
                         <div class="d-flex align-item-center justify-content-between flex-wrap gap-2">
                             <div class="d-flex align-items-center gap-2">
                                 <button class="btn btn-primary add-btn">
@@ -65,13 +64,13 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <span
                                         style="width:15px; height:15px; background-color: #ffaa05; display:inline-block;"></span>
-                                    <span>Perizinan akan berakhir dalam 180 Hari</span>
+                                    <span>Perizinan akan berakhir dalam 3 Bulan</span>
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2">
                                     <span
                                         style="width:15px; height:15px; background-color: #FF0000; display:inline-block;"></span>
-                                    <span>Perizinan akan berakhir dalam 90 hari</span>
+                                    <span>Perizinan akan berakhir dalam 1 Bulan</span>
                                 </div>
 
                                 <div class="d-flex align-items-center gap-2">
@@ -186,6 +185,20 @@
         </div>
     </div>
 
+    <!-- Modal lihat foto -->
+    <div class="modal fade" id="modal-preview-pdf" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title-view">Preview Gambar</h5> -->
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <iframe id="preview-pdf" width="100%" height="700px"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
 

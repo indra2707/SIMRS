@@ -1,10 +1,8 @@
 <script type="text/javascript">
-    // Filter Tabel
-    $('#filter-jenis').on('change', function() {
-        $tablePerizinan.bootstrapTable('refresh', {
-            silent: true
-        });
-    });
+    // Tabel
+    var $tablePerizinan = $('#table_perizinan');
+
+    // filter status
     $(".select3").select2({
         placeholder: "--- Pilih Salah Satu ---",
         theme: "bootstrap-5",
@@ -12,9 +10,16 @@
         width: "100%"
     });
 
-    // Tabel
-    var $tablePerizinan = $('#table_perizinan');
-    // var $tableInfoMutasi = $('#table-info-mutasi');
+    // Filter Tabel
+    $('#filter-status').on('change', function () {
+        $tablePerizinan.bootstrapTable('refresh', {
+            silent: true
+        });
+    });
+    $('#filter-status').val('1').trigger('change');
+
+
+    //tanggal
     $('.js-daterangepicker').datepicker({
         dateFormat: 'dd/mm/yyyy',
         range: true,
@@ -24,7 +29,9 @@
         toggleSelected: false,
         clearButton: true,
 
-        onSelect: function(formattedDate, date, inst) {
+        onSelect: function (formattedDate, date, inst) {
+
+            // Jika tombol clear diklik
             if (!formattedDate) {
 
                 $('#tgl_awal').val(null);
@@ -35,12 +42,13 @@
                 });
 
                 // Hilangkan autofocus setelah clear
-                setTimeout(function() {
+                setTimeout(function () {
                     $('.js-daterangepicker').blur();
                 }, 100);
 
                 return;
             }
+
             if (!date || date.length < 2) return;
 
             let start = date[0];
@@ -54,18 +62,13 @@
             });
         },
 
-        onHide: function(inst) {
-            if (!$('.js-daterangepicker').val()) {
-
-                $('#tgl_awal').val(null);
-                $('#tgl_akhir').val(null);
-
-                $tablePerizinan.bootstrapTable('refresh', {
-                    pageNumber: 1
-                });
-            }
+        onHide: function (inst) {
+            setTimeout(function () {
+                $('.js-daterangepicker').blur();
+            }, 100);
         }
     });
+
     // helper format dd/mm/yyyy (untuk tampilan datepicker)
     function formatDisplay(date) {
         let d = String(date.getDate()).padStart(2, '0');
@@ -84,42 +87,31 @@
 
 
     // onclick upload
-    $('#btn-attach').on('click', function() {
+    $('#btn-attach').on('click', function () {
         $('#upload').trigger('click');
     });
-    //  $('#filter-status').val('1').trigger('change');
-    // Filter Tabel
-    $('#filter-status').on('change', function() {
-        $tablePerizinan.bootstrapTable('refresh', {
-            silent: true
-        });
-    });
-
-
 
     //upload dokumen
-    // let fileBuffer = new DataTransfer();
-    // $(document).on('change', '#upload', function() {
-    //     const input = this;
-    //     const file = input.files[0];
+    let fileBuffer = new DataTransfer();
+    $(document).on('change', '#upload', function () {
+        const input = this;
+        const file = input.files[0];
 
-    //     if (!file) return;
+        if (!file) return;
 
-    //     if (file.type !== "application/pdf") {
-    //         Swal.fire("Error", "File harus PDF", "error");
-    //         input.value = "";
-    //         return;
-    //     }
+        if (file.type !== "application/pdf") {
+            Swal.fire("Error", "File harus PDF", "error");
+            input.value = "";
+            return;
+        }
 
-    //     fileBuffer = new DataTransfer();
-    //     fileBuffer.items.add(file);
-    //     input.files = fileBuffer.files;
+        fileBuffer = new DataTransfer();
+        fileBuffer.items.add(file);
+        input.files = fileBuffer.files;
 
-    //     $('#preview-images').empty();
-    //     renderPreviewPDF(file);
-    // });
-
-
+        $('#preview-images').empty();
+        renderPreviewPDF(file);
+    });
 
     function renderPreviewPDF(file) {
         const fileURL = URL.createObjectURL(file);
@@ -155,27 +147,28 @@
         </div>
     `);
     }
+
     // Lihat FIle PDF
-    $(document).on('click', '.btn-preview-pdf', function() {
+    $(document).on('click', '.btn-preview-pdf', function () {
         $('#preview-pdf').attr('src', $(this).data('src'));
         $('#modal-preview-pdf').modal('show');
         $('#modal-perizinan').modal('hide');
     });
 
     // hapus dokumen
-    $(document).on('click', '.btn-remove-pdf', function() {
+    $(document).on('click', '.btn-remove-pdf', function () {
         // fileBuffer = new DataTransfer();
         $('#upload').val('');
         $('#preview-images').empty();
     });
 
     // close modal
-    $('#modal-preview-pdf').on('hidden.bs.modal', function() {
+    $('#modal-preview-pdf').on('hidden.bs.modal', function () {
         $('#modal-perizinan').modal('show');
     });
 
     // Open Modal perizinan
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-perizinan').removeClass('was-validated');
         $('#modal-perizinan').modal('show');
         $('.modal-title').text('Form Tambah Perizinan');
@@ -191,7 +184,7 @@
     });
 
     // Save Asset
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         var url, type;
         if (id) {
@@ -203,7 +196,7 @@
             type = "POST";
         }
         var forms = document.getElementsByClassName('form-perizinan');
-        Array.prototype.filter.call(forms, function(form) {
+        Array.prototype.filter.call(forms, function (form) {
 
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
@@ -226,18 +219,18 @@
                     contentType: false,
                     dataType: "json",
 
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm"></span>'
                         ).attr('disabled', true);
                     },
 
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
 
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success) {
                             Alert('success', res.message);
                             $('#modal-perizinan').modal('hide');
@@ -262,7 +255,7 @@
     });
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -280,7 +273,7 @@
             search: true,
             showColumns: true,
             showPaginationSwitch: true,
-            showToggle: true,
+            // showToggle: true,
             showExport: true,
             pagination: true,
             maintainSelected: true,
@@ -293,9 +286,9 @@
             minimumCountColumns: 2,
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
-            exportTypes: ['json', 'csv', 'txt', 'excel'],
+            exportTypes: ['excel', 'pdf'],
             url: "{{ route('legal.perizinan.view') }}",
-            queryParams: function(params) {
+            queryParams: function (params) {
                 console.log("Filter:", $('#tgl_awal').val(), $('#tgl_akhir').val());
 
                 return {
@@ -307,77 +300,77 @@
             },
             columns: [
                 [{
-                        field: "id",
-                        sortable: true,
-                        align: "center",
-                        formatter: function(value, row, index) {
-                            return index + 1;
-                        },
+                    field: "id",
+                    sortable: true,
+                    align: "center",
+                    formatter: function (value, row, index) {
+                        return index + 1;
                     },
-                    {
-                        field: 'nomor_perizinan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'jenis_perizinan',
-                        sortable: true,
-                    },
-                    {
-                        field: 'tgl_awal',
-                        sortable: true,
-                    },
-                    {
-                        field: 'tgl_akhir',
-                        sortable: true,
-                    },
-                    {
-                        field: "sisa_hari",
-                        sortable: true,
-                        align: "center",
-                        formatter: function(value, row, index) {
+                },
+                {
+                    field: 'nomor_perizinan',
+                    sortable: true,
+                },
+                {
+                    field: 'jenis_perizinan',
+                    sortable: true,
+                },
+                {
+                    field: 'tgl_awal',
+                    sortable: true,
+                },
+                {
+                    field: 'tgl_akhir',
+                    sortable: true,
+                },
+                {
+                    field: "sisa_hari",
+                    sortable: true,
+                    align: "center",
+                    formatter: function (value, row, index) {
 
-                            if (value <= 0) {
-                                return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Perizinan Berakhir</button>';
-                            } else if (value <= 90) {
-                                return '<button class="btn btn-pill btn-danger btn-xs">' + value +
-                                    ' Hari</button>';
-                            } else if (value <= 180) {
-                                return '<button class="btn btn-pill btn-warning btn-xs">' + value +
-                                    ' Hari</button>';
-                            } else {
-                                return '<button class="btn btn-pill btn-success btn-xs">' + value +
-                                    ' Hari</button>';
-                            }
+                        if (value <= 0) {
+                            return '<button class="btn btn-pill btn-xs" style="background-color: gray !important; border-color: gray !important; color: white;">Berakhir</button>';
+                        } else if (value <= 90) {
+                            return '<button class="btn btn-pill btn-danger btn-xs">' + value +
+                                ' Hari</button>';
+                        } else if (value <= 180) {
+                            return '<button class="btn btn-pill btn-warning btn-xs">' + value +
+                                ' Hari</button>';
+                        } else {
+                            return '<button class="btn btn-pill btn-success btn-xs">' + value +
+                                ' Hari</button>';
+                        }
 
-                        }
-                    },
-                    {
-                        width: '100%',
-                        field: 'status1',
-                        sortable: true,
-                        events: window.updateStatusPerizinan,
-                        formatter: function(value, row, index) {
-                            return [
-                                '<div class="media-body text-center switch-sm icon-state">',
-                                '<label class="switch">',
-                                '<input type="checkbox" class="update-status" ' + (row.status ===
-                                    '1' ? 'checked' : '') + '>',
-                                '<span class="switch-state"></span>',
-                                '</label>',
-                                '</div>'
-                            ].join("");
-                        }
-                    },
-                    {
-                        title: 'Action',
-                        field: 'action',
-                        align: 'center',
-                        events: window.eventsPerizinan,
-                        formatter: actionsFunctionPerizinan
                     }
+                },
+                {
+                    width: '100%',
+                    field: 'status1',
+                    sortable: true,
+                    events: window.updateStatusPerizinan,
+                    formatter: function (value, row, index) {
+                        return [
+                            '<div class="media-body text-center switch-sm icon-state">',
+                            '<label class="switch">',
+                            '<input type="checkbox" class="update-status" ' + (row.status ===
+                                '1' ? 'checked' : '') + '>',
+                            '<span class="switch-state"></span>',
+                            '</label>',
+                            '</div>'
+                        ].join("");
+                    }
+                },
+                {
+                    title: 'Action',
+                    field: 'action',
+                    align: 'center',
+                    events: window.eventsPerizinan,
+                    formatter: actionsFunctionPerizinan
+                }
                 ]
             ],
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 if (xhr.status == 400) {
                     $.notify({
                         icon: "fa fa-check",
@@ -414,7 +407,7 @@
                     });
                 }
             },
-            responseHandler: function(res) {
+            responseHandler: function (res) {
                 return res;
             }
         });
@@ -427,7 +420,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
@@ -437,7 +430,7 @@
 
     // Handle events button actions
     window.eventsPerizinan = {
-        'click .btn-print': function(e, value, row, index) {
+        'click .btn-print': function (e, value, row, index) {
             if (row.upload) {
                 var fileUrl = '{{ url('uploads/legal/perizinan') }}/' + row.upload;
                 window.open(fileUrl, '_blank');
@@ -446,7 +439,7 @@
             }
         },
 
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-perizinan').modal('show');
             $('.modal-title').text('Form Edit Perizinan');
             $('.save-btn').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
@@ -490,7 +483,7 @@
             console.log(row);
 
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('legal.perizinan.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -511,14 +504,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $tablePerizinan.bootstrapTable('refresh');
                     });
 
@@ -529,7 +522,7 @@
 
     // Window operateChange Status perizinan
     window.updateStatusPerizinan = {
-        'click .update-status': function(e, value, row, index) {
+        'click .update-status': function (e, value, row, index) {
             var url = "{{ route('legal.perizinan.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -540,7 +533,7 @@
                     table: 'polis',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(res, status, xhr) {
+                success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -548,7 +541,7 @@
                     }
                     $tablePerizinan.bootstrapTable('refresh');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {
@@ -562,14 +555,14 @@
     }
 
 
-    window.addEventListener("load", function() {
+    window.addEventListener("load", function () {
         fetch("{{ route('legal.perizinan.notify') }}", {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": "{{ csrf_token() }}",
-                    "Accept": "application/json"
-                }
-            })
+            method: "POST",
+            headers: {
+                "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                "Accept": "application/json"
+            }
+        })
             .then(res => res.json())
             .then(data => {
 
@@ -579,7 +572,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Menu Perizinan',
-                        text: 'Tidak ada Perizinan yang akan berakhir dalam 60 hari.',
+                        text: 'Tidak ada Perizinan yang akan berakhir dalam 90 hari.',
                         showCloseButton: true,
                         allowOutsideClick: false,
                         allowEscapeKey: false

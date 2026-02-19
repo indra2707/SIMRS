@@ -18,7 +18,6 @@ return new class extends Migration
             $table->date('tgl_awal');
             $table->date('tgl_akhir');
             $table->string('upload');
-            $table->string('status');
              $table->enum('status', ['0', '1'])->default('1');
             $table->timestamps();
 
