@@ -91,9 +91,15 @@
         $('#upload').trigger('click');
     });
 
+<<<<<<< HEAD
     //upload dokumen
     let fileBuffer = new DataTransfer();
     $(document).on('change', '#upload', function () {
+=======
+    // upload dokumen
+    let fileBuffer = new DataTransfer();
+    $(document).on('change', '#upload', function() {
+>>>>>>> e1ff38bbe566d2f64f2da9737688ae56267bcc66
         const input = this;
         const file = input.files[0];
 
@@ -104,6 +110,17 @@
             input.value = "";
             return;
         }
+<<<<<<< HEAD
+=======
+
+        fileBuffer = new DataTransfer();
+        fileBuffer.items.add(file);
+        input.files = fileBuffer.files;
+
+        $('#preview-images').empty();
+        renderPreviewPDF(file);
+    });
+>>>>>>> e1ff38bbe566d2f64f2da9737688ae56267bcc66
 
         fileBuffer = new DataTransfer();
         fileBuffer.items.add(file);
