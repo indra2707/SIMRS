@@ -42,13 +42,15 @@ class PegawaiController extends Controller
                 ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
                 ->leftJoin('tbl_fungsi', 'tbl_fungsi.id', '=', 'pegawai.id_sub_fungsi')
                 ->leftJoin('tbl_bank', 'tbl_bank.id', '=', 'pegawai.id_bank')
+                ->leftJoin('tbl_unit', 'tbl_unit.id', '=', 'pegawai.id_unit')
                 ->select(
                     'pegawai.*',
                     'tbl_sk_struktur.no_sk as no_sk_struktur',
                     'tbl_jabatan.nama_jabatan as nama_jabatan',
                     'tbl_jabatan.unit as nama_rumah_sakit',
                     'tbl_fungsi.nama_fungsi as nama_fungsi',
-                    'tbl_bank.nama_bank as nama_bank'
+                    'tbl_bank.nama_bank as nama_bank',
+                    'tbl_unit.nama as nama_unit'
                 )
                 ->orderBy('pegawai.id', 'desc')
                 ->get();
