@@ -97,27 +97,27 @@
 
 
 
-    //upload dokumen
-    // let fileBuffer = new DataTransfer();
-    // $(document).on('change', '#upload', function() {
-    //     const input = this;
-    //     const file = input.files[0];
+    // upload dokumen
+    let fileBuffer = new DataTransfer();
+    $(document).on('change', '#upload', function() {
+        const input = this;
+        const file = input.files[0];
 
-    //     if (!file) return;
+        if (!file) return;
 
-    //     if (file.type !== "application/pdf") {
-    //         Swal.fire("Error", "File harus PDF", "error");
-    //         input.value = "";
-    //         return;
-    //     }
+        if (file.type !== "application/pdf") {
+            Swal.fire("Error", "File harus PDF", "error");
+            input.value = "";
+            return;
+        }
 
-    //     fileBuffer = new DataTransfer();
-    //     fileBuffer.items.add(file);
-    //     input.files = fileBuffer.files;
+        fileBuffer = new DataTransfer();
+        fileBuffer.items.add(file);
+        input.files = fileBuffer.files;
 
-    //     $('#preview-images').empty();
-    //     renderPreviewPDF(file);
-    // });
+        $('#preview-images').empty();
+        renderPreviewPDF(file);
+    });
 
 
 
@@ -427,7 +427,7 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-                '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-warning"></i> Print</a>',
             '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
             '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
