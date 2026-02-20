@@ -43,8 +43,17 @@
                             <form>
                                 <div class="row mb-2">
                                     <div class="profile-title">
-                                        <div class="media"> <img class="img-70 rounded-circle" alt=""
-                                                src="http://127.0.0.1:8000/assets/images/user/7.jpg">
+                                        <div class="media">
+                                            <!-- <img class="img-70 rounded-circle" alt=""
+                                                    src="http://127.0.0.1:8000/assets/images/user/7.jpg"> -->
+                                            @if (Session::get('jenis_kelamin') == 'Laki-laki')
+                                                <img class="b-r-10" src="{{ asset('assets/images/avatar/sample_l.png') }}"
+                                                    alt="" width="75" height="75">
+                                            @endif
+                                            @if (Session::get('jenis_kelamin') == 'Perempuan')
+                                                <img class="b-r-10" src="{{ asset('assets/images/avatar/sample_p.png') }}"
+                                                    alt="" width="75" height="75">
+                                            @endif
                                             <div class="media-body">
                                                 <h5 class="mb-1" id="nama_pekerja3"></h5>
                                                 <p id="rolle"></p>

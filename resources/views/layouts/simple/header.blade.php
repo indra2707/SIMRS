@@ -203,7 +203,14 @@
                 </li>
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
                     <div class="media profile-media">
-                        <img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
+                        @if (Session::get('jenis_kelamin') == 'Laki-laki')
+                            <img class="b-r-10" src="{{ asset('assets/images/avatar/sample_l.png') }}" alt="" width="40"
+                                height="40">
+                        @endif
+                        @if (Session::get('jenis_kelamin') == 'Perempuan')
+                            <img class="b-r-10" src="{{ asset('assets/images/avatar/sample_p.png') }}" alt="" width="40"
+                                height="40">
+                        @endif
                         <div class="media-body">
                             <span>{{ Session::get('nama_pekerja') }}</span>
                             <p class="mb-0 font-roboto">{{ Session::get('nama_role') }} <i
@@ -211,9 +218,11 @@
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
-                        <li><a href="{{ route('master-data.account') }}"><i data-feather="user"></i><span>Account</span></a></li>
+                        <li><a href="{{ route('master-data.account') }}"><i
+                                    data-feather="user"></i><span>Account</span></a></li>
                         <!-- <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li> -->
-                        <li><a href="{{ route('user.user-pekerja') }}"><i data-feather="settings"></i><span>Password</span></a></li>
+                        <li><a href="{{ route('user.user-pekerja') }}"><i
+                                    data-feather="settings"></i><span>Password</span></a></li>
                         <!-- <li><a href="#"><i data-feather="file-text"></i><span>Settings</span></a></li> -->
                         <li><a href="{{ route('admin.logout') }}"><i data-feather="log-in"> </i><span>Log Out</span></a>
                         </li>
