@@ -331,7 +331,7 @@
                 {
                     field: 'nama_lengkap',
                     sortable: true,
-                    align: 'center',
+                    // align: 'center',
                 },
                 {
                     field: 'created_at',
@@ -353,7 +353,7 @@
                 {
                     field: 'updated_by',
                     sortable: true,
-                    align: 'center',
+                    // align: 'center',
                     visible: false
                 },
                 {

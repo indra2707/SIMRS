@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Svg\Tag\Group;
 
 class HelpDeskController extends Controller
 {
@@ -38,7 +39,9 @@ class HelpDeskController extends Controller
                 'help_desk.*',
                 'help_desk.created_at as created_at',
                 'users.username as user_name'
-            );
+            )
+
+          ->orderBy('created_at', 'DESC');
 
         // FILTER TANGGAL
         if ($request->tgl_awal && $request->tgl_akhir) {

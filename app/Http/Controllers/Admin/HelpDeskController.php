@@ -70,7 +70,9 @@ class HelpDeskController extends Controller
                     'help_desk.created_at as created_at',
                     'users.username as user_name',
                     'pegawai.nama_pekerja as nama_lengkap'
-                );
+                )
+
+                ->orderBy('created_at', 'DESC');
 
             // Filter berdasarkan role
             if (in_array($namaRole, ['Teknik', 'Medis', 'General Affair'])) {
