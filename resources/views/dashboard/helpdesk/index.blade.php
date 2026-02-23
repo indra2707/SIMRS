@@ -542,6 +542,96 @@
 							</div>
 						  </div> -->
 
+			<div class="col-xxl-8 col-md-12 box-col-12">
+				<div class="card">
+					<div class="card-header card-no-border">
+						<h5>Filter Tanggal</h5>
+					</div>
+					<div class="card-body pt-0">
+						<div class="row align-items-center">
+
+							<!-- Tanggal Awal -->
+							<div class="col-md-2">
+								<label class="col-form-label">Tanggal Awal</label>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control js-datepicker digits" name="tgl_awal" type="text"
+									placeholder="Tanggal Awal..." data-language="en" required>
+							</div>
+
+							<!-- Tanggal Akhir -->
+							<div class="col-md-2">
+								<label class="col-form-label">Tanggal Akhir</label>
+							</div>
+							<div class="col-md-4">
+								<input class="form-control js-datepicker digits" name="tgl_akhir" type="text"
+									placeholder="Tanggal Akhir..." data-language="en" required>
+							</div>
+
+							<br><br><br><br><br><br>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- ICT Chart -->
+			<div class="col-xxl-3 col-md-6 box-col-6">
+				<div class="card">
+					<div class="card-header card-no-border">
+						<h5>ICT</h5><span class="f-light f-w-500 f-14">(Total Laporan)</span>
+					</div>
+					<div class="card-body pt-0">
+						<div class="monthly-profit">
+							<div id="ICT"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Teknik Chart -->
+			<div class="col-xxl-3 col-md-6 box-col-6">
+				<div class="card">
+					<div class="card-header card-no-border">
+						<h5>Teknik</h5><span class="f-light f-w-500 f-14">(Total Laporan)</span>
+					</div>
+					<div class="card-body pt-0">
+						<div class="monthly-profit">
+							<div id="Teknik"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Atem Chart -->
+			<div class="col-xxl-3 col-md-6 box-col-6">
+				<div class="card">
+					<div class="card-header card-no-border">
+						<h5>Electro Medis</h5><span class="f-light f-w-500 f-14">(Total Laporan)</span>
+					</div>
+					<div class="card-body pt-0">
+						<div class="monthly-profit">
+							<div id="ElectroMedis"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- General Affair Chart -->
+			<div class="col-xxl-3 col-md-6 box-col-6">
+				<div class="card">
+					<div class="card-header card-no-border">
+						<h5>General Affair</h5><span class="f-light f-w-500 f-14">(Total Laporan)</span>
+					</div>
+					<div class="card-body pt-0">
+						<div class="monthly-profit">
+							<div id="GeneralAffair"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -562,4 +652,245 @@
 	<script src="{{ asset('assets/js/typeahead-search/typeahead-custom.js') }}"></script>
 	<script src="{{ asset('assets/js/height-equal.js') }}"></script>
 	<script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script>
+
+
+	<script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
+	<!-- <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
+				<script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
+				<script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
+				<script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
+				<script src="{{ asset('assets/js/dashboard/dashboard_2.js') }}"></script>
+				<script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script> -->
 @endsection
+
+
+<script>
+	// ICT
+	document.addEventListener("DOMContentLoaded", function () {
+		if (document.querySelector("#ICT")) {
+
+			var options = {
+				series: [12000, 15000, 7098],
+				chart: {
+					type: 'pie',
+					height: 280
+				},
+				labels: ['Done', 'Accept', 'On Progress'],
+				colors: ['#4CAF50', '#1E88E5', '#FB8C00'],
+				legend: {
+					position: 'bottom',
+					fontSize: '14px',
+				},
+				dataLabels: {
+					enabled: true,
+					formatter: function (val) {
+						return val.toFixed(1) + "%";
+					}
+				},
+				tooltip: {
+					y: {
+						formatter: function (val) {
+							return "$ " + val.toLocaleString();
+						}
+					}
+				},
+				stroke: {
+					width: 2
+				}
+			};
+
+			var chart = new ApexCharts(document.querySelector("#ICT"), options);
+			chart.render();
+		}
+
+	});
+
+
+	// Teknik
+	document.addEventListener("DOMContentLoaded", function () {
+		if (document.querySelector("#Teknik")) {
+
+			var options = {
+				series: [12000, 15000, 7098],
+				chart: {
+					type: 'pie',
+					height: 280
+				},
+				labels: ['Done', 'Accept', 'On Progress'],
+				colors: ['#4CAF50', '#1E88E5', '#FB8C00'],
+				legend: {
+					position: 'bottom',
+					fontSize: '14px',
+				},
+				dataLabels: {
+					enabled: true,
+					formatter: function (val) {
+						return val.toFixed(1) + "%";
+					}
+				},
+				tooltip: {
+					y: {
+						formatter: function (val) {
+							return "$ " + val.toLocaleString();
+						}
+					}
+				},
+				stroke: {
+					width: 2
+				}
+			};
+
+			var chart = new ApexCharts(document.querySelector("#Teknik"), options);
+			chart.render();
+		}
+
+	});
+
+
+	// Electro Medis
+	document.addEventListener("DOMContentLoaded", function () {
+		if (document.querySelector("#ElectroMedis")) {
+
+			var options = {
+				series: [12000, 15000, 7098],
+				chart: {
+					type: 'pie',
+					height: 280
+				},
+				labels: ['Done', 'Accept', 'On Progress'],
+				colors: ['#4CAF50', '#1E88E5', '#FB8C00'],
+				legend: {
+					position: 'bottom',
+					fontSize: '14px',
+				},
+				dataLabels: {
+					enabled: true,
+					formatter: function (val) {
+						return val.toFixed(1) + "%";
+					}
+				},
+				tooltip: {
+					y: {
+						formatter: function (val) {
+							return "$ " + val.toLocaleString();
+						}
+					}
+				},
+				stroke: {
+					width: 2
+				}
+			};
+
+			var chart = new ApexCharts(document.querySelector("#ElectroMedis"), options);
+			chart.render();
+		}
+
+	});
+
+
+	// Electro General Affair
+	document.addEventListener("DOMContentLoaded", function () {
+		if (document.querySelector("#GeneralAffair")) {
+
+			var options = {
+				series: [12000, 15000, 7098],
+				chart: {
+					type: 'pie',
+					height: 280
+				},
+				labels: ['Done', 'Accept', 'On Progress'],
+				colors: ['#4CAF50', '#1E88E5', '#FB8C00'],
+				legend: {
+					position: 'bottom',
+					fontSize: '14px',
+				},
+				dataLabels: {
+					enabled: true,
+					formatter: function (val) {
+						return val.toFixed(1) + "%";
+					}
+				},
+				tooltip: {
+					y: {
+						formatter: function (val) {
+							return "$ " + val.toLocaleString();
+						}
+					}
+				},
+				stroke: {
+					width: 2
+				}
+			};
+
+			var chart = new ApexCharts(document.querySelector("#GeneralAffair"), options);
+			chart.render();
+		}
+
+	});
+
+	//Tanggal Range Picker
+	$('.js-daterangepicker').datepicker({
+		dateFormat: 'dd/mm/yyyy',
+		range: true,
+		multipleDates: true,
+		multipleDatesSeparator: ' - ',
+		autoClose: true,
+		toggleSelected: false,
+		clearButton: true,
+
+		onSelect: function (formattedDate, date, inst) {
+
+			// Jika tombol clear diklik
+			if (!formattedDate) {
+
+				$('#tgl_awal').val(null);
+				$('#tgl_akhir').val(null);
+
+				$tablePerizinan.bootstrapTable('refresh', {
+					pageNumber: 1
+				});
+
+				// Hilangkan autofocus setelah clear
+				setTimeout(function () {
+					$('.js-daterangepicker').blur();
+				}, 100);
+
+				return;
+			}
+
+			if (!date || date.length < 2) return;
+
+			let start = date[0];
+			let end = date[1];
+
+			$('#tgl_awal').val(formatDate(start));
+			$('#tgl_akhir').val(formatDate(end));
+
+			$tablePerizinan.bootstrapTable('refresh', {
+				pageNumber: 1
+			});
+		},
+
+		onHide: function (inst) {
+			setTimeout(function () {
+				$('.js-daterangepicker').blur();
+			}, 100);
+		}
+	});
+
+	// helper format dd/mm/yyyy (untuk tampilan datepicker)
+	function formatDisplay(date) {
+		let d = String(date.getDate()).padStart(2, '0');
+		let m = String(date.getMonth() + 1).padStart(2, '0');
+		let y = date.getFullYear();
+		return `${d}/${m}/${y}`;
+	}
+
+	// helper format Y-m-d (untuk database)
+	function formatDate(date) {
+		let d = String(date.getDate()).padStart(2, '0');
+		let m = String(date.getMonth() + 1).padStart(2, '0');
+		let y = date.getFullYear();
+		return `${y}-${m}-${d}`;
+	}
+</script>

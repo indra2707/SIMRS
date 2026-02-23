@@ -55,6 +55,8 @@ use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\JeniskontrakController;
 
+use App\Http\Controllers\Dashboard\DashboardController;
+
 use App\Http\Controllers\Legal\PksController;
 use App\Http\Controllers\Legal\PerizinanController;
 
@@ -69,6 +71,8 @@ Route::group(['middleware' => 'login.check'], function () {
     Route::post('/process-login', [LoginController::class, 'login'])->name('admin.login-process');
 });
 Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
+Route::get('/dashboard/helpdesk', [DashboardController::class, 'dashboardHelpdesk']);
 
 // ADMIN HELPDESK
 Route::prefix('admin')->middleware(['auth'])->group(function () {
