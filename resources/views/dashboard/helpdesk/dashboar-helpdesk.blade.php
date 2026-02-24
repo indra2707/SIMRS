@@ -110,7 +110,7 @@
 				<div class="card visitor-card">
 					<div class="card-header card-no-border">
 						<div class="header-top">
-							<h5 class="m-0">Visitors<span class="f-14 font-primary f-w-500 ms-1">
+							<h5 class="m-0">Aktifitas User<span class="f-14 font-primary f-w-500 ms-1">
 									<svg class="svg-fill me-1">
 										<use href="{{ asset('assets/svg/icon-sprite.svg#user-visitor') }}"></use>
 									</svg></span></h5>
