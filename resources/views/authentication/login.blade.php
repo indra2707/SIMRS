@@ -105,7 +105,7 @@
                                                                 success: function(res, status, xhr) {
                                                                     if (xhr.status == 200 && status == "success") {
                                                                         window.location.href =
-                                                                            "{{ route('home') }}";
+                                                                            "{{ route('dashboard.helpdesk') }}";
                                                                     } else {
                                                                         swal({
                                                                             icon: 'warning',
