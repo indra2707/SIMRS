@@ -1,4 +1,7 @@
 <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 <script type="text/javascript">
 
     let ictChart;
@@ -7,6 +10,133 @@
     let generalAffairChart;
 
     // tanggal
+    // $(function () {
+
+    //     function formatDate(date) {
+    //         return ("0" + date.getDate()).slice(-2) + "/" +
+    //             ("0" + (date.getMonth() + 1)).slice(-2) + "/" +
+    //             date.getFullYear();
+    //     }
+
+    //     let todayDate = new Date();
+    //     let today = formatDate(todayDate);
+
+    //     // INIT DATEPICKER
+    //     $('.js-datepicker').datepicker({
+    //         dateFormat: 'dd/mm/yyyy',
+    //         autoClose: true,
+    //         onSelect: function () {
+
+    //             let tgl_awal = $('input[name="tgl_awal"]').val();
+    //             let tgl_akhir = $('input[name="tgl_akhir"]').val();
+
+    //             console.log("Tanggal dipilih:", tgl_awal, tgl_akhir);
+
+    //             if (tgl_awal && tgl_akhir) {
+    //                 loadICTChart(tgl_awal, tgl_akhir);
+    //                 loadTeknikChart(tgl_awal, tgl_akhir);
+    //                 loadElektroMedisChart(tgl_awal, tgl_akhir);
+    //                 loadGeneralAffairChart(tgl_awal, tgl_akhir);
+    //                 loadVisitorsChart(tgl_awal, tgl_akhir);
+    //             }
+    //         }
+    //     });
+
+    //     // SET DEFAULT HARI INI
+    //     $('input[name="tgl_awal"]').datepicker().data('datepicker').selectDate(todayDate);
+    //     $('input[name="tgl_akhir"]').datepicker().data('datepicker').selectDate(todayDate);
+
+    //     // LOAD PERTAMA
+    //     loadICTChart(today, today);
+    //     loadTeknikChart(today, today);
+    //     loadElektroMedisChart(today, today);
+    //     loadGeneralAffairChart(today, today);
+    //     loadVisitorsChart(today, today);
+
+    // });
+
+    let visitorChart = null;
+
+    function loadVisitorsChart(tgl_awal = null, tgl_akhir = null) {
+
+        let canvas = document.getElementById('visitor-chart');
+        if (!canvas) return;
+
+        let ctx = canvas.getContext('2d');
+
+        $.ajax({
+            url: "{{ route('dashboard.helpdesk.viewall') }}",
+            type: "GET",
+            dataType: "json",
+            data: {
+                tgl_awal: tgl_awal,
+                tgl_akhir: tgl_akhir
+            },
+            success: function (response) {
+
+                console.log("Visitors:", response);
+
+                // kalau data kosong
+                if (!response.labels || response.labels.length === 0) {
+                    if (visitorChart) {
+                        visitorChart.destroy();
+                    }
+                    return;
+                }
+
+                // destroy chart lama
+                if (visitorChart) {
+                    visitorChart.destroy();
+                }
+
+                visitorChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: response.labels,
+                        datasets: [{
+                            label: 'Total Update',
+                            data: response.data,
+                            backgroundColor: '#1f3b73',
+                            borderRadius: 8,
+                            barThickness: 40
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 800
+                        },
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    precision: 0
+                                }
+                            }
+                        }
+                    }
+                });
+            },
+            error: function (xhr) {
+                console.log("AJAX ERROR:", xhr.responseText);
+            }
+        });
+    }
+
+
+
+
+
+
+    // ================= DATEPICKER =================
+
     $(function () {
 
         function formatDate(date) {
@@ -18,7 +148,6 @@
         let todayDate = new Date();
         let today = formatDate(todayDate);
 
-        // INIT DATEPICKER
         $('.js-datepicker').datepicker({
             dateFormat: 'dd/mm/yyyy',
             autoClose: true,
@@ -27,26 +156,27 @@
                 let tgl_awal = $('input[name="tgl_awal"]').val();
                 let tgl_akhir = $('input[name="tgl_akhir"]').val();
 
-                console.log("Tanggal dipilih:", tgl_awal, tgl_akhir);
-
                 if (tgl_awal && tgl_akhir) {
                     loadICTChart(tgl_awal, tgl_akhir);
                     loadTeknikChart(tgl_awal, tgl_akhir);
                     loadElektroMedisChart(tgl_awal, tgl_akhir);
                     loadGeneralAffairChart(tgl_awal, tgl_akhir);
+                    loadVisitorsChart(tgl_awal, tgl_akhir);
                 }
             }
         });
 
-        // SET DEFAULT HARI INI
+        // set default hari ini
         $('input[name="tgl_awal"]').datepicker().data('datepicker').selectDate(todayDate);
         $('input[name="tgl_akhir"]').datepicker().data('datepicker').selectDate(todayDate);
 
-        // LOAD PERTAMA
+        // load pertama
         loadICTChart(today, today);
         loadTeknikChart(today, today);
         loadElektroMedisChart(today, today);
         loadGeneralAffairChart(today, today);
+        loadVisitorsChart(today, today);
+
     });
 
 
@@ -218,5 +348,83 @@
                 generalAffairChart.render();
             }
         });
+
+
+        // Visitors Chart
+        let visitorChart = null;
+
+        function loadVisitorsChart(tgl_awal = null, tgl_akhir = null) {
+
+            let canvas = document.getElementById('visitor-chart');
+            if (!canvas) return;
+
+            let ctx = canvas.getContext('2d');
+
+            $.ajax({
+                url: "{{ route('dashboard.helpdesk.viewall') }}",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    tgl_awal: tgl_awal,
+                    tgl_akhir: tgl_akhir
+                },
+                success: function (response) {
+
+                    console.log("Visitors:", response);
+
+                    // kalau data kosong
+                    if (!response.labels || response.labels.length === 0) {
+                        if (visitorChart) {
+                            visitorChart.destroy();
+                        }
+                        return;
+                    }
+
+                    // destroy chart lama
+                    if (visitorChart) {
+                        visitorChart.destroy();
+                    }
+
+                    visitorChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: response.labels,
+                            datasets: [{
+                                label: 'Total Update',
+                                data: response.data,
+                                backgroundColor: '#1f3b73',
+                                borderRadius: 8,
+                                barThickness: 40
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: {
+                                duration: 800
+                            },
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                x: {
+                                    grid: { display: false }
+                                },
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        precision: 0
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (xhr) {
+                    console.log("AJAX ERROR:", xhr.responseText);
+                }
+            });
+        }
+
     }
 </script>

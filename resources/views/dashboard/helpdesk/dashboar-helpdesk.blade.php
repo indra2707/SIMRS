@@ -32,21 +32,17 @@
 						<div class="row align-items-center">
 
 							<!-- Tanggal Awal -->
-							<div class="col-md-2">
-								<label class="col-form-label">Tanggal Awal</label>
-							</div>
-							<div class="col-md-4">
+							<div class="col-md-6">
+								<label class="form-label text-muted small">TANGGAL AWAL</label>
 								<input class="form-control js-datepicker digits" name="tgl_awal" type="text"
-									placeholder="Tanggal Awal..." data-language="en" required>
+									placeholder="--- Pilih Tanggal Awal ---" data-language="en" required>
 							</div>
 
 							<!-- Tanggal Akhir -->
-							<div class="col-md-2">
-								<label class="col-form-label">Tanggal Akhir</label>
-							</div>
-							<div class="col-md-4">
+							<div class="col-md-6">
+								<label class="form-label text-muted small">TANGGAL AKHIR</label>
 								<input class="form-control js-datepicker digits" name="tgl_akhir" type="text"
-									placeholder="Tanggal Akhir..." data-language="en" required>
+									placeholder="--- Pilih Tanggal Akhir ---" data-language="en" required>
 							</div>
 						</div>
 					</div>
@@ -109,6 +105,27 @@
 				</div>
 			</div>
 
+			<!-- Visitors Chart -->
+			<div class="col-xxl-12 col-xl-4 col-sm-6 box-col-6">
+				<div class="card visitor-card">
+					<div class="card-header card-no-border">
+						<div class="header-top">
+							<h5 class="m-0">Visitors<span class="f-14 font-primary f-w-500 ms-1">
+									<svg class="svg-fill me-1">
+										<use href="{{ asset('assets/svg/icon-sprite.svg#user-visitor') }}"></use>
+									</svg></span></h5>
+							<div class="card-header-right-icon">
+							</div>
+						</div>
+					</div>
+					<div class="card-body pt-0">
+						<div class="visitors-container">
+							<canvas id="visitor-chart" height="250"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 
@@ -116,5 +133,5 @@
 
 
 @section('script')
-    @include('dashboard.helpdesk.script')
+	@include('dashboard.helpdesk.script')
 @endsection

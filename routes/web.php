@@ -562,6 +562,8 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/helpdesk/teknik', [DashboardHelpdeskController::class, 'dashboardHelpdeskTeknik'])->name('dashboard.helpdesk.teknik');
     Route::get('/helpdesk/electromedis', [DashboardHelpdeskController::class, 'dashboardHelpdeskElektroMedis'])->name('dashboard.helpdesk.electromedis');
     Route::get('/helpdesk/general_affair', [DashboardHelpdeskController::class, 'dashboardHelpdeskGeneralAffair'])->name('dashboard.helpdesk.general_affair');
+    Route::get('/helpdesk/viewall', [DashboardHelpdeskController::class, 'dashboardHelpdeskAll'])->name('dashboard.helpdesk.viewall');
+
 
 });
 

@@ -153,4 +153,36 @@ class DashboardHelpdeskController extends Controller
         return response()->json($result);
     }
 
+    // Dashboard All
+    public function dashboardHelpdeskAll(Request $request)
+    {
+        $query = DB::table('help_desk')
+            ->select('updated_by', DB::raw('COUNT(*) as total'))
+            ->whereNotNull('updated_by');
+
+        // Filter tanggal jika ada
+        if ($request->tgl_awal && $request->tgl_akhir) {
+
+            $tglAwal = Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d');
+            $tglAkhir = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d');
+
+            $query->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
+        }
+
+        $data = $query->groupBy('updated_by')->get();
+
+        $labels = [];
+        $totals = [];
+
+        foreach ($data as $row) {
+            $labels[] = $row->updated_by;
+            $totals[] = $row->total;
+        }
+
+        return response()->json([
+            'labels' => $labels,
+            'data' => $totals
+        ]);
+    }
+
 }
