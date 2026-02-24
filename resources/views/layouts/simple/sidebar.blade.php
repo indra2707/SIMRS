@@ -48,6 +48,9 @@
                             </svg><span class="lan-3">Dashboard</span></a>
                         <ul class="sidebar-submenu">
                             <li><a class="lan-4" href="{{ route('home') }}">Default</a></li>
+                            <li><a href="{{ route('dashboard.helpdesk') }}">Helpdesk</a></li>
+
+                            
                             @if (Session::get('username') == 'superadmin')
                                 <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
                                 <li><a href="{{ route('dashboard-03') }}">Online course</a></li>

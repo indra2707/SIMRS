@@ -55,7 +55,7 @@ use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\Poli_tindakanController;
 use App\Http\Controllers\MasterData\JeniskontrakController;
 
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\DashboardHelpdeskController;
 
 use App\Http\Controllers\Legal\PksController;
 use App\Http\Controllers\Legal\PerizinanController;
@@ -71,8 +71,6 @@ Route::group(['middleware' => 'login.check'], function () {
     Route::post('/process-login', [LoginController::class, 'login'])->name('admin.login-process');
 });
 Route::get('/logout', [LoginController::class, 'logout'])->name('admin.logout');
-
-Route::get('/dashboard/helpdesk', [DashboardController::class, 'dashboardHelpdesk']);
 
 // ADMIN HELPDESK
 Route::prefix('admin')->middleware(['auth'])->group(function () {
@@ -544,12 +542,6 @@ Route::group(['middleware' => 'loggedin'], function () {
 });
 
 
-
-
-
-
-
-
 // Route::group(['middleware' => 'login.check'], function () {
 //     // Dashboard
 
@@ -562,6 +554,15 @@ Route::prefix('dashboard')->group(function () {
     Route::view('dashboard-03', 'dashboard.dashboard-03')->name('dashboard-03');
     Route::view('dashboard-04', 'dashboard.dashboard-04')->name('dashboard-04');
     Route::view('dashboard-05', 'dashboard.dashboard-05')->name('dashboard-05');
+
+
+    // Helpdesk dashboard
+    Route::get('/helpdesk', [DashboardHelpdeskController::class, 'index'])->name('dashboard.helpdesk');
+    Route::get('/helpdesk/view', [DashboardHelpdeskController::class, 'dashboardHelpdesk'])->name('dashboard.helpdesk.view');
+    Route::get('/helpdesk/teknik', [DashboardHelpdeskController::class, 'dashboardHelpdeskTeknik'])->name('dashboard.helpdesk.teknik');
+    Route::get('/helpdesk/electromedis', [DashboardHelpdeskController::class, 'dashboardHelpdeskElektroMedis'])->name('dashboard.helpdesk.electromedis');
+    Route::get('/helpdesk/general_affair', [DashboardHelpdeskController::class, 'dashboardHelpdeskGeneralAffair'])->name('dashboard.helpdesk.general_affair');
+
 });
 
 //     // Users
