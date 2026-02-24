@@ -20,13 +20,22 @@ class DashboardHelpdeskController extends Controller
     }
 
     // Dashboard ICT
-    public function dashboardHelpdesk()
+    public function dashboardHelpdesk(Request $request)
     {
-        $data = DB::table('help_desk')
+        $query = DB::table('help_desk')
             ->select('status', DB::raw('count(*) as total'))
-            ->where('kategori', 'IT')
-            ->groupBy('status')
-            ->get();
+            ->where('kategori', 'IT');
+
+        // Jika ada filter tanggal
+        if ($request->tgl_awal && $request->tgl_akhir) {
+
+            $tglAwal = Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') ?? null;
+            $tglAkhir = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') ?? null;
+
+            $query->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
+        }
+
+        $data = $query->groupBy('status')->get();
 
         $result = [
             'accept' => 0,
@@ -35,21 +44,32 @@ class DashboardHelpdeskController extends Controller
         ];
 
         foreach ($data as $row) {
-            $result[$row->status] = $row->total;
+            if (array_key_exists($row->status, $result)) {
+                $result[$row->status] = $row->total;
+            }
         }
 
         return response()->json($result);
     }
 
 
-     // Dashboard Teknik
-    public function dashboardHelpdeskTeknik()
+    // Dashboard Teknik
+    public function dashboardHelpdeskTeknik(Request $request)
     {
-        $data = DB::table('help_desk')
+        $query = DB::table('help_desk')
             ->select('status', DB::raw('count(*) as total'))
-            ->where('kategori', 'Teknik')
-            ->groupBy('status')
-            ->get();
+            ->where('kategori', 'Teknik');
+
+        // Jika ada filter tanggal
+        if ($request->tgl_awal && $request->tgl_akhir) {
+
+            $tglAwal = Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') ?? null;
+            $tglAkhir = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') ?? null;
+
+            $query->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
+        }
+
+        $data = $query->groupBy('status')->get();
 
         $result = [
             'accept' => 0,
@@ -58,7 +78,9 @@ class DashboardHelpdeskController extends Controller
         ];
 
         foreach ($data as $row) {
-            $result[$row->status] = $row->total;
+            if (array_key_exists($row->status, $result)) {
+                $result[$row->status] = $row->total;
+            }
         }
 
         return response()->json($result);
@@ -66,13 +88,22 @@ class DashboardHelpdeskController extends Controller
 
 
     // Dashboard ElektroMedis
-    public function dashboardHelpdeskElektroMedis()
+    public function dashboardHelpdeskElektroMedis(Request $request)
     {
-        $data = DB::table('help_desk')
+        $query = DB::table('help_desk')
             ->select('status', DB::raw('count(*) as total'))
-            ->where('kategori', 'Medis')
-            ->groupBy('status')
-            ->get();
+            ->where('kategori', 'Medis');
+
+        // Jika ada filter tanggal
+        if ($request->tgl_awal && $request->tgl_akhir) {
+
+            $tglAwal = Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') ?? null;
+            $tglAkhir = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') ?? null;
+
+            $query->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
+        }
+
+        $data = $query->groupBy('status')->get();
 
         $result = [
             'accept' => 0,
@@ -81,20 +112,31 @@ class DashboardHelpdeskController extends Controller
         ];
 
         foreach ($data as $row) {
-            $result[$row->status] = $row->total;
+            if (array_key_exists($row->status, $result)) {
+                $result[$row->status] = $row->total;
+            }
         }
 
         return response()->json($result);
     }
 
     // Dashboard General Affair
-    public function dashboardHelpdeskGeneralAffair()
+    public function dashboardHelpdeskGeneralAffair(Request $request)
     {
-        $data = DB::table('help_desk')
+        $query = DB::table('help_desk')
             ->select('status', DB::raw('count(*) as total'))
-            ->where('kategori', 'General Affair')
-            ->groupBy('status')
-            ->get();
+            ->where('kategori', 'General Affair');
+
+        // Jika ada filter tanggal
+        if ($request->tgl_awal && $request->tgl_akhir) {
+
+            $tglAwal = Carbon::createFromFormat('d/m/Y', $request->tgl_awal)->format('Y-m-d') ?? null;
+            $tglAkhir = Carbon::createFromFormat('d/m/Y', $request->tgl_akhir)->format('Y-m-d') ?? null;
+
+            $query->whereBetween('tanggal', [$tglAwal, $tglAkhir]);
+        }
+
+        $data = $query->groupBy('status')->get();
 
         $result = [
             'accept' => 0,
@@ -103,7 +145,9 @@ class DashboardHelpdeskController extends Controller
         ];
 
         foreach ($data as $row) {
-            $result[$row->status] = $row->total;
+            if (array_key_exists($row->status, $result)) {
+                $result[$row->status] = $row->total;
+            }
         }
 
         return response()->json($result);
