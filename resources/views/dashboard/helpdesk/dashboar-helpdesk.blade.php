@@ -16,7 +16,7 @@
 
 @section('breadcrumb-items')
 	<li class="breadcrumb-item">Dashboard</li>
-	<li class="breadcrumb-item active">Default</li>
+	<li class="breadcrumb-item active">Dashboard Helpdesk</li>
 @endsection
 
 @section('content')

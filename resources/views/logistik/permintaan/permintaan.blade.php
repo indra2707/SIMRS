@@ -350,6 +350,7 @@
                         <div class="col-sm-4">
                             <select class="form-select form-control select2" name="status"
                                 data-placeholder="---- Pilih Salah Satu ----" required>
+                                <option value="Koordinasi terkait spesifikasi">Koordinasi terkait spesifikasi</option>
                                 <option value="Pengajuan Panjar">Pengajuan Panjar</option>
                                 <option value="Pengadaan">Pengadaan</option>
                                 <option value="Serah Terima">Serah Terima</option>
