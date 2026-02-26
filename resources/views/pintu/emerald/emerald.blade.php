@@ -27,7 +27,7 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Emerald</h3>
+    <h3>Emerald Access Door Management</h3>
 @endsection
 
 @section('breadcrumb-items')

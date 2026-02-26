@@ -47,9 +47,10 @@ use App\Http\Controllers\MasterData\PoliController;
 use App\http\Controllers\MasterData\SKStrukturController;
 use App\Http\Controllers\MasterData\SpesialisController;
 use App\Http\Controllers\MasterData\UnitController;
-use App\Http\Controllers\MasterUserController;
+
 use App\Http\Controllers\Pintu\EmeraldController;
 use App\Http\Controllers\Pintu\RubyController;
+
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
@@ -477,7 +478,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/emerald/delete/{id}', [EmeraldController::class, 'destroy'])->name('pintu.emerald.delete');
         Route::get('/master-user/sync', [EmeraldController::class, 'syncFromDevice'])->name('pintu.emerald.sync');
      
-     
+         // Ruby
         Route::get('/ruby', [RubyController::class, 'index'])->name('pintu.ruby');
         Route::get('/ruby/view', [RubyController::class, 'views'])->name('pintu.ruby.view');
         Route::post('/ruby/store', [RubyController::class, 'store'])->name('pintu.ruby.create');

@@ -117,6 +117,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('pintu.emerald') }}">Emerald</a></li>
+                            <li><a href="{{ route('pintu.ruby') }}">Ruby</a></li>
                         </ul>
                     </li>
 
