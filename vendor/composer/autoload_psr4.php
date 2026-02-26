@@ -54,6 +54,7 @@ return array(
     'React\\EventLoop\\' => array($vendorDir . '/react/event-loop/src'),
     'React\\Dns\\' => array($vendorDir . '/react/dns/src'),
     'React\\Cache\\' => array($vendorDir . '/react/cache/src'),
+    'Rats\\Zkteco\\' => array($vendorDir . '/rats/zkteco/src'),
     'Ratchet\\RFC6455\\' => array($vendorDir . '/ratchet/rfc6455/src'),
     'Ratchet\\' => array($vendorDir . '/cboden/ratchet/src/Ratchet'),
     'Ramsey\\Uuid\\' => array($vendorDir . '/ramsey/uuid/src'),

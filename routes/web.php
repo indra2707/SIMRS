@@ -7,6 +7,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\MasterUserController;
 
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
@@ -461,6 +462,13 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/perizinan/update-status/{id}', [PerizinanController::class, 'updateStatus'])->name('legal.perizinan.update-status');
         Route::post('/perizinan/notify', [PerizinanController::class, 'notify'])->name('legal.perizinan.notify');
     });
+
+    // Zkteco
+    Route::get('/master-user', [MasterUserController::class, 'index'])->name('master-user.index');
+    Route::post('/master-user/store', [MasterUserController::class, 'store'])->name('master-user.create');
+    Route::put('/master-user/update/{id}', [MasterUserController::class, 'update'])->name('master-user.update');
+    Route::delete('/master-user/delete/{id}', [MasterUserController::class, 'destroy'])->name('master-user.delete');
+    Route::get('/master-user/sync', [MasterUserController::class, 'syncFromDevice'])->name('master-user.sync');
 
     // Tarif
     Route::prefix('tarif')->group(function () {
