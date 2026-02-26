@@ -1,72 +1,73 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\Admin\ChatController as AdminChatController;
+use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Dashboard\DashboardHelpdeskController;
 use App\Http\Controllers\GlobalController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Legal\PerizinanController;
+use App\Http\Controllers\Legal\PksController;
+
+use App\Http\Controllers\LoginController;
+
+use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
+use App\Http\Controllers\Logistik\DisposisiController;
+use App\Http\Controllers\Logistik\PermintaanController;
+use App\Http\Controllers\Logistik\TembusanController;
+use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
+
+use App\http\Controllers\MasterData\AccountController;
+use App\Http\Controllers\MasterData\AsetController;
+use App\http\Controllers\MasterData\BankController;
+
+use App\Http\Controllers\MasterData\BiayaController;
+use App\Http\Controllers\MasterData\CoaController;
+use App\Http\Controllers\MasterData\CustomerController;
+use App\http\Controllers\MasterData\FungsiController;
+
+use App\Http\Controllers\MasterData\Icd9Controller;
+use App\Http\Controllers\MasterData\Icd10Controller;
+use App\http\Controllers\MasterData\JabatanController;
+
+use App\Http\Controllers\MasterData\Jadwal_dokterController;
+use App\Http\Controllers\MasterData\JeniskontrakController;
+use App\Http\Controllers\MasterData\KalibrasiController;
+use App\http\Controllers\MasterData\KelompokAsetController;
+use App\Http\Controllers\MasterData\KondisiAsetController;
+use App\Http\Controllers\MasterData\KotaController;
+use App\Http\Controllers\MasterData\LokasiController;
+use App\Http\Controllers\MasterData\MutasiController;
+use App\Http\Controllers\MasterData\PasienController;
+use App\Http\Controllers\MasterData\PenjaminController;
+use App\Http\Controllers\MasterData\PetugasController;
+use App\Http\Controllers\MasterData\Poli_obatController;
+use App\Http\Controllers\MasterData\Poli_tindakanController;
+use App\Http\Controllers\MasterData\PoliController;
+use App\http\Controllers\MasterData\SKStrukturController;
+use App\Http\Controllers\MasterData\SpesialisController;
+use App\Http\Controllers\MasterData\UnitController;
 use App\Http\Controllers\MasterUserController;
-
 use App\Http\Controllers\Pintu\EmeraldController;
-
+use App\Http\Controllers\Pintu\RubyController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
-
-use App\Http\Controllers\Logistik\PermintaanController;
-use App\Http\Controllers\Logistik\TembusanController;
-use App\Http\Controllers\Logistik\DisposisiController;
-
-use App\Http\Controllers\User\RollsController;
-use App\Http\Controllers\User\UsersController;
-use App\Http\Controllers\User\HelpDeskController;
-use App\Http\Controllers\User\UserspekerjaController;
-
-use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
+use App\Http\Controllers\Tarif\SKTarifController;
+
 use App\Http\Controllers\Tarif\TarifTindakanController;
 
-use App\Http\Controllers\MasterData\CoaController;
-use App\Http\Controllers\MasterData\AsetController;
-use App\http\Controllers\MasterData\BankController;
-use App\Http\Controllers\MasterData\Icd9Controller;
-use App\Http\Controllers\MasterData\KotaController;
-use App\Http\Controllers\MasterData\PoliController;
-use App\Http\Controllers\MasterData\UnitController;
-use App\Http\Controllers\MasterData\BiayaController;
-use App\Http\Controllers\MasterData\Icd10Controller;
-use App\http\Controllers\MasterData\FungsiController;
-use App\Http\Controllers\MasterData\LokasiController;
-use App\Http\Controllers\MasterData\MutasiController;
-use App\Http\Controllers\MasterData\PasienController;
-use App\http\Controllers\MasterData\AccountController;
-use App\http\Controllers\MasterData\JabatanController;
-use App\Http\Controllers\MasterData\PetugasController;
-use App\Http\Controllers\MasterData\CustomerController;
-use App\Http\Controllers\MasterData\PenjaminController;
-use App\Http\Controllers\MasterData\KalibrasiController;
-use App\Http\Controllers\MasterData\Poli_obatController;
-use App\Http\Controllers\MasterData\SpesialisController;
-use App\http\Controllers\MasterData\SKStrukturController;
-use App\Http\Controllers\MasterData\KondisiAsetController;
-use App\http\Controllers\MasterData\KelompokAsetController;
-use App\Http\Controllers\MasterData\Jadwal_dokterController;
-use App\Http\Controllers\MasterData\Poli_tindakanController;
-use App\Http\Controllers\MasterData\JeniskontrakController;
+use App\Http\Controllers\User\HelpDeskController;
+use App\Http\Controllers\User\RollsController;
 
-use App\Http\Controllers\Dashboard\DashboardHelpdeskController;
-
-use App\Http\Controllers\Legal\PksController;
-use App\Http\Controllers\Legal\PerizinanController;
-
-use App\Http\Controllers\Admin\ChatController as AdminChatController;
-use App\Http\Controllers\Admin\HelpDeskController as AdminHelpDeskController;
-use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
-use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
+use App\Http\Controllers\User\UsersController;
+use App\Http\Controllers\User\UserspekerjaController;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 // Login/Logout Route Middleware
 Route::group(['middleware' => 'login.check'], function () {
@@ -475,6 +476,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/emerald/update/{id}', [EmeraldController::class, 'update'])->name('pintu.emerald.update');
         Route::delete('/emerald/delete/{id}', [EmeraldController::class, 'destroy'])->name('pintu.emerald.delete');
         Route::get('/master-user/sync', [EmeraldController::class, 'syncFromDevice'])->name('pintu.emerald.sync');
+     
+     
+        Route::get('/ruby', [RubyController::class, 'index'])->name('pintu.ruby');
+        Route::get('/ruby/view', [RubyController::class, 'views'])->name('pintu.ruby.view');
+        Route::post('/ruby/store', [RubyController::class, 'store'])->name('pintu.ruby.create');
+        Route::put('/ruby/update/{id}', [RubyController::class, 'update'])->name('pintu.ruby.update');
+        Route::delete('/ruby/delete/{id}', [RubyController::class, 'destroy'])->name('pintu.ruby.delete');
+        Route::get('/ruby/sync', [RubyController::class, 'syncFromDevice'])->name('pintu.ruby.sync');
     });
 
     // Tarif
