@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Pintu;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MasterUser extends Model
+class Emerald extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $table = 'emerald';
+
+      protected $fillable = [
         'uid',
         'userid',
         'name',
         'card_number',
         'role'
     ];
-
 }

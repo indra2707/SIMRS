@@ -9,6 +9,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\MasterUserController;
 
+use App\Http\Controllers\Pintu\EmeraldController;
+
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
@@ -463,12 +465,17 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/perizinan/notify', [PerizinanController::class, 'notify'])->name('legal.perizinan.notify');
     });
 
-    // Zkteco
-    Route::get('/master-user', [MasterUserController::class, 'index'])->name('master-user.index');
-    Route::post('/master-user/store', [MasterUserController::class, 'store'])->name('master-user.create');
-    Route::put('/master-user/update/{id}', [MasterUserController::class, 'update'])->name('master-user.update');
-    Route::delete('/master-user/delete/{id}', [MasterUserController::class, 'destroy'])->name('master-user.delete');
-    Route::get('/master-user/sync', [MasterUserController::class, 'syncFromDevice'])->name('master-user.sync');
+
+    // Pintu Zkteco
+    Route::prefix('pintu')->group(function () {
+        // Emerald
+        Route::get('/emerald', [EmeraldController::class, 'index'])->name('pintu.emerald');
+        Route::get('/emerald/view', [EmeraldController::class, 'views'])->name('pintu.emerald.view');
+        Route::post('/emerald/store', [EmeraldController::class, 'store'])->name('pintu.emerald.create');
+        Route::put('/emerald/update/{id}', [EmeraldController::class, 'update'])->name('pintu.emerald.update');
+        Route::delete('/emerald/delete/{id}', [EmeraldController::class, 'destroy'])->name('pintu.emerald.delete');
+        Route::get('/master-user/sync', [EmeraldController::class, 'syncFromDevice'])->name('pintu.emerald.sync');
+    });
 
     // Tarif
     Route::prefix('tarif')->group(function () {

@@ -80,20 +80,6 @@
                         }
                     @endphp
 
-                    <!-- Pintu -->
-                    @if (Session::get('username') == 'superadmin')
-                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                                class="sidebar-link sidebar-title link-nav" href="{{ route('master-user.index') }}">
-                                <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-learning') }}"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="#"></use>
-                                </svg><span>Pintu</span></a>
-                            </a>
-                        </li>
-                    @endif
-
                     {{-- USER --}}
                     @if (in_array('User', $aksesMenu) || in_array('Roll', $aksesMenu))
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
@@ -116,6 +102,24 @@
                             </ul>
                         </li>
                     @endif
+
+                    
+                    <!-- Master Pintu  -->
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-file') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-file') }}"></use>
+                            </svg>
+                            <span>Master Pintu</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('pintu.emerald') }}">Emerald</a></li>
+                        </ul>
+                    </li>
+
 
                     {{-- Master Data --}}
                     @if (

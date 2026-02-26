@@ -1,21 +1,52 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pintu;
 
-use App\Models\MasterUser;
+use App\Models\Pintu\Emerald;
 use Illuminate\Http\Request;
 use Rats\Zkteco\Lib\ZKTeco;
+use App\Http\Controllers\Controller;
 
-class MasterUserController extends Controller
+class EmeraldController extends Controller
 {
-    private $ip = "10.128.173.14";
+    private $ip = "10.128.173.24";
     private $port = 4370;
 
     public function index()
     {
-        $users = MasterUser::all();
-        return view('master_users.index', compact('users'));
+        $data = [
+            'title' => 'Emerald',
+            'menuTitle' => 'Master Data',
+            'menuSubtitle' => 'Emerald',
+        ];
+        return view('pintu.emerald.emerald', $data);
     }
+
+    // view
+    public function views()
+    {
+        $query = Emerald::where('card_number', '!=', '0000000000')
+            ->orWhereNull('card_number')
+            ->get();
+
+        // $query = Emerald::all();
+
+        $data = [];
+
+        foreach ($query as $value) {
+            $data[] = [
+                'id' => $value->id,
+                'uid' => $value->uid,
+                'userid' => $value->userid,
+                'name' => $value->name,
+                'card_number' => $value->card_number,
+                'role' => $value->role,
+            ];
+        }
+
+        return response()->json($data, 200);
+    }
+
 
     // Sinkronisasi dari perangkat
     public function syncFromDevice()
@@ -44,7 +75,7 @@ class MasterUserController extends Controller
         $total = 0;
 
         foreach ($deviceUsers as $user) {
-            MasterUser::updateOrCreate(
+            Emerald::updateOrCreate(
                 ['userid' => $user['userid']],
                 [
                     'uid' => $user['uid'],
@@ -75,11 +106,11 @@ class MasterUserController extends Controller
             ]);
 
             // Generate UID otomatis
-            $lastUid = MasterUser::max('uid') ?? 0;
+            $lastUid = Emerald::max('uid') ?? 0;
             $newUid = $lastUid + 1;
 
             // Simpan ke database
-            $data = MasterUser::create([
+            $data = Emerald::create([
                 'uid' => $newUid,
                 'userid' => $request->userid,
                 'name' => $request->name,
@@ -136,7 +167,7 @@ class MasterUserController extends Controller
                 'name' => 'required'
             ]);
 
-            $user = MasterUser::findOrFail($id);
+            $user = Emerald::findOrFail($id);
 
             // Update database dulu
             $user->update([
@@ -192,7 +223,7 @@ class MasterUserController extends Controller
     {
         try {
 
-            $user = MasterUser::findOrFail($id);
+            $user = Emerald::findOrFail($id);
 
             $zk = new ZKTeco($this->ip, $this->port);
 

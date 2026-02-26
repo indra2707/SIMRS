@@ -8,9 +8,9 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
-        Schema::create('master_users', function (Blueprint $table) {
+        Schema::create('emerald', function (Blueprint $table) {
             $table->id();
             $table->integer('uid')->nullable();
             $table->string('userid')->unique();
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('master_users');
+        Schema::dropIfExists('emerald');
     }
 };
