@@ -51,19 +51,20 @@ use App\Http\Controllers\MasterData\UnitController;
 use App\Http\Controllers\Pintu\EmeraldController;
 use App\Http\Controllers\Pintu\RubyController;
 
+use App\Http\Controllers\Pintu\SapphireController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
+
 use App\Http\Controllers\Tarif\SKTarifController;
 
 use App\Http\Controllers\Tarif\TarifTindakanController;
-
 use App\Http\Controllers\User\HelpDeskController;
-use App\Http\Controllers\User\RollsController;
 
+use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\UserspekerjaController;
 use Illuminate\Support\Facades\Artisan;
@@ -485,6 +486,14 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/ruby/update/{id}', [RubyController::class, 'update'])->name('pintu.ruby.update');
         Route::delete('/ruby/delete/{id}', [RubyController::class, 'destroy'])->name('pintu.ruby.delete');
         Route::get('/ruby/sync', [RubyController::class, 'syncFromDevice'])->name('pintu.ruby.sync');
+        
+        // Sapphire
+        Route::get('/sapphire', [SapphireController::class, 'index'])->name('pintu.sapphire');
+        Route::get('/sapphire/view', [SapphireController::class, 'views'])->name('pintu.sapphire.view');
+        Route::post('/sapphire/store', [SapphireController::class, 'store'])->name('pintu.sapphire.create');
+        Route::put('/sapphire/update/{id}', [SapphireController::class, 'update'])->name('pintu.sapphire.update');
+        Route::delete('/sapphire/delete/{id}', [SapphireController::class, 'destroy'])->name('pintu.sapphire.delete');
+        Route::get('/sapphire/sync', [SapphireController::class, 'syncFromDevice'])->name('pintu.sapphire.sync');
     });
 
     // Tarif
