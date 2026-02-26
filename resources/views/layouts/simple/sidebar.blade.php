@@ -105,6 +105,11 @@
 
                     
                     <!-- Master Pintu  -->
+                     @if (
+                            in_array('Emerald', $aksesMenu) ||
+                            in_array('Ruby', $aksesMenu) ||
+                            in_array('Sapphire', $aksesMenu)
+                        )
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
                         <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
@@ -116,11 +121,18 @@
                             <span>Master Pintu</span>
                         </a>
                         <ul class="sidebar-submenu">
+                             @if (in_array('Emerald', $aksesMenu))
                             <li><a href="{{ route('pintu.emerald') }}">Emerald</a></li>
+                            @endif
+                            @if (in_array('Ruby', $aksesMenu))
                             <li><a href="{{ route('pintu.ruby') }}">Ruby</a></li>
+                            @endif
+                            @if (in_array('Sapphire', $aksesMenu))
                             <li><a href="{{ route('pintu.sapphire') }}">Sapphire</a></li>
+                            @endif
                         </ul>
                     </li>
+                     @endif
 
 
                     {{-- Master Data --}}

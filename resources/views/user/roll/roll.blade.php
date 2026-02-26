@@ -186,6 +186,21 @@
                                     </ul>
                                 </li>
 
+                                  <li>
+                                    <label class="caret">
+                                        <input type="checkbox" name="permissions[]" value="Helpdesk" class="parent"><b>
+                                            Master Pintu</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Emerald">
+                                                Emerald</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Ruby">
+                                                Ruby</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Sapphire">
+                                                Sapphire</label></li>
+                                    </ul>
+                                </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" class="parent"> <b>Master Data</b>
