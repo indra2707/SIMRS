@@ -169,6 +169,51 @@
         });
     });
 
+
+    //Open Pintu
+    $('.open-btn').click(function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+
+        button.prop('disabled', true);
+        button.html('<span class="fa fa-spinner fa-spin"></span> Membuka...');
+
+        $.ajax({
+            url: "{{ route('pintu.ruby.open-door') }}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+            .done(function (response) {
+
+                Alert('success', response.message);
+
+            })
+            .fail(function (xhr) {
+                let errorMessage = "Gagal membuka pintu!";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+
+                $.notify({
+                    icon: 'fa fa-times',
+                    title: 'Error',
+                    message: errorMessage
+                }, {
+                    type: 'danger'
+                });
+
+            })
+            .always(function () {
+                button.prop('disabled', false);
+                button.html('<span class="fa fa-key"></span> Buka Pintu');
+
+            });
+    });
+
     // Page Load Event
     $(function () {
         initTable();

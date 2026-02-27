@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Pintu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pintu\Sapphire;
-use Rats\Zkteco\Lib\ZKTeco;
+// use Rats\Zkteco\Lib\ZKTeco;
+use Jmrashed\Zkteco\Lib\ZKTeco;
 
 class SapphireController extends Controller
 {
-    private $ip = "10.128.173.14";
+    private $ip = "10.128.173.3";
     private $port = 4370;
 
     public function index()

@@ -51,10 +51,17 @@
                                     <span> Tambah Kartu</span>
                                 </button>
 
-                                <div class="d-flex align-items-center gap-2">
+                                 <div class="d-flex align-items-center gap-2">
                                     <button class="btn btn-success sinkronisasi-btn">
-                                        <span class="fa fa-sync"></span>
+                                        <span class="fa fa-spinner"></span>
                                         <span> Sinkronisasi</span>
+                                    </button>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <button class="btn btn-danger open-btn">
+                                        <span class="fa fa-key"></span>
+                                        <span> Buka Pintu</span>
                                     </button>
                                 </div>
                             </div>

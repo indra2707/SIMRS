@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Pintu;
 
 use App\Models\Pintu\Emerald;
 use Illuminate\Http\Request;
-use Rats\Zkteco\Lib\ZKTeco;
+// use Rats\Zkteco\Lib\ZKTeco;
 use App\Http\Controllers\Controller;
+use Jmrashed\Zkteco\Lib\ZKTeco;
+
 
 class EmeraldController extends Controller
 {
@@ -43,7 +45,6 @@ class EmeraldController extends Controller
                 'role' => $value->role,
             ];
         }
-
         return response()->json($data, 200);
     }
 
@@ -188,10 +189,10 @@ class EmeraldController extends Controller
 
             $zk->disableDevice();
 
-            // 🔥 REMOVE DULU (lebih aman)
+            // REMOVE DULU (lebih aman)
             $zk->removeUser($user->uid);
 
-            // 🔥 SET ULANG
+            // SET ULANG
             $zk->setUser(
                 (int) $user->uid,
                 (string) $user->userid,
@@ -258,4 +259,39 @@ class EmeraldController extends Controller
         }
     }
 
+
+    //Open Pintu
+    public function openDoor()
+    {
+        $zk = new ZKTeco($this->ip, $this->port);
+
+        try {
+
+            if (!$zk->connect()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Gagal koneksi ke device'
+                ], 500);
+            }
+
+            $zk->disableDevice();
+            $zk->openDoor(1);
+            $zk->unlockDoor(1);
+            // sleep(5);
+            $zk->enableDevice();
+            $zk->disconnect();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pintu berhasil dibuka'
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

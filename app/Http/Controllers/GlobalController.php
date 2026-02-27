@@ -330,7 +330,7 @@ class GlobalController extends Controller
         ], 200);
     }
 
-    
+
     // jenis kontrak
     public function optionsSelectJenisKontrak(Request $request)
     {
@@ -356,7 +356,6 @@ class GlobalController extends Controller
             'data' => $data
         ], 200);
     }
-    
 
     // select kota
     public function optionsSelectKota(Request $request)
@@ -637,6 +636,61 @@ class GlobalController extends Controller
         ], 200);
     }
 
+    // Select Emerald
+    public function optionsSelectEmerald(Request $request)
+    {
+        $query = DB::table('emerald')
+            ->where('card_number', '!=', '0000000000')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('name', 'like', "%$search%");
+                $q->orWhere('card_number', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->where('name', 'like', '%kamar%')
+            ->limit(100)
+            ->get();
 
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->name;
+            $data[$key]['text'] = $value->name . ' | ' . $value->card_number;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
+
+
+    // Select Emerald
+    public function optionsSelectRuby(Request $request)
+    {
+        $query = DB::table('ruby')
+            ->where('card_number', '!=', '0000000000')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('name', 'like', "%$search%");
+                $q->orWhere('card_number', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->where('name', 'like', '%kamar%')
+            ->limit(100)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->name;
+            $data[$key]['text'] = $value->name . ' | ' . $value->card_number;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
 
 }

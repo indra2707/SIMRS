@@ -53,8 +53,15 @@
 
                                 <div class="d-flex align-items-center gap-2">
                                     <button class="btn btn-success sinkronisasi-btn">
-                                        <span class="fa fa-sync"></span>
+                                        <span class="fa fa-spinner"></span>
                                         <span> Sinkronisasi</span>
+                                    </button>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <button class="btn btn-danger open-btn">
+                                        <span class="fa fa-key"></span>
+                                        <span> Buka Pintu</span>
                                     </button>
                                 </div>
                             </div>
@@ -102,7 +109,7 @@
                             <label for="userid" class="col-form-label col-sm-1">User ID</label>
                             <div class="col-sm-5">
                                 <input class="form-control form-control" name="userid" type="text" placeholder="User ID..."
-                                    required>
+                                    required maxlength="8">
                             </div>
 
                             <!-- Nama  -->
@@ -113,7 +120,7 @@
                             </div>
 
                             <!-- Card Number  -->
-                            <label for="card_number" class="col-form-label col-sm-1">ID Card</label>
+                            <label for="card_number" class="col-form-label col-sm-1">No Card</label>
                             <div class="col-sm-5">
                                 <input class="form-control form-control" name="card_number" type="text"
                                     placeholder="Card Number..." required maxlength="10">

@@ -10,7 +10,7 @@ use Rats\Zkteco\Lib\ZKTeco;
 
 class RubyController extends Controller
 {
-    private $ip = "10.128.173.14";
+    private $ip = "10.128.173.5";
     private $port = 4370;
 
     public function index()
@@ -254,6 +254,41 @@ class RubyController extends Controller
 
             return response()->json([
                 'status' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+     //Open Pintu
+    public function openDoor()
+    {
+        $zk = new ZKTeco($this->ip, $this->port);
+
+        try {
+
+            if (!$zk->connect()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Gagal koneksi ke device'
+                ], 500);
+            }
+
+            $zk->disableDevice();
+            // $zk->openDoor();
+            sleep(5);
+            $zk->enableDevice();
+            $zk->disconnect();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Pintu berhasil dibuka'
+            ]);
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'status' => 'error',
                 'message' => $e->getMessage()
             ], 500);
         }

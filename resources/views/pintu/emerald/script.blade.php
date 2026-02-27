@@ -21,77 +21,54 @@
         $('input[name="userid"]').val("");
         $('input[name="name"]').val("");
         $('input[name="card_number"]').val("");
-        $('select[name="role"]').val('').trigger('change');
+        $('select[name="role"]').val('0').trigger('change');
     });
 
     // sinkronisasi
     $(document).ready(function () {
-
         $('.sinkronisasi-btn').on('click', function (e) {
             e.preventDefault();
-
-            let btn = $(this);
-            let icon = btn.find('.fa');
-            let text = btn.find('span:last');
-
-            btn.prop('disabled', true);
-            icon.addClass('fa-spin');
-            text.text(' Sinkronisasi...');
-
+            let button = $(this);
+            button.prop('disabled', true);
+            button.html('<span class="fa fa-spinner fa-spin"></span> Sinkronisasi...');
             $.ajax({
                 url: "{{ route('pintu.emerald.sync') }}",
                 type: "GET",
                 dataType: "json",
-
                 success: function (res, status, xhr) {
-
                     if (xhr.status == 200 && res.status) {
-
                         Alert('success', res.message +
                             ' (Total User: ' + res.total_user + ')');
-
                         // kalau pakai bootstrap table
                         if (typeof $tableEmerald !== 'undefined') {
                             $tableEmerald.bootstrapTable('refresh');
                         }
-
                     } else {
-
                         $.notify({
                             icon: 'fa fa-warning',
                             title: 'Warning',
                             message: res.message
                         }, { type: 'warning' });
-
                     }
                 },
 
                 error: function (xhr) {
-
                     let message = 'Terjadi kesalahan saat sinkronisasi';
-
                     if (xhr.responseJSON && xhr.responseJSON.message) {
                         message = xhr.responseJSON.message;
                     }
-
                     $.notify({
                         icon: 'fa fa-warning',
                         title: 'Error',
                         message: message
                     }, { type: 'danger' });
-
                 },
-
                 complete: function () {
-                    btn.prop('disabled', false);
-                    icon.removeClass('fa-spin');
-                    text.text(' Sinkronisasi');
+                    button.prop('disabled', false);
+                    button.html('<span class="fa fa-spinner"></span> Sinkronisasi');
                 }
-
             });
-
         });
-
     });
 
 
@@ -168,6 +145,52 @@
             }
         });
     });
+
+
+    //Open Pintu
+    $('.open-btn').click(function (e) {
+        e.preventDefault();
+
+        let button = $(this);
+
+        button.prop('disabled', true);
+        button.html('<span class="fa fa-spinner fa-spin"></span> Membuka...');
+
+        $.ajax({
+            url: "{{ route('pintu.emerald.open-door') }}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+            .done(function (response) {
+
+                Alert('success', response.message);
+
+            })
+            .fail(function (xhr) {
+                let errorMessage = "Gagal membuka pintu!";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+
+                $.notify({
+                    icon: 'fa fa-times',
+                    title: 'Error',
+                    message: errorMessage
+                }, {
+                    type: 'danger'
+                });
+
+            })
+            .always(function () {
+                button.prop('disabled', false);
+                button.html('<span class="fa fa-key"></span> Buka Pintu');
+
+            });
+    });
+
 
     // Page Load Event
     $(function () {

@@ -20,16 +20,13 @@ use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatControll
 use App\http\Controllers\MasterData\AccountController;
 use App\Http\Controllers\MasterData\AsetController;
 use App\http\Controllers\MasterData\BankController;
-
 use App\Http\Controllers\MasterData\BiayaController;
 use App\Http\Controllers\MasterData\CoaController;
 use App\Http\Controllers\MasterData\CustomerController;
 use App\http\Controllers\MasterData\FungsiController;
-
 use App\Http\Controllers\MasterData\Icd9Controller;
 use App\Http\Controllers\MasterData\Icd10Controller;
 use App\http\Controllers\MasterData\JabatanController;
-
 use App\Http\Controllers\MasterData\Jadwal_dokterController;
 use App\Http\Controllers\MasterData\JeniskontrakController;
 use App\Http\Controllers\MasterData\KalibrasiController;
@@ -50,23 +47,24 @@ use App\Http\Controllers\MasterData\UnitController;
 
 use App\Http\Controllers\Pintu\EmeraldController;
 use App\Http\Controllers\Pintu\RubyController;
-
 use App\Http\Controllers\Pintu\SapphireController;
+use App\Http\Controllers\Pintu\KartuJagaController;
+
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
+
 use App\Http\Controllers\Tarif\HargaTindakanController;
-
 use App\Http\Controllers\Tarif\SKTarifController;
-
 use App\Http\Controllers\Tarif\TarifTindakanController;
-use App\Http\Controllers\User\HelpDeskController;
 
+use App\Http\Controllers\User\HelpDeskController;
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\UserspekerjaController;
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -478,7 +476,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/emerald/update/{id}', [EmeraldController::class, 'update'])->name('pintu.emerald.update');
         Route::delete('/emerald/delete/{id}', [EmeraldController::class, 'destroy'])->name('pintu.emerald.delete');
         Route::get('/master-user/sync', [EmeraldController::class, 'syncFromDevice'])->name('pintu.emerald.sync');
-     
+        Route::post('/emerald/open-door', [EmeraldController::class, 'openDoor'])->name('pintu.emerald.open-door');
+
          // Ruby
         Route::get('/ruby', [RubyController::class, 'index'])->name('pintu.ruby');
         Route::get('/ruby/view', [RubyController::class, 'views'])->name('pintu.ruby.view');
@@ -486,7 +485,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/ruby/update/{id}', [RubyController::class, 'update'])->name('pintu.ruby.update');
         Route::delete('/ruby/delete/{id}', [RubyController::class, 'destroy'])->name('pintu.ruby.delete');
         Route::get('/ruby/sync', [RubyController::class, 'syncFromDevice'])->name('pintu.ruby.sync');
-        
+        Route::post('/ruby/open-door', [RubyController::class, 'openDoor'])->name('pintu.ruby.open-door');
+
         // Sapphire
         Route::get('/sapphire', [SapphireController::class, 'index'])->name('pintu.sapphire');
         Route::get('/sapphire/view', [SapphireController::class, 'views'])->name('pintu.sapphire.view');
@@ -494,6 +494,15 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/sapphire/update/{id}', [SapphireController::class, 'update'])->name('pintu.sapphire.update');
         Route::delete('/sapphire/delete/{id}', [SapphireController::class, 'destroy'])->name('pintu.sapphire.delete');
         Route::get('/sapphire/sync', [SapphireController::class, 'syncFromDevice'])->name('pintu.sapphire.sync');
+
+        //Kartu Jaga
+        Route::get('/kartu-jaga', [KartuJagaController::class, 'index'])->name('pintu.kartu-jaga');
+        Route::get('/kartu-jaga/view', [KartuJagaController::class, 'views'])->name('pintu.kartu-jaga.view');
+        Route::post('/kartu-jaga/store', [KartuJagaController::class, 'store'])->name('pintu.kartu-jaga.create');
+        Route::put('/kartu-jaga/update/{id}', [KartuJagaController::class, 'update'])->name('pintu.kartu-jaga.update');
+        Route::delete('/kartu-jaga/delete/{id}', [KartuJagaController::class, 'destroy'])->name('pintu.kartu-jaga.delete');
+        Route::post('/kartu-jaga/update-status/{id}', [KartuJagaController::class, 'updateStatus'])->name('pintu.kartu-jaga.update-status');
+
     });
 
     // Tarif
@@ -572,6 +581,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-unit', [GlobalController::class, 'optionsSelectUnit'])->name('get-select-unit');
         // Jenis Kontrak
         Route::get('/get-select-jenis-kontrak', [GlobalController::class, 'optionsSelectJenisKontrak'])->name('get-select-jenis-kontrak');
+        // Emerald
+        Route::get('/get-select-emerald', [GlobalController::class, 'optionsSelectEmerald'])->name('get-select-emerald');
+        // Ruby
+        Route::get('/get-select-ruby', [GlobalController::class, 'optionsSelectRuby'])->name('get-select-ruby');
     });
 });
 
