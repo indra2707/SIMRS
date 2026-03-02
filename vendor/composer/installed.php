@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'a2fe38879581ac9c700752ddb3692c9eb49abfa0',
+        'reference' => '0ba14e5f3934d5f7cc63ed6c1f311b17fc9a710f',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -463,15 +463,6 @@
                 0 => 'v10.50.0',
             ),
         ),
-        'jmrashed/zkteco' => array(
-            'pretty_version' => '1.2.0',
-            'version' => '1.2.0.0',
-            'reference' => '4672f6769a760e28cd10c4721bf418af28bed970',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../jmrashed/zkteco',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
             'replaced' => array(
@@ -490,7 +481,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'a2fe38879581ac9c700752ddb3692c9eb49abfa0',
+            'reference' => '0ba14e5f3934d5f7cc63ed6c1f311b17fc9a710f',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

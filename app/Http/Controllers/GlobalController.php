@@ -665,7 +665,7 @@ class GlobalController extends Controller
     }
 
 
-    // Select Emerald
+    // Select Ruby
     public function optionsSelectRuby(Request $request)
     {
         $query = DB::table('ruby')

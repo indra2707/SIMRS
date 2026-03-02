@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Pintu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Pintu\Sapphire;
-// use Rats\Zkteco\Lib\ZKTeco;
-use Jmrashed\Zkteco\Lib\ZKTeco;
+use Rats\Zkteco\Lib\ZKTeco;
+use Exception;
+
 
 class SapphireController extends Controller
 {
@@ -50,51 +51,38 @@ class SapphireController extends Controller
 
 
     // Sinkronisasi dari perangkat
-    public function syncFromDevice()
+    public function testConnection()
     {
-        $zk = new ZKTeco($this->ip, $this->port); // pakai port
+        try {
 
-        if (!$zk->connect()) {
+            $ip = "10.128.173.3";
+            $port = 4370;
+
+            $zk = new ZKTeco($ip, $port);
+
+            if (!$zk->connect()) {
+                throw new Exception("Gagal koneksi ke perangkat");
+            }
+
+            $zk->disconnect();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Koneksi berhasil'
+            ]);
+        } catch (\Throwable $e) {
+
             return response()->json([
                 'status' => false,
-                'message' => 'Tidak bisa konek ke mesin'
+                'error_message' => $e->getMessage(),
+                'error_line' => $e->getLine(),
+                'error_file' => $e->getFile(),
+                'trace' => $e->getTraceAsString()
             ], 500);
         }
-
-        $zk->disableDevice();
-        $deviceUsers = $zk->getUser();
-        $zk->enableDevice();
-        $zk->disconnect();
-
-        if (!$deviceUsers) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tidak ada data user dari mesin'
-            ], 404);
-        }
-
-        $total = 0;
-
-        foreach ($deviceUsers as $user) {
-            Sapphire::updateOrCreate(
-                ['userid' => $user['userid']],
-                [
-                    'uid' => $user['uid'],
-                    'name' => $user['name'],
-                    'card_number' => $user['cardno'] ?? null,
-                    'role' => $user['role']
-                ]
-            );
-
-            $total++;
-        }
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Berhasil sinkron user dari mesin',
-            'total_user' => $total
-        ]);
     }
+
+
 
     // Simpan
     public function store(Request $request)

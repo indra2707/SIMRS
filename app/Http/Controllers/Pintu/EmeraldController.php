@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Pintu;
 
 use App\Models\Pintu\Emerald;
 use Illuminate\Http\Request;
-// use Rats\Zkteco\Lib\ZKTeco;
+use Rats\Zkteco\Lib\ZKTeco;
 use App\Http\Controllers\Controller;
-use Jmrashed\Zkteco\Lib\ZKTeco;
 
 
 class EmeraldController extends Controller
