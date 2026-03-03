@@ -329,6 +329,11 @@
 
                 },
                 {
+                    field: 'nama_unit',
+                    sortable: true,
+                    visible: false
+                },
+                {
                     field: 'nama_lengkap',
                     sortable: true,
                     // align: 'center',

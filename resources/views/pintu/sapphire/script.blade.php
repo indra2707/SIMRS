@@ -225,12 +225,15 @@
                 sortable: true,
                 align: "center",
                 formatter: function (value) {
+
                     if (value == 14) {
-                        return '<span class="badge bg-danger">Admin</span>';
-                    } else if (value == 0) {
-                        return '<span class="badge bg-primary">User</span>';
-                    } else {
-                        return '<span class="badge bg-secondary">Unknown</span>';
+                        return '<button class="btn btn-danger btn-xs rounded-pill px-3">Admin</button>';
+                    }
+                    else if (value == 0) {
+                        return '<button class="btn btn-primary btn-xs rounded-pill px-3">User</button>';
+                    }
+                    else {
+                        return '<button class="btn btn-secondary btn-xs rounded-pill px-3">Unknown</button>';
                     }
                 }
             },

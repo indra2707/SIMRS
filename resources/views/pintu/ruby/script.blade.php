@@ -270,7 +270,6 @@
                 sortable: true,
                 align: "center",
                 formatter: function (value) {
-
                     if (value == 14) {
                         return '<button class="btn btn-danger btn-xs rounded-pill px-3">Admin</button>';
                     }

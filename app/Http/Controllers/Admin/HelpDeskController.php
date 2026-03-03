@@ -65,11 +65,13 @@ class HelpDeskController extends Controller
             $query = HelpDesk::with(['user.rolls'])
                 ->join('users', 'users.id', '=', 'help_desk.user_id')
                 ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
+                ->join('tbl_unit', 'tbl_unit.id', '=', 'help_desk.id_unit')
                 ->select(
                     'help_desk.*',
                     'help_desk.created_at as created_at',
                     'users.username as user_name',
-                    'pegawai.nama_pekerja as nama_lengkap'
+                    'pegawai.nama_pekerja as nama_lengkap',
+                    'tbl_unit.nama as nama_unit'
                 )
 
                 ->orderBy('created_at', 'DESC');
@@ -93,6 +95,7 @@ class HelpDeskController extends Controller
                 return [
                     'id' => $value->id,
                     'username' => $value->user->username ?? '-',
+                    'nama_unit' => $value->nama_unit ?? '-',
                     'nama_lengkap' => $value->nama_lengkap ?? '-',
                     'keterangan' => $value->keterangan ?? '-',
                     'catatan' => $value->catatan,

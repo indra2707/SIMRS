@@ -286,6 +286,7 @@
                                             <th class="f-light">Judul Laporan</th>
                                             <th class="f-light">Kategori</th>
                                             <th class="f-light">Prioritas</th>
+                                            <th class="f-light">Unit</th>
                                             <th class="f-light">Nama Melapor</th>
                                             <th class="f-light">tanggal Melapor</th>
                                             <th class="f-light">Diterima</th>

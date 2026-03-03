@@ -51,34 +51,30 @@ class SapphireController extends Controller
 
 
     // Sinkronisasi dari perangkat
-    public function testConnection()
+    public function syncFromDevice()
     {
         try {
 
-            $ip = "10.128.173.3";
-            $port = 4370;
+            $zk = new ZKTeco("10.128.173.3", 4370);
 
-            $zk = new ZKTeco($ip, $port);
+            // Jika pakai comm key (cek di mesin)
+            // $zk->setPassword(0);
 
             if (!$zk->connect()) {
-                throw new Exception("Gagal koneksi ke perangkat");
+                return "Koneksi gagal";
             }
 
+            $zk->disableDevice();
+
+            $device = $zk->getDeviceName();
+
+            $zk->enableDevice();
             $zk->disconnect();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Koneksi berhasil'
-            ]);
-        } catch (\Throwable $e) {
+            return $device;
 
-            return response()->json([
-                'status' => false,
-                'error_message' => $e->getMessage(),
-                'error_line' => $e->getLine(),
-                'error_file' => $e->getFile(),
-                'trace' => $e->getTraceAsString()
-            ], 500);
+        } catch (\Throwable $e) {
+            return $e->getMessage();
         }
     }
 
