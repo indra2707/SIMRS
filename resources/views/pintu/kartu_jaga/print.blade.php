@@ -8,7 +8,8 @@
     body {
         margin: 0;
         padding: 2mm;
-        font-size: 9px;
+        font-size: 8px;
+        font-family: "Arial Black", Arial, sans-serif;
     }
 </style>
 
@@ -43,9 +44,9 @@
             <td style="font-weight:bold;">: {{ now()->format('d M Y H:i') }}</td>
         </tr>
     </table>
-    <br>
+    
     <div style="text-align:left; font-weight:bold;">
-        Selesai Pengurusan administrasi kartu jaga
+        selesai pengurusan administrasi kartu jaga
     </div>
 
 </div>
