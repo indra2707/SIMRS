@@ -636,29 +636,40 @@ class GlobalController extends Controller
         ], 200);
     }
 
+    
     // Select Emerald
     public function optionsSelectEmerald(Request $request)
     {
         $query = DB::table('emerald')
             ->where('card_number', '!=', '0000000000')
-            ->when($request->values != '', function ($q) use ($request) {
-                $q->where('id', '=', $request->values);
+
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('kartu_jaga')
+                    ->whereColumn('kartu_jaga.no_kartu', 'emerald.name');
             })
+
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('name', '=', $request->values);
+            })
+
             ->where(function ($q) use ($request) {
                 $search = $request->search;
-                $q->where('name', 'like', "%$search%");
-                $q->orWhere('card_number', 'like', "%$search%");
-                // Tambah kolom lain jika dibutuhkan
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('card_number', 'like', "%$search%");
             })
+
             ->where('name', 'like', '%kamar%')
             ->limit(100)
             ->get();
 
         $data = [];
+
         foreach ($query as $key => $value) {
             $data[$key]['id'] = $value->name;
             $data[$key]['text'] = $value->name . ' | ' . $value->card_number;
         }
+
         return response()->json([
             'data' => $data
         ], 200);
@@ -670,27 +681,75 @@ class GlobalController extends Controller
     {
         $query = DB::table('ruby')
             ->where('card_number', '!=', '0000000000')
-            ->when($request->values != '', function ($q) use ($request) {
-                $q->where('id', '=', $request->values);
+
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('kartu_jaga')
+                    ->whereColumn('kartu_jaga.no_kartu', 'ruby.name');
             })
+
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('name', '=', $request->values);
+            })
+
             ->where(function ($q) use ($request) {
                 $search = $request->search;
-                $q->where('name', 'like', "%$search%");
-                $q->orWhere('card_number', 'like', "%$search%");
-                // Tambah kolom lain jika dibutuhkan
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('card_number', 'like', "%$search%");
             })
+
             ->where('name', 'like', '%kamar%')
             ->limit(100)
             ->get();
 
         $data = [];
+
         foreach ($query as $key => $value) {
             $data[$key]['id'] = $value->name;
             $data[$key]['text'] = $value->name . ' | ' . $value->card_number;
         }
+
         return response()->json([
             'data' => $data
         ], 200);
     }
 
+
+    // Select Sapphire
+    public function optionsSelectSapphire(Request $request)
+    {
+        $query = DB::table('sapphire')
+            ->where('card_number', '!=', '0000000000')
+
+            ->whereNotExists(function ($q) {
+                $q->select(DB::raw(1))
+                    ->from('kartu_jaga')
+                    ->whereColumn('kartu_jaga.no_kartu', 'sapphire.name');
+            })
+
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('name', '=', $request->values);
+            })
+
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('card_number', 'like', "%$search%");
+            })
+
+            ->where('name', 'like', '%kamar%')
+            ->limit(100)
+            ->get();
+
+        $data = [];
+
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->name;
+            $data[$key]['text'] = $value->name . ' | ' . $value->card_number;
+        }
+
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
 }

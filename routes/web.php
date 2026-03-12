@@ -586,6 +586,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-emerald', [GlobalController::class, 'optionsSelectEmerald'])->name('get-select-emerald');
         // Ruby
         Route::get('/get-select-ruby', [GlobalController::class, 'optionsSelectRuby'])->name('get-select-ruby');
+        // Sapphire
+        Route::get('/get-select-sapphire', [GlobalController::class, 'optionsSelectSapphire'])->name('get-select-sapphire');
     });
 });
 

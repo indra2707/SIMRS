@@ -39,6 +39,14 @@
                     url: "{{ route('get-select-ruby') }}",
                     dropdownParent: $("#modal-kartu-jaga")
                 });
+
+            } else if (ruangan === "Shapphire") {
+                $noKartu.prop('disabled', false);
+                InitSelect2($("select[name='no_kartu']"), {
+                    url: "{{ route('get-select-sapphire') }}",
+                    dropdownParent: $("#modal-kartu-jaga")
+                });
+
             } else {
                 // Bukan Emerald → tetap disabled
                 $noKartu.prop('disabled', true);
