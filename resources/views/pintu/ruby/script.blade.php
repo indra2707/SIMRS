@@ -21,7 +21,7 @@
         $('input[name="userid"]').val("");
         $('input[name="name"]').val("");
         $('input[name="card_number"]').val("");
-        $('select[name="role"]').val('').trigger('change');
+        $('select[name="role"]').val(0).trigger('change');
     });
 
     // sinkronisasi

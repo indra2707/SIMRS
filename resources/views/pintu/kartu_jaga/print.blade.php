@@ -19,28 +19,28 @@
 
     <table width="100%" style="font-size:9px">
         <tr>
-            <td width="35%">Nama Pasien</td>
-            <td>: {{ $data->nama }}</td>
+            <td width="35%" style="font-weight:bold;">Nama Pasien</td>
+            <td style="font-weight:bold;">: {{ $data->nama }}</td>
         </tr>
 
         <tr>
-            <td>No HP</td>
-            <td>: {{ $data->no_hp }}</td>
+            <td style="font-weight:bold;">No HP</td>
+            <td style="font-weight:bold;">: {{ $data->no_hp }}</td>
         </tr>
 
         <tr>
-            <td>Kamar</td>
-            <td>: {{ $data->ruangan }}</td>
+            <td style="font-weight:bold;">Kamar</td>
+            <td style="font-weight:bold;">: {{ $data->ruangan }}</td>
         </tr>
 
         <tr>
-            <td>Kartu</td>
-            <td>: {{ $data->no_kartu }}</td>
+            <td style="font-weight:bold;">Kartu</td>
+            <td style="font-weight:bold;">: {{ $data->no_kartu }}</td>
         </tr>
 
         <tr>
-            <td>Tanggal</td>
-            <td>: {{ now()->format('d M Y H:i') }}</td>
+            <td style="font-weight:bold;">Tanggal</td>
+            <td style="font-weight:bold;">: {{ now()->format('d M Y H:i') }}</td>
         </tr>
     </table>
     <br>
