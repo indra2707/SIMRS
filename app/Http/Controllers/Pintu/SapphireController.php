@@ -103,29 +103,29 @@ class SapphireController extends Controller
                 'role' => $request->role ?? 0
             ]);
 
-            $zk = new ZKTeco($this->ip, $this->port);
+            // $zk = new ZKTeco($this->ip, $this->port);
 
-            if (!$zk->connect()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
-                ], 500);
-            }
+            // if (!$zk->connect()) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => 'Gagal konek ke mesin'
+            //     ], 500);
+            // }
 
-            $zk->disableDevice();
+            // $zk->disableDevice();
 
             // Format parameter yang benar
-            $zk->setUser(
-                $newUid,                    // UID (HARUS INT)
-                $request->userid,           // UserID
-                $request->name,             // Nama
-                '',                         // Password
-                $request->role ?? 0,        // Role
-                $request->card_number ?? '' // Card
-            );
+            // $zk->setUser(
+            //     $newUid,                    // UID (HARUS INT)
+            //     $request->userid,           // UserID
+            //     $request->name,             // Nama
+            //     '',                         // Password
+            //     $request->role ?? 0,        // Role
+            //     $request->card_number ?? '' // Card
+            // );
 
-            $zk->enableDevice();
-            $zk->disconnect();
+            // $zk->enableDevice();
+            // $zk->disconnect();
 
             return response()->json([
                 'status' => true,
