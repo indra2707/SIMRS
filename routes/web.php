@@ -502,6 +502,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/kartu-jaga/update/{id}', [KartuJagaController::class, 'update'])->name('pintu.kartu-jaga.update');
         Route::delete('/kartu-jaga/delete/{id}', [KartuJagaController::class, 'destroy'])->name('pintu.kartu-jaga.delete');
         Route::post('/kartu-jaga/update-status/{id}', [KartuJagaController::class, 'updateStatus'])->name('pintu.kartu-jaga.update-status');
+        Route::get('/kartu-jaga/print/{id}', [KartuJagaController::class, 'print'])->name('pintu.kartu-jaga.print');
 
     });
 

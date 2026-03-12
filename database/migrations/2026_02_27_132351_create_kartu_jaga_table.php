@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
             $table->enum('status', ['0', '1'])->default('1');
+            $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }

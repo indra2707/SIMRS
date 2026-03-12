@@ -60,6 +60,7 @@
                                             <th class="f-light">Ruangan</th>
                                             <th class="f-light">No Kartu Jaga</th>
                                             <th class="f-light">Deposit</th>
+                                            <th class="f-light">Catatan</th>
                                             <th class="f-light">Created By</th>
                                             <th class="f-light">Updated By</th>
                                             <th class="f-light">Created At</th>
@@ -136,6 +137,12 @@
                         <div class="col-sm-5">
                             <input class="form-control form-control rupiah-number" name="deposit" type="text"
                                 placeholder="Rp..." required>
+                        </div>
+
+                        <!-- Catatan  -->
+                        <label for="catatan" class="col-form-label col-sm-1">Catatan</label>
+                        <div class="col-sm-11">
+                            <input class="form-control form-control" name="catatan" type="text" placeholder="Catatan...">
                         </div>
 
                     </form>

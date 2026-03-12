@@ -59,6 +59,7 @@
         $('select[name="ruangan"]').val('').trigger('change');
         $('input[name="no_kartu"]').val('');
         $('input[name="deposit"]').val('Rp 50,000');
+        $('input[name="catatan"]').val('');
     });
 
     // Save Asset
@@ -186,6 +187,11 @@
                         sortable: true,
                     },
                     {
+                        field: 'catatan',
+                        sortable: true,
+                        visible: false
+                    },
+                    {
                         field: 'created_by',
                         sortable: true,
                         visible: false
@@ -256,8 +262,9 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-secondary"></i> Print</a>',
+            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
             '</div>',
         ].join("");
@@ -321,6 +328,11 @@
 
                 }
             })
+        },
+        'click .btn-print': function (e, value, row, index) {
+            var url = "{{ route('pintu.kartu-jaga.print', ':id') }}";
+            url = url.replace(':id', row.id);
+            window.open(url, '_blank');
         }
     }
 

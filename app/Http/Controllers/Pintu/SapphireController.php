@@ -50,33 +50,33 @@ class SapphireController extends Controller
     }
 
 
-    // Sinkronisasi dari perangkat
-    public function syncFromDevice()
-    {
-        try {
+    // // Sinkronisasi dari perangkat
+    // public function syncFromDevice()
+    // {
+    //     try {
 
-            $zk = new ZKTeco("10.128.173.3", 4370);
+    //         $zk = new ZKTeco("10.128.173.3", 4370);
 
-            // Jika pakai comm key (cek di mesin)
-            // $zk->setPassword(0);
+    //         // Jika pakai comm key (cek di mesin)
+    //         // $zk->setPassword(0);
 
-            if (!$zk->connect()) {
-                return "Koneksi gagal";
-            }
+    //         if (!$zk->connect()) {
+    //             return "Koneksi gagal";
+    //         }
 
-            $zk->disableDevice();
+    //         $zk->disableDevice();
 
-            $device = $zk->getDeviceName();
+    //         $device = $zk->getDeviceName();
 
-            $zk->enableDevice();
-            $zk->disconnect();
+    //         $zk->enableDevice();
+    //         $zk->disconnect();
 
-            return $device;
+    //         return $device;
 
-        } catch (\Throwable $e) {
-            return $e->getMessage();
-        }
-    }
+    //     } catch (\Throwable $e) {
+    //         return $e->getMessage();
+    //     }
+    // }
 
 
 
@@ -103,33 +103,9 @@ class SapphireController extends Controller
                 'role' => $request->role ?? 0
             ]);
 
-            $zk = new ZKTeco($this->ip, $this->port);
-
-            if (!$zk->connect()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
-                ], 500);
-            }
-
-            $zk->disableDevice();
-
-            // Format parameter yang benar
-            $zk->setUser(
-                $newUid,                    // UID (HARUS INT)
-                $request->userid,           // UserID
-                $request->name,             // Nama
-                '',                         // Password
-                $request->role ?? 0,        // Role
-                $request->card_number ?? '' // Card
-            );
-
-            $zk->enableDevice();
-            $zk->disconnect();
-
             return response()->json([
                 'status' => true,
-                'message' => 'User berhasil ditambahkan ke mesin dan database',
+                'message' => 'User berhasil ditambahkan',
                 'data' => $data
             ]);
 
@@ -162,36 +138,9 @@ class SapphireController extends Controller
                 'role' => $request->role ?? 0
             ]);
 
-            $zk = new ZKTeco($this->ip, $this->port);
-
-            if (!$zk->connect()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
-                ], 500);
-            }
-
-            $zk->disableDevice();
-
-            // 🔥 REMOVE DULU (lebih aman)
-            $zk->removeUser($user->uid);
-
-            // 🔥 SET ULANG
-            $zk->setUser(
-                (int) $user->uid,
-                (string) $user->userid,
-                (string) $user->name,
-                '',
-                (int) ($user->role ?? 0),
-                (string) ($user->card_number ?? '')
-            );
-
-            $zk->enableDevice();
-            $zk->disconnect();
-
             return response()->json([
                 'status' => true,
-                'message' => 'User berhasil diupdate di mesin dan database'
+                'message' => 'User berhasil diupdate'
             ]);
 
         } catch (\Exception $e) {
@@ -209,29 +158,10 @@ class SapphireController extends Controller
         try {
 
             $user = Sapphire::findOrFail($id);
-
-            $zk = new ZKTeco($this->ip, $this->port);
-
-            if (!$zk->connect()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
-                ], 500);
-            }
-
-            $zk->disableDevice();
-
-            // HAPUS BERDASARKAN UID
-            $zk->removeUser($user->uid);
-
-            $zk->enableDevice();
-            $zk->disconnect();
-
             $user->delete();
-
             return response()->json([
                 'status' => true,
-                'message' => 'User berhasil dihapus dari mesin dan database'
+                'message' => 'User berhasil dihapus'
             ]);
 
         } catch (\Exception $e) {
