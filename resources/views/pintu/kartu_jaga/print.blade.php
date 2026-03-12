@@ -21,7 +21,7 @@
     <table width="100%" style="font-size:9px">
         <tr>
             <td width="35%" style="font-weight:bold;">Nama Pasien</td>
-            <td style="font-weight:bold;">: {{ $data->nama }}</td>
+            <td style="font-weight:bold;">: {{ $data->nama_pasien }}</td>
         </tr>
 
         <tr>
