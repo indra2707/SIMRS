@@ -103,20 +103,27 @@ class RubyController extends Controller
 
             $request->validate([
                 'userid' => 'required',
-                'name' => 'required'
+                'name' => 'required',
+                'card_number' => 'nullable|numeric'
             ]);
 
             // Generate UID otomatis
             $lastUid = Ruby::max('uid') ?? 0;
-            $newUid = $lastUid + 1;
+            $newUid = (int) $lastUid + 1;
+
+            // Format data sebelum disimpan
+            $userid = trim($request->userid);
+            $name = substr(trim($request->name), 0, 24); // max 24 karakter
+            $role = (int) ($request->role ?? 0);
+            $card = $request->card_number ? (int) $request->card_number : 0;
 
             // Simpan ke database
             $data = Ruby::create([
                 'uid' => $newUid,
-                'userid' => $request->userid,
-                'name' => $request->name,
-                'card_number' => $request->card_number,
-                'role' => $request->role ?? 0
+                'userid' => $userid,
+                'name' => $name,
+                'card_number' => $card,
+                'role' => $role
             ]);
 
             $zk = new ZKTeco($this->ip, $this->port);
@@ -130,14 +137,14 @@ class RubyController extends Controller
 
             $zk->disableDevice();
 
-            // Format parameter yang benar
+            // Kirim user ke mesin
             $zk->setUser(
-                $newUid,                    // UID (HARUS INT)
-                $request->userid,           // UserID
-                $request->name,             // Nama
-                '',                         // Password
-                $request->role ?? 0,        // Role
-                $request->card_number ?? '' // Card
+                (int) $newUid,   // UID
+                (string) $userid,// UserID
+                $name,          // Nama
+                '',             // Password
+                $role,          // Role
+                $card           // Card Number harus INT
             );
 
             $zk->enableDevice();
@@ -218,7 +225,7 @@ class RubyController extends Controller
             ], 500);
         }
     }
-    
+
     // HAPUS USER
     public function destroy($id)
     {
@@ -260,7 +267,7 @@ class RubyController extends Controller
     }
 
 
-     //Open Pintu
+    //Open Pintu
     public function openDoor()
     {
         $zk = new ZKTeco($this->ip, $this->port);
