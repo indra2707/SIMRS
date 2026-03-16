@@ -19,7 +19,6 @@ class User
     static public function set(ZKTeco $self, $uid, $userid, $name, $password, $role = Util::LEVEL_USER, $cardno = 0)
     {
         $self->_section = __METHOD__;
-
         if (
             (int)$uid === 0 ||
             (int)$uid > Util::USHRT_MAX ||
@@ -30,24 +29,21 @@ class User
         ) {
             return false;
         }
-
         $command = Util::CMD_SET_USER;
         $byte1 = chr((int)($uid % 256));
         $byte2 = chr((int)($uid >> 8));
-        $cardno = hex2bin(Util::reverseHex(dechex($cardno)));
-
         $command_string = implode('', [
             $byte1,
             $byte2,
             chr($role),
             str_pad($password, 8, chr(0)),
             str_pad($name, 24, chr(0)),
-            str_pad($cardno, 4, chr(0)),
+            pack('V', (int)$cardno),        // ← fix: selalu 4 byte little-endian
             str_pad(chr(1), 9, chr(0)),
             str_pad($userid, 9, chr(0)),
             str_repeat(chr(0), 15)
         ]);
-//        die($command_string);
+
         return $self->_command($command, $command_string);
     }
 

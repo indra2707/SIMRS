@@ -76,15 +76,25 @@ class RubyController extends Controller
         $total = 0;
 
         foreach ($deviceUsers as $user) {
-            Ruby::updateOrCreate(
-                ['userid' => $user['userid']],
-                [
-                    'uid' => $user['uid'],
+            $existing = Ruby::where('userid', $user['userid'])->first();
+
+            if ($existing) {
+                // Update tapi JANGAN timpa card_number
+                $existing->update([
+                    'uid'  => $user['uid'],
                     'name' => $user['name'],
+                    'role' => $user['role'],
+                ]);
+            } else {
+                // Data baru, simpan semua termasuk card_number
+                Ruby::create([
+                    'uid'         => $user['uid'],
+                    'userid'      => $user['userid'],
+                    'name'        => $user['name'],
                     'card_number' => $user['cardno'] ?? null,
-                    'role' => $user['role']
-                ]
-            );
+                    'role'        => $user['role'],
+                ]);
+            }
 
             $total++;
         }
@@ -97,73 +107,70 @@ class RubyController extends Controller
     }
 
     // Simpan
+    // Simpan
     public function store(Request $request)
     {
         try {
 
             $request->validate([
-                'userid' => 'required',
-                'name' => 'required',
+                'userid'      => 'required',
+                'name'        => 'required',
                 'card_number' => 'nullable|numeric'
             ]);
 
-            // Generate UID otomatis
             $lastUid = Ruby::max('uid') ?? 0;
-            $newUid = (int) $lastUid + 1;
+            $newUid  = (int) $lastUid + 1;
 
-            // Format data sebelum disimpan
-            $userid = trim($request->userid);
-            $name = substr(trim($request->name), 0, 24); // max 24 karakter
-            $role = (int) ($request->role ?? 0);
-            $card = $request->card_number ? (int) $request->card_number : 0;
+            $userid  = trim($request->userid);
+            $name    = substr(trim($request->name), 0, 24);
+            $role    = (int) ($request->role ?? 0);
+            $card    = (int) ($request->card_number ?? 0);
 
-            // Simpan ke database
             $data = Ruby::create([
-                'uid' => $newUid,
-                'userid' => $userid,
-                'name' => $name,
+                'uid'         => $newUid,
+                'userid'      => $userid,
+                'name'        => $name,
                 'card_number' => $card,
-                'role' => $role
+                'role'        => $role
             ]);
 
             $zk = new ZKTeco($this->ip, $this->port);
 
             if (!$zk->connect()) {
+                $data->delete();
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
+                    'status'  => false,
+                    'message' => 'Gagal konek ke mesin, data tidak disimpan'
                 ], 500);
             }
 
             $zk->disableDevice();
 
-            // Kirim user ke mesin
             $zk->setUser(
-                (int) $newUid,   // UID
-                (string) $userid,// UserID
-                $name,          // Nama
-                '',             // Password
-                $role,          // Role
-                $card           // Card Number harus INT
+                (int) $newUid,
+                (string) $userid,
+                (string) $name,
+                '',
+                (int) $role,
+                (int) $card
             );
 
             $zk->enableDevice();
             $zk->disconnect();
 
             return response()->json([
-                'status' => true,
+                'status'  => true,
                 'message' => 'User berhasil ditambahkan ke mesin dan database',
-                'data' => $data
+                'data'    => $data
             ]);
-
         } catch (\Exception $e) {
-
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => $e->getMessage()
             ], 500);
         }
     }
+
 
     // Update
     public function update(Request $request, $id)
@@ -171,56 +178,57 @@ class RubyController extends Controller
         try {
 
             $request->validate([
-                'userid' => 'required',
-                'name' => 'required'
+                'userid'      => 'required',
+                'name'        => 'required',
+                'card_number' => 'nullable|numeric'
             ]);
 
             $user = Ruby::findOrFail($id);
 
-            // Update database dulu
+            $userid = trim($request->userid);
+            $name   = substr(trim($request->name), 0, 24);
+            $role   = (int) ($request->role ?? 0);
+            $card   = (int) ($request->card_number ?? 0); // ← semua integer
+
             $user->update([
-                'userid' => $request->userid,
-                'name' => $request->name,
-                'card_number' => $request->card_number,
-                'role' => $request->role ?? 0
+                'userid'      => $userid,
+                'name'        => $name,
+                'card_number' => $card, // ← simpan integer
+                'role'        => $role
             ]);
 
             $zk = new ZKTeco($this->ip, $this->port);
 
             if (!$zk->connect()) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal konek ke mesin'
+                    'status'  => false,
+                    'message' => 'Data berhasil diupdate di database, tapi gagal konek ke mesin'
                 ], 500);
             }
 
             $zk->disableDevice();
 
-            // 🔥 REMOVE DULU (lebih aman)
-            $zk->removeUser($user->uid);
+            $zk->removeUser((int) $user->uid);
 
-            // 🔥 SET ULANG
             $zk->setUser(
                 (int) $user->uid,
-                (string) $user->userid,
-                (string) $user->name,
+                (string) $userid,
+                (string) $name,
                 '',
-                (int) ($user->role ?? 0),
-                (string) ($user->card_number ?? '')
+                (int) $role,
+                (int) $card  // ← kirim integer ke mesin
             );
 
             $zk->enableDevice();
             $zk->disconnect();
 
             return response()->json([
-                'status' => true,
+                'status'  => true,
                 'message' => 'User berhasil diupdate di mesin dan database'
             ]);
-
         } catch (\Exception $e) {
-
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => $e->getMessage()
             ], 500);
         }
@@ -256,7 +264,6 @@ class RubyController extends Controller
                 'status' => true,
                 'message' => 'User berhasil dihapus dari mesin dan database'
             ]);
-
         } catch (\Exception $e) {
 
             return response()->json([
@@ -291,7 +298,6 @@ class RubyController extends Controller
                 'status' => 'success',
                 'message' => 'Pintu berhasil dibuka'
             ]);
-
         } catch (\Throwable $e) {
 
             return response()->json([
@@ -300,5 +306,4 @@ class RubyController extends Controller
             ], 500);
         }
     }
-
 }
