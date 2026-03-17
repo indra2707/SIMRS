@@ -660,6 +660,7 @@ class GlobalController extends Controller
             })
 
             ->where('name', 'like', '%kamar%')
+            ->orderBy('name')
             ->limit(100)
             ->get();
 
@@ -699,6 +700,7 @@ class GlobalController extends Controller
             })
 
             ->where('name', 'like', '%kamar%')
+            ->orderBy('name')
             ->limit(100)
             ->get();
 
@@ -738,6 +740,7 @@ class GlobalController extends Controller
             })
 
             ->where('name', 'like', '%kamar%')
+            ->orderBy('name')
             ->limit(100)
             ->get();
 

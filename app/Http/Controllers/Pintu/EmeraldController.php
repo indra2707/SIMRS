@@ -28,6 +28,7 @@ class EmeraldController extends Controller
     {
         $query = Emerald::where('card_number', '!=', '0000000000')
             ->orWhereNull('card_number')
+            ->orderBy('name')
             ->get();
 
         // $query = Emerald::all();

@@ -28,6 +28,7 @@ class RubyController extends Controller
     {
         $query = Ruby::where('card_number', '!=', '0000000000')
             ->orWhereNull('card_number')
+            ->orderBy('name')
             ->get();
 
         // $query = Ruby::all();
@@ -106,7 +107,6 @@ class RubyController extends Controller
         ]);
     }
 
-    // Simpan
     // Simpan
     public function store(Request $request)
     {
