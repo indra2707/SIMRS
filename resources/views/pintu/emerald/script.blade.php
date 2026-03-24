@@ -230,10 +230,12 @@
             {
                 field: "uid",
                 sortable: true,
+                visible: false
             },
             {
                 field: "userid",
                 sortable: true,
+                visible: false
             },
             {
                 field: "name",
