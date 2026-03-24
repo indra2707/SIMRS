@@ -290,6 +290,7 @@ class RubyController extends Controller
 
             $zk->disableDevice();
             // $zk->openDoor();
+            $zk->restart();
             sleep(5);
             $zk->enableDevice();
             $zk->disconnect();

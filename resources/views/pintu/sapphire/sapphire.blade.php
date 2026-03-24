@@ -115,7 +115,7 @@
                             <!-- Card Number  -->
                             <label for="card_number" class="col-form-label col-sm-1">ID Card</label>
                             <div class="col-sm-5">
-                                <input class="form-control form-control" name="card_number" type="text"
+                                <input class="form-control form-control" name="card_number" type="number"
                                     placeholder="Card Number..." required maxlength="10">
                             </div>
 
