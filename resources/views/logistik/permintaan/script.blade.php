@@ -583,23 +583,6 @@
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
     // ========================================
     // CHAT NON-REALTIME UNTUK PERMINTAAN LOGISTIK
