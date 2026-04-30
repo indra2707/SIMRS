@@ -5,6 +5,13 @@
     @endsection
 
     @section('style')
+    <style>
+    body {
+        background: url("{{ asset('assets/images/login/login_bg.jpg') }}") no-repeat center center fixed;
+        background-size: cover;
+    }
+    </style>
+
     @endsection
 
     @section('content')
