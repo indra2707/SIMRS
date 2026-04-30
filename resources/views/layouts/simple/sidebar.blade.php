@@ -38,27 +38,27 @@
                             <h6 class="lan-1">General</h6>
                         </div>
                     </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                        <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-home') }}"></use>
-                            </svg><span class="lan-3">Dashboard</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a class="lan-4" href="{{ route('home') }}">Default</a></li>
-                            <li><a href="{{ route('dashboard.helpdesk') }}">Helpdesk</a></li>
 
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                            <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-home') }}"></use>
+                                </svg><span class="lan-3">Dashboard</span></a>
+                            <ul class="sidebar-submenu">
+                                <!-- <li><a class="lan-4" href="{{ route('home') }}">Default</a></li> -->
+                                    <li><a href="{{ route('dashboard.helpdesk') }}">Helpdesk</a></li>
 
-                            @if (Session::get('username') == 'superadmin')
-                                <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
-                                <li><a href="{{ route('dashboard-03') }}">Online course</a></li>
-                                <li><a href="{{ route('dashboard-04') }}">Crypto</a></li>
-                                <li><a href="{{ route('dashboard-05') }}">Social</a></li>
-                            @endif
-                        </ul>
-                    </li>
+                                @if (Session::get('username') == 'superadmin')
+                                    <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
+                                    <li><a href="{{ route('dashboard-03') }}">Online course</a></li>
+                                    <li><a href="{{ route('dashboard-04') }}">Crypto</a></li>
+                                    <li><a href="{{ route('dashboard-05') }}">Social</a></li>
+                                @endif
+                            </ul>
+                        </li>
 
                     @php
                         $aksesMenu = Session::get('menu', []);
@@ -90,36 +90,36 @@
                         </li>
                     @endif
 
-                    
+
                     <!-- Master Pintu  -->
-                     @if (
+                    @if (
                             in_array('Emerald', $aksesMenu) ||
                             in_array('Ruby', $aksesMenu) ||
                             in_array('Sapphire', $aksesMenu)
                         )
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
-                        <a class="sidebar-link sidebar-title" href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-file') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-file') }}"></use>
-                            </svg>
-                            <span>Master Pintu</span>
-                        </a>
-                        <ul class="sidebar-submenu">
-                             @if (in_array('Emerald', $aksesMenu))
-                            <li><a href="{{ route('pintu.emerald') }}">Emerald</a></li>
-                            @endif
-                            @if (in_array('Ruby', $aksesMenu))
-                            <li><a href="{{ route('pintu.ruby') }}">Ruby</a></li>
-                            @endif
-                            @if (in_array('Sapphire', $aksesMenu))
-                            <li><a href="{{ route('pintu.sapphire') }}">Sapphire</a></li>
-                            @endif
-                        </ul>
-                    </li>
-                     @endif
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"> </i>
+                            <a class="sidebar-link sidebar-title" href="#">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-file') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-file') }}"></use>
+                                </svg>
+                                <span>Master Pintu</span>
+                            </a>
+                            <ul class="sidebar-submenu">
+                                @if (in_array('Emerald', $aksesMenu))
+                                    <li><a href="{{ route('pintu.emerald') }}">Emerald</a></li>
+                                @endif
+                                @if (in_array('Ruby', $aksesMenu))
+                                    <li><a href="{{ route('pintu.ruby') }}">Ruby</a></li>
+                                @endif
+                                @if (in_array('Sapphire', $aksesMenu))
+                                    <li><a href="{{ route('pintu.sapphire') }}">Sapphire</a></li>
+                                @endif
+                            </ul>
+                        </li>
+                    @endif
 
 
                     {{-- Master Data --}}
@@ -214,15 +214,15 @@
 
                     <!-- Kartu Jaga  -->
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                                class="sidebar-link sidebar-title link-nav" href="{{ route('pintu.kartu-jaga') }}">
-                                <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="#"></use>
-                                </svg><span>Kartu Jaga</span></a>
-                            </a>
-                        </li>
+                            class="sidebar-link sidebar-title link-nav" href="{{ route('pintu.kartu-jaga') }}">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="#"></use>
+                            </svg><span>Kartu Jaga</span></a>
+                        </a>
+                    </li>
 
                     {{-- kalibrasi --}}
                     @if (in_array('Kalibrasi Alat Kesehatan', $aksesMenu))

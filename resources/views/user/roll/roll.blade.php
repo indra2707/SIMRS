@@ -176,6 +176,16 @@
                             <ul>
                                 <li>
                                     <label class="caret">
+                                        <input type="checkbox" class="parent"> <b>Dashboard</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Dashboard_Helpdesk"> Dashboard Helpdesk</label>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <label class="caret">
                                         <input type="checkbox" class="parent"> <b>Manajemen User</b>
                                     </label>
                                     <ul class="nested">
