@@ -2,13 +2,39 @@
     // Tabel
     var $table = $('#table_tt');
 
-    // filter status
-    $(".select3").select2({
-        placeholder: "--- Pilih Salah Satu ---",
-        theme: "bootstrap-5",
-        allowClear: true,
-        width: "100%"
+
+    // Get data tempat tidur
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "---- Pilih Salah Satu ----",
+            theme: "bootstrap-5",
+            dropdownParent: $("#modal-tt"),
+            allowClear: true,
+            ajax: {
+                url: '{{ route("rs-online.tempat-tidur.get") }}',
+                type: 'GET',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term // keyword search
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: $.map(response, function (item) {
+                            return {
+                                id: item.kode_tt,
+                                text: item.kode_tt + ' - ' + item.nama_tt
+                            };
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
     });
+
 
     // Open Modal
     $(document).on('click', '.add-btn', function () {
@@ -16,78 +42,192 @@
         $('#modal-tt').modal('show');
         $('.modal-title').text('Form Tambah Tempat Tidur');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
+        $('select[name="id_tt"]').val(0).trigger('change');
+        $('input[name="ruang"]').val('');
+        $('input[name="jumlah"]').val('');
+        $('input[name="terpakai"]').val('');
     });
 
     // Save Tempat Tidur
-    $(document).on('click', '.save-btn', function () {
-        var id = $('input[name="id_t_tt"]').val();
-        var url, type;
+    // $(document).on('click', '.save-btn', function () {
+    //     var id = $('input[name="id_t_tt"]').val();
+    //     var url, type;
+    //     if (id) {
+    //         url = "{{ route('rs-online.tempat-tidur.update', ':id') }}";
+    //         url = url.replace(':id', id);
+    //         type = "POST";
+    //     } else {
+    //         url = "{{ route('rs-online.tempat-tidur.create') }}";
+    //         type = "POST";
+    //     }
+    //     var forms = document.getElementsByClassName('form-tt');
+    //     Array.prototype.filter.call(forms, function (form) {
+
+    //         if (!form.checkValidity()) {
+    //             form.querySelector(".form-control:invalid").focus();
+    //             event.preventDefault();
+    //             event.stopPropagation();
+    //         } else {
+
+    //             var formData = new FormData(form);
+
+    //             // method spoofing untuk update
+    //             if (id) {
+    //                 formData.append('_method', 'PUT');
+    //             }
+
+    //             $.ajax({
+    //                 type: type,
+    //                 url: url,
+    //                 data: formData,
+    //                 processData: false,
+    //                 contentType: false,
+    //                 dataType: "json",
+
+    //                 beforeSend: function () {
+    //                     $('.save-btn').html(
+    //                         '<span class="spinner-border spinner-border-sm"></span>'
+    //                     ).attr('disabled', true);
+    //                 },
+    //                 complete: function () {
+    //                     $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
+    //                         .removeAttr('disabled');
+    //                 },
+    //                 success: function (res, status, xhr) {
+    //                     if (xhr.status == 200 && res.success) {
+    //                         Alert('success', res.message);
+    //                         $('#modal-tt').modal('hide');
+    //                         form.reset();
+    //                         form.classList.remove('was-validated');
+    //                         $table.bootstrapTable('refresh');
+    //                     } else {
+    //                         $.notify({
+    //                             icon: 'fa fa-warning',
+    //                             title: 'Warning',
+    //                             message: res.message
+    //                         }, {
+    //                             type: 'warning'
+    //                         });
+    //                         form.classList.remove('was-validated');
+    //                     }
+    //                 }
+    //             });
+    //         }
+    //         form.classList.add('was-validated');
+    //     });
+    // });
+
+
+    // Save Tempat Tidur
+    $(document).on('click', '.save-btn', function (event) {
+
+        event.preventDefault();
+
+        let form = $('.form-tt')[0];
+        let formData = new FormData(form);
+
+        let id = $('input[name="id_t_tt"]').val();
+
+        let url = '';
+        let method = 'POST';
+
+        // cek update atau create
         if (id) {
+
             url = "{{ route('rs-online.tempat-tidur.update', ':id') }}";
             url = url.replace(':id', id);
-            type = "POST";
+
+            formData.append('_method', 'PUT');
+
         } else {
+
             url = "{{ route('rs-online.tempat-tidur.create') }}";
-            type = "POST";
         }
-        var forms = document.getElementsByClassName('form-tt');
-        Array.prototype.filter.call(forms, function (form) {
 
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-
-                var formData = new FormData(form);
-
-                // method spoofing untuk update
-                if (id) {
-                    formData.append('_method', 'PUT');
-                }
-
-                $.ajax({
-                    type: type,
-                    url: url,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "json",
-
-                    beforeSend: function () {
-                        $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm"></span>'
-                        ).attr('disabled', true);
-                    },
-
-                    complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success) {
-                            Alert('success', res.message);
-                            $('#modal-tt').modal('hide');
-                            $table.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-warning',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning'
-                            });
-
-                            form.classList.remove('was-validated');
-                        }
-                    }
-                });
-            }
+        // validasi form
+        if (!form.checkValidity()) {
 
             form.classList.add('was-validated');
+
+            $(form).find(':invalid').first().focus();
+
+            return false;
+        }
+
+        $.ajax({
+            url: url,
+            type: method,
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+
+            beforeSend: function () {
+
+                $('.save-btn')
+                    .html('<span class="spinner-border spinner-border-sm"></span> Loading...')
+                    .attr('disabled', true);
+            },
+
+            complete: function () {
+
+                $('.save-btn')
+                    .html('<span class="fa fa-check"></span> Simpan')
+                    .attr('disabled', false);
+            },
+
+            success: function (res) {
+
+                if (res.success) {
+
+                    Alert('success', res.message);
+
+                    $('#modal-tt').modal('hide');
+
+                    // reset form
+                    form.reset();
+
+                    // reset select2
+                    $('.select2').val(null).trigger('change');
+
+                    form.classList.remove('was-validated');
+
+                    // refresh table
+                    $table.bootstrapTable('refresh');
+
+                } else {
+
+                    $.notify({
+                        icon: 'fa fa-warning',
+                        title: 'Warning',
+                        message: res.message
+                    }, {
+                        type: 'warning'
+                    });
+                }
+            },
+
+            error: function (xhr) {
+
+                let message = 'Terjadi kesalahan server';
+
+                if (xhr.responseJSON?.message) {
+                    message = xhr.responseJSON.message;
+                }
+
+                $.notify({
+                    icon: 'fa fa-times',
+                    title: 'Error',
+                    message: message
+                }, {
+                    type: 'danger'
+                });
+            }
         });
+
     });
+
+    
 
     // Page Load Event
     $(function () {
@@ -215,7 +355,8 @@
             $('#modal-tt').modal('show');
             $('.modal-title').text('Form Edit Tempat Tidur');
             $('.save-btn').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
-            $('input[name="id_tt"]').val(row.id_tt);
+            // $('input[name="id_tt"]').val(row.id_tt);
+            $('select[name="id_tt"]').empty().append(new Option(row.id_tt + ' - ' + row.tt, row.id_tt, true, true)).trigger('change');
             $('input[name="id_t_tt"]').val(row.id_t_tt);
             $('input[name="tt"]').val(row.tt);
             $('input[name="ruang"]').val(row.ruang);

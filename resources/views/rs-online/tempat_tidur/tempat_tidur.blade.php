@@ -6,7 +6,7 @@
 @endsection
 
 @section('style')
-    <style>
+     <style>
         /* tinggi select tetap */
         .select2-container--bootstrap-5 .select2-selection--single {
             min-height: 38px !important;
@@ -96,108 +96,110 @@
                         <input type="hidden" name="id">
 
                         {{-- ID TT --}}
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label">ID TT</label>
-                            <input type="text" name="id_tt" class="form-control" placeholder="ID Tempat Tidur">
+                            <select class="form-select select2" name="id_tt" required>
+                                <option></option>
+                            </select>
                         </div>
 
                         {{-- Jenis Tempat Tidur --}}
-                        <div class="col-md-5">
+                        <!-- <div class="col-md-6">
                             <label class="form-label">Jenis Tempat Tidur</label>
                             <input type="text" name="tt" class="form-control" placeholder="VVIP / Super VIP">
-                        </div>
+                        </div> -->
 
                         {{-- Ruangan --}}
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Ruangan</label>
-                            <input type="text" name="ruang" class="form-control" placeholder="Nama Ruangan">
+                            <input type="text" name="ruang" class="form-control" placeholder="Nama Ruangan" required>
                         </div>
 
                         {{-- Kode Siranap --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Kode Siranap</label>
                             <input type="text" name="kode_siranap" class="form-control" placeholder="Kode Siranap">
-                        </div>
+                        </div> -->
 
                         {{-- Jumlah Ruang --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Jumlah Ruang</label>
                             <input type="number" name="jumlah_ruang" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Jumlah --}}
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label">Jumlah Bed</label>
-                            <input type="number" name="jumlah" class="form-control" value="0">
+                            <input type="number" name="jumlah" class="form-control" required>
                         </div>
 
                         {{-- Kosong --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Kosong</label>
                             <input type="number" name="kosong" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Terpakai --}}
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <label class="form-label">Terpakai</label>
-                            <input type="number" name="terpakai" class="form-control" value="0">
+                            <input type="number" name="terpakai" class="form-control" required>
                         </div>
 
                         {{-- Terpakai Suspek --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Terpakai Suspek</label>
                             <input type="number" name="terpakai_suspek" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Terpakai Konfirmasi --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Terpakai Konfirmasi</label>
                             <input type="number" name="terpakai_konfirmasi" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Antrian --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Antrian</label>
                             <input type="number" name="antrian" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Prepare --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Prepare</label>
                             <input type="number" name="prepare" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Prepare Plan --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Prepare Plan</label>
                             <input type="number" name="prepare_plan" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Terpakai DBD --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Terpakai DBD</label>
                             <input type="number" name="terpakai_dbd" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Terpakai DBD Anak --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Terpakai DBD Anak</label>
                             <input type="number" name="terpakai_dbd_anak" class="form-control" value="0">
-                        </div>
+                        </div> -->
 
                         {{-- Covid --}}
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <label class="form-label">Covid</label>
                             <select name="covid" class="form-select">
                                 <option value="0">Tidak</option>
                                 <option value="1">Ya</option>
                             </select>
-                        </div>
+                        </div> -->
 
                         {{-- ID T TT --}}
                         <div class="col-md-3">
-                            <label class="form-label">ID T TT</label>
-                            <input type="text" name="id_t_tt" class="form-control" placeholder="ID T TT">
+                            <!-- <label class="form-label">ID T TT</label> -->
+                            <input type="text" name="id_t_tt" class="form-control" placeholder="ID T TT" hidden>
                         </div>
 
                     </form>

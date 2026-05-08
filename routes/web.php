@@ -365,7 +365,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/tempat-tidur/store', [TempattidurController::class, 'store'])->name('rs-online.tempat-tidur.create');
         Route::put('/tempat-tidur/update/{id}', [TempattidurController::class, 'update'])->name('rs-online.tempat-tidur.update');
         Route::delete('/tempat-tidur/delete/{id}', [TempattidurController::class, 'destroy'])->name('rs-online.tempat-tidur.delete');
-        Route::post('/tempat-tidur/update-status/{id}', [TempattidurController::class, 'updateStatus'])->name('rs-online.tempat-tidur.update-status');
+        Route::get('/tempat-tidur/get', [TempattidurController::class, 'get'])->name('rs-online.tempat-tidur.get');
     });
 
     // SDM
