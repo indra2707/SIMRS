@@ -10,6 +10,7 @@ use App\Http\Controllers\Legal\PerizinanController;
 use App\Http\Controllers\Legal\PksController;
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RsOnline\TempattidurController;
 
 use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
 use App\Http\Controllers\Logistik\DisposisiController;
@@ -354,6 +355,17 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/roll/update-menu/{id}', [RollsController::class, 'updateMenu'])->name('user.roll.update-menu');
         Route::delete('/roll/delete/{id}', [RollsController::class, 'destroy'])->name('user.roll.delete');
         Route::post('/roll/update-status/{id}', [RollsController::class, 'updateStatus'])->name('user.roll.update-status');
+    });
+
+     // RS Online
+    Route::prefix('rs-online')->group(function () {
+        // Tempat Tidur
+        Route::get('/tempat-tidur', [TempattidurController::class, 'index'])->name('rs-online.tempat-tidur');
+        Route::get('/tempat-tidur/view', [TempattidurController::class, 'views'])->name('rs-online.tempat-tidur.view');
+        Route::post('/tempat-tidur/store', [TempattidurController::class, 'store'])->name('rs-online.tempat-tidur.create');
+        Route::put('/tempat-tidur/update/{id}', [TempattidurController::class, 'update'])->name('rs-online.tempat-tidur.update');
+        Route::delete('/tempat-tidur/delete/{id}', [TempattidurController::class, 'destroy'])->name('rs-online.tempat-tidur.delete');
+        Route::post('/tempat-tidur/update-status/{id}', [TempattidurController::class, 'updateStatus'])->name('rs-online.tempat-tidur.update-status');
     });
 
     // SDM

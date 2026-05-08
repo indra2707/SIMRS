@@ -39,26 +39,26 @@
                         </div>
                     </li>
 
-                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
-                            <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" href="#">
-                                <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-home') }}"></use>
-                                </svg><span class="lan-3">Dashboard</span></a>
-                            <ul class="sidebar-submenu">
-                                <!-- <li><a class="lan-4" href="{{ route('home') }}">Default</a></li> -->
-                                    <li><a href="{{ route('dashboard.helpdesk') }}">Helpdesk</a></li>
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <label class="badge badge-light-primary"></label><a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-home') }}"></use>
+                            </svg><span class="lan-3">Dashboard</span></a>
+                        <ul class="sidebar-submenu">
+                            <!-- <li><a class="lan-4" href="{{ route('home') }}">Default</a></li> -->
+                            <li><a href="{{ route('dashboard.helpdesk') }}">Helpdesk</a></li>
 
-                                @if (Session::get('username') == 'superadmin')
-                                    <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
-                                    <li><a href="{{ route('dashboard-03') }}">Online course</a></li>
-                                    <li><a href="{{ route('dashboard-04') }}">Crypto</a></li>
-                                    <li><a href="{{ route('dashboard-05') }}">Social</a></li>
-                                @endif
-                            </ul>
-                        </li>
+                            @if (Session::get('username') == 'superadmin')
+                                <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
+                                <li><a href="{{ route('dashboard-03') }}">Online course</a></li>
+                                <li><a href="{{ route('dashboard-04') }}">Crypto</a></li>
+                                <li><a href="{{ route('dashboard-05') }}">Social</a></li>
+                            @endif
+                        </ul>
+                    </li>
 
                     @php
                         $aksesMenu = Session::get('menu', []);
@@ -213,14 +213,28 @@
                     @endif
 
                     <!-- Kartu Jaga  -->
+                    @if (in_array('Kartu Jaga', $aksesMenu))
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                class="sidebar-link sidebar-title link-nav" href="{{ route('pintu.kartu-jaga') }}">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="#"></use>
+                                </svg><span>Kartu Jaga</span></a>
+                            </a>
+                        </li>
+                    @endif
+
+                    <!-- RS Online  -->
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('pintu.kartu-jaga') }}">
+                            class="sidebar-link sidebar-title link-nav" href="{{ route('rs-online.tempat-tidur') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="#"></use>
-                            </svg><span>Kartu Jaga</span></a>
+                            </svg><span>RS Online</span></a>
                         </a>
                     </li>
 

@@ -211,6 +211,16 @@
                                     </ul>
                                 </li>
 
+                                 <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"> <b>Kartu Jaga</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Kartu Jaga"> Kartu Jaga</label>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" class="parent"> <b>Master Data</b>
