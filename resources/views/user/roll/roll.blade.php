@@ -221,6 +221,16 @@
                                     </ul>
                                 </li>
 
+                                 <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"> <b>RS Online</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="RS Online"> RS Online</label>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" class="parent"> <b>Master Data</b>

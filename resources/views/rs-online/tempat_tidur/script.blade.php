@@ -1,6 +1,6 @@
 <script type="text/javascript">
     // Tabel
-    var $tablePerizinan = $('#table_tt');
+    var $table = $('#table_tt');
 
     // filter status
     $(".select3").select2({
@@ -69,7 +69,7 @@
                         if (xhr.status == 200 && res.success) {
                             Alert('success', res.message);
                             $('#modal-tt').modal('hide');
-                            $tablePerizinan.bootstrapTable('refresh');
+                            $table.bootstrapTable('refresh');
                         } else {
                             $.notify({
                                 icon: 'fa fa-warning',
@@ -97,7 +97,7 @@
 
     // Table perizinan
     function initTable() {
-        $tablePerizinan.bootstrapTable('destroy').bootstrapTable({
+        $table.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: "en-US",
             search: true,
@@ -260,7 +260,7 @@
                             Swal.close();
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
-                                $tablePerizinan.bootstrapTable('refresh');
+                                $table.bootstrapTable('refresh');
                             } else {
                                 Alert('warning', res.message);
                             }

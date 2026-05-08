@@ -227,16 +227,18 @@
                     @endif
 
                     <!-- RS Online  -->
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('rs-online.tempat-tidur') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-blog') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="#"></use>
-                            </svg><span>RS Online</span></a>
-                        </a>
-                    </li>
+                    @if (in_array('RS Online', $aksesMenu))
+                        <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                                class="sidebar-link sidebar-title link-nav" href="{{ route('rs-online.tempat-tidur') }}">
+                                <svg class="stroke-icon">
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-otherscrontab -e') }}"></use>
+                                </svg>
+                                <svg class="fill-icon">
+                                    <use href="#"></use>
+                                </svg><span>RS Online</span></a>
+                            </a>
+                        </li>
+                    @endif
 
                     {{-- kalibrasi --}}
                     @if (in_array('Kalibrasi Alat Kesehatan', $aksesMenu))

@@ -44,27 +44,10 @@
                         {{-- Add Button --}}
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
                             <div class="d-flex align-items-center gap-2">
-
                                 <button class="btn btn-primary add-btn">
                                     <span class="fa fa-plus"></span>
                                     <span> Tambah</span>
                                 </button>
-
-                                <div class="select2-fixed">
-                                    <select class="form-select select3" id="filter-covid">
-                                        <option value="">-- Filter Covid --</option>
-                                        <option value="1">Covid</option>
-                                        <option value="0">Non Covid</option>
-                                    </select>
-                                </div>
-
-                                <div class="select2-fixed">
-                                    <select class="form-select select3" id="filter-status">
-                                        <option value="">-- Status Bed --</option>
-                                        <option value="kosong">Kosong</option>
-                                        <option value="terpakai">Terpakai</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
 
