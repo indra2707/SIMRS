@@ -231,7 +231,7 @@
                         <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                                 class="sidebar-link sidebar-title link-nav" href="{{ route('rs-online.tempat-tidur') }}">
                                 <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-otherscrontab -e') }}"></use>
+                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-others') }}"></use>
                                 </svg>
                                 <svg class="fill-icon">
                                     <use href="#"></use>
