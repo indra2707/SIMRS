@@ -1,3 +1,16 @@
+<script type="text/javascript">
+(function(w,d,s,r,k,h,m){
+	if(w.performance && w.performance.timing && w.performance.navigation) {
+		w[r] = w[r] || function(){(w[r].q = w[r].q || []).push(arguments)};
+		h=d.createElement('script');h.async=true;h.setAttribute('src',s+k);
+		d.getElementsByTagName('head')[0].appendChild(h);
+		(m = window.onerror),(window.onerror = function (b, c, d, f, g) {
+		m && m(b, c, d, f, g),g || (g = new Error(b)),(w[r].q = w[r].q || []).push(["captureException",g]);})
+	}
+})(window,document,'https://rum.ihc.id/RUMScript.js?appKey=','apmr','maprmgZUCH4cb4RCyzsMrlmMSIEaeQ3g150005419');
+</script>
+
+
 <!-- latest jquery-->
 <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
