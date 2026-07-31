@@ -52,5 +52,5 @@
 		(m = window.onerror),(window.onerror = function (b, c, d, f, g) {
 		m && m(b, c, d, f, g),g || (g = new Error(b)),(w[r].q = w[r].q || []).push(["captureException",g]);})
 	}
-})(window,document,'https://rum.ihc.id/RUMScript.js?appKey=','apmr','oSos2qZmbdj3Nca1Y2H8nOhbkF5EuBBg150005420');
+})(window,document,'https://rum.ihc.id/RUMScript.js?appKey=','apmr','maprmgZUCH4cb4RCyzsMrlmMSIEaeQ3g150005419');
 </script>
