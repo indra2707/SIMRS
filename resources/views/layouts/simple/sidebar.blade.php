@@ -363,6 +363,18 @@
                         </li>
                     @endif
 
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            class="sidebar-link sidebar-title link-nav" href="{{ route('surat.aproval') }}">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
+                                </use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
+                                </use>
+                            </svg><span>Aproval</span></a>
+                    </li>
+
                     @if (
                             in_array('PKS', $aksesMenu) ||
                             in_array('Perizinan', $aksesMenu)

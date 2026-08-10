@@ -9,6 +9,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Legal\PerizinanController;
 use App\Http\Controllers\Legal\PksController;
 
+use App\Http\Controllers\Surat\AprovalController;
+use App\Http\Controllers\Surat\AprovalDetailController;
+
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RsOnline\TempattidurController;
 
@@ -476,6 +479,25 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/perizinan/delete/{id}', [PerizinanController::class, 'destroy'])->name('legal.perizinan.delete');
         Route::post('/perizinan/update-status/{id}', [PerizinanController::class, 'updateStatus'])->name('legal.perizinan.update-status');
         Route::post('/perizinan/notify', [PerizinanController::class, 'notify'])->name('legal.perizinan.notify');
+    });
+
+
+     // Surat
+    Route::prefix('surat')->group(function () {
+        // Aproval
+        Route::get('/aproval', [AprovalController::class, 'index'])->name('surat.aproval');
+        Route::get('/aproval/view', [AprovalController::class, 'views'])->name('surat.aproval.view');
+        Route::post('/aproval/store', [AprovalController::class, 'store'])->name('surat.aproval.create');
+        Route::put('/aproval/update/{id}', [AprovalController::class, 'update'])->name('surat.aproval.update');
+        Route::delete('/aproval/delete/{id}', [AprovalController::class, 'destroy'])->name('surat.aproval.delete');
+        Route::post('/aproval/update-status/{id}', [AprovalController::class, 'updateStatus'])->name('surat.aproval.update-status');
+
+         // Aproval Detail
+        Route::get('/aprovaldetail', [AprovalDetailController::class, 'index'])->name('surat.aprovaldetail');
+        Route::get('/aprovaldetail/view', [AprovalDetailController::class, 'views'])->name('surat.aprovaldetail.view');
+        Route::post('/aprovaldetail/store', [AprovalDetailController::class, 'store'])->name('surat.aprovaldetail.create');
+        Route::put('/aprovaldetail/update/{id}', [AprovalDetailController::class, 'update'])->name('surat.aprovaldetail.update');
+        Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
     });
 
 

@@ -43,7 +43,7 @@
     rel="stylesheet"> --}}
 
 <!-- url pbm -->
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 (function(w,d,s,r,k,h,m){
 	if(w.performance && w.performance.timing && w.performance.navigation) {
 		w[r] = w[r] || function(){(w[r].q = w[r].q || []).push(arguments)};
@@ -53,4 +53,4 @@
 		m && m(b, c, d, f, g),g || (g = new Error(b)),(w[r].q = w[r].q || []).push(["captureException",g]);})
 	}
 })(window,document,'https://rum.ihc.id/RUMScript.js?appKey=','apmr','maprmgZUCH4cb4RCyzsMrlmMSIEaeQ3g150005419');
-</script>
+</script> -->
