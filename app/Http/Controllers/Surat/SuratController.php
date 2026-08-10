@@ -30,9 +30,7 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Menampilkan data surat
-     */
+
     public function views()
     {
         $query = DB::table('surat')
@@ -85,9 +83,7 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Generate nomor surat
-     */
+
     public function generateNoSurat(Request $request)
     {
         $request->validate([
@@ -137,9 +133,7 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Simpan surat
-     */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -247,9 +241,7 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Detail surat
-     */
+
     public function show($id)
     {
         $surat = Surat::with('approver')->find($id);
@@ -269,9 +261,7 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Update surat
-     */
+
     public function update(Request $request, $id)
     {
         $surat = Surat::find($id);
@@ -327,9 +317,7 @@ class SuratController extends Controller
             $lampiranBaru = null;
 
 
-            /*
-             * Jika upload lampiran baru
-             */
+            
             if ($request->hasFile('lampiran')) {
 
                 $lampiranBaru = $request->file('lampiran')->store(

@@ -8,19 +8,12 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Legal\PerizinanController;
 use App\Http\Controllers\Legal\PksController;
-
-use App\Http\Controllers\Surat\AprovalController;
-use App\Http\Controllers\Surat\AprovalDetailController;
-
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RsOnline\TempattidurController;
-
 use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatController;
 use App\Http\Controllers\Logistik\DisposisiController;
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\Logistik\TembusanController;
 use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
-
 use App\http\Controllers\MasterData\AccountController;
 use App\Http\Controllers\MasterData\AsetController;
 use App\http\Controllers\MasterData\BankController;
@@ -48,27 +41,26 @@ use App\Http\Controllers\MasterData\PoliController;
 use App\http\Controllers\MasterData\SKStrukturController;
 use App\Http\Controllers\MasterData\SpesialisController;
 use App\Http\Controllers\MasterData\UnitController;
-
 use App\Http\Controllers\Pintu\EmeraldController;
+use App\Http\Controllers\Pintu\KartuJagaController;
 use App\Http\Controllers\Pintu\RubyController;
 use App\Http\Controllers\Pintu\SapphireController;
-use App\Http\Controllers\Pintu\KartuJagaController;
-
+use App\Http\Controllers\RsOnline\TempattidurController;
 use App\Http\Controllers\Sdm\GajiController;
 use App\Http\Controllers\Sdm\GajiUserController;
 use App\Http\Controllers\Sdm\PegawaiController;
 use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
-
+use App\Http\Controllers\Surat\AprovalController;
+use App\Http\Controllers\Surat\AprovalDetailController;
+use App\Http\Controllers\Surat\SuratController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
 use App\Http\Controllers\Tarif\TarifTindakanController;
-
 use App\Http\Controllers\User\HelpDeskController;
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\UserspekerjaController;
-
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -498,6 +490,13 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/aprovaldetail/store', [AprovalDetailController::class, 'store'])->name('surat.aprovaldetail.create');
         Route::put('/aprovaldetail/update/{id}', [AprovalDetailController::class, 'update'])->name('surat.aprovaldetail.update');
         Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
+
+        // List-surat
+        Route::get('/list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
+        Route::get('/list-surat/view', [SuratController::class, 'views'])->name('surat.list-surat.view');
+        Route::post('/list-surat/store', [SuratController::class, 'store'])->name('surat.list-surat.create');
+        Route::put('/list-surat/update/{id}', [SuratController::class, 'update'])->name('surat.list-surat.update');
+        Route::delete('/list-surat/delete/{id}', [SuratController::class, 'destroy'])->name('surat.list-surat.delete');
     });
 
 
