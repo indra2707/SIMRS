@@ -8,6 +8,8 @@ use App\Models\Surat\Surat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
+use Dompdf\Dompdf;
 
 class SuratController extends Controller
 {
@@ -23,7 +25,7 @@ class SuratController extends Controller
             ->orderBy('username', 'asc')
             ->get();
 
-        return view('surat.surat', [
+        return view('surat.list-surat.list-surat', [
             'data' => $data,
             'users' => $users,
         ]);
@@ -54,6 +56,11 @@ class SuratController extends Controller
 
         foreach ($query as $key => $value) {
 
+            $lampiranArr = $value->lampiran ? json_decode($value->lampiran, true) : [];
+            if (!is_array($lampiranArr)) {
+                $lampiranArr = [];
+            }
+
             $data[] = [
                 'id' => $value->id,
 
@@ -61,13 +68,18 @@ class SuratController extends Controller
                     ? date('d-m-Y', strtotime($value->tanggal))
                     : '-',
 
+                'tanggal_raw' => $value->tanggal
+                    ? date('Y-m-d', strtotime($value->tanggal))
+                    : null,
+
                 'no_surat' => $value->no_surat,
 
                 'approval_id' => $value->approval_id,
 
                 'nama_approver' => $value->nama_approver ?? '-',
 
-                'lampiran' => $value->lampiran,
+                'lampiran' => $lampiranArr,
+                'lampiran_count' => count($lampiranArr),
 
                 'perihal' => $value->perihal,
 
@@ -94,14 +106,12 @@ class SuratController extends Controller
 
         $tahun = date('Y', strtotime($tanggal));
 
-        // Ambil nomor surat terakhir pada tahun tersebut
         $suratTerakhir = Surat::whereYear('tanggal', $tahun)
             ->orderBy('id', 'desc')
             ->first();
 
         if ($suratTerakhir) {
 
-            // Ambil angka dari awal nomor surat
             preg_match('/^(\d+)/', $suratTerakhir->no_surat, $matches);
 
             $nomorUrut = isset($matches[1])
@@ -153,6 +163,10 @@ class SuratController extends Controller
 
             'lampiran' => [
                 'nullable',
+                'array',
+                'max:5',
+            ],
+            'lampiran.*' => [
                 'image',
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
@@ -176,9 +190,9 @@ class SuratController extends Controller
 
             'approval_id.exists' => 'User approval tidak ditemukan.',
 
-            'lampiran.image' => 'Lampiran harus berupa gambar.',
-            'lampiran.mimes' => 'Lampiran hanya boleh JPG, JPEG, PNG atau WEBP.',
-            'lampiran.max' => 'Ukuran lampiran maksimal 5 MB.',
+            'lampiran.*.image' => 'Lampiran harus berupa gambar.',
+            'lampiran.*.mimes' => 'Lampiran hanya boleh JPG, JPEG, PNG atau WEBP.',
+            'lampiran.*.max' => 'Ukuran tiap lampiran maksimal 5 MB.',
 
             'perihal.required' => 'Perihal wajib diisi.',
 
@@ -190,14 +204,12 @@ class SuratController extends Controller
 
         try {
 
-            $lampiran = null;
+            $lampiranPaths = [];
 
             if ($request->hasFile('lampiran')) {
-
-                $lampiran = $request->file('lampiran')->store(
-                    'surat/lampiran',
-                    'public'
-                );
+                foreach ($request->file('lampiran') as $file) {
+                    $lampiranPaths[] = $file->store('surat/lampiran', 'public');
+                }
             }
 
 
@@ -208,7 +220,7 @@ class SuratController extends Controller
 
                 'approval_id' => $request->approval_id,
 
-                'lampiran' => $lampiran,
+                'lampiran' => $lampiranPaths,
 
                 'perihal' => $request->perihal,
 
@@ -227,9 +239,8 @@ class SuratController extends Controller
 
             DB::rollBack();
 
-            // Jika upload sudah terjadi tetapi database gagal
-            if (!empty($lampiran)) {
-                Storage::disk('public')->delete($lampiran);
+            foreach ($lampiranPaths as $path) {
+                Storage::disk('public')->delete($path);
             }
 
             return response()->json([
@@ -292,9 +303,18 @@ class SuratController extends Controller
 
             'lampiran' => [
                 'nullable',
+                'array',
+                'max:5',
+            ],
+            'lampiran.*' => [
                 'image',
                 'mimes:jpg,jpeg,png,webp',
                 'max:5120',
+            ],
+
+            'hapus_lampiran' => [
+                'nullable',
+                'array',
             ],
 
             'perihal' => [
@@ -314,47 +334,37 @@ class SuratController extends Controller
 
         try {
 
-            $lampiranBaru = null;
+            $lampiranBaru = [];
 
-
-            
             if ($request->hasFile('lampiran')) {
-
-                $lampiranBaru = $request->file('lampiran')->store(
-                    'surat/lampiran',
-                    'public'
-                );
+                foreach ($request->file('lampiran') as $file) {
+                    $lampiranBaru[] = $file->store('surat/lampiran', 'public');
+                }
             }
 
 
-            /*
-             * Update data
-             */
             $surat->tanggal = $request->tanggal;
-
             $surat->no_surat = $request->no_surat;
-
             $surat->approval_id = $request->approval_id;
-
             $surat->perihal = $request->perihal;
-
             $surat->isi_surat = $request->isi_surat;
 
 
-            /*
-             * Jika ada lampiran baru
-             */
-            if ($lampiranBaru) {
+            $lampiranLama = $surat->lampiran ?? [];
+            $hapusList = $request->input('hapus_lampiran', []);
 
-                // Hapus file lama
-                if ($surat->lampiran) {
-                    Storage::disk('public')->delete(
-                        $surat->lampiran
-                    );
+            $lampiranTetap = array_values(array_filter(
+                $lampiranLama,
+                fn ($path) => !in_array($path, $hapusList)
+            ));
+
+            foreach ($hapusList as $path) {
+                if (in_array($path, $lampiranLama)) {
+                    Storage::disk('public')->delete($path);
                 }
-
-                $surat->lampiran = $lampiranBaru;
             }
+
+            $surat->lampiran = array_merge($lampiranTetap, $lampiranBaru);
 
 
             $surat->save();
@@ -371,10 +381,8 @@ class SuratController extends Controller
 
             DB::rollBack();
 
-            if ($lampiranBaru) {
-                Storage::disk('public')->delete(
-                    $lampiranBaru
-                );
+            foreach ($lampiranBaru as $path) {
+                Storage::disk('public')->delete($path);
             }
 
             return response()->json([
@@ -386,9 +394,6 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Hapus surat
-     */
     public function destroy($id)
     {
         $surat = Surat::find($id);
@@ -406,20 +411,11 @@ class SuratController extends Controller
 
         try {
 
-            /*
-             * Hapus file lampiran
-             */
-            if ($surat->lampiran) {
-
-                Storage::disk('public')->delete(
-                    $surat->lampiran
-                );
+            foreach (($surat->lampiran ?? []) as $path) {
+                Storage::disk('public')->delete($path);
             }
 
 
-            /*
-             * Hapus database
-             */
             $surat->delete();
 
             DB::commit();
@@ -442,11 +438,6 @@ class SuratController extends Controller
     }
 
 
-    /**
-     * Update approval surat
-     *
-     * approval_id = users.id
-     */
     public function updateApproval(Request $request, $id)
     {
         $request->validate([
@@ -481,5 +472,97 @@ class SuratController extends Controller
             'message' => 'Approval surat berhasil diubah.',
             'data' => $surat,
         ], 200);
+    }
+
+
+    public function previewLampiran($id)
+    {
+        $surat = Surat::find($id);
+
+        if (!$surat) {
+            abort(404, 'Data surat tidak ditemukan.');
+        }
+
+        $lampiranList = [];
+
+        foreach (($surat->lampiran ?? []) as $path) {
+            $fullPath = storage_path('app/public/' . $path);
+
+            if (file_exists($fullPath)) {
+                $lampiranList[] = [
+                    'base64' => base64_encode(file_get_contents($fullPath)),
+                    'mime'   => strtolower(pathinfo($fullPath, PATHINFO_EXTENSION)) === 'jpg'
+                        ? 'jpeg'
+                        : strtolower(pathinfo($fullPath, PATHINFO_EXTENSION)),
+                ];
+            }
+        }
+
+        return view('surat.lampiran-preview', [
+            'surat'        => $surat,
+            'lampiranList' => $lampiranList,
+        ]);
+    }
+
+
+    public function previewPdf($id)
+    {
+        $surat = Surat::with('approver')->find($id);
+
+        if (!$surat) {
+            abort(404, 'Data surat tidak ditemukan.');
+        }
+
+        $bgPath = public_path('assets/images/bg-surat.png');
+        $bgBase64 = file_exists($bgPath) ? base64_encode(file_get_contents($bgPath)) : '';
+
+        // ---- Isi surat dipecah per paragraf ----
+        $isiSurat = strip_tags($surat->isi_surat);
+        $paragrafIsi = array_values(array_filter(
+            array_map('trim', explode("\n", $isiSurat)),
+            fn ($p) => $p !== ''
+        ));
+
+        $lampiranEncoded = [];
+
+        foreach (($surat->lampiran ?? []) as $path) {
+            $fullPath = storage_path('app/public/' . $path);
+
+            if (file_exists($fullPath)) {
+                $ext = strtolower(pathinfo($fullPath, PATHINFO_EXTENSION));
+
+                $ukuranAsli = @getimagesize($fullPath);
+                $maxWidthPx = 450; // setara ~12cm
+                $lebar = $maxWidthPx;
+                if ($ukuranAsli && $ukuranAsli[0] < $maxWidthPx) {
+                    $lebar = $ukuranAsli[0];
+                }
+
+                $lampiranEncoded[] = [
+                    'base64' => base64_encode(file_get_contents($fullPath)),
+                    'mime'   => $ext === 'jpg' ? 'jpeg' : $ext,
+                    'width'  => $lebar,
+                ];
+            }
+        }
+
+        $html = view('surat.list-surat.preview', [
+            'surat'       => $surat,
+            'tanggal'     => Carbon::parse($surat->tanggal)->translatedFormat('d F Y'),
+            'bgBase64'    => $bgBase64,
+            'paragrafIsi' => $paragrafIsi,
+            'lampiranList'=> $lampiranEncoded,
+        ])->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('a4', 'portrait');
+        $dompdf->render();
+
+        $namaFile = 'Surat_' . str_replace(['/', '\\'], '-', $surat->no_surat) . '.pdf';
+
+        return $dompdf->stream($namaFile, [
+            'Attachment' => false,
+        ]);
     }
 }

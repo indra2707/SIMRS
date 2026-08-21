@@ -352,7 +352,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/roll/update-status/{id}', [RollsController::class, 'updateStatus'])->name('user.roll.update-status');
     });
 
-     // RS Online
+    // RS Online
     Route::prefix('rs-online')->group(function () {
         // Tempat Tidur
         Route::get('/tempat-tidur', [TempattidurController::class, 'index'])->name('rs-online.tempat-tidur');
@@ -474,7 +474,7 @@ Route::group(['middleware' => 'loggedin'], function () {
     });
 
 
-     // Surat
+    // Surat
     Route::prefix('surat')->group(function () {
         // Aproval
         Route::get('/aproval', [AprovalController::class, 'index'])->name('surat.aproval');
@@ -484,7 +484,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/aproval/delete/{id}', [AprovalController::class, 'destroy'])->name('surat.aproval.delete');
         Route::post('/aproval/update-status/{id}', [AprovalController::class, 'updateStatus'])->name('surat.aproval.update-status');
 
-         // Aproval Detail
+        // Aproval Detail
         Route::get('/aprovaldetail', [AprovalDetailController::class, 'index'])->name('surat.aprovaldetail');
         Route::get('/aprovaldetail/view', [AprovalDetailController::class, 'views'])->name('surat.aprovaldetail.view');
         Route::post('/aprovaldetail/store', [AprovalDetailController::class, 'store'])->name('surat.aprovaldetail.create');
@@ -492,11 +492,25 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
 
         // List-surat
-        Route::get('/list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
-        Route::get('/list-surat/view', [SuratController::class, 'views'])->name('surat.list-surat.view');
-        Route::post('/list-surat/store', [SuratController::class, 'store'])->name('surat.list-surat.create');
-        Route::put('/list-surat/update/{id}', [SuratController::class, 'update'])->name('surat.list-surat.update');
-        Route::delete('/list-surat/delete/{id}', [SuratController::class, 'destroy'])->name('surat.list-surat.delete');
+
+        // Halaman index & data tabel -- WAJIB sebelum route yang ada {id}
+        Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
+        Route::get('list-surat/view', [SuratController::class, 'views'])->name('surat.view');
+        Route::get('list-surat/generate-no-surat', [SuratController::class, 'generateNoSurat'])->name('surat.generate-no-surat');
+
+        // Create
+        Route::post('list-surat/add', [SuratController::class, 'store'])->name('surat.create');
+
+        // Update & Delete (pakai {id})
+        Route::put('list-surat/{id}', [SuratController::class, 'update'])->name('surat.update');
+        Route::delete('list-surat/{id}', [SuratController::class, 'destroy'])->name('surat.delete');
+
+        // Approval
+        Route::post('list-surat/{id}/approval', [SuratController::class, 'updateApproval'])->name('surat.update-approval');
+
+        // Preview lampiran (banyak gambar) & Export PDF -- BARU, ganti export-word
+        Route::get('list-surat/{id}/preview-lampiran', [SuratController::class, 'previewLampiran'])->name('surat.preview-lampiran');
+        Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
     });
 
 
@@ -511,7 +525,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/master-user/sync', [EmeraldController::class, 'syncFromDevice'])->name('pintu.emerald.sync');
         Route::post('/emerald/open-door', [EmeraldController::class, 'openDoor'])->name('pintu.emerald.open-door');
 
-         // Ruby
+        // Ruby
         Route::get('/ruby', [RubyController::class, 'index'])->name('pintu.ruby');
         Route::get('/ruby/view', [RubyController::class, 'views'])->name('pintu.ruby.view');
         Route::post('/ruby/store', [RubyController::class, 'store'])->name('pintu.ruby.create');
@@ -536,7 +550,6 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/kartu-jaga/delete/{id}', [KartuJagaController::class, 'destroy'])->name('pintu.kartu-jaga.delete');
         Route::post('/kartu-jaga/update-status/{id}', [KartuJagaController::class, 'updateStatus'])->name('pintu.kartu-jaga.update-status');
         Route::get('/kartu-jaga/print/{id}', [KartuJagaController::class, 'print'])->name('pintu.kartu-jaga.print');
-
     });
 
     // Tarif
@@ -646,8 +659,6 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/helpdesk/electromedis', [DashboardHelpdeskController::class, 'dashboardHelpdeskElektroMedis'])->name('dashboard.helpdesk.electromedis');
     Route::get('/helpdesk/general_affair', [DashboardHelpdeskController::class, 'dashboardHelpdeskGeneralAffair'])->name('dashboard.helpdesk.general_affair');
     Route::get('/helpdesk/viewall', [DashboardHelpdeskController::class, 'dashboardHelpdeskAll'])->name('dashboard.helpdesk.viewall');
-
-
 });
 
 //     // Users

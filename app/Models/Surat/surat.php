@@ -2,32 +2,31 @@
 
 namespace App\Models\Surat;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class surat extends Model
 {
     use HasFactory;
+    protected $table = 'surat';
     protected $fillable = [
         'tanggal',
         'no_surat',
         'approval_id',
-        'status',
         'lampiran',
         'perihal',
         'isi_surat',
     ];
 
+
     protected $casts = [
-        'tanggal' => 'date',
+        'lampiran' => 'array',
     ];
+
 
     public function approver()
     {
-        return $this->belongsTo(
-            \App\Models\User::class,
-            'approval_id',
-            'id'
-        );
+        return $this->belongsTo( User::class,'approval_id','id' );
     }
 }
