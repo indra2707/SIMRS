@@ -15,12 +15,9 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal');
             $table->string('no_surat', 100)->unique();
-            $table->foreignId('approval_id')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
-            $table->string('lampiran')->nullable();
-            $table->string('perihal');
+            $table->unsignedBigInteger('approval_id')->nullable();
+            $table->json('lampiran')->nullable();
+            $table->string('perihal', 255);
             $table->longText('isi_surat');
             $table->timestamps();
         });
