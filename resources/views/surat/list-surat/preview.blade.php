@@ -273,7 +273,7 @@
 
     <div class="footer">
         <b>RSOJ Pertamina Royal Biringkanaya</b><br>
-        Jl. Pajjaiyyang Sudiang Raya
+        Jl. Pajjaiang Sudiang Raya
         Kecamatan Biringkanaya Kota Makassar
         Sulawesi Selatan
         <br>
