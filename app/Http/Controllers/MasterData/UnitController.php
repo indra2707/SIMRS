@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\MasterData;
 
 use App\Http\Controllers\Controller;
-use App\Models\MaterData\Unit;;
+use App\Models\MaterData\Unit;
+;
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
@@ -26,9 +27,10 @@ class UnitController extends Controller
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
-                'id'        => $value->id,
-                'nama'      => $value->nama,
-                'status'    => $value->status,
+                'id' => $value->id,
+                'nama' => $value->nama,
+                'kode_surat' => $value->kode_surat,
+                'status' => $value->status,
             ];
         }
         return response()->json($data, 200);
@@ -38,8 +40,9 @@ class UnitController extends Controller
     public function store(Request $request)
     {
         $query = Unit::create([
-            'nama'      => $request->nama,
-            'status'    => $request->status == 'on' ? '1' : '0',
+            'nama' => $request->nama,
+            'kode_surat' => $request->kode_surat,
+            'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([
@@ -47,7 +50,7 @@ class UnitController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Ditambahkan.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -60,8 +63,9 @@ class UnitController extends Controller
     public function update(Request $request, $id)
     {
         $query = Unit::where('id', $id)->update([
-            'nama'      => $request->nama,
-            'status'    => $request->status == 'on' ? '1' : '0',
+            'nama' => $request->nama,
+            'kode_surat' => $request->kode_surat,
+            'status' => $request->status == 'on' ? '1' : '0',
         ]);
         if ($query) {
             return response()->json([
@@ -69,7 +73,7 @@ class UnitController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Diubah.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -88,7 +92,7 @@ class UnitController extends Controller
                 'data' => [],
                 'message' => 'Data Berhasil Dihapus.',
             ], status: 200);
-        }else{
+        } else {
             return response()->json([
                 'success' => false,
                 'data' => [],
@@ -97,7 +101,7 @@ class UnitController extends Controller
         }
     }
 
-     // update status check
+    // update status check
     public function updateStatus(Request $request, $id)
     {
         $query = Unit::where('id', $id)->update([

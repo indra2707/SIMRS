@@ -43,11 +43,19 @@ class LoginController extends Controller
                         // $adminData = User::where('username', $request->username)->first();
                         $adminData = User::join('tbl_rolls', 'tbl_rolls.id', '=', 'users.role')
                             ->join('pegawai', 'pegawai.id', '=', 'users.id_pegawai')
-                            ->select('users.*', 'tbl_rolls.nama as nama_role', 'tbl_rolls.menu as menu', 'pegawai.nama_pekerja as nama_pekerja', 
-                            'pegawai.nomor_pekerja as nomor_pekerja', 
-                            'pegawai.tanggal_lahir as tanggal_lahir', 
-                            'pegawai.id_unit as id_unit',
-                            'pegawai.jenis_kelamin as jenis_kelamin')
+                            ->join('tbl_unit', 'tbl_unit.id', '=', 'pegawai.id_unit')
+                            ->select(
+                                'users.*',
+                                'tbl_rolls.nama as nama_role',
+                                'tbl_rolls.menu as menu',
+                                'pegawai.nama_pekerja as nama_pekerja',
+                                'pegawai.nomor_pekerja as nomor_pekerja',
+                                'pegawai.tanggal_lahir as tanggal_lahir',
+                                'pegawai.id_unit as id_unit',
+                                'pegawai.id as id_pegawai',
+                                'pegawai.jenis_kelamin as jenis_kelamin',
+                                'tbl_unit.kode_surat as kode_surat'
+                            )
                             ->where('users.username', $request->username)->first();
 
                         // --- Pastikan menu valid array ---
@@ -69,7 +77,9 @@ class LoginController extends Controller
                         Session::put('menu', $menu_array);
                         Session::put('id', $adminData->id);
                         Session::put('id_unit', $adminData->id_unit);
+                        Session::put('kode_surat', $adminData->kode_surat);
                         Session::put('jenis_kelamin', $adminData->jenis_kelamin);
+                        Session::put('id_pegawai', $adminData->id_pegawai);
 
                         return response()->json([
                             'success' => true,

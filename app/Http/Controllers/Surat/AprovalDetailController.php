@@ -47,6 +47,7 @@ class AprovalDetailController extends Controller
                 'id_pegawai' => $value->id_pegawai,
                 'nama_pekerja' => $value->nama_pekerja,
                 'id_aproval' => $value->id_aproval,
+                'id_unit' => $value->id_unit,
             ];
         }
 
@@ -61,6 +62,7 @@ class AprovalDetailController extends Controller
             'id_aproval' => $request->id_aproval,
             'parent_jabatan' => $request->parent_jabatan,
             'id_pegawai' => $request->id_pegawai,
+            'id_unit' => $request->id_unit,
         ]);
         if ($query) {
             return response()->json([
@@ -85,6 +87,7 @@ class AprovalDetailController extends Controller
             'id_aproval' => $request->id_aproval,
             'parent_jabatan' => $request->parent_jabatan,
             'id_pegawai' => $request->id_pegawai,
+            'id_unit' => $request->id_unit,
         ]);
 
         return response()->json([

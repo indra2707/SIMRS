@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tbl_aproval', function (Blueprint $table) {
             $table->id();
             $table->string('nama_aproval');
+            
             $table->enum('status', ['0', '1'])->default('1');
             $table->timestamps();
         });

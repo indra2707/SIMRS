@@ -14,6 +14,7 @@ class Unit extends Model
     protected $fillable = [
         'id',
         'nama',
+        'kode_surat',
         'status',
     ];
 }

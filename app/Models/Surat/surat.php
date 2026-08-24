@@ -11,22 +11,16 @@ class surat extends Model
     use HasFactory;
     protected $table = 'surat';
     protected $fillable = [
+        'id',
         'tanggal',
         'no_surat',
         'approval_id',
         'lampiran',
+        'jumlah_lampiran',
         'perihal',
         'isi_surat',
+        'status',
+        'id_unit',
+        'id_pegawai'
     ];
-
-
-    protected $casts = [
-        'lampiran' => 'array',
-    ];
-
-
-    public function approver()
-    {
-        return $this->belongsTo( User::class,'approval_id','id' );
-    }
 }

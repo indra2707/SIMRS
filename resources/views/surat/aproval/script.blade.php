@@ -37,10 +37,16 @@
         $('input[name="id_detail"]').val('');
         $('select[name="parent_jabatan"]').val('').trigger('change');
         $('select[name="id_pegawai"]').val('').trigger('change');
+        $('input[name="id_unit"]').val('');
 
         InitSelect2($("select[name='id_pegawai']"), {
             url: "{{ route('get-select-pegawai') }}",
-            dropdownParent: $("#modal-input-hirarki")
+            dropdownParent: $("#modal-input-hirarki"),
+        });
+
+        $("select[name='id_pegawai']").on('select2:select', function (e) {
+            let data = e.params.data;
+            $("#id_unit").val(data.id_unit || '');
         });
 
     });
@@ -554,12 +560,19 @@
             $('.save-btn-detail').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
             $('input[name="id_detail"]').val(row.id_detail);
             $('select[name="parent_jabatan"]').val(row.parent_jabatan).trigger('change');
+            $('input[name="id_unit"]').val(row.id_unit);
 
-              InitSelect2($("select[name='id_pegawai']"), {
+            InitSelect2($("select[name='id_pegawai']"), {
                 url: "{{ route('get-select-pegawai') }}",
                 dropdownParent: $("#modal-input-hirarki"),
                 initialValue: row.id_pegawai
             });
+
+            $("select[name='id_pegawai']").on('select2:select', function (e) {
+                let data = e.params.data;
+                $("#id_unit").val(data.id_unit || '');
+            });
+
         },
         'click .btn-delete-hirarki': function (e, value, row, index) {
             var url = "{{ route('surat.aprovaldetail.delete', ':id') }}";

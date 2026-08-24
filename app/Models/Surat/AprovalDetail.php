@@ -16,5 +16,6 @@ class AprovalDetail extends Model
         'id_aproval',
         'parent_jabatan',
         'id_pegawai',
+        'id_unit',
     ];
 }

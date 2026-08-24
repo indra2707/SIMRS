@@ -17,7 +17,6 @@
 
         .select2-fixed {
             width: 220px;
-            /* kunci lebar */
             min-width: 220px;
             max-width: 220px;
         }
@@ -63,11 +62,151 @@
         .lampiran-thumb-wrap.marked-remove img {
             opacity: 0.3;
         }
+
+        .ck-editor__editable {
+            height: 500px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        /* Tabel CKEditor agar tidak terlalu tinggi */
+        .ck-editor__editable table {
+            height: auto !important;
+            min-height: 0 !important;
+        }
+
+        .ck-editor__editable table td,
+        .ck-editor__editable table th {
+            height: auto !important;
+            min-height: 0 !important;
+            padding: 4px 6px !important;
+            line-height: 1.2 !important;
+            vertical-align: top;
+        }
+
+        .ck-editor__editable table tr {
+            height: auto !important;
+        }
+
+
+        approval-wizard-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding: 30px 10px 20px;
+        }
+
+        .approval-wizard {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            min-width: max-content;
+            padding: 0 20px;
+        }
+
+        .approval-step {
+            position: relative;
+            width: 180px;
+            text-align: center;
+        }
+
+        /* Garis penghubung */
+        .approval-step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            top: 23px;
+            left: calc(50% + 23px);
+            width: calc(100% - 46px);
+            height: 2px;
+            background: #d5d5d5;
+            z-index: 1;
+        }
+
+        .approval-step.approved:not(:last-child)::after {
+            background: #4053c4;
+        }
+
+        /* Lingkaran icon */
+        .approval-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #d5d5d5;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 12px;
+
+            position: relative;
+            z-index: 2;
+
+            color: #999;
+            font-size: 18px;
+        }
+
+        /* Approved */
+        .approval-step.approved .approval-icon {
+            background: #4053c4;
+            border-color: #4053c4;
+            color: #ffffff;
+        }
+
+        /* Pending */
+        .approval-step.pending .approval-icon {
+            background: #ffffff;
+            border-color: #4053c4;
+            color: #4053c4;
+        }
+
+        .approval-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .approval-name {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+
+        .approval-status {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .approval-step.approved .approval-status {
+            color: #4053c4;
+        }
+
+        .approval-step.pending .approval-status {
+            color: #999;
+        }
+
+        .approval-date {
+            font-size: 11px;
+            color: #999;
+            margin-top: 3px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .approval-step {
+                width: 160px;
+            }
+
+            .approval-wizard {
+                justify-content: flex-start;
+            }
+        }
     </style>
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Surat</h3>
+    <h3>Memorandum</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -100,10 +239,10 @@
                                             <th class="f-light">#</th>
                                             <th class="f-light">Tanggal</th>
                                             <th class="f-light">No Surat</th>
+                                            <th class="f-light">Kepada</th>
                                             <th class="f-light">Perihal</th>
-                                            <th class="f-light">Approval</th>
-                                            <th class="f-light">Lampiran</th>
-                                            <th class="f-light">Dibuat</th>
+                                            <th class="f-light">Status</th>
+                                            <th class="f-light">Created At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -118,7 +257,7 @@
 
     {{-- Modal Form Surat --}}
     <div class="modal fade" id="modal-surat" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Title</h5>
@@ -131,54 +270,51 @@
                         <input type="hidden" name="id">
 
                         <!-- Tanggal -->
-                        <label for="tanggal" class="col-form-label col-sm-2">Tanggal</label>
-                        <div class="col-sm-4">
-                            <input type="date" name="tanggal" id="tanggal" class="form-control" required />
+                        <label for="tanggal" class="col-form-label col-sm-1">Tanggal</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="tanggal" id="tanggal" class="form-control js-datepicker digits"
+                                placeholder="dd/mm/yyyy" aria-label="Date" data-language="en" required />
                         </div>
 
-                        <!-- No Surat -->
-                        <label for="no_surat" class="col-form-label col-sm-2">No Surat</label>
-                        <div class="col-sm-4">
-                            <div class="input-group">
-                                <input type="text" name="no_surat" id="no_surat" class="form-control" required
-                                    placeholder="Nomor surat..." readonly />
-                                <button class="btn btn-outline-secondary btn-generate-no" type="button"
-                                    title="Generate nomor otomatis berdasarkan tanggal">
-                                    <span class="fa fa-magic"></span>
-                                </button>
-                            </div>
-                            <small class="text-muted">Klik ikon untuk generate otomatis setelah memilih tanggal.</small>
+                        <!-- Nomor -->
+                        <label for="no_surat" class="col-form-label col-sm-1">Nomor Surat</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="no_surat" id="no_surat" class="form-control" readonly
+                                placeholder="Nomor surat..." />
+                        </div>
+
+                        <!-- Kepada -->
+                        <label for="kepada" class="col-form-label col-sm-1">Kepada</label>
+                        <div class="col-sm-5">
+                            <select id="approval" class="form-select select2" name="approval_id"
+                                data-placeholder="---- Pilih Salah Satu ----" required>
+                                <option></option>
+                            </select>
+                        </div>
+
+                        <!-- Lampiran -->
+                        <label for="jumlah_lampiran" class="col-form-label col-sm-1">Lampiran</label>
+                        <div class="col-sm-5">
+                            <input type="text" name="jumlah_lampiran" id="jumlah_lampiran" class="form-control"
+                                placeholder="Jumlah Lampiran..." required />
                         </div>
 
                         <!-- Perihal -->
-                        <label for="perihal" class="col-form-label col-sm-2">Perihal</label>
-                        <div class="col-sm-10">
+                        <label for="perihal" class="col-form-label col-sm-1">Perihal</label>
+                        <div class="col-sm-11">
                             <input type="text" name="perihal" id="perihal" class="form-control" required
                                 placeholder="Perihal surat..." maxlength="255" />
                         </div>
 
-                        <!-- Approval -->
-                        <label for="approval_id" class="col-form-label col-sm-2">Approval</label>
-                        <div class="col-sm-10">
-                            <select id="approval_id" class="form-select select2" name="approval_id"
-                                data-placeholder="---- Pilih Salah Satu (opsional) ----">
-                                <option></option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
-                                @endforeach
-                            </select>
+                        <!-- Isi Surat -->
+                        <label for="isi_surat" class="col-form-label col-sm-1">Isi Surat</label>
+                        <div class="col-sm-11">
+                            <textarea name="isi_surat" id="editable" class="form-control"></textarea>
                         </div>
 
-                        <!-- Lampiran Lama (sudah tersimpan, khusus mode edit) -->
-                        <label class="col-form-label col-sm-2 lampiran-lama-label" style="display:none;">Lampiran Saat Ini</label>
-                        <div class="col-sm-10 lampiran-lama-wrap" style="display:none;">
-                            <div class="d-flex flex-wrap gap-2 lampiran-current"></div>
-                            <small class="text-muted">Klik &times; merah untuk menandai lampiran yang mau dihapus.</small>
-                        </div>
-
-                        <!-- Lampiran Baru -->
-                        <label class="col-form-label col-sm-2">Tambah Lampiran</label>
-                        <div class="col-sm-10">
+                        <!-- Upload Lampiran -->
+                        <label class="col-form-label col-sm-1">Upload Lampiran</label>
+                        <div class="col-sm-11">
 
                             <!-- Button Attach -->
                             <button type="button" class="btn btn-outline-primary btn-sm mb-2" id="btn-attach-surat">
@@ -192,16 +328,7 @@
                             <small class="text-muted d-block">
                                 Maksimal 5 file baru sekaligus, JPG/PNG/WEBP, maks 5 MB per file.
                             </small>
-
-                            {{-- PREVIEW file baru --}}
                             <div class="row mt-2" id="preview-images-surat"></div>
-                        </div>
-
-                        <!-- Isi Surat -->
-                        <label for="isi_surat" class="col-form-label col-sm-2">Isi Surat</label>
-                        <div class="col-sm-10">
-                            <textarea name="isi_surat" id="isi_surat" class="form-control" rows="6" required
-                                placeholder="Isi surat..."></textarea>
                         </div>
                     </form>
                 </div>
@@ -217,66 +344,27 @@
 
     {{-- Modal Detail Surat --}}
     <div class="modal fade" id="modal-detail-surat" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detail Surat</h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title modal-title-surat"> Status Surat </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-borderless">
-                        <tr>
-                            <th width="150">Tanggal</th>
-                            <td>:</td>
-                            <td class="detail-tanggal"></td>
-                        </tr>
-                        <tr>
-                            <th>No Surat</th>
-                            <td>:</td>
-                            <td class="detail-no-surat"></td>
-                        </tr>
-                        <tr>
-                            <th>Perihal</th>
-                            <td>:</td>
-                            <td class="detail-perihal"></td>
-                        </tr>
-                        <tr>
-                            <th>Approval</th>
-                            <td>:</td>
-                            <td class="detail-approval"></td>
-                        </tr>
-                        <tr>
-                            <th>Lampiran</th>
-                            <td>:</td>
-                            <td class="detail-lampiran"></td>
-                        </tr>
-                        <tr>
-                            <th>Isi Surat</th>
-                            <td>:</td>
-                            <td class="detail-isi-surat"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <div class="row">
+                        <div class="col-12">
 
-    <!-- Modal lihat semua lampiran (grid thumbnail) -->
-    <div class="modal fade" id="modal-lampiran-surat" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Lampiran Surat</h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="d-flex flex-wrap gap-2 lampiran-view-list"></div>
+                            <div class="approval-wizard-wrapper">
+                                <div id="approvalWizard" class="approval-wizard">
+                                    <!-- Wizard akan diisi melalui AJAX -->
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Tutup </button>
                 </div>
             </div>
         </div>
@@ -301,4 +389,5 @@
 
 @section('script')
     @include('surat.list-surat.script')
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 @endsection

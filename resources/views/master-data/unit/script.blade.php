@@ -3,18 +3,19 @@
     var $tableUnit = $('#table_unit');
 
     // Open Modal Unit
-    $(document).on('click', '.add-btn', function() {
+    $(document).on('click', '.add-btn', function () {
         $('.form-unit').removeClass('was-validated');
         $('#modal-unit').modal('show');
         $('.modal-title').text('Form Tambah Unit');
         $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
         $('input[name="id"]').val('');
         $('input[name="nama"]').val('');
+        $('input[name="kode_surat"]').val('');
         $('input[name="status"]').prop('checked', true);
     });
 
     // Save Asset
-    $(document).on('click', '.save-btn', function() {
+    $(document).on('click', '.save-btn', function () {
         var id = $('input[name="id"]').val();
         if (id) {
             var url = "{{ route('master-data.unit.update', ':id') }}";
@@ -25,7 +26,7 @@
             var type = "POST";
         }
         var forms = document.getElementsByClassName('form-unit');
-        var validation = Array.prototype.filter.call(forms, function(form) {
+        var validation = Array.prototype.filter.call(forms, function (form) {
             if (!form.checkValidity()) {
                 form.querySelector(".form-control:invalid").focus();
                 event.preventDefault();
@@ -36,16 +37,16 @@
                     url: url,
                     dataType: "json",
                     data: $('.form-unit').serialize(),
-                    beforeSend: function() {
+                    beforeSend: function () {
                         $('.save-btn').html(
                             '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
                         ).attr('disabled', 'disabled');
                     },
-                    complete: function() {
+                    complete: function () {
                         $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
                             .removeAttr('disabled');
                     },
-                    success: function(res, status, xhr) {
+                    success: function (res, status, xhr) {
                         if (xhr.status == 200 && res.success == true) {
                             Alert('success', res.message);
                             $('#modal-unit').modal('hide');
@@ -67,8 +68,8 @@
                                     exit: 'animated fadeOutUp'
                                 },
                             });
-                        form.classList.remove('was-validated');
-                    }
+                            form.classList.remove('was-validated');
+                        }
                     },
                 });
             }
@@ -77,7 +78,7 @@
     });
 
     // Page Load Event
-    $(function() {
+    $(function () {
         initTable();
     });
 
@@ -111,11 +112,15 @@
                         sortable: true,
                     },
                     {
+                        field: 'kode_surat',
+                        sortable: true,
+                    },
+                    {
                         width: '100%',
                         field: 'status',
                         sortable: true,
                         events: window.updateStatusUnit,
-                        formatter: function(value, row, index) {
+                        formatter: function (value, row, index) {
                             return [
                                 '<div class="media-body text-center switch-sm icon-state">',
                                 '<label class="switch">',
@@ -139,7 +144,7 @@
                     }
                 ]
             ],
-            responseHandler: function(data) {
+            responseHandler: function (data) {
                 return data;
             }
         });
@@ -162,15 +167,16 @@
 
     // Handle events button actions
     window.eventsUnit = {
-        'click .btn-edit': function(e, value, row, index) {
+        'click .btn-edit': function (e, value, row, index) {
             $('#modal-unit').modal('show');
             $('.modal-title').text('Form Edit Unit');
             $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
             $('input[name="id"]').val(row.id);
             $('input[name="nama"]').val(row.nama);
+            $('input[name="kode_surat"]').val(row.kode_surat);
             $('input[name="status"]').prop('checked', row.status === '1');
         },
-        'click .btn-delete': function(e, value, row, index) {
+        'click .btn-delete': function (e, value, row, index) {
             var url = "{{ route('master-data.unit.delete', ':id') }}";
             url = url.replace(':id', row.id);
             Swal.fire({
@@ -191,14 +197,14 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(res, status, xhr) {
+                        success: function (res, status, xhr) {
                             if (xhr.status == 200 && res.success == true) {
                                 Alert('success', res.message);
                             } else {
                                 Alert('warning', res.message);
                             }
                         }
-                    }).done(function() {
+                    }).done(function () {
                         $tableUnit.bootstrapTable('refresh');
                     });
 
@@ -209,7 +215,7 @@
 
     // Window operateChange Status unit
     window.updateStatusUnit = {
-        'click .update-status': function(e, value, row, index) {
+        'click .update-status': function (e, value, row, index) {
             var url = "{{ route('master-data.unit.update-status', ':id') }}";
             url = url.replace(':id', row.id);
             $.ajax({
@@ -220,7 +226,7 @@
                     table: 'tbl_lokasis',
                     _token: "{{ csrf_token() }}"
                 },
-                success: function(res, status, xhr) {
+                success: function (res, status, xhr) {
                     if (xhr.status == 200 && res.success == true) {
                         Alert('success', res.message);
                     } else {
@@ -228,7 +234,7 @@
                     }
                     $tableUnit.bootstrapTable('refresh');
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     if (xhr.status == 400) {
                         Alert('error', xhr.responseJSON.message);
                     } else if (xhr.status == 500) {

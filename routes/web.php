@@ -492,25 +492,15 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
 
         // List-surat
-
-        // Halaman index & data tabel -- WAJIB sebelum route yang ada {id}
         Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
         Route::get('list-surat/view', [SuratController::class, 'views'])->name('surat.view');
-        Route::get('list-surat/generate-no-surat', [SuratController::class, 'generateNoSurat'])->name('surat.generate-no-surat');
-
-        // Create
+        Route::get('list-surat/getNomorSurat', [SuratController::class, 'getNomorSurat'])->name('surat.getNomorSurat');
         Route::post('list-surat/add', [SuratController::class, 'store'])->name('surat.create');
-
-        // Update & Delete (pakai {id})
         Route::put('list-surat/{id}', [SuratController::class, 'update'])->name('surat.update');
         Route::delete('list-surat/{id}', [SuratController::class, 'destroy'])->name('surat.delete');
-
-        // Approval
-        Route::post('list-surat/{id}/approval', [SuratController::class, 'updateApproval'])->name('surat.update-approval');
-
-        // Preview lampiran (banyak gambar) & Export PDF -- BARU, ganti export-word
-        Route::get('list-surat/{id}/preview-lampiran', [SuratController::class, 'previewLampiran'])->name('surat.preview-lampiran');
+        Route::post('/list-surat/update-status/{id}', [SuratController::class, 'updateStatus'])->name('surat.update-status');
         Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
+        Route::get('list-surat/viewapproval', [SuratController::class, 'viewsapproval'])->name('surat.viewapproval');
     });
 
 
@@ -634,6 +624,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/get-select-ruby', [GlobalController::class, 'optionsSelectRuby'])->name('get-select-ruby');
         // Sapphire
         Route::get('/get-select-sapphire', [GlobalController::class, 'optionsSelectSapphire'])->name('get-select-sapphire');
+        // Approval
+        Route::get('/get-select-approval', [GlobalController::class, 'optionsSelectApproval'])->name('get-select-approval');
     });
 });
 

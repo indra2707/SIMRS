@@ -181,6 +181,12 @@
                             </select>
                         </div>
 
+                        <!-- id_unit -->
+                        <label for="id_unit" class="col-form-label col-sm-2" hidden>ID Unit</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="id_unit" id="id_unit" class="form-control" hidden
+                                placeholder="ID Unit..." />
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

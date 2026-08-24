@@ -363,27 +363,22 @@
                         </li>
                     @endif
 
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('surat.aproval') }}">
+                    <!-- Surat -->
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
-                                </use>
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
                             </svg>
                             <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
-                                </use>
-                            </svg><span>Aproval</span></a>
-                    </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
-                            class="sidebar-link sidebar-title link-nav" href="{{ route('surat.list-surat') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-landing-page') }}">
-                                </use>
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
                             </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-landing-page') }}">
-                                </use>
-                            </svg><span>list surat</span></a>
+                            <span>Surat</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('surat.aproval') }}">Hirarki Approval</a></li>
+                            <li><a href="{{ route('surat.list-surat') }}">Memorandum</a></li>
+                            <li><a href="#">Approval Memorandum</a></li>
+                        </ul>
                     </li>
 
                     @if (

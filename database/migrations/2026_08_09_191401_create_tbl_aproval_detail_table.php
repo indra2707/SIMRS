@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->enum('parent_jabatan', ['0', '1', '2']);
             $table->string('id_pegawai');
+            $table->string('id_unit');
             $table->string('no_surat', null);
             $table->timestamps();
         });

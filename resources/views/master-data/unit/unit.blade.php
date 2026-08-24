@@ -37,6 +37,7 @@
                                 <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">Nama Unit</th>
+                                            <th class="f-light">Kode Surat</th>
                                             <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -72,6 +73,14 @@
                             <div class="col-sm-10">
                                 <input class="form-control form-control" name="nama" type="text"
                                     placeholder="Nama Unit..." required>
+                            </div>
+                        </div>
+                        <!--Kode Unit -->
+                         <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="kode_surat">Kode Surat</label>
+                            <div class="col-sm-10">
+                                <input class="form-control form-control" name="kode_surat" type="text"
+                                    placeholder="Kode Surat..." required>
                             </div>
                         </div>
                         {{-- Satus --}}

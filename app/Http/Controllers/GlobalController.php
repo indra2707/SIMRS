@@ -411,6 +411,7 @@ class GlobalController extends Controller
             $data[] = [
                 'id' => $item->id,
                 'text' => $item->nomor_pekerja . ' - ' . $item->nama_pekerja,  // kolom yang benar
+                'id_unit' => $item->id_unit,
             ];
         }
 
@@ -548,6 +549,31 @@ class GlobalController extends Controller
         ], 200);
     }
 
+    // select Approval
+    public function optionsSelectApproval(Request $request)
+    {
+        $query = DB::table('tbl_aproval')
+            ->where('status', '=', '1')
+            ->when($request->values != '', function ($q) use ($request) {
+                $q->where('id', '=', $request->values);
+            })
+            ->where(function ($q) use ($request) {
+                $search = $request->search;
+                $q->where('nama_aproval', 'like', "%$search%");
+                // Tambah kolom lain jika dibutuhkan
+            })
+            ->limit(10)
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[$key]['id'] = $value->id;
+            $data[$key]['text'] = $value->nama_aproval;
+        }
+        return response()->json([
+            'data' => $data
+        ], 200);
+    }
 
     // select Fungsi
     public function optionsSelectFungsi(Request $request)
