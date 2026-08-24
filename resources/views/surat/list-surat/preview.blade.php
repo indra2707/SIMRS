@@ -222,7 +222,7 @@
     <table class="info-table">
         <tr>
             <td class="label">Nomor </td>
-            <td>: {{ $surat->no_surat }} </td><br>
+            <td>: {{ $surat->no_surat }} </td><br><br>
         </tr>
         <tr>
             <td class="label">Kepada</td>
@@ -238,7 +238,7 @@
         </tr>
         <tr>
             <td class="label">Perihal </td>
-            <td class="perihal-value">: <b>{{ $surat->perihal }}</b> </td>
+            <td class="perihal-value">: {{ $surat->perihal }}</td>
         </tr>
     </table>
 
@@ -272,7 +272,7 @@
 
 
     <div class="footer">
-        <b>RS Otak & Jantung Pertamina Royal Biringkanaya</b><br>
+        <b>RSOJ Pertamina Royal Biringkanaya</b><br>
         Jl. Pajjaiyyang Sudiang Raya
         Kecamatan Biringkanaya Kota Makassar
         Sulawesi Selatan

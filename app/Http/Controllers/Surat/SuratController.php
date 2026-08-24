@@ -591,7 +591,7 @@ class SuratController extends Controller
             'surat.list-surat.preview',
             [
                 'surat' => $surat,
-                'tanggal' => Carbon::parse($surat->tanggal)->translatedFormat('d F Y'),
+                'tanggal' => Carbon::parse($surat->tanggal)->locale('id')->translatedFormat('d F Y'),
                 'bgBase64' => $bgBase64,
                 'lampiranList' => $lampiranEncoded,
                 'jumlah_lampiran' => $surat->jumlah_lampiran,
