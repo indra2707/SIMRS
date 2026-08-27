@@ -53,6 +53,7 @@ use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Surat\AprovalController;
 use App\Http\Controllers\Surat\AprovalDetailController;
+use App\Http\Controllers\Surat\AprovalMemorandumController;
 use App\Http\Controllers\Surat\SuratController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
@@ -490,6 +491,10 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/aprovaldetail/store', [AprovalDetailController::class, 'store'])->name('surat.aprovaldetail.create');
         Route::put('/aprovaldetail/update/{id}', [AprovalDetailController::class, 'update'])->name('surat.aprovaldetail.update');
         Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
+
+
+
+        Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
 
         // List-surat
         Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
