@@ -49,7 +49,7 @@ class AprovalMemorandumController extends Controller
     {
         $idPegawai = session('id_pegawai');
         $idUnit = session('id_unit');
-      
+
         if (!$idPegawai) {
             return response()->json([
                 'success' => false,

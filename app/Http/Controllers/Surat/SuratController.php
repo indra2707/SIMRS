@@ -93,7 +93,6 @@ class SuratController extends Controller
             )
             ->orderByDesc('surat.created_at')
             ->get();
-
         $data = [];
         foreach ($query as $value) {
             $data[] = [
@@ -289,7 +288,7 @@ class SuratController extends Controller
                 $lampiranBaru = $lampiranLama;
             }
 
-    
+
             $tanggal = Carbon::createFromFormat('d/m/Y',$request->tanggal)->format('Y-m-d');
 
             //  Update Data Surat

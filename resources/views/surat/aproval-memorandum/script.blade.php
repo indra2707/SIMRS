@@ -84,20 +84,25 @@
                         align: 'center',
                         formatter: function(value, row, index) {
 
-                            if (!value) {
+                            console.log('STATUS SURAT:', value);
+
+                            if (value === null || value === undefined || String(value).trim() === '') {
                                 return '<span class="badge bg-secondary">-</span>';
                             }
 
-                            switch (String(value).trim()) {
+                            switch (String(value).trim().toLowerCase()) {
 
-                                case 'Approve':
+                                case 'approve':
                                     return '<span class="badge bg-warning text-dark">Approve</span>';
 
-                                case 'Selesai':
+                                case 'selesai':
                                     return '<span class="badge bg-success">Selesai</span>';
 
-                                case 'Revisi':
+                                case 'revisi':
                                     return '<span class="badge bg-danger">Revisi</span>';
+
+                                case 'tolak':
+                                    return '<span class="badge bg-danger">Tolak</span>';
 
                                 default:
                                     return '<span class="badge bg-secondary">' +
