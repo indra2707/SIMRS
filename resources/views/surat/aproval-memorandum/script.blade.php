@@ -1,155 +1,36 @@
 <script type="text/javascript">
     // Tabel
-    var $tableAproval = $('#table_aproval');
-    var $tableAprovalDetail = $('#table_aproval_detail');
+    var $tableAprovalMemo = $('#table_aproval_memo');
 
-    // filter status
-    $(".select2").select2({
-        placeholder: "--- Pilih Salah Satu ---",
-        theme: "bootstrap-5",
-        allowClear: true,
-        width: "100%",
-        dropdownParent: $("#modal-input-hirarki")
-    });
+    // Modal mana yang harus dibuka lagi setelah modal preview besar ditutup
+    var modalAsalPreviewMemo = '#modal-detail-memo';
 
-    // close modal
-    $('#modal-preview-pdf').on('hidden.bs.modal', function () {
-        $('#modal-perizinan').modal('show');
-    });
-
-    // Open Modal aproval
-    $(document).on('click', '.add-btn', function () {
-        $('.form-aproval').removeClass('was-validated');
-        $('#modal-aproval').modal('show');
-        $('.modal-title').text('Form Tambah Aproval');
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="id"]').val('');
-        $('input[name="nama_aproval"]').val('');
-    });
-
-    // Open Modal Hirarki
-    $(document).on('click', '.add-hirarki', function () {
-        $('.form-hirarki').removeClass('was-validated');
-        $('#modal-input-hirarki').modal('show');
-        $('#modal-hirarki').modal('hide');
-        $('.modal-title').text('Form Tambah Hirarki');
-        $('.save-btn').html('<span class="fa fa-check"></span> Simpan').removeAttr('disabled');
-        $('input[name="id_detail"]').val('');
-        $('select[name="parent_jabatan"]').val('').trigger('change');
-        $('select[name="id_pegawai"]').val('').trigger('change');
-        $('input[name="id_unit"]').val('');
-
-        InitSelect2($("select[name='id_pegawai']"), {
-            url: "{{ route('get-select-pegawai') }}",
-            dropdownParent: $("#modal-input-hirarki"),
-        });
-
-        $("select[name='id_pegawai']").on('select2:select', function (e) {
-            let data = e.params.data;
-            $("#id_unit").val(data.id_unit || '');
-        });
-
-    });
-
-    $('#modal-input-hirarki').on('hidden.bs.modal', function () {
-        $('#modal-hirarki').modal('show');
-    });
-
-
-    // Save aproval
-    $(document).on('click', '.save-btn', function () {
-        var id = $('input[name="id"]').val();
-        var url, type;
-        if (id) {
-            url = "{{ route('surat.aproval.update', ':id') }}";
-            url = url.replace(':id', id);
-            type = "POST";
-        } else {
-            url = "{{ route('surat.aproval.create') }}";
-            type = "POST";
-        }
-        var forms = document.getElementsByClassName('form-aproval');
-        Array.prototype.filter.call(forms, function (form) {
-
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-
-                var formData = new FormData(form);
-
-                // method spoofing untuk update
-                if (id) {
-                    formData.append('_method', 'PUT');
-                }
-
-                $.ajax({
-                    type: type,
-                    url: url,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "json",
-
-                    beforeSend: function () {
-                        $('.save-btn').html(
-                            '<span class="spinner-border spinner-border-sm"></span>'
-                        ).attr('disabled', true);
-                    },
-
-                    complete: function () {
-                        $('.save-btn').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success) {
-                            Alert('success', res.message);
-                            $('#modal-aproval').modal('hide');
-                            $tableAproval.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-warning',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning'
-                            });
-
-                            form.classList.remove('was-validated');
-                        }
-                    }
-                });
-            }
-
-            form.classList.add('was-validated');
-        });
-    });
+    // Label jabatan (samakan dengan value di form Hirarki Aproval Anda)
+    var labelJabatanMemo = {
+        '0': 'Director',
+        '1': 'Vice Director',
+        '2': 'Head',
+    };
 
     // Page Load Event
-    $(function () {
-        initTable();
+    $(function() {
+        initTableAprovalMemo();
     });
 
-
-    // Table aproval
-    function initTable() {
-        $tableAproval.bootstrapTable('destroy').bootstrapTable({
+    // Table Approval Memorandum
+    function initTableAprovalMemo() {
+        $tableAprovalMemo.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
-            idField: 'id',
-            uniqueId: 'id',
+            idField: 'id_aproval_surat',
+            uniqueId: 'id_aproval_surat',
             sidePagination: 'client',
             maintainSelected: true,
             pagination: true,
             search: true,
             showColumns: true,
             showPaginationSwitch: true,
-            // showToggle: true,
             showExport: true,
-            pagination: true,
-            maintainSelected: true,
             pageSize: 50,
             pageList: [10, 20, 35, 50, 100, 'all'],
             showRefresh: true,
@@ -160,58 +41,91 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['excel', 'pdf'],
-            url: "{{ route('surat.aproval.view') }}",
+            url: "{{ route('surat.aproval-memorandum.view') }}",
             columns: [
                 [{
-                    field: "id",
-                    sortable: true,
-                    align: "center",
-                    width: '70px',
-                    formatter: function (value, row, index) {
-                        return index + 1;
+                        field: "id_aproval_surat",
+                        sortable: true,
+                        align: "center",
+                        width: '60px',
+                        formatter: function(value, row, index) {
+                            return index + 1;
+                        },
                     },
-                },
-                {
-                    field: 'nama_aproval',
-                    sortable: true,
-                },
-                {
-                    width: '100%',
-                    field: 'status',
-                    sortable: true,
-                    events: window.updateStatus,
-                    formatter: function (value, row, index) {
-                        return [
-                            '<div class="media-body text-center switch-sm icon-state">',
-                            '<label class="switch">',
-                            '<input type="checkbox" class="update-status" ' + (row.status ===
-                                '1' ? 'checked' : '') + '>',
-                            '<span class="switch-state"></span>',
-                            '</label>',
-                            '</div>'
-                        ].join("");
+                    {
+                        field: 'no_surat',
+                        sortable: true,
+                    },
+                    {
+                        field: 'tanggal',
+                        sortable: true,
+                        align: 'center',
+                    },
+                    {
+                        field: 'perihal',
+                        sortable: true,
+                    },
+                    {
+                        field: 'nama_pembuat',
+                        sortable: true,
+                    },
+                    {
+                        field: 'parent_jabatan',
+                        title: 'Level Approval Saya',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var label = labelJabatanMemo[String(value)] || '-';
+                            return '<span class="badge bg-primary badge-jabatan">' + label + '</span>';
+                        }
+                    },
+                    {
+                        field: 'status_surat',
+                        title: 'Status Surat',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+
+                            if (!value) {
+                                return '<span class="badge bg-secondary">-</span>';
+                            }
+
+                            switch (String(value).trim()) {
+
+                                case 'Approve':
+                                    return '<span class="badge bg-warning text-dark">Approve</span>';
+
+                                case 'Selesai':
+                                    return '<span class="badge bg-success">Selesai</span>';
+
+                                case 'Revisi':
+                                    return '<span class="badge bg-danger">Revisi</span>';
+
+                                default:
+                                    return '<span class="badge bg-secondary">' +
+                                        String(value) +
+                                        '</span>';
+                            }
+                        }
+                    },
+                    {
+                        title: 'Action',
+                        field: 'action',
+                        align: 'center',
+                        width: '160px',
+                        events: window.eventsAprovalMemo,
+                        formatter: actionsFunctionAprovalMemo
                     }
-                },
-                {
-                    title: 'Action',
-                    field: 'action',
-                    align: 'center',
-                    width: '100px',
-                    events: window.eventsAproval,
-                    formatter: actionsFunctionAproval
-                }
                 ]
             ],
-            error: function (xhr, status, error) {
-                if (xhr.status == 400) {
+            error: function(xhr, status, error) {
+                if (xhr.status == 400 || xhr.status == 401) {
                     $.notify({
-                        icon: "fa fa-check",
-                        title: error,
+                        icon: "fa fa-warning",
+                        title: "Peringatan",
                         message: xhr.responseJSON.message,
                     }, {
-                        type: "danger",
+                        type: "warning",
                         allow_dismiss: true,
-                        delay: 2000,
+                        delay: 3000,
                         showProgressbar: true,
                         timer: 300,
                         z_index: 1127,
@@ -239,377 +153,154 @@
                     });
                 }
             },
-            responseHandler: function (res) {
+            responseHandler: function(res) {
                 return res;
             }
         });
     }
 
-    function actionsFunctionAproval(value, row, index) {
+    function actionsFunctionAprovalMemo(value, row, index) {
         return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
+            '<button type="button" class="btn btn-info btn-xs btn-lihat-memo" title="Lihat Detail">',
+            '<i class="fa fa-eye"></i>',
+            '</button> ',
+            '<button type="button" class="btn btn-primary btn-xs btn-keputusan-memo" title="Approve / Tolak">',
+            '<i class="fa fa-gavel"></i> Proses',
             '</button>',
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-hirarki" href="javascript:void(0)"><i class="fa fa-list text-secondary"></i> Hirarki</a>',
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            '</div>',
-            '</div>',
         ].join("");
+    }
+
+    // Render thumbnail lampiran (klik untuk perbesar)
+    function renderLampiranThumbsMemo(lampiranArr) {
+        if (!lampiranArr || lampiranArr.length === 0) {
+            return '<p class="text-muted mb-0">Tidak ada lampiran.</p>';
+        }
+
+        return lampiranArr.map(function(path) {
+            // Sesuaikan base path ini dengan lokasi penyimpanan lampiran surat Anda
+            var url = '/uploads/surat/memo/' + path.split('/').pop();
+
+            return '<div class="lampiran-thumb-wrap">' +
+                '<img src="' + url + '" class="btn-preview-memo" data-src="' + url + '">' +
+                '</div>';
+        }).join('');
     }
 
     // Handle events button actions
-    window.eventsAproval = {
-        'click .btn-edit': function (e, value, row, index) {
-            $('#modal-aproval').modal('show');
-            $('.modal-title').text('Form Edit Aproval');
-            $('.save-btn').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
-            $('input[name="id"]').val(row.id);
-            $('input[name="nama_aproval"]').val(row.nama_aproval);
+    window.eventsAprovalMemo = {
+        'click .btn-lihat-memo': function(e, value, row, index) {
+            $('.detail-memo-tanggal').text(row.tanggal);
+            $('.detail-memo-no-surat').text(row.no_surat);
+            $('.detail-memo-perihal').text(row.perihal);
+            $('.detail-memo-pembuat').text(row.nama_pembuat ?? '-');
+            $('.detail-memo-isi-surat').text(row.isi_surat ?? '-');
+            $('.detail-memo-lampiran').html(renderLampiranThumbsMemo(row.lampiran));
+            $('#modal-detail-memo').modal('show');
         },
-        'click .btn-delete': function (e, value, row, index) {
-            var url = "{{ route('surat.aproval.delete', ':id') }}";
-            url = url.replace(':id', row.id);
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Anda yakin ingin menghapus data ini?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: url,
-                        type: "DELETE",
-                        data: {
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function (res, status, xhr) {
-                            if (xhr.status == 200 && res.success == true) {
-                                Alert('success', res.message);
-                            } else {
-                                Alert('warning', res.message);
-                            }
-                        }
-                    }).done(function () {
-                        $tableAproval.bootstrapTable('refresh');
-                    });
-
-                }
-            })
-        },
-        'click .btn-hirarki': function (e, value, row, index) {
-            $('#modal-hirarki').modal('show');
-            $('.modal-title').text('Data Hirarki');
-            $('.add-jabatan').data('id', row.id);
-            $('input[name="id_aproval"]').val(row.id);
-            $('input[name="nama_aproval"]').val(row.nama_aproval);
-            initTabledetail(row.id);
+        'click .btn-keputusan-memo': function(e, value, row, index) {
+            $('.form-keputusan-memo')[0].reset();
+            $('.keterangan-wajib-warning').addClass('d-none');
+            $('input[name="id_aproval_surat"]').val(row.id_aproval_surat);
+            $('.keputusan-memo-no-surat').text(row.no_surat);
+            $('.keputusan-memo-perihal').text(row.perihal);
+            $('#modal-keputusan-memo').modal('show');
         }
-    }
+    };
 
-    // Window operateChange Status
-    window.updateStatus = {
-        'click .update-status': function (e, value, row, index) {
-            var url = "{{ route('surat.aproval.update-status', ':id') }}";
-            url = url.replace(':id', row.id);
+    // Lihat foto besar (dari modal Detail)
+    $(document).on('click', '.btn-preview-memo', function() {
+        modalAsalPreviewMemo = '#modal-detail-memo';
+        $('#preview-large-memo').attr('src', $(this).data('src'));
+        $('#modal-preview-image-memo').modal('show');
+        $('#modal-detail-memo').modal('hide');
+    });
+
+    // Tutup modal preview besar -> balik ke modal asal
+    $('#modal-preview-image-memo').on('hidden.bs.modal', function() {
+        $(modalAsalPreviewMemo).modal('show');
+    });
+
+    // ===================== APPROVE =====================
+    $(document).on('click', '.btn-approve-memo', function() {
+        var id = $('input[name="id_aproval_surat"]').val();
+        var keterangan = $('#keterangan_keputusan').val();
+
+        var url = "{{ route('surat.aproval-memorandum.approve', ':id') }}";
+        url = url.replace(':id', id);
+
+        prosesKeputusanMemo(url, keterangan, 'Approve');
+    });
+
+    // ===================== TOLAK =====================
+    $(document).on('click', '.btn-tolak-memo', function() {
+        var id = $('input[name="id_aproval_surat"]').val();
+        var keterangan = $('#keterangan_keputusan').val().trim();
+
+        if (!keterangan) {
+            $('.keterangan-wajib-warning').removeClass('d-none');
+            $('#keterangan_keputusan').focus();
+            return;
+        }
+        $('.keterangan-wajib-warning').addClass('d-none');
+
+        var url = "{{ route('surat.aproval-memorandum.reject', ':id') }}";
+        url = url.replace(':id', id);
+
+        prosesKeputusanMemo(url, keterangan, 'Tolak');
+    });
+
+    function prosesKeputusanMemo(url, keterangan, jenis) {
+        var teksKonfirmasi = jenis === 'Approve' ?
+            'Surat ini akan disetujui.' :
+            'Surat ini akan ditolak dan dikembalikan untuk revisi.';
+
+        Swal.fire({
+            icon: 'warning',
+            title: 'Konfirmasi',
+            text: teksKonfirmasi,
+            showCancelButton: true,
+            confirmButtonColor: jenis === 'Approve' ? '#28a745' : '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: jenis === 'Approve' ? 'Ya, Setujui!' : 'Ya, Tolak!',
+            cancelButtonText: 'Batal',
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
             $.ajax({
                 url: url,
-                type: "POST",
+                type: 'POST',
                 data: {
-                    status: e.target.checked ? 1 : 0,
-                    table: 'polis',
+                    keterangan: keterangan,
                     _token: "{{ csrf_token() }}"
                 },
-                success: function (res, status, xhr) {
-                    if (xhr.status == 200 && res.success == true) {
+                beforeSend: function() {
+                    $('.btn-approve-memo, .btn-tolak-memo').attr('disabled', true);
+                },
+                complete: function() {
+                    $('.btn-approve-memo, .btn-tolak-memo').removeAttr('disabled');
+                },
+                success: function(res, status, xhr) {
+                    if (xhr.status == 200 && res.success) {
                         Alert('success', res.message);
+                        $('#modal-keputusan-memo').modal('hide');
+                        $tableAprovalMemo.bootstrapTable('refresh');
                     } else {
                         Alert('warning', res.message);
                     }
-                    $tableAproval.bootstrapTable('refresh');
                 },
-                error: function (xhr, status, error) {
-                    if (xhr.status == 400) {
-                        Alert('error', xhr.responseJSON.message);
-                    } else if (xhr.status == 500) {
-                        Alert('info',
-                            "<strong>Configuration Error!</strong> Silahkan hubungi IT Rumah Sakit!"
-                        );
+                error: function(xhr) {
+                    if (xhr.status == 422) {
+                        var errors = xhr.responseJSON.errors;
+                        var firstError = Object.values(errors)[0][0];
+                        Alert('warning', firstError);
+                    } else if (xhr.status == 404) {
+                        Alert('warning', xhr.responseJSON.message);
+                        $tableAprovalMemo.bootstrapTable('refresh');
+                    } else {
+                        Alert('info', 'Silahkan hubungi IT!');
                     }
                 }
             });
-        }
-    }
-
-    // Table aproval Detail
-    function initTabledetail(idAproval) {
-        $tableAprovalDetail.bootstrapTable('destroy').bootstrapTable({
-            height: 500,
-            locale: 'en-US',
-            idField: 'id',
-            uniqueId: 'id',
-            sidePagination: 'client',
-            maintainSelected: true,
-            pagination: true,
-            search: true,
-            // showColumns: true,
-            // showPaginationSwitch: true,
-            // showToggle: true,
-            // showExport: true,
-            pagination: true,
-            maintainSelected: true,
-            pageSize: 50,
-            pageList: [10, 20, 35, 50, 100, 'all'],
-            showRefresh: true,
-            stickyHeader: false,
-            fixedColumns: false,
-            fullscreen: true,
-            minimumCountColumns: 2,
-            icons: iconsFunction(),
-            loadingTemplate: loadingTemplate,
-            // exportTypes: ['excel', 'pdf'],
-            url: "{{ route('surat.aprovaldetail.view') }}",
-            // Kirim row.id
-            queryParams: function (params) {
-                params.id_aproval = idAproval;
-                return params;
-            },
-            columns: [
-                [{
-                    field: "id",
-                    sortable: true,
-                    align: "center",
-                    width: '70px',
-                    formatter: function (value, row, index) {
-                        return index + 1;
-                    },
-                },
-                {
-                    field: 'parent_jabatan',
-                    title: 'Parent Jabatan',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        switch (String(value)) {
-                            case '0':
-                                return 'Director';
-                            case '1':
-                                return 'Vice Director';
-                            case '2':
-                                return 'Head';
-                            default:
-                                return '-';
-                        }
-                    }
-                },
-                {
-                    field: 'nama_pekerja',
-                    sortable: true,
-                },
-                {
-                    title: 'Action',
-                    field: 'action',
-                    align: 'center',
-                    width: '100px',
-                    events: window.eventsAprovalDetail,
-                    formatter: actionsFunctionAprovalDetail
-                }
-                ]
-            ],
-            error: function (xhr, status, error) {
-                if (xhr.status == 400) {
-                    $.notify({
-                        icon: "fa fa-check",
-                        title: error,
-                        message: xhr.responseJSON.message,
-                    }, {
-                        type: "danger",
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: "animated fadeInDown",
-                            exit: "animated fadeOutUp",
-                        },
-                    });
-                } else if (xhr.status == 500) {
-                    $.notify({
-                        icon: "icon-info-alt",
-                        title: "Error",
-                        message: "Silahkan hubungi IT Rumah Sakit!",
-                    }, {
-                        type: "danger",
-                        allow_dismiss: true,
-                        delay: 2000,
-                        showProgressbar: true,
-                        timer: 300,
-                        z_index: 1127,
-                        animate: {
-                            enter: "animated fadeInDown",
-                            exit: "animated fadeOutUp",
-                        },
-                    });
-                }
-            },
-            responseHandler: function (res) {
-                return res;
-            }
         });
     }
-
-    // Save aproval Detail
-    $(document).on('click', '.save-btn-detail', function () {
-        var id = $('input[name="id_detail"]').val();
-        var url, type;
-        if (id) {
-            url = "{{ route('surat.aprovaldetail.update', ':id') }}";
-            url = url.replace(':id', id);
-            type = "POST";
-        } else {
-            url = "{{ route('surat.aprovaldetail.create') }}";
-            type = "POST";
-        }
-        var forms = document.getElementsByClassName('form-aproval-detail');
-        Array.prototype.filter.call(forms, function (form) {
-
-            if (!form.checkValidity()) {
-                form.querySelector(".form-control:invalid").focus();
-                event.preventDefault();
-                event.stopPropagation();
-            } else {
-
-                var formData = new FormData(form);
-
-                // method spoofing untuk update
-                if (id) {
-                    formData.append('_method', 'PUT');
-                }
-
-                $.ajax({
-                    type: type,
-                    url: url,
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: "json",
-
-                    beforeSend: function () {
-                        $('.save-btn-detail').html(
-                            '<span class="spinner-border spinner-border-sm"></span>'
-                        ).attr('disabled', true);
-                    },
-
-                    complete: function () {
-                        $('.save-btn-detail').html('<span class="fa fa-check"></span> Simpan')
-                            .removeAttr('disabled');
-                    },
-
-                    success: function (res, status, xhr) {
-                        if (xhr.status == 200 && res.success) {
-                            Alert('success', res.message);
-                            $('#modal-input-hirarki').modal('hide');
-                            $tableAprovalDetail.bootstrapTable('refresh');
-                        } else {
-                            $.notify({
-                                icon: 'fa fa-warning',
-                                title: 'Warning',
-                                message: res.message
-                            }, {
-                                type: 'warning'
-                            });
-
-                            form.classList.remove('was-validated');
-                        }
-                    }
-                });
-            }
-
-            form.classList.add('was-validated');
-        });
-    });
-
-
-    function actionsFunctionAprovalDetail(value, row, index) {
-        return [
-            '<div class="dropdown icon-dropdown">',
-            '<button class="btn dropdown-toggle" id="setings-menu" type="button" data-bs-toggle="dropdown" aria-expanded="false">',
-            '<i class="icon-more-alt"></i>',
-            '</button>',
-            '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-edit-hirarki" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
-            '<a class="dropdown-item btn-delete-hirarki" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
-            '</div>',
-            '</div>',
-        ].join("");
-    }
-
-    // Handle events button actions detail
-    window.eventsAprovalDetail = {
-        'click .btn-edit-hirarki': function (e, value, row, index) {
-            $('#modal-hirarki').modal('hide');
-            $('#modal-input-hirarki').modal('show');
-            $('.modal-title').text('Form Edit Hirarki');
-            $('.save-btn-detail').html('<span class="fa fa-check"></span> Update').removeAttr('disabled');
-            $('input[name="id_detail"]').val(row.id_detail);
-            $('select[name="parent_jabatan"]').val(row.parent_jabatan).trigger('change');
-            $('input[name="id_unit"]').val(row.id_unit);
-
-            InitSelect2($("select[name='id_pegawai']"), {
-                url: "{{ route('get-select-pegawai') }}",
-                dropdownParent: $("#modal-input-hirarki"),
-                initialValue: row.id_pegawai
-            });
-
-            $("select[name='id_pegawai']").on('select2:select', function (e) {
-                let data = e.params.data;
-                $("#id_unit").val(data.id_unit || '');
-            });
-
-        },
-        'click .btn-delete-hirarki': function (e, value, row, index) {
-            var url = "{{ route('surat.aprovaldetail.delete', ':id') }}";
-            url = url.replace(':id', row.id_detail);
-            Swal.fire({
-                icon: 'warning',
-                title: 'Peringatan',
-                text: 'Anda yakin ingin menghapus data ini?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!',
-                cancelButtonText: 'Batal',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: url,
-                        type: "DELETE",
-                        data: {
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function (res, status, xhr) {
-                            if (xhr.status == 200 && res.success == true) {
-                                Alert('success', res.message);
-                            } else {
-                                Alert('warning', res.message);
-                            }
-                        }
-                    }).done(function () {
-                        $tableAprovalDetail.bootstrapTable('refresh');
-                    });
-
-                }
-            })
-        }
-    }
-
-
 </script>

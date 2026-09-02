@@ -9,6 +9,28 @@ use Illuminate\Support\Facades\DB;
 
 class AprovalMemorandumController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Catatan asumsi (gampang diganti kalau beda dengan yang Anda mau):
+    |
+    | - Saat SEMUA level approval untuk 1 surat sudah Approve (level paling
+    |   senior / parent_jabatan terkecil approve terakhir), status di tabel
+    |   `surat` diubah jadi 'Selesai'. Cari string 'Selesai' di bawah kalau
+    |   mau ganti nama status akhirnya.
+    |
+    | - Saat ADA SALAH SATU level yang Tolak, proses approval langsung
+    |   berhenti dan status surat berubah jadi 'Revisi' (supaya balik ke
+    |   pembuat surat untuk diperbaiki). Cari string 'Revisi' kalau mau
+    |   ganti nama statusnya.
+    |
+    | - Level lain yang masih 'Menunggu' pada surat yang baru ditolak
+    |   SENGAJA dibiarkan apa adanya (tidak ikut diubah), karena begitu
+    |   status surat berubah dari 'Approve' ke 'Revisi', query views()
+    |   otomatis tidak akan menampilkan surat ini lagi ke approver manapun
+    |   (karena filter ->where('s.status', 'Approve')).
+    |--------------------------------------------------------------------------
+    */
+
     public function index()
     {
         $data = [
@@ -17,20 +39,17 @@ class AprovalMemorandumController extends Controller
             'menuSubtitle' => 'Approval Memorandum',
         ];
 
-        // $users = User::where('status', 'aktif')
-        //     ->orderBy('username', 'asc')
-        //     ->get();
-
         return view(
             'surat.aproval-memorandum.aproval',
             $data
         );
     }
+
     public function views(Request $request)
     {
         $idPegawai = session('id_pegawai');
         $idUnit = session('id_unit');
-
+      
         if (!$idPegawai) {
             return response()->json([
                 'success' => false,
@@ -67,6 +86,7 @@ class AprovalMemorandumController extends Controller
                 'aps.id_unit',
                 'aps.tanggal_aproval',
                 'aps.keterangan',
+                'aps.status as status_aproval',
 
                 's.tanggal',
                 's.no_surat',
@@ -93,7 +113,6 @@ class AprovalMemorandumController extends Controller
 
         foreach ($query as $value) {
 
-
             $adaApprovalSebelumnya = DB::table('tbl_aproval_surat')
                 ->where('id_surat', $value->id_surat)
                 ->where(
@@ -112,6 +131,14 @@ class AprovalMemorandumController extends Controller
                 continue;
             }
 
+            $lampiranArr = [];
+            if (!empty($value->lampiran)) {
+                $lampiranArr = json_decode($value->lampiran, true);
+                if (!is_array($lampiranArr)) {
+                    $lampiranArr = [];
+                }
+            }
+
             $data[] = [
                 'id_aproval_surat' => $value->id_aproval_surat,
                 'id_surat' => $value->id_surat,
@@ -120,6 +147,8 @@ class AprovalMemorandumController extends Controller
                 'tanggal' => $value->tanggal,
                 'no_surat' => $value->no_surat,
                 'perihal' => $value->perihal,
+                'isi_surat' => $value->isi_surat,
+                'lampiran' => $lampiranArr,
 
                 'nama_aproval' => $value->nama_aproval,
                 'nama_pembuat' => $value->nama_pembuat,
@@ -127,6 +156,7 @@ class AprovalMemorandumController extends Controller
                 'parent_jabatan' => $value->parent_jabatan,
 
                 'status_surat' => $value->status_surat,
+                'status_aproval' => $value->status_aproval,
 
                 'tanggal_aproval' => $value->tanggal_aproval,
                 'keterangan' => $value->keterangan,
@@ -134,5 +164,154 @@ class AprovalMemorandumController extends Controller
         }
 
         return response()->json($data, 200);
+    }
+
+    /**
+     * Approve 1 level approval (baris di tbl_aproval_surat).
+     * $id = id baris tbl_aproval_surat (BUKAN id surat).
+     */
+    public function approve(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'nullable|string|max:1000',
+        ]);
+
+        $idPegawai = session('id_pegawai');
+        $idUnit = session('id_unit');
+
+        if (!$idPegawai) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID pegawai tidak ditemukan pada session.',
+            ], 401);
+        }
+
+        $row = DB::table('tbl_aproval_surat')
+            ->where('id', $id)
+            ->where('id_pegawai', $idPegawai)
+            ->where('id_unit', $idUnit)
+            ->whereNull('tanggal_aproval')
+            ->first();
+
+        if (!$row) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data approval tidak ditemukan, atau sudah diproses sebelumnya.',
+            ], 404);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            DB::table('tbl_aproval_surat')
+                ->where('id', $id)
+                ->update([
+                    'tanggal_aproval' => now(),
+                    'keterangan' => $request->keterangan,
+                    'status' => 'Approve',
+                ]);
+
+            // Cek apakah masih ada level lain (untuk surat + workflow yang sama)
+            // yang belum diproses.
+            $masihAdaPending = DB::table('tbl_aproval_surat')
+                ->where('id_surat', $row->id_surat)
+                ->where('id_aproval', $row->id_aproval)
+                ->whereNull('tanggal_aproval')
+                ->exists();
+
+            if (!$masihAdaPending) {
+                // Semua level sudah approve -> proses selesai
+                DB::table('surat')
+                    ->where('id', $row->id_surat)
+                    ->update(['status' => 'Selesai']);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => $masihAdaPending
+                    ? 'Surat berhasil di-approve, menunggu approval level berikutnya.'
+                    : 'Surat berhasil di-approve dan proses approval selesai.',
+            ], 200);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memproses approval.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Tolak 1 level approval -- keterangan/catatan revisi WAJIB diisi.
+     * $id = id baris tbl_aproval_surat (BUKAN id surat).
+     */
+    public function reject(Request $request, $id)
+    {
+        $request->validate([
+            'keterangan' => 'required|string|max:1000',
+        ], [
+            'keterangan.required' => 'Keterangan/catatan revisi wajib diisi saat menolak.',
+        ]);
+
+        $idPegawai = session('id_pegawai');
+        $idUnit = session('id_unit');
+
+        if (!$idPegawai) {
+            return response()->json([
+                'success' => false,
+                'message' => 'ID pegawai tidak ditemukan pada session.',
+            ], 401);
+        }
+
+        $row = DB::table('tbl_aproval_surat')
+            ->where('id', $id)
+            ->where('id_pegawai', $idPegawai)
+            ->where('id_unit', $idUnit)
+            ->whereNull('tanggal_aproval')
+            ->first();
+
+        if (!$row) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data approval tidak ditemukan, atau sudah diproses sebelumnya.',
+            ], 404);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            DB::table('tbl_aproval_surat')
+                ->where('id', $id)
+                ->update([
+                    'tanggal_aproval' => now(),
+                    'keterangan' => $request->keterangan,
+                    'status' => 'Tolak',
+                ]);
+
+            // Tolak di level manapun -> proses berhenti, surat balik ke
+            // status Revisi supaya pembuat surat bisa perbaiki.
+            DB::table('surat')
+                ->where('id', $row->id_surat)
+                ->update(['status' => 'Revisi']);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Surat ditolak dan dikembalikan untuk revisi.',
+            ], 200);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memproses penolakan.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

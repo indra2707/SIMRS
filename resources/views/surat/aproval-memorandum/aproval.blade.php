@@ -7,26 +7,36 @@
 
 @section('style')
     <style>
-        /* tinggi select tetap */
-        .select2-container--bootstrap-5 .select2-selection--single {
-            min-height: 38px !important;
-            padding: 0.375rem 0.75rem;
-            display: flex;
-            align-items: center;
+        .lampiran-thumb-wrap {
+            position: relative;
+            display: inline-block;
         }
 
-        .select2-fixed {
-            width: 220px;
-            /* kunci lebar */
-            min-width: 220px;
-            max-width: 220px;
+        .lampiran-thumb-wrap img {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .badge-jabatan {
+            font-size: 11px;
+        }
+
+        .isi-surat-readonly {
+            white-space: pre-line;
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #eee;
         }
     </style>
-
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Aproval</h3>
+    <h3>Approval Memorandum</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -40,25 +50,21 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        {{-- Add Button --}}
-                        <div class="d-flex align-item-center justify-content-between flex-wrap gap-2">
-                            <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-primary add-btn">
-                                    <span class="fa fa-plus"></span> Tambah
-                                </button>
-                            </div>
-                        </div>
 
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_aproval" class="table table-hover" data-buttons-class="primary"
+                                <table id="table_aproval_memo" class="table table-hover" data-buttons-class="primary"
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">#</th>
-                                            <th class="f-light">Aproval</th>
-                                            <th class="f-light">Status</th>
+                                            <th class="f-light">No Surat</th>
+                                            <th class="f-light">Tanggal</th>
+                                            <th class="f-light">Perihal</th>
+                                            <th class="f-light">Pembuat</th>
+                                            <th class="f-light">Level Approval Saya</th>
+                                            <th class="f-light">Status Surat</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -71,129 +77,102 @@
         </div>
     </div>
 
-    {{-- Modal Form aproval --}}
-    <div class="modal fade" id="modal-aproval" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
+    {{-- Modal Detail Surat (read-only) --}}
+    <div class="modal fade" id="modal-detail-memo" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Title</h5>
+                    <h5 class="modal-title">Detail Surat</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
-                    <form class="row g-2 form-aproval" enctype="multipart/form-data" autocomplete="off">
-                        @csrf
-                        <input type="hidden" name="id">
+                    <table class="table table-borderless mb-3">
+                        <tr>
+                            <th width="150">Tanggal</th>
+                            <td>:</td>
+                            <td class="detail-memo-tanggal"></td>
+                        </tr>
+                        <tr>
+                            <th>No Surat</th>
+                            <td>:</td>
+                            <td class="detail-memo-no-surat"></td>
+                        </tr>
+                        <tr>
+                            <th>Perihal</th>
+                            <td>:</td>
+                            <td class="detail-memo-perihal"></td>
+                        </tr>
+                        <tr>
+                            <th>Pembuat</th>
+                            <td>:</td>
+                            <td class="detail-memo-pembuat"></td>
+                        </tr>
+                    </table>
 
-                        <!-- Aproval Name -->
-                        <label for="nama_aproval" class="col-form-label col-sm-2">Aproval Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="nama_aproval" id="nama_aproval" class="form-control" required
-                                placeholder="Aproval Name..." />
-                        </div>
-                    </form>
+                    <label class="fw-bold mb-2">Isi Surat</label>
+                    <div class="isi-surat-readonly mb-3 detail-memo-isi-surat"></div>
+
+                    <label class="fw-bold mb-2">Lampiran</label>
+                    <div class="d-flex flex-wrap gap-2 detail-memo-lampiran"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                        <span class="fa fa-times"></span> Batal</button>
-                    <button class="btn btn-primary save-btn" type="button"><span class="fa fa-check"></span>
-                        Simpan</button>
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Data Hirarki -->
-    <div class="modal fade" id="modal-hirarki" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true" data-bs-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    {{-- Modal Approve / Tolak --}}
+    <div class="modal fade" id="modal-keputusan-memo" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Title</h5>
+                    <h5 class="modal-title">Keputusan Approval</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    {{-- Add Button --}}
-                    <button class="btn btn-primary add-hirarki">
-                        <span class="fa fa-plus"></span>
-                        <span> Tambah Hirarki</span>
+                    <form class="row g-2 form-keputusan-memo" autocomplete="off">
+                        <input type="hidden" name="id_aproval_surat">
+
+                        <label class="col-form-label col-sm-12">
+                            No Surat: <span class="fw-bold keputusan-memo-no-surat"></span><br>
+                            Perihal: <span class="keputusan-memo-perihal"></span>
+                        </label>
+
+                        <label for="keterangan_keputusan" class="col-form-label col-sm-12">
+                            Keterangan / Catatan Revisi
+                        </label>
+                        <div class="col-sm-12">
+                            <textarea class="form-control" name="keterangan" id="keterangan_keputusan" rows="4"
+                                placeholder="Wajib diisi kalau menolak, opsional kalau menyetujui..."></textarea>
+                            <small class="text-danger d-none keterangan-wajib-warning">
+                                Keterangan wajib diisi untuk menolak surat.
+                            </small>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                    <button class="btn btn-danger btn-tolak-memo" type="button">
+                        <span class="fa fa-times"></span> Tolak
                     </button>
-                    {{-- Table View --}}
-                    <div class="col-sm-12 col-lg-12 col-xl-12">
-                        <div class="table-responsive signal-table">
-                            <table id="table_aproval_detail" class="table table-hover" data-buttons-class="primary"
-                                data-toggle="table">
-                                <thead class="text-bold text-white text-uppercase text-center">
-                                    <tr>
-                                        <th class="f-light">No</th>
-                                        <th class="f-light">Level</th>
-                                        <th class="f-light">Nama Pegawai</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
+                    <button class="btn btn-success btn-approve-memo" type="button">
+                        <span class="fa fa-check"></span> Setujui
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- Modal Form hirarki --}}
-    <div class="modal fade" id="modal-input-hirarki" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    {{-- Modal lihat foto (besar) --}}
+    <div class="modal fade" id="modal-preview-image-memo" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Title</h5>
-                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-
-                <div class="modal-body">
-                    <form class="row g-2 form-aproval-detail" enctype="multipart/form-data" autocomplete="off">
-                        @csrf
-                        <input type="hidden" name="id_detail">
-                        <input type="hidden" name="id_aproval">
-
-                        <!-- Aproval Name -->
-                        <label for="nama_aproval" class="col-form-label col-sm-2">Aproval Name</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="nama_aproval" id="nama_aproval" class="form-control" readonly
-                                placeholder="Aproval Name..." />
-                        </div>
-
-                        <!-- Parent Jabatan -->
-                        <label for="parent_jabatan" class="col-form-label col-sm-2">Parent Jabatan</label>
-                        <div class="col-sm-10"> <select class="form-select form-control select2" name="parent_jabatan" required>
-                                <option></option>
-                                <option value="0">Director</option>
-                                <option value="1">Vice Director</option>
-                                <option value="2">Head</option>
-                            </select>
-                        </div>
-
-                        <!-- Nama Pegawai -->
-                        <label for="id_pegawai" class="col-form-label col-sm-2">Nama Pegawai</label>
-                        <div class="col-sm-10">
-                            <select id="id_pegawai" class="form-select select2" name="id_pegawai"
-                                data-placeholder="---- Pilih Salah Satu ----" required>
-                                <option></option>
-                            </select>
-                        </div>
-
-                        <!-- id_unit -->
-                        <label for="id_unit" class="col-form-label col-sm-2" hidden>ID Unit</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="id_unit" id="id_unit" class="form-control" hidden
-                                placeholder="ID Unit..." />
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
-                        <span class="fa fa-times"></span> Batal</button>
-                    <button class="btn btn-primary save-btn-detail" type="button"><span class="fa fa-check"></span>
-                        Simpan</button>
+                <div class="modal-body text-center">
+                    <img id="preview-large-memo" class="img-fluid rounded">
                 </div>
             </div>
         </div>

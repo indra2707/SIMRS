@@ -494,8 +494,7 @@ Route::group(['middleware' => 'loggedin'], function () {
 
 
 
-        Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
-
+        
         // List-surat
         Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
         Route::get('list-surat/view', [SuratController::class, 'views'])->name('surat.view');
@@ -506,6 +505,15 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/list-surat/update-status/{id}', [SuratController::class, 'updateStatus'])->name('surat.update-status');
         Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
         Route::get('list-surat/viewapproval', [SuratController::class, 'viewsapproval'])->name('surat.viewapproval');
+        
+        Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
+        Route::get('/aproval-memorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aproval-memorandum');
+
+        Route::get('/aproval-memorandum/views', [AprovalMemorandumController::class, 'views'])->name('surat.aproval-memorandum.view');
+
+        Route::post('/aproval-memorandum/approve/{id}', [AprovalMemorandumController::class, 'approve'])->name('surat.aproval-memorandum.approve');
+
+        Route::post('/aproval-memorandum/reject/{id}', [AprovalMemorandumController::class, 'reject'])->name('surat.aproval-memorandum.reject');
     });
 
 
