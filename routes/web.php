@@ -506,7 +506,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
         Route::get('list-surat/viewapproval', [SuratController::class, 'viewsapproval'])->name('surat.viewapproval');
         
-        Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
+        // Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
         Route::get('/aproval-memorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aproval-memorandum');
 
         Route::get('/aproval-memorandum/views', [AprovalMemorandumController::class, 'views'])->name('surat.aproval-memorandum.view');

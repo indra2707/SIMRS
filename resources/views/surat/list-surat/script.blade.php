@@ -484,6 +484,16 @@
                                 'style="width: 80px;">Approve</button>';
                         }
 
+                        else if (value === 'Selesai') {
+                            return '<button class="btn btn-success btn-pill btn-xs" ' +
+                                'style="width: 80px;">Selesai</button>';
+                        }
+
+                        else if (value === 'Revisi') {
+                            return '<button class="btn btn-warning btn-pill btn-xs" ' +
+                                'style="width: 80px;">Revisi</button>';
+                        }
+
                         else {
                             return '<button class="btn btn-secondary btn-pill btn-xs" ' +
                                 'style="width: 80px;">' +
@@ -561,7 +571,7 @@
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu-' + row.id + '">',
         ];
 
-        if (row.status === 'Approve') {
+        if (row.status === 'Approve' || row.status === 'Selesai' || row.status === 'Revisi') {
             actions.push(
                 '<a class="dropdown-item btn-detail" href="javascript:void(0)">' +
                 '<i class="fa fa-eye text-info"></i> Status Surat' +
@@ -569,7 +579,7 @@
             );
         }
 
-        if (row.status === 'Draft') {
+        if (row.status === 'Draft' || row.status === 'Revisi') {
             actions.push(
                 '<a class="dropdown-item btn-edit" href="javascript:void(0)">' +
                 '<i class="fa fa-edit text-primary"></i> Edit' +
@@ -644,16 +654,20 @@
                             default: parentJabatan = '-';
                         }
 
+                        let ditolak =
+                            item.status === 'Tolak';
+
                         let approved =
+                            !ditolak &&
                             item.tanggal_aproval !== null &&
                             item.tanggal_aproval !== undefined &&
                             String(item.tanggal_aproval).trim() !== '';
 
-                        let stepClass = approved ? 'approved' : 'pending';
-                        let icon = approved ? 'bi-check-lg' : 'bi-person';
-                        let status = approved ? 'Terverifikasi' : 'Menunggu Approval';
+                        let stepClass = ditolak ? 'rejected' : (approved ? 'approved' : 'pending');
+                        let icon = ditolak ? 'bi-x-lg' : (approved ? 'bi-check-lg' : 'bi-person');
+                        let status = ditolak ? 'Ditolak / Revisi' : (approved ? 'Terverifikasi' : 'Menunggu Approval');
                         let tanggal = '';
-                        if (approved) {
+                        if (approved || ditolak) {
                             let date = new Date(
                                 String(item.tanggal_aproval).replace(' ', 'T')
                             );
@@ -676,6 +690,15 @@
                     `;
                         }
 
+                        let keteranganHtml = '';
+                        if (ditolak && item.keterangan) {
+                            keteranganHtml = `
+                            <div class="approval-date text-danger">
+                                Catatan: ${item.keterangan}
+                            </div>
+                            `;
+                        }
+
                         html += `
                 <div class="approval-step ${stepClass}">
                     <div class="approval-icon"> <i class="bi ${icon}"></i></div>
@@ -683,6 +706,7 @@
                     <div class="approval-name"> ${item.nama_pekerja ?? '-'} </div>
                     <div class="approval-status"> ${status} </div> 
                     ${tanggal} 
+                    ${keteranganHtml}
                 </div>  `;
                     });
                     $('#approvalWizard').html(html);

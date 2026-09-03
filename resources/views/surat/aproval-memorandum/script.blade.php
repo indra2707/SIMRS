@@ -19,6 +19,8 @@
 
     // Table Approval Memorandum
     function initTableAprovalMemo() {
+
+        
         $tableAprovalMemo.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',

@@ -398,7 +398,7 @@ class SuratController extends Controller
     }
 
 
-    // Update Status
+   // Update Status
     public function updateStatus(Request $request, $id)
     {
         DB::beginTransaction();
@@ -423,18 +423,52 @@ class SuratController extends Controller
             // Jika status Approve, insert data approval
             if ($request->status === 'Approve') {
                 $approval_id = $request->approval_id;
+
+                // Ambil id_pegawai PEMBUAT surat ini (bukan yang sedang login,
+                // supaya konsisten walau yang klik tombol Approve orang lain)
+                $suratRow = DB::table('surat')->where('id', $id)->first();
+                $idPegawaiPembuat = $suratRow->id_pegawai ?? null;
+
                 $approvalDetails = DB::table('tbl_aproval_detail')
                     ->where('id_aproval', $approval_id)
                     ->get();
 
                 foreach ($approvalDetails as $detail) {
+
+                    // Kalau level approval ini kebetulan pegawai yang sama
+                    // dengan pembuat surat -> auto-approve, jangan biarkan
+                    // dia harus approve suratnya sendiri. Langsung lanjut
+                    // ke level/atasan berikutnya.
+                    $adalahPembuatSendiri = $idPegawaiPembuat
+                        && (int) $detail->id_pegawai === (int) $idPegawaiPembuat;
+
                     DB::table('tbl_aproval_surat')->insert([
                         'id_surat' => $id,
                         'parent_jabatan' => $detail->parent_jabatan,
                         'id_aproval' => $detail->id_aproval,
                         'id_pegawai' => $detail->id_pegawai,
                         'id_unit' => $detail->id_unit,
+                        'tanggal_aproval' => $adalahPembuatSendiri ? now() : null,
+                        'keterangan' => $adalahPembuatSendiri
+                            ? 'Auto-approve (pembuat surat)'
+                            : null,
+                        'status' => $adalahPembuatSendiri ? 'Approve' : 'Menunggu',
                     ]);
+                }
+
+                // Cek: kalau SEMUA level (termasuk yang baru saja auto-approve)
+                // ternyata sudah approve semua (kasus ekstrem: cuma dia
+                // sendiri 1 level di workflow ini), langsung set Selesai.
+                $masihAdaPending = DB::table('tbl_aproval_surat')
+                    ->where('id_surat', $id)
+                    ->where('id_aproval', $approval_id)
+                    ->whereNull('tanggal_aproval')
+                    ->exists();
+
+                if (!$masihAdaPending) {
+                    DB::table('surat')
+                        ->where('id', $id)
+                        ->update(['status' => 'Selesai']);
                 }
             }
 
