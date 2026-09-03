@@ -216,7 +216,7 @@ class SuratController extends Controller
         }
     }
 
-    // Update
+// Update
     public function update(Request $request, $id)
     {
         $id_unit = session('id_unit');
@@ -239,6 +239,9 @@ class SuratController extends Controller
                 'message' => 'Data surat tidak ditemukan.'
             ], 404);
         }
+
+
+        $statusSebelumnya = $surat->status;
 
         DB::beginTransaction();
 
@@ -289,10 +292,9 @@ class SuratController extends Controller
             }
 
 
-            $tanggal = Carbon::createFromFormat('d/m/Y',$request->tanggal)->format('Y-m-d');
+            $tanggal = Carbon::createFromFormat('d/m/Y', $request->tanggal)->format('Y-m-d');
 
-            //  Update Data Surat
-            $surat->update([
+            $dataUpdate = [
                 'tanggal' => $tanggal,
                 'no_surat' => $request->no_surat,
                 'approval_id' => $request->approval_id,
@@ -301,13 +303,68 @@ class SuratController extends Controller
                 'perihal' => $request->perihal,
                 'isi_surat' => $request->isi_surat,
                 'id_pegawai' => $id_pegawai,
-            ]);
+            ];
+
+            $iniPerbaikanRevisi = $statusSebelumnya === 'Revisi';
+
+            if ($iniPerbaikanRevisi) {
+                $dataUpdate['status'] = 'Approve';
+            }
+
+            //  Update Data Surat
+            $surat->update($dataUpdate);
+
+
+            if ($iniPerbaikanRevisi) {
+
+
+                DB::table('tbl_aproval_surat')
+                    ->where('id_surat', $id)
+                    ->delete();
+
+                $approvalDetails = DB::table('tbl_aproval_detail')
+                    ->where('id_aproval', $request->approval_id)
+                    ->get();
+
+                foreach ($approvalDetails as $detail) {
+
+
+                    $adalahPembuatSendiri = $id_pegawai
+                        && (int) $detail->id_pegawai === (int) $id_pegawai;
+
+                    if ($adalahPembuatSendiri) {
+                        continue;
+                    }
+
+                    DB::table('tbl_aproval_surat')->insert([
+                        'id_surat' => $id,
+                        'parent_jabatan' => $detail->parent_jabatan,
+                        'id_aproval' => $detail->id_aproval,
+                        'id_pegawai' => $detail->id_pegawai,
+                        'id_unit' => $detail->id_unit,
+                        'tanggal_aproval' => null,
+                        'keterangan' => null,
+                        'status' => 'Menunggu',
+                    ]);
+                }
+
+                $adaBarisApproval = DB::table('tbl_aproval_surat')
+                    ->where('id_surat', $id)
+                    ->where('id_aproval', $request->approval_id)
+                    ->exists();
+
+                if (!$adaBarisApproval) {
+                    $surat->update(['status' => 'Selesai']);
+                }
+            }
 
             DB::commit();
             return response()->json([
                 'success' => true,
                 'data' => $surat->fresh(),
-                'message' => 'Data Surat berhasil diperbarui.'
+                'message' => $iniPerbaikanRevisi
+                    ? 'Surat berhasil diperbaiki dan diajukan ulang untuk approval.'
+                    : 'Data Surat berhasil diperbarui.'
             ], 200);
 
         } catch (\Throwable $e) {
@@ -331,7 +388,6 @@ class SuratController extends Controller
             ], 500);
         }
     }
-
 
     // Hapus
     public function destroy($id)
@@ -420,12 +476,9 @@ class SuratController extends Controller
                 ], 400);
             }
 
-            // Jika status Approve, insert data approval
             if ($request->status === 'Approve') {
                 $approval_id = $request->approval_id;
 
-                // Ambil id_pegawai PEMBUAT surat ini (bukan yang sedang login,
-                // supaya konsisten walau yang klik tombol Approve orang lain)
                 $suratRow = DB::table('surat')->where('id', $id)->first();
                 $idPegawaiPembuat = $suratRow->id_pegawai ?? null;
 
@@ -435,10 +488,7 @@ class SuratController extends Controller
 
                 foreach ($approvalDetails as $detail) {
 
-                    // Kalau level approval ini kebetulan pegawai yang sama
-                    // dengan pembuat surat -> auto-approve, jangan biarkan
-                    // dia harus approve suratnya sendiri. Langsung lanjut
-                    // ke level/atasan berikutnya.
+
                     $adalahPembuatSendiri = $idPegawaiPembuat
                         && (int) $detail->id_pegawai === (int) $idPegawaiPembuat;
 
@@ -456,9 +506,7 @@ class SuratController extends Controller
                     ]);
                 }
 
-                // Cek: kalau SEMUA level (termasuk yang baru saja auto-approve)
-                // ternyata sudah approve semua (kasus ekstrem: cuma dia
-                // sendiri 1 level di workflow ini), langsung set Selesai.
+               
                 $masihAdaPending = DB::table('tbl_aproval_surat')
                     ->where('id_surat', $id)
                     ->where('id_aproval', $approval_id)
