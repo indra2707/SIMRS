@@ -9,27 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class AprovalMemorandumController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Catatan asumsi (gampang diganti kalau beda dengan yang Anda mau):
-    |
-    | - Saat SEMUA level approval untuk 1 surat sudah Approve (level paling
-    |   senior / parent_jabatan terkecil approve terakhir), status di tabel
-    |   `surat` diubah jadi 'Selesai'. Cari string 'Selesai' di bawah kalau
-    |   mau ganti nama status akhirnya.
-    |
-    | - Saat ADA SALAH SATU level yang Tolak, proses approval langsung
-    |   berhenti dan status surat berubah jadi 'Revisi' (supaya balik ke
-    |   pembuat surat untuk diperbaiki). Cari string 'Revisi' kalau mau
-    |   ganti nama statusnya.
-    |
-    | - Level lain yang masih 'Menunggu' pada surat yang baru ditolak
-    |   SENGAJA dibiarkan apa adanya (tidak ikut diubah), karena begitu
-    |   status surat berubah dari 'Approve' ke 'Revisi', query views()
-    |   otomatis tidak akan menampilkan surat ini lagi ke approver manapun
-    |   (karena filter ->where('s.status', 'Approve')).
-    |--------------------------------------------------------------------------
-    */
+   
 
     public function index()
     {
