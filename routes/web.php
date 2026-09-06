@@ -494,7 +494,7 @@ Route::group(['middleware' => 'loggedin'], function () {
 
 
 
-        
+
         // List-surat
         Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
         Route::get('list-surat/view', [SuratController::class, 'views'])->name('surat.view');
@@ -505,7 +505,7 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/list-surat/update-status/{id}', [SuratController::class, 'updateStatus'])->name('surat.update-status');
         Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
         Route::get('list-surat/viewapproval', [SuratController::class, 'viewsapproval'])->name('surat.viewapproval');
-        
+
         // Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
         Route::get('/aproval-memorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aproval-memorandum');
 
@@ -514,6 +514,22 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/aproval-memorandum/approve/{id}', [AprovalMemorandumController::class, 'approve'])->name('surat.aproval-memorandum.approve');
 
         Route::post('/aproval-memorandum/reject/{id}', [AprovalMemorandumController::class, 'reject'])->name('surat.aproval-memorandum.reject');
+
+
+
+        Route::get('disposisi', [DisposisiController::class, 'index'])->name('surat.disposisi');
+
+        Route::get('disposisi/view', [DisposisiController::class, 'views'])->name('surat.disposisi.view');
+
+        Route::get('disposisi/by-surat', [DisposisiController::class, 'viewsBySurat'])->name('surat.disposisi.by-surat');
+
+        Route::post('disposisi', [DisposisiController::class, 'store'])->name('surat.disposisi.create');
+
+        Route::post('disposisi/{id}/dibaca', [DisposisiController::class, 'tandaiDibaca'])->name('surat.disposisi.dibaca');
+
+        Route::post('disposisi/{id}/selesai', [DisposisiController::class, 'selesaikan'])->name('surat.disposisi.selesai');
+
+        Route::delete('disposisi/{id}', [DisposisiController::class, 'destroy'])->name('surat.disposisi.delete');
     });
 
 
