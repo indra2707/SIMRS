@@ -35,6 +35,27 @@
             border-radius: 6px;
             padding: 10px 12px;
         }
+
+        .badge-tindakan {
+            font-size: 11px;
+            margin-right: 3px;
+        }
+
+        .badge-tingkat-R {
+            background: #dc3545;
+        }
+
+        .badge-tingkat-P {
+            background: #fd7e14;
+        }
+
+        .badge-tingkat-S {
+            background: #0d6efd;
+        }
+
+        .badge-tingkat-B {
+            background: #6c757d;
+        }
     </style>
 @endsection
 
@@ -62,11 +83,13 @@
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">#</th>
+                                            <th class="f-light">No Agenda</th>
                                             <th class="f-light">No Surat</th>
                                             <th class="f-light">Tanggal</th>
                                             <th class="f-light">Perihal</th>
                                             <th class="f-light">Dari</th>
-                                            <th class="f-light">Tanggal Disposisi</th>
+                                            <th class="f-light">Tingkat</th>
+                                            <th class="f-light">Tindakan Diminta</th>
                                             <th class="f-light">Status</th>
                                             <th>Action</th>
                                         </tr>
@@ -91,7 +114,12 @@
                 <div class="modal-body">
                     <table class="table table-borderless mb-3">
                         <tr>
-                            <th width="150">Tanggal</th>
+                            <th width="150">No Agenda</th>
+                            <td>:</td>
+                            <td class="detail-disp-no-agenda"></td>
+                        </tr>
+                        <tr>
+                            <th>Tanggal</th>
                             <td>:</td>
                             <td class="detail-disp-tanggal"></td>
                         </tr>
@@ -109,6 +137,21 @@
                             <th>Dari</th>
                             <td>:</td>
                             <td class="detail-disp-pengirim"></td>
+                        </tr>
+                        <tr>
+                            <th>Jabatan Saya</th>
+                            <td>:</td>
+                            <td class="detail-disp-jabatan"></td>
+                        </tr>
+                        <tr>
+                            <th>Tingkat Surat</th>
+                            <td>:</td>
+                            <td class="detail-disp-tingkat"></td>
+                        </tr>
+                        <tr>
+                            <th>Tindakan Diminta</th>
+                            <td>:</td>
+                            <td class="detail-disp-tindakan"></td>
                         </tr>
                     </table>
 
@@ -128,17 +171,17 @@
         </div>
     </div>
 
-    {{-- Modal Tandai Selesai --}}
-    <div class="modal fade" id="modal-selesai-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    {{-- Modal Paraf / Tandai Selesai --}}
+    <div class="modal fade" id="modal-paraf-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tandai Sudah Ditindaklanjuti</h5>
+                    <h5 class="modal-title">Paraf / Tandai Ditindaklanjuti</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-2 form-selesai-disposisi" autocomplete="off">
-                        <input type="hidden" name="id_disposisi">
+                    <form class="row g-2 form-paraf-disposisi" autocomplete="off">
+                        <input type="hidden" name="id_detail">
 
                         <label for="catatan_tindak_lanjut" class="col-form-label col-sm-12">
                             Catatan Tindak Lanjut (opsional)
@@ -151,8 +194,8 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
-                    <button class="btn btn-success btn-submit-selesai-disposisi" type="button">
-                        <span class="fa fa-check"></span> Tandai Selesai
+                    <button class="btn btn-success btn-submit-paraf-disposisi" type="button">
+                        <span class="fa fa-check"></span> Paraf / Selesai
                     </button>
                 </div>
             </div>

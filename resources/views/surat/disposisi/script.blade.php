@@ -5,18 +5,24 @@
     // Modal mana yang harus dibuka lagi setelah modal preview besar ditutup
     var modalAsalPreviewDisposisi = '#modal-detail-disposisi';
 
+    var labelTingkat = {
+        'R': 'Rahasia',
+        'P': 'Penting',
+        'S': 'Segera',
+        'B': 'Biasa',
+    };
+
     // Page Load Event
     $(function () {
         initTableDisposisi();
     });
 
-    // Table Disposisi
     function initTableDisposisi() {
         $tableDisposisi.bootstrapTable('destroy').bootstrapTable({
             height: 500,
             locale: 'en-US',
-            idField: 'id_disposisi',
-            uniqueId: 'id_disposisi',
+            idField: 'id_detail',
+            uniqueId: 'id_detail',
             sidePagination: 'client',
             maintainSelected: true,
             pagination: true,
@@ -37,13 +43,21 @@
             url: "{{ route('surat.disposisi.view') }}",
             columns: [
                 [{
-                    field: "id_disposisi",
+                    field: "id_detail",
                     sortable: true,
                     align: "center",
-                    width: '60px',
+                    width: '50px',
                     formatter: function (value, row, index) {
                         return index + 1;
                     },
+                },
+                {
+                    field: 'no_agenda',
+                    sortable: true,
+                    align: 'center',
+                    formatter: function (value) {
+                        return value || '-';
+                    }
                 },
                 {
                     field: 'no_surat',
@@ -62,17 +76,38 @@
                     field: 'nama_pengirim',
                     title: 'Dari',
                     sortable: true,
+                    formatter: function (value) {
+                        return value || '-';
+                    }
                 },
                 {
-                    field: 'tanggal_disposisi',
-                    sortable: true,
+                    field: 'tingkat_surat',
+                    title: 'Tingkat',
                     align: 'center',
+                    formatter: function (value) {
+                        if (!value) return '-';
+                        return '<span class="badge badge-tingkat-' + value + '">' +
+                            (labelTingkat[value] || value) + '</span>';
+                    }
+                },
+                {
+                    field: 'tindakan_action',
+                    title: 'Tindakan Diminta',
+                    align: 'center',
+                    formatter: function (value, row) {
+                        var badges = [];
+                        if (row.tindakan_action) badges.push('<span class="badge bg-primary badge-tindakan">Action</span>');
+                        if (row.tindakan_tanggapan) badges.push('<span class="badge bg-info badge-tindakan">Tanggapan</span>');
+                        if (row.tindakan_info) badges.push('<span class="badge bg-secondary badge-tindakan">Info</span>');
+                        if (row.tindakan_file) badges.push('<span class="badge bg-dark badge-tindakan">File</span>');
+                        return badges.length ? badges.join(' ') : '<span class="text-muted">-</span>';
+                    }
                 },
                 {
                     field: 'status',
                     title: 'Status',
                     align: 'center',
-                    formatter: function (value, row, index) {
+                    formatter: function (value) {
                         var badgeClass = 'bg-secondary';
                         if (value === 'Menunggu') badgeClass = 'bg-warning text-dark';
                         if (value === 'Dibaca') badgeClass = 'bg-info text-dark';
@@ -142,8 +177,8 @@
 
         if (row.status !== 'Selesai') {
             actions.push(
-                '<button type="button" class="btn btn-success btn-xs btn-selesai-disposisi" title="Tandai Selesai">',
-                '<i class="fa fa-check"></i> Selesai',
+                '<button type="button" class="btn btn-success btn-xs btn-paraf-disposisi" title="Paraf / Selesai">',
+                '<i class="fa fa-check"></i> Paraf',
                 '</button>'
             );
         }
@@ -167,14 +202,32 @@
         }).join('');
     }
 
+    function renderTindakanBadges(row) {
+        var badges = [];
+        if (row.tindakan_action) badges.push('<span class="badge bg-primary badge-tindakan">Action</span>');
+        if (row.tindakan_tanggapan) badges.push('<span class="badge bg-info badge-tindakan">Tanggapan</span>');
+        if (row.tindakan_info) badges.push('<span class="badge bg-secondary badge-tindakan">Info</span>');
+        if (row.tindakan_file) badges.push('<span class="badge bg-dark badge-tindakan">File</span>');
+        return badges.length ? badges.join(' ') : '<span class="text-muted">-</span>';
+    }
+
     // Handle events button actions
     window.eventsDisposisi = {
         'click .btn-lihat-disposisi': function (e, value, row, index) {
+            $('.detail-disp-no-agenda').text(row.no_agenda || '-');
             $('.detail-disp-tanggal').text(row.tanggal);
             $('.detail-disp-no-surat').text(row.no_surat);
             $('.detail-disp-perihal').text(row.perihal);
             $('.detail-disp-pengirim').text(row.nama_pengirim ?? '-');
-            $('.detail-disp-catatan').text(row.catatan || 'Tidak ada catatan.');
+            $('.detail-disp-jabatan').text(row.nama_jabatan ?? '-');
+            $('.detail-disp-tingkat').html(
+                row.tingkat_surat ?
+                '<span class="badge badge-tingkat-' + row.tingkat_surat + '">' +
+                (labelTingkat[row.tingkat_surat] || row.tingkat_surat) + '</span>' :
+                '-'
+            );
+            $('.detail-disp-tindakan').html(renderTindakanBadges(row));
+            $('.detail-disp-catatan').text(row.catatan_disposisi || 'Tidak ada catatan.');
             $('.detail-disp-isi-surat').text(row.isi_surat ?? '-');
             $('.detail-disp-lampiran').html(renderLampiranThumbsDisposisi(row.lampiran));
             $('#modal-detail-disposisi').modal('show');
@@ -182,16 +235,16 @@
             // Tandai dibaca otomatis (kalau masih 'Menunggu')
             if (row.status === 'Menunggu') {
                 var url = "{{ route('surat.disposisi.dibaca', ':id') }}";
-                url = url.replace(':id', row.id_disposisi);
+                url = url.replace(':id', row.id_detail);
                 $.post(url, { _token: "{{ csrf_token() }}" }, function () {
                     $tableDisposisi.bootstrapTable('refresh');
                 });
             }
         },
-        'click .btn-selesai-disposisi': function (e, value, row, index) {
-            $('.form-selesai-disposisi')[0].reset();
-            $('input[name="id_disposisi"]').val(row.id_disposisi);
-            $('#modal-selesai-disposisi').modal('show');
+        'click .btn-paraf-disposisi': function (e, value, row, index) {
+            $('.form-paraf-disposisi')[0].reset();
+            $('input[name="id_detail"]').val(row.id_detail);
+            $('#modal-paraf-disposisi').modal('show');
         }
     };
 
@@ -208,12 +261,12 @@
         $(modalAsalPreviewDisposisi).modal('show');
     });
 
-    // Submit Tandai Selesai
-    $(document).on('click', '.btn-submit-selesai-disposisi', function () {
-        var id = $('input[name="id_disposisi"]').val();
+    // Submit Paraf / Tandai Selesai
+    $(document).on('click', '.btn-submit-paraf-disposisi', function () {
+        var id = $('input[name="id_detail"]').val();
         var catatan = $('#catatan_tindak_lanjut').val();
 
-        var url = "{{ route('surat.disposisi.selesai', ':id') }}";
+        var url = "{{ route('surat.disposisi.paraf', ':id') }}";
         url = url.replace(':id', id);
 
         $.ajax({
@@ -224,15 +277,15 @@
                 _token: "{{ csrf_token() }}"
             },
             beforeSend: function () {
-                $('.btn-submit-selesai-disposisi').attr('disabled', true);
+                $('.btn-submit-paraf-disposisi').attr('disabled', true);
             },
             complete: function () {
-                $('.btn-submit-selesai-disposisi').removeAttr('disabled');
+                $('.btn-submit-paraf-disposisi').removeAttr('disabled');
             },
             success: function (res, status, xhr) {
                 if (xhr.status == 200 && res.success) {
                     Alert('success', res.message);
-                    $('#modal-selesai-disposisi').modal('hide');
+                    $('#modal-paraf-disposisi').modal('hide');
                     $tableDisposisi.bootstrapTable('refresh');
                 } else {
                     Alert('warning', res.message);

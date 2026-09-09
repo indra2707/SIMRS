@@ -11,39 +11,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('disposisi', function (Blueprint $table) {
+        Schema::create('tbl_disposisi_surat', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_surat');
-            $table->unsignedBigInteger('id_unit');
+            $table->unsignedBigInteger('id_aproval');
 
+            $table->string('no_agenda')->nullable();
 
-            $table->unsignedBigInteger('id_pengirim');
+            // R = Rahasia, P = Penting, S = Segera, B = Biasa
+            $table->enum('tingkat_surat', ['R', 'P', 'S', 'B'])->nullable();
 
-
-            $table->unsignedBigInteger('id_penerima');
-
-
+            // Kolom "NOTE" di form
             $table->text('catatan')->nullable();
 
-
-            $table->enum('status', ['Menunggu', 'Dibaca', 'Selesai'])
-                ->default('Menunggu');
-
-            $table->timestamp('tanggal_dibaca')->nullable();
-            $table->timestamp('tanggal_selesai')->nullable();
-
-
-            $table->text('catatan_tindak_lanjut')->nullable();
+            $table->unsignedBigInteger('id_pengirim');
+            $table->unsignedBigInteger('id_unit');
 
             $table->timestamps();
 
             $table->index(['id_surat']);
-            $table->index(['id_penerima', 'id_unit']);
 
             $table->foreign('id_surat')
                 ->references('id')->on('surat')
                 ->onDelete('cascade');
-
         });
     }
 
@@ -52,6 +42,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('disposisi');
+        Schema::dropIfExists('tbl_disposisi_surat');
     }
 };

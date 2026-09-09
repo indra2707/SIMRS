@@ -6,27 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class DisposisiSurat extends Model
 {
-    protected $table = 'disposisi';
-
+       protected $table = 'tbl_disposisi_surat';
+ 
     protected $fillable = [
         'id_surat',
-        'id_unit',
-        'id_pengirim',
-        'id_penerima',
+        'id_aproval',
+        'no_agenda',
+        'tingkat_surat',
         'catatan',
-        'status',
-        'tanggal_dibaca',
-        'tanggal_selesai',
-        'catatan_tindak_lanjut',
+        'id_pengirim',
+        'id_unit',
     ];
-
-    protected $casts = [
-        'tanggal_dibaca' => 'datetime',
-        'tanggal_selesai' => 'datetime',
-    ];
-
+ 
     public function surat()
     {
         return $this->belongsTo(Surat::class, 'id_surat');
     }
+ 
+    public function detail()
+    {
+        return $this->hasMany(DisposisiSuratDetail::class, 'id_disposisi_surat');
+    }
+
 }
