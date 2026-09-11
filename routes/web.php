@@ -61,6 +61,9 @@ use App\Http\Controllers\Sdm\Rincian_spdsController;
 use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Surat\AprovalController;
 use App\Http\Controllers\Surat\AprovalDetailController;
+use App\Http\Controllers\Surat\AprovalMemorandumController;
+use App\Http\Controllers\Surat\DisposisiController as DisposisiSuratController;
+use App\Http\Controllers\Surat\DisposisiJabatanController;
 use App\Http\Controllers\Surat\SuratController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
@@ -550,6 +553,9 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/aprovaldetail/update/{id}', [AprovalDetailController::class, 'update'])->name('surat.aprovaldetail.update');
         Route::delete('/aprovaldetail/delete/{id}', [AprovalDetailController::class, 'destroy'])->name('surat.aprovaldetail.delete');
 
+
+
+
         // List-surat
         Route::get('list-surat', [SuratController::class, 'index'])->name('surat.list-surat');
         Route::get('list-surat/view', [SuratController::class, 'views'])->name('surat.view');
@@ -560,6 +566,43 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::post('/list-surat/update-status/{id}', [SuratController::class, 'updateStatus'])->name('surat.update-status');
         Route::get('list-surat/{id}/export-pdf', [SuratController::class, 'previewPdf'])->name('surat.export-pdf');
         Route::get('list-surat/viewapproval', [SuratController::class, 'viewsapproval'])->name('surat.viewapproval');
+
+        // Route::get('/aprovalmemorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aprovalMemorandum');
+        Route::get('/aproval-memorandum', [AprovalMemorandumController::class, 'index'])->name('surat.aproval-memorandum');
+
+        Route::get('/aproval-memorandum/views', [AprovalMemorandumController::class, 'views'])->name('surat.aproval-memorandum.view');
+
+        Route::post('/aproval-memorandum/approve/{id}', [AprovalMemorandumController::class, 'approve'])->name('surat.aproval-memorandum.approve');
+
+        Route::post('/aproval-memorandum/reject/{id}', [AprovalMemorandumController::class, 'reject'])->name('surat.aproval-memorandum.reject');
+
+
+
+        Route::get('disposisi-jabatan', [DisposisiJabatanController::class, 'index'])->name('surat.disposisi-jabatan');
+
+        Route::get('disposisi-jabatan/view', [DisposisiJabatanController::class, 'views'])->name('surat.disposisi-jabatan.view');
+
+        Route::post('disposisi-jabatan', [DisposisiJabatanController::class, 'store'])->name('surat.disposisi-jabatan.create');
+
+        Route::put('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'update'])->name('surat.disposisi-jabatan.update');
+
+        Route::delete('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'destroy'])->name('surat.disposisi-jabatan.delete');
+
+
+        // ----- Disposisi Surat -----
+        Route::get('disposisi', [DisposisiSuratController::class, 'index'])->name('surat.disposisi');
+
+        Route::get('disposisi/view', [DisposisiSuratController::class, 'views'])->name('surat.disposisi.view');
+
+        Route::get('disposisi/jabatan-by-aproval', [DisposisiSuratController::class, 'jabatanByAproval'])->name('surat.disposisi.jabatan-by-aproval');
+
+        Route::post('disposisi', [DisposisiSuratController::class, 'store'])->name('surat.disposisi.create');
+
+        Route::post('disposisi/{id}/dibaca', [DisposisiSuratController::class, 'tandaiDibaca'])->name('surat.disposisi.dibaca');
+
+        Route::post('disposisi/{id}/paraf', [DisposisiSuratController::class, 'paraf'])->name('surat.disposisi.paraf');
+
+        Route::delete('disposisi/{id}', [DisposisiSuratController::class, 'destroy'])->name('surat.disposisi.delete');
     });
 
 

@@ -377,7 +377,8 @@
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('surat.aproval') }}">Hirarki Approval</a></li>
                             <li><a href="{{ route('surat.list-surat') }}">Memorandum</a></li>
-                            <li><a href="#">Approval Memorandum</a></li>
+                            <li><a href="{{ route('surat.aproval-memorandum')}}">Approval Memorandum</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">Disposisi</a></li>
                         </ul>
                     </li>
 

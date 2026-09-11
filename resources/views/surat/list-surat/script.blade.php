@@ -484,6 +484,16 @@
                                 'style="width: 80px;">Approve</button>';
                         }
 
+                        else if (value === 'Selesai') {
+                            return '<button class="btn btn-success btn-pill btn-xs" ' +
+                                'style="width: 80px;">Selesai</button>';
+                        }
+
+                        else if (value === 'Revisi') {
+                            return '<button class="btn btn-danger btn-pill btn-xs" ' +
+                                'style="width: 80px;">Revisi</button>';
+                        }
+
                         else {
                             return '<button class="btn btn-secondary btn-pill btn-xs" ' +
                                 'style="width: 80px;">' +
@@ -561,7 +571,7 @@
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu-' + row.id + '">',
         ];
 
-        if (row.status === 'Approve') {
+        if (row.status === 'Approve' || row.status === 'Selesai' || row.status === 'Revisi') {
             actions.push(
                 '<a class="dropdown-item btn-detail" href="javascript:void(0)">' +
                 '<i class="fa fa-eye text-info"></i> Status Surat' +
@@ -569,7 +579,15 @@
             );
         }
 
-        if (row.status === 'Draft') {
+        if (row.status === 'Approve' || row.status === 'Selesai') {
+            actions.push(
+                '<a class="dropdown-item btn-buat-disposisi" href="javascript:void(0)">' +
+                '<i class="fa fa-share text-success"></i> Buat Disposisi' +
+                '</a>'
+            );
+        }
+
+        if (row.status === 'Draft' || row.status === 'Revisi') {
             actions.push(
                 '<a class="dropdown-item btn-edit" href="javascript:void(0)">' +
                 '<i class="fa fa-edit text-primary"></i> Edit' +
@@ -597,6 +615,71 @@
     window.eventsSurat = {
         'click .btn-lihat-lampiran': function (e, value, row, index) {
 
+        },
+        'click .btn-buat-disposisi': function (e, value, row, index) {
+            $('.form-buat-disposisi')[0].reset();
+            $('input[name="id_surat"]').val(row.id);
+            $('input[name="id_aproval"]').val(row.approval_id);
+            $('.disposisi-no-surat').text(row.no_surat);
+            $('.disposisi-perihal').text(row.perihal);
+            $('#tingkat_b').prop('checked', true);
+
+            $('#modal-buat-disposisi').modal('show');
+
+            $('#tbody-jabatan-disposisi').html(
+                '<tr><td colspan="6" class="text-center text-muted py-3">Memuat daftar jabatan...</td></tr>'
+            );
+
+            $.ajax({
+                url: "{{ route('surat.disposisi.jabatan-by-aproval') }}",
+                type: 'GET',
+                data: { id_aproval: row.approval_id },
+                success: function (jabatanList) {
+                    if (!jabatanList || jabatanList.length === 0) {
+                        $('#tbody-jabatan-disposisi').html(
+                            '<tr><td colspan="6" class="text-center text-muted py-3">' +
+                            'Belum ada template jabatan untuk approval ini. Silakan tambahkan ' +
+                            'lewat menu Template Jabatan Disposisi.' +
+                            '</td></tr>'
+                        );
+                        return;
+                    }
+
+                    var html = '';
+                    jabatanList.forEach(function (j, i) {
+                        html += `
+                        <tr data-id-jabatan="${j.id}"
+                            data-nama-jabatan="${j.nama_jabatan}"
+                            data-id-pegawai="${j.id_pegawai ?? ''}">
+                            <td class="text-center">${i + 1}</td>
+                            <td>
+                                ${j.nama_jabatan}
+                                <div class="text-muted small">${j.nama_pekerja ?? '- belum ada pemegang jabatan -'}</div>
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input chk-tindakan" data-jenis="action">
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input chk-tindakan" data-jenis="tanggapan">
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input chk-tindakan" data-jenis="info">
+                            </td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input chk-tindakan" data-jenis="file">
+                            </td>
+                        </tr>
+                        `;
+                    });
+
+                    $('#tbody-jabatan-disposisi').html(html);
+                },
+                error: function () {
+                    $('#tbody-jabatan-disposisi').html(
+                        '<tr><td colspan="6" class="text-center text-danger py-3">Gagal memuat daftar jabatan.</td></tr>'
+                    );
+                }
+            });
         },
         'click .btn-detail': function (e, value, row, index) {
             $('#modal-detail-surat').modal('show');
@@ -644,16 +727,20 @@
                             default: parentJabatan = '-';
                         }
 
+                        let ditolak =
+                            item.status === 'Tolak';
+
                         let approved =
+                            !ditolak &&
                             item.tanggal_aproval !== null &&
                             item.tanggal_aproval !== undefined &&
                             String(item.tanggal_aproval).trim() !== '';
 
-                        let stepClass = approved ? 'approved' : 'pending';
-                        let icon = approved ? 'bi-check-lg' : 'bi-person';
-                        let status = approved ? 'Terverifikasi' : 'Menunggu Approval';
+                        let stepClass = ditolak ? 'rejected' : (approved ? 'approved' : 'pending');
+                        let icon = ditolak ? 'bi-x-lg' : (approved ? 'bi-check-lg' : 'bi-person');
+                        let status = ditolak ? 'Ditolak / Revisi' : (approved ? 'Terverifikasi' : 'Menunggu Approval');
                         let tanggal = '';
-                        if (approved) {
+                        if (approved || ditolak) {
                             let date = new Date(
                                 String(item.tanggal_aproval).replace(' ', 'T')
                             );
@@ -676,6 +763,15 @@
                     `;
                         }
 
+                        let keteranganHtml = '';
+                        if (ditolak && item.keterangan) {
+                            keteranganHtml = `
+                            <div class="approval-date text-danger">
+                                Catatan: ${item.keterangan}
+                            </div>
+                            `;
+                        }
+
                         html += `
                 <div class="approval-step ${stepClass}">
                     <div class="approval-icon"> <i class="bi ${icon}"></i></div>
@@ -683,6 +779,7 @@
                     <div class="approval-name"> ${item.nama_pekerja ?? '-'} </div>
                     <div class="approval-status"> ${status} </div> 
                     ${tanggal} 
+                    ${keteranganHtml}
                 </div>  `;
                     });
                     $('#approvalWizard').html(html);
@@ -917,4 +1014,90 @@
             });
         }
     };
+
+    // Submit Buat Disposisi
+    $(document).on('click', '.btn-submit-disposisi', function () {
+        var idSurat = $('input[name="id_surat"]').val();
+        var idAproval = $('input[name="id_aproval"]').val();
+        var noAgenda = $('#no_agenda').val();
+        var tingkatSurat = $('input[name="tingkat_surat"]:checked').val();
+        var catatan = $('#catatan_disposisi').val();
+
+        // Kumpulkan baris jabatan yang minimal 1 checkbox-nya dicentang
+        var penerima = [];
+        $('#tbody-jabatan-disposisi tr').each(function () {
+            var $row = $(this);
+            var idJabatan = $row.data('id-jabatan');
+
+            if (!idJabatan) return; // baris "memuat.../gagal" tidak punya data-id-jabatan
+
+            var tindakan = {
+                action: $row.find('.chk-tindakan[data-jenis="action"]').is(':checked'),
+                tanggapan: $row.find('.chk-tindakan[data-jenis="tanggapan"]').is(':checked'),
+                info: $row.find('.chk-tindakan[data-jenis="info"]').is(':checked'),
+                file: $row.find('.chk-tindakan[data-jenis="file"]').is(':checked'),
+            };
+
+            var adaTindakan = tindakan.action || tindakan.tanggapan || tindakan.info || tindakan.file;
+            if (!adaTindakan) return; // skip baris yang tidak dicentang sama sekali
+
+            penerima.push({
+                id_disposisi_jabatan: idJabatan,
+                nama_jabatan: $row.data('nama-jabatan'),
+                id_pegawai: $row.data('id-pegawai') || null,
+                tindakan_action: tindakan.action ? 1 : 0,
+                tindakan_tanggapan: tindakan.tanggapan ? 1 : 0,
+                tindakan_info: tindakan.info ? 1 : 0,
+                tindakan_file: tindakan.file ? 1 : 0,
+            });
+        });
+
+        if (penerima.length === 0) {
+            Alert('warning', 'Centang minimal 1 jenis tindakan untuk minimal 1 jabatan.');
+            return;
+        }
+
+        $.ajax({
+            url: "{{ route('surat.disposisi.create') }}",
+            type: 'POST',
+            data: {
+                id_surat: idSurat,
+                id_aproval: idAproval,
+                no_agenda: noAgenda,
+                tingkat_surat: tingkatSurat,
+                catatan: catatan,
+                penerima: penerima,
+                _token: "{{ csrf_token() }}"
+            },
+            beforeSend: function () {
+                $('.btn-submit-disposisi').html(
+                    '<span class="spinner-border spinner-border-sm"></span>'
+                ).attr('disabled', true);
+            },
+            complete: function () {
+                $('.btn-submit-disposisi').html(
+                    '<span class="fa fa-share"></span> Kirim Disposisi'
+                ).removeAttr('disabled');
+            },
+            success: function (res, status, xhr) {
+                if (xhr.status == 200 && res.success) {
+                    Alert('success', res.message);
+                    $('#modal-buat-disposisi').modal('hide');
+                } else {
+                    Alert('warning', res.message);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status == 422) {
+                    var errors = xhr.responseJSON.errors;
+                    var firstError = Object.values(errors)[0][0];
+                    Alert('warning', firstError);
+                } else if (xhr.status == 400) {
+                    Alert('warning', xhr.responseJSON.message);
+                } else {
+                    Alert('info', 'Silahkan hubungi IT!');
+                }
+            }
+        });
+    });
 </script>

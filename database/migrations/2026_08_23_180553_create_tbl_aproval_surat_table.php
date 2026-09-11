@@ -21,6 +21,9 @@ return new class extends Migration
             $table->dateTime('tanggal_aproval')->nullable();
             $table->text('keterangan')->nullable();
             $table->timestamps();
+                        $table->enum('status', ['Menunggu', 'Approve', 'Tolak'])
+                ->default('Menunggu');
+
         });
     }
 

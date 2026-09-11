@@ -384,6 +384,111 @@
         </div>
     </div>
 
+
+
+    {{-- Modal Buat Disposisi --}}
+
+<div class="modal fade" id="modal-buat-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Buat Disposisi</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row g-2 form-buat-disposisi" autocomplete="off">
+                    <input type="hidden" name="id_surat">
+                    <input type="hidden" name="id_aproval">
+
+                    <label class="col-form-label col-sm-12">
+                        No Surat: <span class="fw-bold disposisi-no-surat"></span> &mdash;
+                        Perihal: <span class="disposisi-perihal"></span>
+                    </label>
+
+                    <!-- No Agenda -->
+                    <label for="no_agenda" class="col-form-label col-sm-2">No. Agenda</label>
+                    <div class="col-sm-4">
+                        <input type="text" name="no_agenda" id="no_agenda" class="form-control"
+                            placeholder="Opsional..." />
+                    </div>
+
+                    <!-- Tingkat Surat -->
+                    <label class="col-form-label col-sm-2">Tingkat Surat</label>
+                    <div class="col-sm-6">
+                        <div class="d-flex gap-3 pt-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tingkat_surat" id="tingkat_r"
+                                    value="R">
+                                <label class="form-check-label" for="tingkat_r">R - Rahasia</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tingkat_surat" id="tingkat_p"
+                                    value="P">
+                                <label class="form-check-label" for="tingkat_p">P - Penting</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tingkat_surat" id="tingkat_s"
+                                    value="S">
+                                <label class="form-check-label" for="tingkat_s">S - Segera</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="tingkat_surat" id="tingkat_b"
+                                    value="B" checked>
+                                <label class="form-check-label" for="tingkat_b">B - Biasa</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabel Jabatan Penerima -->
+                    <label class="col-form-label col-sm-12 mt-2">Diteruskan Kepada</label>
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-sm align-middle" id="tabel-jabatan-disposisi">
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th width="30">#</th>
+                                        <th>Jabatan</th>
+                                        <th width="70">Action</th>
+                                        <th width="90">Tanggapan</th>
+                                        <th width="60">Info</th>
+                                        <th width="60">File</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-jabatan-disposisi">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-3">
+                                            Memuat daftar jabatan...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <small class="text-muted">
+                            Centang minimal 1 jenis tindakan untuk jabatan yang ingin disertakan.
+                            Jabatan tanpa centang tidak akan menerima disposisi ini.
+                        </small>
+                    </div>
+
+                    <!-- Catatan / NOTE -->
+                    <label for="catatan_disposisi" class="col-form-label col-sm-12 mt-2">
+                        Catatan / Instruksi (NOTE)
+                    </label>
+                    <div class="col-sm-12">
+                        <textarea class="form-control" name="catatan" id="catatan_disposisi" rows="3"
+                            placeholder="Contoh: Mohon ditindaklanjuti sesuai ketentuan..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
+                <button class="btn btn-primary btn-submit-disposisi" type="button">
+                    <span class="fa fa-share"></span> Kirim Disposisi
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 
