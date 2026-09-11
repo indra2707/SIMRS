@@ -172,7 +172,7 @@
     });
 
     // close modal
-    $('#modal-preview-pdf').on('hidden.bs.modal', function () {
+    $('#modal-preview-ijazah').on('hidden.bs.modal', function () {
         $('#modal-pks').modal('show');
     });
 
