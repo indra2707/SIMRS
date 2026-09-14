@@ -71,6 +71,7 @@ class SkJabatanController extends Controller
                 'tanggal_mulai_jabatan' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
                 'tanggal_berakhir_jabatan' => Carbon::parse($value->tanggal_berakhir)->format('d/m/Y'),
                 'lampiran_jabatan' => $value->lampiran,
+                'id_pegawai' => $value->id_pegawai,
             ];
         }
         return response()->json($data, 200);

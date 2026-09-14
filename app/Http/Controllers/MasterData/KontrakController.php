@@ -72,6 +72,7 @@ class KontrakController extends Controller
                 'masa_berlaku' => $value->masa_berlaku,
                 'tanggal_berakhir' => $value->tanggal_berakhir ? Carbon::parse($value->tanggal_berakhir)->format('d/m/Y') : '-',
                 'lampiran' => $value->lampiran,
+                'id_pegawai' => $value->id_pegawai,
             ];
         }
         return response()->json($data, 200);
