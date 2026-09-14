@@ -336,10 +336,10 @@
                             <li><a href="{{ route('master-data.kontrak') }}">Kontrak Kerja</a></li>
                             <li><a href="{{ route('master-data.jabatan')}}">SK Jabatan</a></li>
                             <li><a href="{{ route('master-data.str-sip')}}">STR dan SIP</a></li>
-                            <li><a href="{{ route('surat.disposisi')}}">SPK dan RKK</a></li>
+                            <!-- <li><a href="{{ route('surat.disposisi')}}">SPK dan RKK</a></li>
                             <li><a href="{{ route('surat.disposisi')}}">Sertifikat</a></li>
                             <li><a href="{{ route('surat.disposisi')}}">Hasil MCU</a></li>
-                            <li><a href="{{ route('surat.disposisi')}}">Dokumen Lainnya</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">Dokumen Lainnya</a></li> -->
                         </ul>
                     </li>
 
