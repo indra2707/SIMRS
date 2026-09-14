@@ -17,7 +17,7 @@ class SpkRkkController extends Controller
             'menuTitle' => 'Master Data',
             'menuSubtitle' => 'SPK dan RKK',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.spkrkk.spkrkk', $data);
     }
 
     // Views SPK dan RKK
@@ -47,6 +47,33 @@ class SpkRkkController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Views SPK dan RKK SDM
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_spk_rkk')
+            ->join('pegawai', 'tbl_spk_rkk.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_spk_rkk.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_spk' => $value->id,
+                'id_pegawai' => $value->id_pegawai,
+                'nama_pekerja' => $value->nama_pekerja,
+                'nomor_spk' => $value->nomor,
+                'tanggal_mulai_spk' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
+                'tanggal_berakhir_spk' => Carbon::parse($value->tanggal_berakhir)->format('d/m/Y'),
+                'lampiran_spk' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
     // Simpan SPK dan RKK
     public function store(Request $request)
     {
@@ -58,8 +85,10 @@ class SpkRkkController extends Controller
             $file->move(public_path('uploads/spk'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = SpkRkk::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_spk,
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_spk)->format('Y-m-d'),
             'tanggal_berakhir' => Carbon::createFromFormat('d/m/Y', $request->tanggal_berakhir_spk)->format('Y-m-d'),
@@ -112,8 +141,10 @@ class SpkRkkController extends Controller
             $file->move(public_path('uploads/spk'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+        
         $kontrak->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_spk,
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_spk)->format('Y-m-d'),
             'tanggal_berakhir' => Carbon::createFromFormat('d/m/Y', $request->tanggal_berakhir_spk)->format('Y-m-d'),

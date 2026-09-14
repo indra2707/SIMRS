@@ -373,13 +373,17 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/str-sip/delete/{id}', [StrSipController::class, 'destroy'])->name('master-data.str-sip.delete');
 
         // SPK dan RKK
+        Route::get('/spk-rkk', [SpkRkkController::class, 'index'])->name('master-data.spk-rkk');
         Route::get('/spk-rkk/view', [SpkRkkController::class, 'views'])->name('master-data.spk-rkk.view');
+        Route::get('/spk-rkk-sdm/view', [SpkRkkController::class, 'viewssdm'])->name('master-data.spk-rkk-sdm.view');
         Route::post('/spk-rkk/store', [SpkRkkController::class, 'store'])->name('master-data.spk-rkk.create');
         Route::put('/spk-rkk/update/{id}', [SpkRkkController::class, 'update'])->name('master-data.spk-rkk.update');
         Route::delete('/spk-rkk/delete/{id}', [SpkRkkController::class, 'destroy'])->name('master-data.spk-rkk.delete');
 
         // Sertifikat
+        Route::get('/sertifikat', [SertifikatController::class, 'index'])->name('master-data.sertifikat');
         Route::get('/sertifikat/view', [SertifikatController::class, 'views'])->name('master-data.sertifikat.view');
+        Route::get('/sertifikat-sdm/view', [SertifikatController::class, 'viewssdm'])->name('master-data.sertifikat-sdm.view');
         Route::post('/sertifikat/store', [SertifikatController::class, 'store'])->name('master-data.sertifikat.create');
         Route::put('/sertifikat/update/{id}', [SertifikatController::class, 'update'])->name('master-data.sertifikat.update');
         Route::delete('/sertifikat/delete/{id}', [SertifikatController::class, 'destroy'])->name('master-data.sertifikat.delete');

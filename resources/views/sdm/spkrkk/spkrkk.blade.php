@@ -27,7 +27,7 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Jabatan</h3>
+    <h3>SPK dan RKK</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -45,9 +45,9 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <!-- Kiri: Tombol & Filter -->
                             <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-primary add-btn-jabatan">
+                                <button class="btn btn-primary add-btn-spk">
                                     <span class="fa fa-plus"></span>
-                                    <span> Tambah Jabatan</span>
+                                    <span> Tambah SPK dan RKK</span>
                                 </button>
                             </div>
                         </div>
@@ -55,14 +55,13 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_jabatan" class="table table-hover" data-buttons-class="primary"
+                                <table id="table_spk" class="table table-hover" data-buttons-class="primary"
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">No</th>
                                             <th class="f-light">Nama Pekerja</th>
-                                            <th class="f-light">Nomor</th>
-                                            <th class="f-light">Nama Jabatan</th>
+                                            <th class="f-light">Nomor SPK</th>
                                             <th class="f-light">Tanggal Mulai</th>
                                             <th class="f-light">Tanggal Berakhir</th>
                                             <th>Action</th>
@@ -78,7 +77,7 @@
     </div>
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="modal-jabatan" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="modal-spk" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -87,11 +86,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="form-wizard form-jabatan" novalidate="" autocomplete="off">
+                    <form class="form-wizard form-spk" novalidate="" autocomplete="off">
                         @csrf
                         {{-- Hidden Input --}}
                         <div class="mb-2 row">
-                            <input type="hidden" name="id_jabatan">
+                            <input type="hidden" name="id_spk">
                         </div>
 
                         <!-- Pegawai -->
@@ -105,29 +104,20 @@
                             </div>
                         </div>
 
-                        <!-- Nomor Jabatan -->
+                        <!-- Nomor SPK -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nomor_sk">Nomor SK Jabatan</label>
+                            <label class="col-sm-2 col-form-label" for="nomor_spk">Nomor</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomor_sk" name="nomor_sk"
-                                    placeholder="Nomor SK Jabatan..." required>
-                            </div>
-                        </div>
-
-                        <!-- Nama Jabatan -->
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama_jabatan">Nama Jabatan</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan"
-                                    placeholder="Nama Jabatan..." required>
+                                <input type="text" class="form-control" id="nomor_spk" name="nomor_spk"
+                                    placeholder="Nomor..." required>
                             </div>
                         </div>
 
                         <!-- Tanggal Mulai -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                            <label class="col-sm-2 col-form-label" for="tanggal_mulai_spk">Tanggal Mulai</label>
                             <div class="col-sm-10">
-                                <input type="text" name="tanggal_mulai_jabatan" id="tanggal_mulai_jabatan"
+                                <input type="text" name="tanggal_mulai_spk" id="tanggal_mulai_spk"
                                     class="form-control js-datepicker digits" placeholder="dd/mm/yyyy"
                                     aria-label="Tanggal Mulai" data-language="en" autocomplete="off" required>
                             </div>
@@ -135,9 +125,9 @@
 
                         <!-- Tanggal Berakhir -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="tanggal_berakhir_jabatan">Tanggal Berakhir</label>
+                            <label class="col-sm-2 col-form-label" for="tanggal_berakhir_spk">Tanggal Berakhir</label>
                             <div class="col-sm-10">
-                                <input type="text" name="tanggal_berakhir_jabatan" id="tanggal_berakhir_jabatan"
+                                <input type="text" name="tanggal_berakhir_spk" id="tanggal_berakhir_spk"
                                     class="form-control js-datepicker digits" placeholder="dd/mm/yyyy"
                                     aria-label="Tanggal Berakhir" data-language="en" autocomplete="off">
                             </div>
@@ -145,21 +135,20 @@
 
                         <!-- Dokumen -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="lampiran-jabatan"> Dokumen </label>
+                            <label class="col-sm-2 col-form-label" for="lampiran-spk"> Dokumen </label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach-jabatan"
-                                    id="btn-attach-jabatan"> <i class="fa fa-paperclip me-1"></i>
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach-spk"
+                                    id="btn-attach-spk"> <i class="fa fa-paperclip me-1"></i>
                                     Attach File
                                 </button>
-                                <input type="file" id="lampiran-jabatan" name="lampiran-jabatan" accept="application/pdf"
+                                <input type="file" id="lampiran-spk" name="lampiran-spk" accept="application/pdf"
                                     class="d-none">
                                 <div>
                                     <small class="text-muted">
-                                        Maksimal 1 file (PDF)<br>
-                                        upload SK Jabatan dan Uraian Jabatan menjadi satu file
+                                        Maksimal 1 file (PDF)
                                     </small>
                                 </div>
-                                <div class="row mt-2" id="preview-images-jabatan">
+                                <div class="row mt-2" id="preview-images-spk">
                                 </div>
                             </div>
                         </div>
@@ -168,15 +157,15 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
                         <span class="fa fa-times"></span> Batal</button>
-                    <button class="btn btn-primary save-btn-jabatan" type="button"><span class="fa fa-check"></span>
+                    <button class="btn btn-primary save-btn-spk" type="button"><span class="fa fa-check"></span>
                         Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal lihat dokumen Jabatan -->
-    <div class="modal fade" id="modal-preview-pdf-jabatan" tabindex="-1">
+    <!-- Modal lihat dokumen SPK dan RKK -->
+    <div class="modal fade" id="modal-preview-pdf-spk" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -184,7 +173,7 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <iframe id="preview-pdf-jabatan" width="100%" height="700px"></iframe>
+                    <iframe id="preview-pdf-spk" width="100%" height="700px"></iframe>
                 </div>
             </div>
         </div>
@@ -193,5 +182,5 @@
 
 
 @section('script')
-    @include('sdm.jabatan.script')
+    @include('sdm.spkrkk.script')
 @endsection

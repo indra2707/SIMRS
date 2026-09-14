@@ -27,7 +27,7 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Jabatan</h3>
+    <h3>Sertifikat</h3>
 @endsection
 
 @section('breadcrumb-items')
@@ -45,9 +45,9 @@
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
                             <!-- Kiri: Tombol & Filter -->
                             <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-primary add-btn-jabatan">
+                                <button class="btn btn-primary add-btn-sertifikat">
                                     <span class="fa fa-plus"></span>
-                                    <span> Tambah Jabatan</span>
+                                    <span> Tambah Sertifikat</span>
                                 </button>
                             </div>
                         </div>
@@ -55,16 +55,16 @@
                         {{-- Table View --}}
                         <div class="col-sm-12 col-lg-12 col-xl-12">
                             <div class="table-responsive signal-table">
-                                <table id="table_jabatan" class="table table-hover" data-buttons-class="primary"
+                                <table id="table_sertifikat" class="table table-hover" data-buttons-class="primary"
                                     data-toggle="table">
                                     <thead class="text-bold text-white text-uppercase text-center">
                                         <tr>
                                             <th class="f-light">No</th>
                                             <th class="f-light">Nama Pekerja</th>
-                                            <th class="f-light">Nomor</th>
-                                            <th class="f-light">Nama Jabatan</th>
-                                            <th class="f-light">Tanggal Mulai</th>
-                                            <th class="f-light">Tanggal Berakhir</th>
+                                            <th class="f-light">Jenis</th>
+                                            <th class="f-light">Nama</th>
+                                            <th class="f-light">Penyelenggara</th>
+                                            <th class="f-light">Tahun</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -78,7 +78,7 @@
     </div>
 
     {{-- Modal Form --}}
-    <div class="modal fade" id="modal-jabatan" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade" id="modal-sertifikat" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -87,11 +87,11 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="form-wizard form-jabatan" novalidate="" autocomplete="off">
+                    <form class="form-wizard form-sertifikat" novalidate="" autocomplete="off">
                         @csrf
                         {{-- Hidden Input --}}
                         <div class="mb-2 row">
-                            <input type="hidden" name="id_jabatan">
+                            <input type="hidden" name="id_sertifikat">
                         </div>
 
                         <!-- Pegawai -->
@@ -105,61 +105,63 @@
                             </div>
                         </div>
 
-                        <!-- Nomor Jabatan -->
+                        <!-- Nama Sertifikat -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nomor_sk">Nomor SK Jabatan</label>
+                            <label class="col-sm-2 col-form-label" for="nama_sertifikat">Nama</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nomor_sk" name="nomor_sk"
-                                    placeholder="Nomor SK Jabatan..." required>
+                                <input type="text" class="form-control" id="nama_sertifikat" name="nama_sertifikat"
+                                    placeholder="Nama Sertifikat..." required>
                             </div>
                         </div>
 
-                        <!-- Nama Jabatan -->
+                        <!-- Penyelenggara -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="nama_jabatan">Nama Jabatan</label>
+                            <label class="col-sm-2 col-form-label" for="penyelenggara_sertifikat">Penyelenggara</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="nama_jabatan" name="nama_jabatan"
-                                    placeholder="Nama Jabatan..." required>
+                                <input type="text" class="form-control" id="penyelenggara_sertifikat"
+                                    name="penyelenggara_sertifikat" placeholder="Penyelenggara Sertifikat..." required>
                             </div>
                         </div>
 
-                        <!-- Tanggal Mulai -->
+                        <!-- Tahun Sertifikat -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="tanggal_mulai">Tanggal Mulai</label>
+                            <label class="col-sm-2 col-form-label" for="tahun_sertifikat">Tahun</label>
                             <div class="col-sm-10">
-                                <input type="text" name="tanggal_mulai_jabatan" id="tanggal_mulai_jabatan"
-                                    class="form-control js-datepicker digits" placeholder="dd/mm/yyyy"
-                                    aria-label="Tanggal Mulai" data-language="en" autocomplete="off" required>
-                            </div>
-                        </div>
-
-                        <!-- Tanggal Berakhir -->
-                        <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="tanggal_berakhir_jabatan">Tanggal Berakhir</label>
-                            <div class="col-sm-10">
-                                <input type="text" name="tanggal_berakhir_jabatan" id="tanggal_berakhir_jabatan"
+                                <input type="text" name="tahun_sertifikat" id="tahun_sertifikat"
                                     class="form-control js-datepicker digits" placeholder="dd/mm/yyyy"
                                     aria-label="Tanggal Berakhir" data-language="en" autocomplete="off">
                             </div>
                         </div>
 
+                        <!-- Jenis Sertifikat -->
+                        <div class="mb-2 row">
+                            <label class="col-sm-2 col-form-label" for="jenis_sertifikat">Jenis</label>
+                            </label>
+                            <div class="col-sm-10">
+                                <select class="form-select select2" id="jenis_sertifikat" name="jenis_sertifikat" required>
+                                    <option value=""></option>
+                                    <option value="Pelatihan">Pelatihan</option>
+                                    <option value="Sertifikat">Sertifikat</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <!-- Dokumen -->
                         <div class="mb-2 row">
-                            <label class="col-sm-2 col-form-label" for="lampiran-jabatan"> Dokumen </label>
+                            <label class="col-sm-2 col-form-label" for="lampiran-sertifikat"> Dokumen </label>
                             <div class="col-sm-10">
-                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach-jabatan"
-                                    id="btn-attach-jabatan"> <i class="fa fa-paperclip me-1"></i>
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-2 btn-attach-sertifikat"
+                                    id="btn-attach-sertifikat"> <i class="fa fa-paperclip me-1"></i>
                                     Attach File
                                 </button>
-                                <input type="file" id="lampiran-jabatan" name="lampiran-jabatan" accept="application/pdf"
-                                    class="d-none">
+                                <input type="file" id="lampiran-sertifikat" name="lampiran-sertifikat"
+                                    accept="application/pdf" class="d-none">
                                 <div>
                                     <small class="text-muted">
-                                        Maksimal 1 file (PDF)<br>
-                                        upload SK Jabatan dan Uraian Jabatan menjadi satu file
+                                        Maksimal 1 file (PDF)
                                     </small>
                                 </div>
-                                <div class="row mt-2" id="preview-images-jabatan">
+                                <div class="row mt-2" id="preview-images-sertifikat">
                                 </div>
                             </div>
                         </div>
@@ -168,15 +170,15 @@
                 <div class="modal-footer">
                     <button class="btn btn-danger" type="button" data-bs-dismiss="modal">
                         <span class="fa fa-times"></span> Batal</button>
-                    <button class="btn btn-primary save-btn-jabatan" type="button"><span class="fa fa-check"></span>
+                    <button class="btn btn-primary save-btn-sertifikat" type="button"><span class="fa fa-check"></span>
                         Simpan</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal lihat dokumen Jabatan -->
-    <div class="modal fade" id="modal-preview-pdf-jabatan" tabindex="-1">
+    <!-- Modal lihat dokumen Sertifikat -->
+    <div class="modal fade" id="modal-preview-pdf-sertifikat" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-fullscreen">
             <div class="modal-content">
                 <div class="modal-header">
@@ -184,7 +186,7 @@
                     <button class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <iframe id="preview-pdf-jabatan" width="100%" height="700px"></iframe>
+                    <iframe id="preview-pdf-sertifikat" width="100%" height="700px"></iframe>
                 </div>
             </div>
         </div>
@@ -193,5 +195,5 @@
 
 
 @section('script')
-    @include('sdm.jabatan.script')
+    @include('sdm.sertifikat.script')
 @endsection

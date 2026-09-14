@@ -726,7 +726,7 @@
                                     class="d-none">
                                 <div>
                                     <small class="text-muted">
-                                        Maksimal 1 file (PDF)
+                                        Maksimal 1 file (PDF)<br>
                                         upload SK Jabatan dan Uraian Jabatan menjadi satu file
                                     </small>
                                 </div>

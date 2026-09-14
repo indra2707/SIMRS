@@ -13,11 +13,11 @@ class SertifikatController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Kontrak',
+            'title' => 'Sertifikat',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Kontrak',
+            'menuSubtitle' => 'Sertifikat',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.sertifikat.sertifikat', $data);
     }
 
     // Views Sertifikat
@@ -48,6 +48,34 @@ class SertifikatController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Views Sertifikat SDM
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_sertifikat')
+            ->join('pegawai', 'tbl_sertifikat.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_sertifikat.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_sertifikat' => $value->id,
+                'id_pegawai' => $value->id_pegawai,
+                'nama_pekerja' => $value->nama_pekerja,
+                'nama_sertifikat' => $value->nama,
+                'jenis_sertifikat' => $value->jenis,
+                'penyelenggara_sertifikat' => $value->penyelenggara,
+                'tahun_sertifikat' => $value->tahun,
+                'lampiran_sertifikat' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
     // Simpan Sertifikat
     public function store(Request $request)
     {
@@ -59,8 +87,10 @@ class SertifikatController extends Controller
             $file->move(public_path('uploads/sertifikat'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = Sertifikat::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nama' => $request->nama_sertifikat,
             'penyelenggara' => $request->penyelenggara_sertifikat,
             'tahun' => $request->tahun_sertifikat,
@@ -114,8 +144,10 @@ class SertifikatController extends Controller
             $file->move(public_path('uploads/sertifikat'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $sertifikat->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nama' => $request->nama_sertifikat,
             'penyelenggara' => $request->penyelenggara_sertifikat,
             'tahun' => $request->tahun_sertifikat,
