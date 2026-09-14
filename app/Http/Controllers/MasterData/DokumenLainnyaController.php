@@ -13,11 +13,11 @@ class DokumenLainnyaController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Kontrak',
+            'title' => 'Dokumen Lainnya',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Kontrak',
+            'menuSubtitle' => 'Dokumen Lainnya',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.dokumenlainnya.dokumenlainnya', $data);
     }
 
     // Views Dokumen Lainnya
@@ -47,6 +47,33 @@ class DokumenLainnyaController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Views Dokumen Lainnya sdm
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_dokumen_lainnya')
+            ->join('pegawai', 'tbl_dokumen_lainnya.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_dokumen_lainnya.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_pegawai' => $value->id_pegawai,
+                'nama_pekerja' => $value->nama_pekerja,
+                'id_dokumen_lainnya' => $value->id,
+                'jenis_dokumen_lainnya' => $value->jenis,
+                'nomor_dokumen_lainnya' => $value->nomor,
+                'catatan_dokumen_lainnya' => $value->catatan,
+                'lampiran_dokumen_lainnya' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
     // Simpan Dokumen Lainnya
     public function store(Request $request)
     {
@@ -58,8 +85,10 @@ class DokumenLainnyaController extends Controller
             $file->move(public_path('uploads/dokumen_lainnya'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = DokumenLainnya::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_dokumen_lainnya,
             'jenis' => $request->jenis_dokumen_lainnya,
             'catatan' => $request->catatan_dokumen_lainnya,
@@ -112,8 +141,10 @@ class DokumenLainnyaController extends Controller
             $file->move(public_path('uploads/dokumen_lainnya'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+        
         $dokumen->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_dokumen_lainnya,
             'jenis' => $request->jenis_dokumen_lainnya,
             'catatan' => $request->catatan_dokumen_lainnya,

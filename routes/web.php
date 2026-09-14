@@ -389,13 +389,17 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/sertifikat/delete/{id}', [SertifikatController::class, 'destroy'])->name('master-data.sertifikat.delete');
 
         // Hasil MCU
+        Route::get('/mcu', [HasilMcuController::class, 'index'])->name('master-data.mcu');
         Route::get('/mcu/view', [HasilMcuController::class, 'views'])->name('master-data.mcu.view');
+        Route::get('/mcu-sdm/view', [HasilMcuController::class, 'viewssdm'])->name('master-data.mcu-sdm.view');
         Route::post('/mcu/store', [HasilMcuController::class, 'store'])->name('master-data.mcu.create');
         Route::put('/mcu/update/{id}', [HasilMcuController::class, 'update'])->name('master-data.mcu.update');
         Route::delete('/mcu/delete/{id}', [HasilMcuController::class, 'destroy'])->name('master-data.mcu.delete');
 
         // Dokumen Lainnya
+        Route::get('/dokumen-lainnya', [DokumenLainnyaController::class, 'index'])->name('master-data.dokumen-lainnya');
         Route::get('/dokumen-lainnya/view', [DokumenLainnyaController::class, 'views'])->name('master-data.dokumen-lainnya.view');
+        Route::get('/dokumen-lainnya-sdm/view', [DokumenLainnyaController::class, 'viewssdm'])->name('master-data.dokumen-lainnya-sdm.view');
         Route::post('/dokumen-lainnya/store', [DokumenLainnyaController::class, 'store'])->name('master-data.dokumen-lainnya.create');
         Route::put('/dokumen-lainnya/update/{id}', [DokumenLainnyaController::class, 'update'])->name('master-data.dokumen-lainnya.update');
         Route::delete('/dokumen-lainnya/delete/{id}', [DokumenLainnyaController::class, 'destroy'])->name('master-data.dokumen-lainnya.delete');

@@ -13,11 +13,11 @@ class HasilMcuController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Kontrak',
+            'title' => 'MCU',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Kontrak',
+            'menuSubtitle' => 'MCU',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.mcu.mcu', $data);
     }
 
     // Views Hasil MCU
@@ -38,7 +38,34 @@ class HasilMcuController extends Controller
         foreach ($query as $key => $value) {
             $data[] = [
                 'id_mcu' => $value->id,
-                'tanggal_mcu' =>  Carbon::parse($value->tanggal)->format('d/m/Y'),
+                'tanggal_mcu' => Carbon::parse($value->tanggal)->format('d/m/Y'),
+                'hasil_mcu' => $value->hasil,
+                'catatan_mcu' => $value->catatan,
+                'lampiran_mcu' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+
+    // Views Hasil MCU
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_mcu')
+            ->join('pegawai', 'tbl_mcu.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_mcu.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_mcu' => $value->id,
+                'id_pegawai' => $value->id_pegawai,
+                'nama_pekerja' => $value->nama_pekerja,
+                'tanggal_mcu' => Carbon::parse($value->tanggal)->format('d/m/Y'),
                 'hasil_mcu' => $value->hasil,
                 'catatan_mcu' => $value->catatan,
                 'lampiran_mcu' => $value->lampiran,
@@ -58,8 +85,10 @@ class HasilMcuController extends Controller
             $file->move(public_path('uploads/mcu'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = HasilMcu::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mcu)->format('Y-m-d'),
             'hasil' => $request->hasil_mcu,
             'catatan' => $request->catatan_mcu,
@@ -112,8 +141,9 @@ class HasilMcuController extends Controller
             $file->move(public_path('uploads/mcu'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
         $hasilMcu->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'tanggal' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mcu)->format('Y-m-d'),
             'hasil' => $request->hasil_mcu,
             'catatan' => $request->catatan_mcu,
