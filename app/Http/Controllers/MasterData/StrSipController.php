@@ -13,11 +13,11 @@ class StrSipController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Kontrak',
+            'title' => 'STR dan SIP',
             'menuTitle' => 'Master Data',
-            'menuSubtitle' => 'Kontrak',
+            'menuSubtitle' => 'STR dan SIP',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.strsip.strsip', $data);
     }
 
     // Views STR dan SIP
@@ -49,6 +49,36 @@ class StrSipController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // Views STR dan SIP SDM
+    public function viewssdm()
+    {
+
+        $query = DB::table('tbl_str_sip')
+            ->join('pegawai', 'tbl_str_sip.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_str_sip.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_str' => $value->id,
+                'id_pegawai' => $value->id_pegawai,
+                'nomor_str' => $value->nomor,
+                'jenis_str' => $value->jenis,
+                'tanggal_mulai_str' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
+                'masa_berlaku_str' => $value->masa_berlaku,
+                'tanggal_berakhir_str' => $value->tanggal_berakhir ? Carbon::parse($value->tanggal_berakhir)->format('d/m/Y') : '-',
+                'lampiran_str' => $value->lampiran,
+                'nama_pekerja' => $value->nama_pekerja,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
     // Simpan STR dan SIP
     public function store(Request $request)
     {
@@ -60,11 +90,12 @@ class StrSipController extends Controller
             $file->move(public_path('uploads/str'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
         $query = StrSip::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_str,
             'jenis' => $request->jenis_str,
-            'masa_berlaku' => $request->masa_berlaku_str ?? 0,
+            'masa_berlaku' => $request->has('masa_berlaku_str') ? '1' : '0',
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_str)->format('Y-m-d'),
             'tanggal_berakhir' => !empty($request->tanggal_berakhir_str) ? Carbon::createFromFormat('d/m/Y', $request->tanggal_berakhir_str)->format('Y-m-d') : null,
             'lampiran' => $fileName,
@@ -116,11 +147,12 @@ class StrSipController extends Controller
             $file->move(public_path('uploads/str'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
         $kontrak->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_str,
             'jenis' => $request->jenis_str,
-            'masa_berlaku' => $request->masa_berlaku_str ?? 0,
+            'masa_berlaku' => $request->has('masa_berlaku_str') ? '1' : '0',
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_str)->format('Y-m-d'),
             'tanggal_berakhir' => !empty($request->tanggal_berakhir_str) ? Carbon::parse($request->tanggal_berakhir_str)->format('Y-m-d') : null,
             'lampiran' => $fileName,

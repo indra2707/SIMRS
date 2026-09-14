@@ -118,7 +118,7 @@
 
     // Save ijazah
     $(document).on('click', '.save-btn-ijazah', function (event) {
-        var id = $('input[name="id"]').val();
+        var id = $('input[name="id_ijazah"]').val();
         var url, type;
 
         if (id) {

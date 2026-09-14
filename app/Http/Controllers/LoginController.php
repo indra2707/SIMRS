@@ -54,6 +54,7 @@ class LoginController extends Controller
                                 'pegawai.id_unit as id_unit',
                                 'pegawai.id as id_pegawai',
                                 'pegawai.jenis_kelamin as jenis_kelamin',
+                                'pegawai.foto as foto',
                                 'tbl_unit.kode_surat as kode_surat'
                             )
                             ->where('users.username', $request->username)->first();
@@ -80,6 +81,7 @@ class LoginController extends Controller
                         Session::put('kode_surat', $adminData->kode_surat);
                         Session::put('jenis_kelamin', $adminData->jenis_kelamin);
                         Session::put('id_pegawai', $adminData->id_pegawai);
+                        Session::put('foto', $adminData->foto);
 
                         return response()->json([
                             'success' => true,

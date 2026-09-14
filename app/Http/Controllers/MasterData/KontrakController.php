@@ -17,7 +17,7 @@ class KontrakController extends Controller
             'menuTitle' => 'Master Data',
             'menuSubtitle' => 'Kontrak',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.kontrak.kontrak', $data);
     }
 
     // Views Kontrak
@@ -49,6 +49,37 @@ class KontrakController extends Controller
         return response()->json($data, 200);
     }
 
+
+    // View Kontrak SDM
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_kontrak')
+            ->join('pegawai', 'tbl_kontrak.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_kontrak.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_kontrak' => $value->id,
+                'nama_pekerja' => $value->nama_pekerja,
+                'nomor_kontrak' => $value->nomor_kontrak,
+                'status' => $value->status,
+                'tanggal_mulai' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
+                'masa_berlaku' => $value->masa_berlaku,
+                'tanggal_berakhir' => $value->tanggal_berakhir ? Carbon::parse($value->tanggal_berakhir)->format('d/m/Y') : '-',
+                'lampiran' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+
+
+
     // Simpan Kontrak
     public function store(Request $request)
     {
@@ -60,8 +91,10 @@ class KontrakController extends Controller
             $file->move(public_path('uploads/kontrak'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = Kontrak::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor_kontrak' => $request->nomor_kontrak,
             'status' => $request->status,
             'masa_berlaku' => $request->masa_berlaku ?? 0,
@@ -116,8 +149,10 @@ class KontrakController extends Controller
             $file->move(public_path('uploads/kontrak'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $kontrak->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor_kontrak' => $request->nomor_kontrak,
             'status' => $request->status,
             'masa_berlaku' => $request->masa_berlaku ?? 0,

@@ -17,10 +17,10 @@ class SkJabatanController extends Controller
             'menuTitle' => 'Master Data',
             'menuSubtitle' => 'SK Jabatan',
         ];
-        return view('master-data.dokumen.dokumen', $data);
+        return view('sdm.jabatan.jabatan', $data);
     }
 
-    // Views Kontrak
+    // Views SK Jabatan
     public function views()
     {
         $idPegawai = Session::get('id_pegawai');
@@ -48,7 +48,35 @@ class SkJabatanController extends Controller
         return response()->json($data, 200);
     }
 
-    // Simpan Kontrak
+
+    // Views SK Jabatan
+    public function viewssdm()
+    {
+
+        $query = DB::table('tbl_sk_jabatan')
+            ->join('pegawai', 'tbl_sk_jabatan.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_sk_jabatan.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id_jabatan' => $value->id,
+                'nama_pegawai' => $value->nama_pekerja,
+                'nomor_sk' => $value->nomor_sk,
+                'nama_jabatan' => $value->nama_jabatan,
+                'tanggal_mulai_jabatan' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
+                'tanggal_berakhir_jabatan' => Carbon::parse($value->tanggal_berakhir)->format('d/m/Y'),
+                'lampiran_jabatan' => $value->lampiran,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+    // Simpan SK jabatan
     public function store(Request $request)
     {
         $fileName = null;
@@ -59,8 +87,10 @@ class SkJabatanController extends Controller
             $file->move(public_path('uploads/jabatan'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = SkJabatan::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor_sk' => $request->nomor_sk,
             'nama_jabatan' => $request->nama_jabatan,
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_jabatan)->format('Y-m-d'),
@@ -84,25 +114,25 @@ class SkJabatanController extends Controller
     }
 
 
-    // Edit Kontrak
+    // Edit SK Jabatan
     public function update(Request $request, $id)
     {
-        $kontrak = SkJabatan::find($id);
+        $jabatan = SkJabatan::find($id);
 
-        if (!$kontrak) {
+        if (!$jabatan) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan'
             ], 404);
         }
 
-        $fileName = $kontrak->lampiran; // default file lama
+        $fileName = $jabatan->lampiran; // default file lama
 
         if ($request->hasFile('lampiran-jabatan')) {
 
             // hapus file lama
-            if (!empty($kontrak->lampiran)) {
-                $oldFile = public_path('uploads/jabatan/' . $kontrak->lampiran);
+            if (!empty($jabatan->lampiran)) {
+                $oldFile = public_path('uploads/jabatan/' . $jabatan->lampiran);
                 if (file_exists($oldFile)) {
                     unlink($oldFile);
                 }
@@ -114,8 +144,10 @@ class SkJabatanController extends Controller
             $file->move(public_path('uploads/jabatan'), $fileName);
         }
 
-        $kontrak->update([
-            'id_pegawai' => Session::get('id_pegawai'),
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
+        $jabatan->update([
+            'id_pegawai' => $idPegawai,
             'nomor_sk' => $request->nomor_sk,
             'nama_jabatan' => $request->nama_jabatan,
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_jabatan)->format('Y-m-d'),
@@ -131,11 +163,11 @@ class SkJabatanController extends Controller
     }
 
 
-    // delete Kontrak
+    // delete SK Jabatan
     public function destroy($id)
     {
-        $kontrak = SkJabatan::find($id);
-        if (!$kontrak) {
+        $jabatan = SkJabatan::find($id);
+        if (!$jabatan) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data tidak ditemukan.'
@@ -143,15 +175,15 @@ class SkJabatanController extends Controller
         }
 
         // hapus file jika ada
-        if ($kontrak->lampiran) {
-            $filePath = public_path('uploads/jabatan/' . $kontrak->lampiran);
+        if ($jabatan->lampiran) {
+            $filePath = public_path('uploads/jabatan/' . $jabatan->lampiran);
 
             if (file_exists($filePath)) {
                 unlink($filePath);
             }
         }
 
-        $kontrak->delete();
+        $jabatan->delete();
         return response()->json([
             'success' => true,
             'data' => [],

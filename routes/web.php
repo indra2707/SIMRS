@@ -341,25 +341,33 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/dokumen', [DokumenController::class, 'index'])->name('master-data.dokumen');
 
         // Ijazah
+        Route::get('/ijazah', [DokumenController::class, 'index2'])->name('master-data.ijazah');
         Route::get('/ijazah/view', [DokumenController::class, 'views'])->name('master-data.ijazah.view');
+        Route::get('/ijazah-sdm/view', [DokumenController::class, 'viewssdm'])->name('master-data.ijazah-sdm.view');
         Route::post('/ijazah/store', [DokumenController::class, 'store'])->name('master-data.ijazah.create');
         Route::put('/ijazah/update/{id}', [DokumenController::class, 'update'])->name('master-data.ijazah.update');
         Route::delete('/ijazah/delete/{id}', [DokumenController::class, 'destroy'])->name('master-data.ijazah.delete');
 
         // Kontrak
+        Route::get('/kontrak', [KontrakController::class, 'index'])->name('master-data.kontrak');
         Route::get('/kontrak/view', [KontrakController::class, 'views'])->name('master-data.kontrak.view');
+        Route::get('/kontrak/viewsdm', [KontrakController::class, 'viewssdm'])->name('master-data.kontrak.viewsdm');
         Route::post('/kontrak/store', [KontrakController::class, 'store'])->name('master-data.kontrak.create');
         Route::put('/kontrak/update/{id}', [KontrakController::class, 'update'])->name('master-data.kontrak.update');
         Route::delete('/kontrak/delete/{id}', [KontrakController::class, 'destroy'])->name('master-data.kontrak.delete');
 
         // SK Jabatan
+        Route::get('/jabatan', [SkJabatanController::class, 'index'])->name('master-data.jabatan');
         Route::get('/jabatan/view', [SkJabatanController::class, 'views'])->name('master-data.jabatan.view');
+        Route::get('/jabatan-sdm/view', [SkJabatanController::class, 'viewssdm'])->name('master-data.jabatan-sdm.view');
         Route::post('/jabatan/store', [SkJabatanController::class, 'store'])->name('master-data.jabatan.create');
         Route::put('/jabatan/update/{id}', [SkJabatanController::class, 'update'])->name('master-data.jabatan.update');
         Route::delete('/jabatan/delete/{id}', [SkJabatanController::class, 'destroy'])->name('master-data.jabatan.delete');
 
         // STR dan SIP
+        Route::get('/str-sip', [StrSipController::class, 'index'])->name('master-data.str-sip');
         Route::get('/str-sip/view', [StrSipController::class, 'views'])->name('master-data.str-sip.view');
+        Route::get('/str-sip-sdm/view', [StrSipController::class, 'viewssdm'])->name('master-data.str-sip-sdm.view');
         Route::post('/str-sip/store', [StrSipController::class, 'store'])->name('master-data.str-sip.create');
         Route::put('/str-sip/update/{id}', [StrSipController::class, 'update'])->name('master-data.str-sip.update');
         Route::delete('/str-sip/delete/{id}', [StrSipController::class, 'destroy'])->name('master-data.str-sip.delete');

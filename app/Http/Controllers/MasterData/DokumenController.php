@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session;
 
 class DokumenController extends Controller
 {
-    // Index
+    // Index Dokumen
     public function index()
     {
         $data = [
@@ -18,6 +18,17 @@ class DokumenController extends Controller
             'menuSubtitle' => 'Dokumen',
         ];
         return view('master-data.dokumen.dokumen', $data);
+    }
+
+    // Index Ijazah
+    public function index2()
+    {
+        $data = [
+            'title' => 'Ijazah',
+            'menuTitle' => 'Master Data',
+            'menuSubtitle' => 'Ijazah',
+        ];
+        return view('sdm.ijazah.ijazah', $data);
     }
 
     // Views Ijazah
@@ -31,6 +42,7 @@ class DokumenController extends Controller
         }
 
         $query = DB::table('tbl_ijazah')
+            // ->join('pegawai', 'tbl_ijazah.id_pegawai', '=', 'pegawai.id')
             ->where('id_pegawai', $idPegawai)
             ->get();
 
@@ -44,6 +56,38 @@ class DokumenController extends Controller
                 'prodi' => $value->prodi,
                 'tahun_lulus' => Carbon::parse($value->tahun_lulus)->format('m/Y'),
                 'lampiran' => $value->lampiran,
+                'id_ijazah' => $value->id,
+                // 'nama_pekerja' => $value->nama_pekerja,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+
+    // Views Ijazah SDM
+    public function viewssdm()
+    {
+        $query = DB::table('tbl_ijazah')
+            ->join('pegawai', 'tbl_ijazah.id_pegawai', '=', 'pegawai.id')
+            ->select(
+                'tbl_ijazah.*',
+                'pegawai.nama_pekerja',
+            )
+            ->get();
+
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id' => $value->id,
+                'institusi' => $value->institusi,
+                'nomor_ijazah' => $value->nomor_ijazah,
+                'pendidikan' => $value->pendidikan,
+                'prodi' => $value->prodi,
+                'tahun_lulus' => Carbon::parse($value->tahun_lulus)->format('m/Y'),
+                'lampiran' => $value->lampiran,
+                'nama_pekerja' => $value->nama_pekerja,
+                'id_pegawai' => $value->id_pegawai,
+                'id_ijazah' => $value->id
             ];
         }
         return response()->json($data, 200);
@@ -61,8 +105,10 @@ class DokumenController extends Controller
             $file->move(public_path('uploads/ijazah'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $query = Ijazah::create([
-            'id_pegawai' => Session::get('id_pegawai'),
+            'id_pegawai' => $idPegawai,
             'nomor_ijazah' => $request->nomor_ijazah,
             'institusi' => $request->institusi,
             'pendidikan' => $request->pendidikan,
@@ -117,15 +163,18 @@ class DokumenController extends Controller
             $file->move(public_path('uploads/ijazah'), $fileName);
         }
 
+        $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $ijazah->update([
             'nomor_ijazah' => $request->nomor_ijazah,
+            'id_pegawai' => $idPegawai,
             'institusi' => $request->institusi,
             'pendidikan' => $request->pendidikan,
             'prodi' => $request->prodi,
             'tahun_lulus' => $request->tahun_lulus
-                ? (strlen($request->tahun_lulus) === 7
-                    ? Carbon::createFromFormat('m/Y', $request->tahun_lulus)->format('Y-m-d')
-                    : Carbon::createFromFormat('d/m/Y', $request->tahun_lulus)->format('Y-m-d'))
+                ? Carbon::createFromFormat('m/Y', $request->tahun_lulus)
+                    ->startOfMonth()
+                    ->format('Y-m-d')
                 : null,
             'lampiran' => $fileName,
         ]);

@@ -319,6 +319,30 @@
                         </li>
                     @endif
 
+
+                      <!-- Dokumen -->
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"></use>
+                            </svg>
+                            <span>Dokumen</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('master-data.ijazah') }}">Ijazah</a></li>
+                            <li><a href="{{ route('master-data.kontrak') }}">Kontrak Kerja</a></li>
+                            <li><a href="{{ route('master-data.jabatan')}}">SK Jabatan</a></li>
+                            <li><a href="{{ route('master-data.str-sip')}}">STR dan SIP</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">SPK dan RKK</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">Sertifikat</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">Hasil MCU</a></li>
+                            <li><a href="{{ route('surat.disposisi')}}">Dokumen Lainnya</a></li>
+                        </ul>
+                    </li>
+
                     @if (
                             in_array('Permintaan', $aksesMenu) ||
                             in_array('Tembusan', $aksesMenu) ||
