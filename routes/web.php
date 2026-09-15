@@ -517,33 +517,45 @@ Route::group(['middleware' => 'loggedin'], function () {
 
         Route::post('/aproval-memorandum/reject/{id}', [AprovalMemorandumController::class, 'reject'])->name('surat.aproval-memorandum.reject');
 
+Route::get('disposisi-jabatan', [DisposisiJabatanController::class, 'index'])
+    ->name('surat.disposisi-jabatan');
+ 
+Route::get('disposisi-jabatan/view', [DisposisiJabatanController::class, 'views'])
+    ->name('surat.disposisi-jabatan.view');
+ 
+Route::post('disposisi-jabatan', [DisposisiJabatanController::class, 'store'])
+    ->name('surat.disposisi-jabatan.create');
+ 
+Route::put('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'update'])
+    ->name('surat.disposisi-jabatan.update');
+ 
+Route::delete('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'destroy'])
+    ->name('surat.disposisi-jabatan.delete');
+ 
+ 
+// ----- Disposisi Surat -----
+Route::get('disposisi', [DisposisiSuratController::class, 'index'])
+    ->name('surat.disposisi');
+ 
+Route::get('disposisi/view', [DisposisiSuratController::class, 'views'])
+    ->name('surat.disposisi.view');
+ 
+Route::get('disposisi/jabatan-by-aproval', [DisposisiSuratController::class, 'jabatanByAproval'])
+    ->name('surat.disposisi.jabatan-by-aproval');
+ 
+Route::post('disposisi', [DisposisiSuratController::class, 'store'])
+    ->name('surat.disposisi.create');
+ 
+Route::post('disposisi/{id}/dibaca', [DisposisiSuratController::class, 'tandaiDibaca'])
+    ->name('surat.disposisi.dibaca');
+ 
+Route::post('disposisi/{id}/paraf', [DisposisiSuratController::class, 'paraf'])
+    ->name('surat.disposisi.paraf');
+ 
+Route::delete('disposisi/{id}', [DisposisiSuratController::class, 'destroy'])
+    ->name('surat.disposisi.delete');
+ 
 
-
-        Route::get('disposisi-jabatan', [DisposisiJabatanController::class, 'index'])->name('surat.disposisi-jabatan');
-
-        Route::get('disposisi-jabatan/view', [DisposisiJabatanController::class, 'views'])->name('surat.disposisi-jabatan.view');
-
-        Route::post('disposisi-jabatan', [DisposisiJabatanController::class, 'store'])->name('surat.disposisi-jabatan.create');
-
-        Route::put('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'update'])->name('surat.disposisi-jabatan.update');
-
-        Route::delete('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'destroy'])->name('surat.disposisi-jabatan.delete');
-
-
-        // ----- Disposisi Surat -----
-        Route::get('disposisi', [DisposisiSuratController::class, 'index'])->name('surat.disposisi');
-
-        Route::get('disposisi/view', [DisposisiSuratController::class, 'views'])->name('surat.disposisi.view');
-
-        Route::get('disposisi/jabatan-by-aproval', [DisposisiSuratController::class, 'jabatanByAproval'])->name('surat.disposisi.jabatan-by-aproval');
-
-        Route::post('disposisi', [DisposisiSuratController::class, 'store'])->name('surat.disposisi.create');
-
-        Route::post('disposisi/{id}/dibaca', [DisposisiSuratController::class, 'tandaiDibaca'])->name('surat.disposisi.dibaca');
-
-        Route::post('disposisi/{id}/paraf', [DisposisiSuratController::class, 'paraf'])->name('surat.disposisi.paraf');
-
-        Route::delete('disposisi/{id}', [DisposisiSuratController::class, 'destroy'])->name('surat.disposisi.delete');
     });
 
 
