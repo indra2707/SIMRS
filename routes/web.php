@@ -41,6 +41,14 @@ use App\Http\Controllers\MasterData\PoliController;
 use App\http\Controllers\MasterData\SKStrukturController;
 use App\Http\Controllers\MasterData\SpesialisController;
 use App\Http\Controllers\MasterData\UnitController;
+use App\Http\Controllers\MasterData\DokumenController;
+use App\Http\Controllers\MasterData\KontrakController;
+use App\Http\Controllers\MasterData\SkJabatanController;
+use App\Http\Controllers\MasterData\StrSipController;
+use App\Http\Controllers\MasterData\SpkRkkController;
+use App\Http\Controllers\MasterData\SertifikatController;
+use App\Http\Controllers\MasterData\HasilMcuController;
+use App\Http\Controllers\MasterData\DokumenLainnyaController;
 use App\Http\Controllers\Pintu\EmeraldController;
 use App\Http\Controllers\Pintu\KartuJagaController;
 use App\Http\Controllers\Pintu\RubyController;
@@ -328,6 +336,73 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::put('/jenis-kontrak/update/{id}', [JenisKontrakController::class, 'update'])->name('master-data.jenis-kontrak.update');
         Route::delete('/jenis-kontrak/delete/{id}', [JenisKontrakController::class, 'destroy'])->name('master-data.jenis-kontrak.delete');
         Route::post('/jenis-kontrak/update-status/{id}', [JenisKontrakController::class, 'updateStatus'])->name('master-data.jenis-kontrak.update-status');
+
+        // Dokumen
+        Route::get('/dokumen', [DokumenController::class, 'index'])->name('master-data.dokumen');
+
+        // Ijazah
+        Route::get('/ijazah', [DokumenController::class, 'index2'])->name('master-data.ijazah');
+        Route::get('/ijazah/view', [DokumenController::class, 'views'])->name('master-data.ijazah.view');
+        Route::get('/ijazah-sdm/view', [DokumenController::class, 'viewssdm'])->name('master-data.ijazah-sdm.view');
+        Route::post('/ijazah/store', [DokumenController::class, 'store'])->name('master-data.ijazah.create');
+        Route::put('/ijazah/update/{id}', [DokumenController::class, 'update'])->name('master-data.ijazah.update');
+        Route::delete('/ijazah/delete/{id}', [DokumenController::class, 'destroy'])->name('master-data.ijazah.delete');
+
+        // Kontrak
+        Route::get('/kontrak', [KontrakController::class, 'index'])->name('master-data.kontrak');
+        Route::get('/kontrak/view', [KontrakController::class, 'views'])->name('master-data.kontrak.view');
+        Route::get('/kontrak/viewsdm', [KontrakController::class, 'viewssdm'])->name('master-data.kontrak.viewsdm');
+        Route::post('/kontrak/store', [KontrakController::class, 'store'])->name('master-data.kontrak.create');
+        Route::put('/kontrak/update/{id}', [KontrakController::class, 'update'])->name('master-data.kontrak.update');
+        Route::delete('/kontrak/delete/{id}', [KontrakController::class, 'destroy'])->name('master-data.kontrak.delete');
+
+        // SK Jabatan
+        Route::get('/jabatan', [SkJabatanController::class, 'index'])->name('master-data.jabatan');
+        Route::get('/jabatan/view', [SkJabatanController::class, 'views'])->name('master-data.jabatan.view');
+        Route::get('/jabatan-sdm/view', [SkJabatanController::class, 'viewssdm'])->name('master-data.jabatan-sdm.view');
+        Route::post('/jabatan/store', [SkJabatanController::class, 'store'])->name('master-data.jabatan.create');
+        Route::put('/jabatan/update/{id}', [SkJabatanController::class, 'update'])->name('master-data.jabatan.update');
+        Route::delete('/jabatan/delete/{id}', [SkJabatanController::class, 'destroy'])->name('master-data.jabatan.delete');
+
+        // STR dan SIP
+        Route::get('/str-sip', [StrSipController::class, 'index'])->name('master-data.str-sip');
+        Route::get('/str-sip/view', [StrSipController::class, 'views'])->name('master-data.str-sip.view');
+        Route::get('/str-sip-sdm/view', [StrSipController::class, 'viewssdm'])->name('master-data.str-sip-sdm.view');
+        Route::post('/str-sip/store', [StrSipController::class, 'store'])->name('master-data.str-sip.create');
+        Route::put('/str-sip/update/{id}', [StrSipController::class, 'update'])->name('master-data.str-sip.update');
+        Route::delete('/str-sip/delete/{id}', [StrSipController::class, 'destroy'])->name('master-data.str-sip.delete');
+
+        // SPK dan RKK
+        Route::get('/spk-rkk', [SpkRkkController::class, 'index'])->name('master-data.spk-rkk');
+        Route::get('/spk-rkk/view', [SpkRkkController::class, 'views'])->name('master-data.spk-rkk.view');
+        Route::get('/spk-rkk-sdm/view', [SpkRkkController::class, 'viewssdm'])->name('master-data.spk-rkk-sdm.view');
+        Route::post('/spk-rkk/store', [SpkRkkController::class, 'store'])->name('master-data.spk-rkk.create');
+        Route::put('/spk-rkk/update/{id}', [SpkRkkController::class, 'update'])->name('master-data.spk-rkk.update');
+        Route::delete('/spk-rkk/delete/{id}', [SpkRkkController::class, 'destroy'])->name('master-data.spk-rkk.delete');
+
+        // Sertifikat
+        Route::get('/sertifikat', [SertifikatController::class, 'index'])->name('master-data.sertifikat');
+        Route::get('/sertifikat/view', [SertifikatController::class, 'views'])->name('master-data.sertifikat.view');
+        Route::get('/sertifikat-sdm/view', [SertifikatController::class, 'viewssdm'])->name('master-data.sertifikat-sdm.view');
+        Route::post('/sertifikat/store', [SertifikatController::class, 'store'])->name('master-data.sertifikat.create');
+        Route::put('/sertifikat/update/{id}', [SertifikatController::class, 'update'])->name('master-data.sertifikat.update');
+        Route::delete('/sertifikat/delete/{id}', [SertifikatController::class, 'destroy'])->name('master-data.sertifikat.delete');
+
+        // Hasil MCU
+        Route::get('/mcu', [HasilMcuController::class, 'index'])->name('master-data.mcu');
+        Route::get('/mcu/view', [HasilMcuController::class, 'views'])->name('master-data.mcu.view');
+        Route::get('/mcu-sdm/view', [HasilMcuController::class, 'viewssdm'])->name('master-data.mcu-sdm.view');
+        Route::post('/mcu/store', [HasilMcuController::class, 'store'])->name('master-data.mcu.create');
+        Route::put('/mcu/update/{id}', [HasilMcuController::class, 'update'])->name('master-data.mcu.update');
+        Route::delete('/mcu/delete/{id}', [HasilMcuController::class, 'destroy'])->name('master-data.mcu.delete');
+
+        // Dokumen Lainnya
+        Route::get('/dokumen-lainnya', [DokumenLainnyaController::class, 'index'])->name('master-data.dokumen-lainnya');
+        Route::get('/dokumen-lainnya/view', [DokumenLainnyaController::class, 'views'])->name('master-data.dokumen-lainnya.view');
+        Route::get('/dokumen-lainnya-sdm/view', [DokumenLainnyaController::class, 'viewssdm'])->name('master-data.dokumen-lainnya-sdm.view');
+        Route::post('/dokumen-lainnya/store', [DokumenLainnyaController::class, 'store'])->name('master-data.dokumen-lainnya.create');
+        Route::put('/dokumen-lainnya/update/{id}', [DokumenLainnyaController::class, 'update'])->name('master-data.dokumen-lainnya.update');
+        Route::delete('/dokumen-lainnya/delete/{id}', [DokumenLainnyaController::class, 'destroy'])->name('master-data.dokumen-lainnya.delete');
     });
 
     // User Management

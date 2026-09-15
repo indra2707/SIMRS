@@ -291,6 +291,7 @@
                                             <option value="PWTT">PWTT</option>
                                             <option value="PWT">PWT</option>
                                             <option value="Mitra Pegawai">Mitra Pegawai</option>
+                                            <option value="Mitra Onsite">Mitra Onsite</option>
                                             <option value="Mitra Dokter">Mitra Dokter</option>
                                             <option value="Outsourcing">Outsourcing</option>
                                             <option value="Internship">Internship</option>
