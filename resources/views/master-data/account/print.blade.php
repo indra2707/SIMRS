@@ -351,14 +351,14 @@
                             <img src="data:image/jpeg;base64,{{ $foto }}" class="photo">
                         @else
                             <div style="
-                                                width:85px;
-                                                height:105px;
-                                                border:1px solid #ccc;
-                                                text-align:center;
-                                                padding-top:35px;
-                                                box-sizing:border-box;
-                                                color:#999;
-                                            ">
+                                                                                    width:85px;
+                                                                                    height:105px;
+                                                                                    border:1px solid #ccc;
+                                                                                    text-align:center;
+                                                                                    padding-top:35px;
+                                                                                    box-sizing:border-box;
+                                                                                    color:#999;
+                                                                                ">
                                 FOTO
                             </div>
                         @endif
@@ -497,58 +497,78 @@
                     <div class="section-title">
                         Pendidikan
                     </div>
+                    @if (!empty($ijazah) && $ijazah->count() > 0)
+                        @foreach ($ijazah as $item)
+                            <div class="education-item">
+                                {{-- Institusi --}}
+                                <div class="education-school">{{ $item->institusi ?? '-' }} </div>
+                                {{-- Pendidikan & Program Studi --}}
+                                <div class="education-degree">
+                                    {{ $item->pendidikan ?? '-' }} @if (!empty($item->prodi)) <span> - {{ $item->prodi }}
+                                    </span> @endif
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    Tahun Lulus :
+                                    @if (!empty($item->tahun_lulus)){{ \Carbon\Carbon::parse($item->tahun_lulus)->format('Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="empty-data"> Belum ada data pendidikan. </div>
+                    @endif
 
-                    <div style="line-height:1.6; text-align:justify;">
-                        {{ $pegawai->profil_singkat ?? 'Profesional yang memiliki pengalaman dan kompetensi dalam menjalankan tugas dan tanggung jawab sesuai dengan bidang pekerjaan.' }}
+                    {{-- Kontrak --}}
+                    <div class="section-title">
+                        Pengalaman Kerja
                     </div>
 
+                    @if (!empty($kontrak) && $kontrak->count() > 0)
+                        @foreach ($kontrak as $item)
+                            <div class="education-item">
+                                {{-- Nomor Kontrak --}}
+                                <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
+                                {{-- Nama Status --}}
+                                <div class="education-degree">{{ $item->nomor_kontrak ?? '-' }} - {{ $item->status ?? '-' }}
+                                </div>
+                                {{-- Tahun --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="empty-data"> Belum ada data Pengalaman Kerja. </div>
+                    @endif
 
                     {{-- SK Jabatan --}}
                     <div class="section-title">
-                        SK Jabatan
+                        Jabatan
                     </div>
 
-                    @if (!empty($pengalaman))
-                        @foreach ($pengalaman as $item)
-                                    <div class="experience">
-                                        <div class="experience-title">
-                                            {{ $item->jabatan ?? '-' }}
-                                        </div>
-                                        <div class="experience-company">
-                                            {{ $item->perusahaan ?? '-' }}
-                                        </div>
-
-                                        <div class="experience-date">
-                                            {{ !empty($item->tanggal_mulai)
-                            ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('M Y')
-                            : '-' }}
-
-                                            -
-
-                                            {{ !empty($item->tanggal_selesai)
-                            ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('M Y')
-                            : 'Sekarang' }}
-
-                                        </div>
-
-                                        @if (!empty($item->deskripsi))
-
-                                            <div class="experience-description">
-                                                {{ $item->deskripsi }}
-                                            </div>
-
-                                        @endif
-
-                                    </div>
-
+                    @if (!empty($skjabatan) && $skjabatan->count() > 0)
+                        @foreach ($skjabatan as $item)
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
+                                {{-- Nama Jabatan --}}
+                                <div class="education-degree">{{ $item->nomor_sk ?? '-' }} - {{ $item->nama_jabatan ?? '-' }}
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
                         @endforeach
-
                     @else
-
-                        <div style="color:#777;">
-                            Belum ada data pengalaman kerja.
-                        </div>
-
+                        <div class="empty-data"> Belum ada data jabatan. </div>
                     @endif
 
 
@@ -557,81 +577,23 @@
                         Sertifikat
                     </div>
 
-                    @if (!empty($pendidikan))
-                        @foreach ($pendidikan as $item)
-
-                                    <div class="education-item">
-
-                                        <div class="education-degree">
-                                            {{ $item->jenjang ?? '-' }}
-                                        </div>
-
-                                        <div class="education-school">
-                                            {{ $item->nama_institusi ?? '-' }}
-                                        </div>
-
-                                        <div class="education-year">
-
-                                            {{ !empty($item->tahun_lulus)
-                            ? \Carbon\Carbon::parse($item->tahun_lulus)->format('Y')
-                            : '-' }}
-
-                                        </div>
-
-                                    </div>
-
-                        @endforeach
-
-                    @else
-
-                        <div style="color:#777;">
-                            Belum ada data pendidikan.
-                        </div>
-
-                    @endif
-
-
-                    {{-- SKILLS --}}
-
-                    <div class="section-title">
-                        Kompetensi
-                    </div>
-
-
-                    @if (!empty($kompetensi))
-
-                        @foreach ($kompetensi as $item)
-
-                            <div class="skill">
-
-                                <div class="skill-name">
-                                    {{ $item->nama_kompetensi ?? '-' }}
-                                </div>
-
-                                <div class="skill-bar">
-
-                                    <div class="skill-progress" style="width: {{ $item->persentase ?? 70 }}%;">
-                                    </div>
-
-                                </div>
-
+                     @if (!empty($sertifikat) && $sertifikat->count() > 0)
+                        @foreach ($sertifikat as $item)
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">{{ $item->nama ?? '-' }} </div>
+                                {{-- Nama Jabatan --}}
+                                <div class="education-degree">{{ $item->jenis ?? '-' }} - {{ $item->penyelenggara ?? '-' }} </div>
+                                {{-- Tahun  --}}
+                                <div class="education-year">{{ $item->tahun ?? '-' }} </div>
                             </div>
-
                         @endforeach
-
                     @else
-
-                        <div style="color:#777;">
-                            Belum ada data kompetensi.
-                        </div>
-
+                        <div class="empty-data"> Belum ada data Sertifikat. </div>
                     @endif
-
 
                 </td>
-
             </tr>
-
         </table>
 
 
