@@ -176,6 +176,23 @@
         });
     });
 
+    // Print CV
+    $(document).on('click', '.print-btn', function (event) {
+        event.preventDefault();
+        let id = $('#id').val();
+        if (!id) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Data tidak ditemukan',
+                text: 'ID pegawai belum tersedia.'
+            });
+            return;
+        }
+        let url = "{{ route('master-data.account.printpdf', ':id') }}";
+        url = url.replace(':id', id);
+        window.open(url, '_blank');
+    });
+
 
     $(document).ready(function () {
         loadAccountView();

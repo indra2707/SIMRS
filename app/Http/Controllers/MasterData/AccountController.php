@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Dompdf\Dompdf;
 
 class AccountController extends Controller
 {
@@ -151,4 +152,58 @@ class AccountController extends Controller
             'message' => 'Data Gagal Diubah.',
         ], 400);
     }
+
+
+    // Print PDF
+    public function printPdf($id)
+{
+    // Ambil data pegawai
+    $pegawai = DB::table('pegawai')
+        ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
+        ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
+        ->leftJoin('tbl_fungsi', 'tbl_fungsi.id', '=', 'pegawai.id_sub_fungsi')
+        ->leftJoin('tbl_bank', 'tbl_bank.id', '=', 'pegawai.id_bank')
+        ->leftJoin('tbl_unit', 'tbl_unit.id', '=', 'pegawai.id_unit')
+        ->select(
+            'pegawai.*',
+            'tbl_sk_struktur.no_sk as no_sk_struktur',
+            'tbl_jabatan.nama_jabatan as nama_jabatan',
+            'tbl_jabatan.unit as nama_rumah_sakit',
+            'tbl_fungsi.nama_fungsi as nama_fungsi',
+            'tbl_bank.nama_bank as nama_bank',
+            'tbl_unit.nama as nama_unit'
+        )
+        ->where('pegawai.id', $id)
+        ->first();
+
+    // Validasi data
+    if (!$pegawai) {
+        abort(404, 'Data pegawai tidak ditemukan.');
+    }
+
+    // Render Blade menjadi HTML
+    $html = view('master-data.account.print', [
+        'pegawai' => $pegawai
+    ])->render();
+
+    // Buat PDF menggunakan Dompdf
+    $dompdf = new Dompdf();
+
+    $dompdf->loadHtml($html);
+
+    // Ukuran kertas
+    $dompdf->setPaper('A4', 'portrait');
+
+    // Render PDF
+    $dompdf->render();
+
+    // Nama file
+    $namaFile = 'Account_' . $pegawai->id . '.pdf';
+
+    // Tampilkan PDF di browser
+    return $dompdf->stream($namaFile, [
+        'Attachment' => false
+    ]);
+}
+
 }

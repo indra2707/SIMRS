@@ -328,6 +328,8 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::get('/account', [AccountController::class, 'index'])->name('master-data.account');
         Route::get('/account/view', [AccountController::class, 'views'])->name('master-data.account.view');
         Route::put('/account/update/{id}', [AccountController::class, 'update'])->name('master-data.account.update');
+        Route::get('account/{id}/printpdf', [AccountController::class, 'printPdf'])->name('master-data.account.printpdf');
+
 
         // Jenis Kontrak
         Route::get('/jenis-kontrak', [JenisKontrakController::class, 'index'])->name('master-data.jenis-kontrak');

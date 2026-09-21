@@ -45,7 +45,7 @@
                                     <div class="profile-title">
                                         <div class="media">
                                             <!-- <img class="img-70 rounded-circle" alt=""
-                                                                            src="http://127.0.0.1:8000/assets/images/user/7.jpg"> -->
+                                                                                src="http://127.0.0.1:8000/assets/images/user/7.jpg"> -->
                                             @php
                                                 $foto = Session::get('foto');
 
@@ -285,6 +285,7 @@
                         </div>
                         <div class="card-footer text-end">
                             <button class="btn btn-primary save-btn" type="button">Update Profile</button>
+                            <button class="btn btn-success print-btn" type="button">Print CV</button>
                         </div>
                     </form>
                 </div>
