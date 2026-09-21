@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html>
 
@@ -6,39 +7,39 @@
 
     <style>
         @page {
-            margin: 35mm 20mm 25mm 20mm;
+            margin: 30mm 15mm 22mm 15mm;
         }
 
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
-            font-size: 11pt;
-            color: #000000;
+            font-size: 10pt;
+            color: #222;
         }
 
         .logo-text {
             position: fixed;
-            top: -25mm;
+            top: -22mm;
             left: 0;
-            width: 230px;
+            width: 190px;
             height: auto;
         }
 
         .title {
             position: fixed;
             right: 0;
-            top: -25mm;
+            top: -22mm;
             color: #8ea4ca;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: normal;
         }
 
         .bg-fixed {
             position: fixed;
-            top: -35mm;
+            top: -30mm;
             left: -15mm;
-            width: 208mm;
+            width: 210mm;
             height: 297mm;
             z-index: -1;
         }
@@ -47,60 +48,236 @@
             width: 100%;
         }
 
-        .account-title {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 25px;
+        /* =========================
+           PROFILE HEADER
+        ========================= */
+
+        .profile-header {
+            width: 100%;
+            border-bottom: 2px solid #8ea4ca;
+            padding-bottom: 15px;
+            margin-bottom: 18px;
         }
+
+        .profile-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .profile-photo {
+            width: 95px;
+            vertical-align: top;
+        }
+
+        .photo {
+            width: 85px;
+            height: 105px;
+            object-fit: cover;
+            border: 1px solid #ccc;
+        }
+
+        .profile-info {
+            vertical-align: middle;
+            padding-left: 15px;
+        }
+
+        .profile-name {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #1f2937;
+        }
+
+        .profile-position {
+            font-size: 12px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .profile-contact {
+            font-size: 9pt;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #334155;
+            text-transform: uppercase;
+            border-bottom: 1px solid #8ea4ca;
+            padding-bottom: 5px;
+            margin-top: 15px;
+            margin-bottom: 9px;
+        }
+
+        /* =========================
+           TWO COLUMN
+        ========================= */
+
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .left-column {
+            width: 34%;
+            vertical-align: top;
+            padding-right: 15px;
+            border-right: 1px solid #ddd;
+        }
+
+        .right-column {
+            width: 66%;
+            vertical-align: top;
+            padding-left: 18px;
+        }
+
+        /* =========================
+           PERSONAL INFORMATION
+        ========================= */
 
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
         }
 
         .info-table td {
-            padding: 7px 5px;
+            padding: 4px 0;
             vertical-align: top;
         }
 
-        .info-table .label {
-            width: 180px;
-            font-weight: bold;
+        .info-label {
+            width: 42%;
+            color: #666;
+            font-size: 9pt;
         }
 
-        .info-table .separator {
-            width: 15px;
+        .info-value {
+            font-weight: bold;
+            font-size: 9pt;
         }
 
-        .section-title {
-            font-size: 13px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #000;
+        /* =========================
+           EXPERIENCE
+        ========================= */
+
+        .experience {
+            margin-bottom: 14px;
         }
+
+        .experience-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .experience-company {
+            font-size: 9pt;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .experience-date {
+            font-size: 8pt;
+            color: #8ea4ca;
+            margin-top: 2px;
+        }
+
+        .experience-description {
+            margin-top: 5px;
+            font-size: 9pt;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           EDUCATION
+        ========================= */
+
+        .education-item {
+            margin-bottom: 12px;
+        }
+
+        .education-degree {
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .education-school {
+            font-size: 9pt;
+            color: #555;
+        }
+
+        .education-year {
+            font-size: 8pt;
+            color: #8ea4ca;
+        }
+
+        /* =========================
+           SKILLS
+        ========================= */
+
+        .skill {
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            font-size: 9pt;
+            margin-bottom: 3px;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: #e5e7eb;
+        }
+
+        .skill-progress {
+            height: 6px;
+            background: #8ea4ca;
+        }
+
+        /* =========================
+           CONTACT
+        ========================= */
+
+        .contact-item {
+            margin-bottom: 8px;
+            font-size: 9pt;
+            line-height: 1.4;
+        }
+
+        .contact-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
 
         .footer {
             position: fixed;
-            bottom: -70px;
+            bottom: -55px;
             left: 0;
             right: 0;
             text-align: left;
-            font-size: 10px;
-            line-height: 1.2;
+            font-size: 8px;
+            line-height: 1.3;
             color: #8ea4ca;
         }
 
         .signature {
-            margin-top: 50px;
-            text-align: left;
+            margin-top: 30px;
+            text-align: right;
         }
 
         .signature-name {
-            margin-top: 50px;
+            margin-top: 45px;
             font-weight: bold;
         }
     </style>
@@ -109,209 +286,386 @@
 <body>
 
     @php
+
+        // LOGO
+
         $pathText = public_path('assets/images/ihc/logo_doc.png');
+
         $logoText = file_exists($pathText)
             ? base64_encode(file_get_contents($pathText))
             : null;
 
+
+        // BACKGROUND
+
         $pathBg = public_path('assets/images/ihc/background.png');
+
         $bgBase64 = file_exists($pathBg)
             ? base64_encode(file_get_contents($pathBg))
             : null;
+
+
+        // FOTO PEGAWAI
+        $foto = null;
+        $fotoMime = null;
+
+        if (!empty($pegawai->foto)) {
+            $pathFoto = public_path(
+                'uploads/images/foto-pegawai/' . $pegawai->foto
+            );
+
+            if (file_exists($pathFoto)) {
+                $foto = base64_encode(
+                    file_get_contents($pathFoto)
+                );
+                $fotoMime = mime_content_type($pathFoto);
+            }
+        }
     @endphp
 
-    {{-- Header --}}
+
+    {{-- HEADER --}}
     @if ($logoText)
-        <img
-            src="data:image/png;base64,{{ $logoText }}"
-            class="logo-text">
+        <img src="data:image/png;base64,{{ $logoText }}" class="logo-text">
     @endif
 
     <div class="title">
-        ACCOUNT
+        CURRICULUM VITAE
     </div>
 
-    {{-- Background --}}
+
+    {{-- BACKGROUND --}}
     @if ($bgBase64)
-        <img
-            class="bg-fixed"
-            src="data:image/png;base64,{{ $bgBase64 }}">
+        <img class="bg-fixed" src="data:image/png;base64,{{ $bgBase64 }}">
     @endif
+
 
     <div class="content">
 
-        <div class="account-title">
-            DATA ACCOUNT PEGAWAI
+        <!-- PROFILE -->
+        <div class="profile-header">
+            <table class="profile-table">
+                <tr>
+                    <td class="profile-photo">
+                        @if ($foto)
+                            <img src="data:image/jpeg;base64,{{ $foto }}" class="photo">
+                        @else
+                            <div style="
+                                                width:85px;
+                                                height:105px;
+                                                border:1px solid #ccc;
+                                                text-align:center;
+                                                padding-top:35px;
+                                                box-sizing:border-box;
+                                                color:#999;
+                                            ">
+                                FOTO
+                            </div>
+                        @endif
+                    </td>
+
+
+                    <td class="profile-info">
+                        <div class="profile-name">
+                            {{ $pegawai->nama_pekerja ?? '-' }}
+                        </div>
+
+                        <div class="profile-position">
+                            {{ $pegawai->nama_jabatan ?? '-' }}
+                            @if (!empty($pegawai->nama_fungsi))
+                                &nbsp; | &nbsp;
+                                {{ $pegawai->nama_fungsi }}
+                            @endif
+                        </div>
+
+
+                        <div class="profile-contact">
+                            {{ $pegawai->email ?? '-' }}
+                            &nbsp; | &nbsp;
+                            {{ $pegawai->nomor_hp ?? '-' }}
+                            <br>
+                            {{ $pegawai->alamat_domisili ?? '-' }}
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
 
-        <table class="info-table">
+
+        <!-- MAIN CONTENT -->
+        <table class="main-table">
 
             <tr>
-                <td class="label">Nama Pegawai</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_pekerja ?? '-' }}
-                </td>
-            </tr>
+                <!-- LEFT COLUMN -->
+                <td class="left-column">
+                    {{-- PERSONAL DATA --}}
+                    <div class="section-title">
+                        Data Pribadi
+                    </div>
 
-            <tr>
-                <td class="label">NIK</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nik ?? '-' }}
-                </td>
-            </tr>
+                    <table class="info-table">
+                        <tr>
+                            <td class="info-label">NIK</td>
+                            <td class="info-value">{{ $pegawai->nik ?? '-' }}</td>
+                        </tr>
 
-            <tr>
-                <td class="label">Nomor Pekerja</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nomor_pekerja ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label">No. Pekerja </td>
+                            <td class="info-value">{{ $pegawai->nomor_pekerja ?? '-' }} </td>
+                        </tr>
 
-            <tr>
-                <td class="label">Tanggal Lahir</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ !empty($pegawai->tanggal_lahir)
-                        ? \Carbon\Carbon::parse($pegawai->tanggal_lahir)->format('d/m/Y')
-                        : '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label">Tgl. Lahir</td>
+                            <td class="info-value">
+                                {{ !empty($pegawai->tanggal_lahir) ? \Carbon\Carbon::parse($pegawai->tanggal_lahir)->format('d/m/Y') : '-' }}
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="label">Email</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->email ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label">Jenis Kelamin</td>
+                            <td class="info-value">{{ $pegawai->jenis_kelamin ?? '-' }}</td>
+                        </tr>
 
-            <tr>
-                <td class="label">Nomor HP</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nomor_hp ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label">Status</td>
+                            <td class="info-value">{{ $pegawai->status_pernikahan ?? '-' }}</td>
+                        </tr>
+                    </table>
 
-            <tr>
-                <td class="label">Alamat Domisili</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->alamat_domisili ?? '-' }}
-                </td>
-            </tr>
 
-            <tr>
-                <td class="label">Rumah Sakit</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_rumah_sakit ?? '-' }}
-                </td>
-            </tr>
+                    {{-- ORGANIZATION --}}
+                    <div class="section-title">
+                        Organisasi
+                    </div>
 
-            <tr>
-                <td class="label">Unit</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_unit ?? '-' }}
-                </td>
-            </tr>
+                    <table class="info-table">
+                        <tr>
+                            <td class="info-label"> Rumah Sakit</td>
+                            <td class="info-value">{{ $pegawai->nama_rumah_sakit ?? '-' }}
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="label">Jabatan</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_jabatan ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label"> Unit</td>
+                            <td class="info-value">{{ $pegawai->nama_unit ?? '-' }}</td>
+                        </tr>
 
-            <tr>
-                <td class="label">Fungsi</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_fungsi ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label"> Jabatan</td>
+                            <td class="info-value"> {{ $pegawai->nama_jabatan ?? '-' }} </td>
+                        </tr>
 
-            <tr>
-                <td class="label">No. SK Struktur</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->no_sk_struktur ?? '-' }}
-                </td>
-            </tr>
+                        <tr>
+                            <td class="info-label"> Fungsi </td>
+                            <td class="info-value"> {{ $pegawai->nama_fungsi ?? '-' }} </td>
+                        </tr>
 
-            <tr>
-                <td class="label">Bank</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_bank ?? '-' }}
+                        <tr>
+                            <td class="info-label"> No. SK</td>
+                            <td class="info-value">{{ $pegawai->no_sk_struktur ?? '-' }}</td>
+                        </tr>
+                    </table>
+
+
+                    {{-- CONTACT DARURAT --}}
+                    <div class="section-title">
+                        Kontak Darurat
+                    </div>
+
+                    <table class="info-table">
+                        <tr>
+                            <td class="info-label"> Nama </td>
+                            <td class="info-value"> {{ $pegawai->nama_kontak_darurat ?? '-' }} </td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label"> Nomor </td>
+                            <td class="info-value"> {{ $pegawai->nomor_kontak_darurat ?? '-' }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label">Hubungan</td>
+                            <td class="info-value"> {{ $pegawai->hubungan_kontak_darurat ?? '-' }}</td>
+                        </tr>
+                    </table>
                 </td>
+
+
+                <!-- RIGHT COLUMN -->
+                <td class="right-column">
+                    {{-- EDUCATION --}}
+                    <div class="section-title">
+                        Pendidikan
+                    </div>
+
+                    <div style="line-height:1.6; text-align:justify;">
+                        {{ $pegawai->profil_singkat ?? 'Profesional yang memiliki pengalaman dan kompetensi dalam menjalankan tugas dan tanggung jawab sesuai dengan bidang pekerjaan.' }}
+                    </div>
+
+
+                    {{-- SK Jabatan --}}
+                    <div class="section-title">
+                        SK Jabatan
+                    </div>
+
+                    @if (!empty($pengalaman))
+                        @foreach ($pengalaman as $item)
+                                    <div class="experience">
+                                        <div class="experience-title">
+                                            {{ $item->jabatan ?? '-' }}
+                                        </div>
+                                        <div class="experience-company">
+                                            {{ $item->perusahaan ?? '-' }}
+                                        </div>
+
+                                        <div class="experience-date">
+                                            {{ !empty($item->tanggal_mulai)
+                            ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('M Y')
+                            : '-' }}
+
+                                            -
+
+                                            {{ !empty($item->tanggal_selesai)
+                            ? \Carbon\Carbon::parse($item->tanggal_selesai)->format('M Y')
+                            : 'Sekarang' }}
+
+                                        </div>
+
+                                        @if (!empty($item->deskripsi))
+
+                                            <div class="experience-description">
+                                                {{ $item->deskripsi }}
+                                            </div>
+
+                                        @endif
+
+                                    </div>
+
+                        @endforeach
+
+                    @else
+
+                        <div style="color:#777;">
+                            Belum ada data pengalaman kerja.
+                        </div>
+
+                    @endif
+
+
+                    {{-- Sertificat --}}
+                    <div class="section-title">
+                        Sertifikat
+                    </div>
+
+                    @if (!empty($pendidikan))
+                        @foreach ($pendidikan as $item)
+
+                                    <div class="education-item">
+
+                                        <div class="education-degree">
+                                            {{ $item->jenjang ?? '-' }}
+                                        </div>
+
+                                        <div class="education-school">
+                                            {{ $item->nama_institusi ?? '-' }}
+                                        </div>
+
+                                        <div class="education-year">
+
+                                            {{ !empty($item->tahun_lulus)
+                            ? \Carbon\Carbon::parse($item->tahun_lulus)->format('Y')
+                            : '-' }}
+
+                                        </div>
+
+                                    </div>
+
+                        @endforeach
+
+                    @else
+
+                        <div style="color:#777;">
+                            Belum ada data pendidikan.
+                        </div>
+
+                    @endif
+
+
+                    {{-- SKILLS --}}
+
+                    <div class="section-title">
+                        Kompetensi
+                    </div>
+
+
+                    @if (!empty($kompetensi))
+
+                        @foreach ($kompetensi as $item)
+
+                            <div class="skill">
+
+                                <div class="skill-name">
+                                    {{ $item->nama_kompetensi ?? '-' }}
+                                </div>
+
+                                <div class="skill-bar">
+
+                                    <div class="skill-progress" style="width: {{ $item->persentase ?? 70 }}%;">
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    @else
+
+                        <div style="color:#777;">
+                            Belum ada data kompetensi.
+                        </div>
+
+                    @endif
+
+
+                </td>
+
             </tr>
 
         </table>
 
-        <div class="section-title">
-            KONTAK DARURAT
-        </div>
 
-        <table class="info-table">
-
-            <tr>
-                <td class="label">Nama Kontak Darurat</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nama_kontak_darurat ?? '-' }}
-                </td>
-            </tr>
-
-            <tr>
-                <td class="label">Nomor Kontak Darurat</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->nomor_kontak_darurat ?? '-' }}
-                </td>
-            </tr>
-
-            <tr>
-                <td class="label">Hubungan</td>
-                <td class="separator">:</td>
-                <td>
-                    {{ $pegawai->hubungan_kontak_darurat ?? '-' }}
-                </td>
-            </tr>
-
-        </table>
-
-        <div class="signature">
-
-            <div>
-                Makassar, {{ now()->format('d/m/Y') }}
-            </div>
+        <!-- SIGNATURE -->
+        <!-- <div class="signature">
+            Makassar,
+            {{ now()->format('d/m/Y') }}
 
             <div class="signature-name">
                 {{ $pegawai->nama_pekerja ?? '-' }}
             </div>
-
-        </div>
+        </div> -->
 
     </div>
 
-    {{-- Footer --}}
+
+    {{-- FOOTER --}}
+
     <div class="footer">
+
         <b>RSOJ Pertamina Royal Biringkanaya</b><br>
-        Jl. Pajjaiang Sudiang Raya
-        Kecamatan Biringkanaya Kota Makassar
+
+        Jl. Pajjaiang Sudiang Raya,
+        Kecamatan Biringkanaya Kota Makassar,
         Sulawesi Selatan
+
         <br>
+
         Call Center. (021) 150442
         &nbsp;|&nbsp;
         Telp. (0411) 4821000
         &nbsp;|&nbsp;
         Email: rsoj.prb@ihc.id
+
     </div>
 
 </body>
