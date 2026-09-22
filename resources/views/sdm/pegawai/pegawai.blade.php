@@ -459,7 +459,6 @@
                                             <option value=""></option>
                                             <option value="Medis">Medis</option>
                                             <option value="Perawat">Perawat</option>
-                                            <option value="Bidan">Bidan</option>
                                             <option value="Nakes Lain">Nakes Lain</option>
                                             <option value="Non Medis">Non Medis</option>
                                         </select>
