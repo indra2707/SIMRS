@@ -295,6 +295,7 @@
                                             <option value="Mitra Dokter">Mitra Dokter</option>
                                             <option value="Outsourcing">Outsourcing</option>
                                             <option value="Internship">Internship</option>
+                                            <option value="Magang Kemnaker">Magang Kemnaker</option>
                                         </select>
                                     </div>
 

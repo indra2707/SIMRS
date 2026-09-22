@@ -129,6 +129,7 @@
                                     <option value="Mitra Onsite">Mitra Onsite</option>
                                     <option value="Outsourcing">Outsourcing</option>
                                     <option value="Internship">Internship</option>
+                                    <option value="Magang Kemnaker">Magang Kemnaker</option>
                                 </select>
                             </div>
                         </div>
