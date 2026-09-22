@@ -52,35 +52,6 @@ class JabatanController extends Controller
     }
 
 
-
-    // Views Table Jabatan sdm
-    public function viewssdm(Request $request)
-    {
-        $query = DB::table('tbl_jabatan')
-            ->join('pegawai', 'tbl_jabatan.id_pegawai', '=', 'pegawai.id')
-            ->select(
-                'tbl_jabatan.*',
-                'pegawai.nama_pekerja',
-            )
-            ->get();
-
-        $data = [];
-        foreach ($query as $value) {
-            $data[] = [
-                'id' => $value->id,
-                'nama_pekerja' => $value->nama_pekerja,
-                'id_sk_struktur' => $value->id_sk_struktur,
-                'no_skstruktur' => $value->no_skstruktur,
-                'unit' => $value->unit,
-                'nama_jabatan' => $value->nama_jabatan,
-                'status' => $value->status,
-            ];
-        }
-
-        return response()->json($data, 200);
-    }
-
-
     // Simpan SK Struktur
     public function store(Request $request)
     {

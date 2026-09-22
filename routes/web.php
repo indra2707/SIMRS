@@ -359,12 +359,12 @@ Route::group(['middleware' => 'loggedin'], function () {
         Route::delete('/kontrak/delete/{id}', [KontrakController::class, 'destroy'])->name('master-data.kontrak.delete');
 
         // SK Jabatan
-        Route::get('/jabatan', [SkJabatanController::class, 'index'])->name('master-data.jabatan');
-        Route::get('/jabatan/view', [SkJabatanController::class, 'views'])->name('master-data.jabatan.view');
-        Route::get('/jabatan-sdm/view', [SkJabatanController::class, 'viewssdm'])->name('master-data.jabatan-sdm.view');
-        Route::post('/jabatan/store', [SkJabatanController::class, 'store'])->name('master-data.jabatan.create');
-        Route::put('/jabatan/update/{id}', [SkJabatanController::class, 'update'])->name('master-data.jabatan.update');
-        Route::delete('/jabatan/delete/{id}', [SkJabatanController::class, 'destroy'])->name('master-data.jabatan.delete');
+        Route::get('/skjabatan', [SkJabatanController::class, 'index'])->name('master-data.skjabatan');
+        Route::get('/skjabatan/view', [SkJabatanController::class, 'views'])->name('master-data.skjabatan.view');
+        Route::get('/skjabatan-sdm/view', [SkJabatanController::class, 'viewssdm'])->name('master-data.skjabatan-sdm.view');
+        Route::post('/skjabatan/store', [SkJabatanController::class, 'store'])->name('master-data.skjabatan.create');
+        Route::put('/skjabatan/update/{id}', [SkJabatanController::class, 'update'])->name('master-data.skjabatan.update');
+        Route::delete('/skjabatan/delete/{id}', [SkJabatanController::class, 'destroy'])->name('master-data.skjabatan.delete');
 
         // STR dan SIP
         Route::get('/str-sip', [StrSipController::class, 'index'])->name('master-data.str-sip');

@@ -52,7 +52,10 @@ class AccountController extends Controller
             'nama_kontak_darurat' => $pegawai->nama_kontak_darurat,
             'hubungan_kontak_darurat' => $pegawai->hubungan_kontak_darurat,
             'id' => $pegawai->id,
-            'foto' => $pegawai->foto
+            'foto' => $pegawai->foto,
+            'id_bank' => $pegawai->id_bank,
+            'nomor_rekening' => $pegawai->nomor_rekening,
+            'nama_rekening' => $pegawai->nama_rekening
         ], 200);
     }
 
@@ -93,10 +96,10 @@ class AccountController extends Controller
             'status_pernikahan' => $request->status_pernikahan,
             'agama' => $request->agama,
             'golongan_darah' => $request->golongan_darah,
-            'tanggal_lahir' => Carbon::createFromFormat(
-                'd/m/Y',
-                $request->tanggal_lahir
-            )->format('Y-m-d'),
+            'tanggal_lahir' => Carbon::createFromFormat('d/m/Y', $request->tanggal_lahir)->format('Y-m-d'),
+            'id_bank' => $request->id_bank,
+            'nomor_rekening' => $request->nomor_rekening,
+            'nama_rekening' => $request->nama_rekening,
         ];
 
         // Upload foto
