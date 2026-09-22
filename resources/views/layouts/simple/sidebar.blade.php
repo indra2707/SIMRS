@@ -349,7 +349,7 @@
                             <li><a href="{{ route('master-data.kontrak') }}">Kontrak Kerja</a></li>
                             @endif
                             @if (in_array('SK Jabatan', $aksesMenu))
-                            <li><a href="{{ route('master-data.jabatan')}}">SK Jabatan</a></li>
+                            <li><a href="{{ route('master-data.skjabatan')}}">SK Jabatan</a></li>
                             @endif
                             @if (in_array('STR', $aksesMenu))
                             <li><a href="{{ route('master-data.str-sip')}}">STR dan SIP</a></li>

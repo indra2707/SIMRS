@@ -140,7 +140,7 @@
             icons: iconsFunction(),
             loadingTemplate: loadingTemplate,
             exportTypes: ['json', 'csv', 'txt', 'excel'],
-            url: "{{ route('master-data.jabatan-sdm.view') }}",
+            url: "{{ route('master-data.skjabatan-sdm.view') }}",
             columns: [
                 [{
                     field: "id",
@@ -240,10 +240,10 @@
         var url, type;
 
         if (id) {
-            url = "{{ route('master-data.jabatan.update', ':id') }}".replace(':id', id);
+            url = "{{ route('master-data.skjabatan.update', ':id') }}".replace(':id', id);
             type = "POST"; // FormData harus POST
         } else {
-            url = "{{ route('master-data.jabatan.create') }}";
+            url = "{{ route('master-data.skjabatan.create') }}";
             type = "POST";
         }
 
@@ -371,7 +371,7 @@
             }
         },
         'click .btn-delete-jabatan': function (e, value, row, index) {
-            var url = "{{ route('master-data.jabatan.delete', ':id') }}";
+            var url = "{{ route('master-data.skjabatan.delete', ':id') }}";
             url = url.replace(':id', row.id_jabatan);
             Swal.fire({
                 icon: 'warning',
