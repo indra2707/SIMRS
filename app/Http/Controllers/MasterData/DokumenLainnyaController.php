@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\MasterData;
 use App\Http\Controllers\Controller;
 use App\Models\MaterData\DokumenLainnya;
+use App\Models\Sdm\Pegawai;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -9,7 +10,39 @@ use Illuminate\Support\Facades\Session;
 
 class DokumenLainnyaController extends Controller
 {
-    // Index
+    private const MAP_JENIS_KE_PEGAWAI = [
+        'KTP'                    => 'nik',
+        'NPWP'                   => 'nomor_npwp',
+        'BPJS Kesehatan'         => 'nomor_bpjskesehatan',
+        'BPJS Ketenagakerjaan'   => 'nomor_bpjstk',
+        // 'KK' => null,
+    ];
+
+    private function syncNomorKePegawai($idPegawai, $jenis, $nomor)
+    {
+        if (!array_key_exists($jenis, self::MAP_JENIS_KE_PEGAWAI)) {
+            return;
+        }
+
+        $kolom = self::MAP_JENIS_KE_PEGAWAI[$jenis];
+
+        Pegawai::where('id', $idPegawai)->update([
+            $kolom => $nomor,
+        ]);
+    }
+
+
+    public function jenisTerpakai($idPegawai)
+    {
+        $jenisTerpakai = DokumenLainnya::where('id_pegawai', $idPegawai)
+            ->pluck('jenis');
+
+        return response()->json([
+            'success' => true,
+            'data' => $jenisTerpakai,
+        ], 200);
+    }
+
     public function index()
     {
         $data = [
@@ -20,7 +53,6 @@ class DokumenLainnyaController extends Controller
         return view('sdm.dokumenlainnya.dokumenlainnya', $data);
     }
 
-    // Views Dokumen Lainnya
     public function views()
     {
         $idPegawai = Session::get('id_pegawai');
@@ -47,8 +79,6 @@ class DokumenLainnyaController extends Controller
         return response()->json($data, 200);
     }
 
-
-    // Views Dokumen Lainnya sdm
     public function viewssdm()
     {
         $query = DB::table('tbl_dokumen_lainnya')
@@ -74,26 +104,52 @@ class DokumenLainnyaController extends Controller
         return response()->json($data, 200);
     }
 
-    // Simpan Dokumen Lainnya
     public function store(Request $request)
     {
         $fileName = null;
         if ($request->hasFile('lampiran-dokumen-lainnya')) {
             $file = $request->file('lampiran-dokumen-lainnya');
-
             $fileName = time() . '_' . $file->getClientOriginalName();
             $file->move(public_path('uploads/dokumen_lainnya'), $fileName);
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+        $jenis     = $request->jenis_dokumen_lainnya;
+        $nomor     = $request->nomor_dokumen_lainnya;
 
-        $query = DokumenLainnya::create([
-            'id_pegawai' => $idPegawai,
-            'nomor' => $request->nomor_dokumen_lainnya,
-            'jenis' => $request->jenis_dokumen_lainnya,
-            'catatan' => $request->catatan_dokumen_lainnya,
-            'lampiran' => $fileName,
-        ]);
+        $sudahAda = DokumenLainnya::where('id_pegawai', $idPegawai)
+            ->where('jenis', $jenis)
+            ->exists();
+
+        if ($sudahAda) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Pegawai ini sudah memiliki dokumen jenis ' . $jenis . '. Silakan edit data yang sudah ada.',
+            ], 400);
+        }
+
+        try {
+            $query = DB::transaction(function () use ($idPegawai, $jenis, $nomor, $fileName) {
+                $dokumen = DokumenLainnya::create([
+                    'id_pegawai' => $idPegawai,
+                    'nomor'      => $nomor,
+                    'jenis'      => $jenis,
+                    'catatan'    => request('catatan_dokumen_lainnya'),
+                    'lampiran'   => $fileName,
+                ]);
+
+                $this->syncNomorKePegawai($idPegawai, $jenis, $nomor);
+
+                return $dokumen;
+            });
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Ditambahkan: ' . $e->getMessage(),
+            ], 400);
+        }
 
         if ($query) {
             return response()->json([
@@ -110,8 +166,6 @@ class DokumenLainnyaController extends Controller
         ], 400);
     }
 
-
-    // Edit Dokumen Lainnya
     public function update(Request $request, $id)
     {
         $dokumen = DokumenLainnya::find($id);
@@ -142,14 +196,41 @@ class DokumenLainnyaController extends Controller
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
-        
-        $dokumen->update([
-            'id_pegawai' => $idPegawai,
-            'nomor' => $request->nomor_dokumen_lainnya,
-            'jenis' => $request->jenis_dokumen_lainnya,
-            'catatan' => $request->catatan_dokumen_lainnya,
-            'lampiran' => $fileName,
-        ]);
+        $jenis     = $request->jenis_dokumen_lainnya;
+        $nomor     = $request->nomor_dokumen_lainnya;
+
+        $sudahAda = DokumenLainnya::where('id_pegawai', $idPegawai)
+            ->where('jenis', $jenis)
+            ->where('id', '!=', $dokumen->id)
+            ->exists();
+
+        if ($sudahAda) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Pegawai ini sudah memiliki dokumen jenis ' . $jenis . '. Silakan edit data yang sudah ada.',
+            ], 400);
+        }
+
+        try {
+            DB::transaction(function () use ($dokumen, $idPegawai, $jenis, $nomor, $fileName) {
+                $dokumen->update([
+                    'id_pegawai' => $idPegawai,
+                    'nomor'      => $nomor,
+                    'jenis'      => $jenis,
+                    'catatan'    => request('catatan_dokumen_lainnya'),
+                    'lampiran'   => $fileName,
+                ]);
+
+                $this->syncNomorKePegawai($idPegawai, $jenis, $nomor);
+            });
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'data' => [],
+                'message' => 'Data Gagal Diupdate: ' . $e->getMessage(),
+            ], 400);
+        }
 
         return response()->json([
             'success' => true,
@@ -158,8 +239,6 @@ class DokumenLainnyaController extends Controller
         ], 200);
     }
 
-
-    // delete Dokumen Lainnya
     public function destroy($id)
     {
         $dokumen = DokumenLainnya::find($id);
@@ -170,7 +249,6 @@ class DokumenLainnyaController extends Controller
             ], 404);
         }
 
-        // hapus file jika ada
         if ($dokumen->lampiran) {
             $filePath = public_path('uploads/dokumen_lainnya/' . $dokumen->lampiran);
 
