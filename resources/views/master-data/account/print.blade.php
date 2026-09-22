@@ -597,7 +597,7 @@
                     @if (!empty($spk) && $spk->count() > 0)
                         @foreach ($spk as $item)
                             <div class="section-title">
-                                STR dan SIP
+                               SPK dan RKK
                             </div>
 
                             <div class="education-item">
