@@ -569,7 +569,54 @@
                     @endif
 
 
-                   
+                     {{-- STR dan SIP --}}
+                    @if (!empty($str) && $str->count() > 0)
+                        @foreach ($str as $item)
+                            <div class="section-title">
+                                STR dan SIP
+                            </div>
+
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
+                                {{-- Nama Jabatan --}}
+                                <div class="education-degree">{{ $item->jenis ?? '-' }}
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->masa_berlaku)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    {{-- SPK dan RKK --}}
+                    @if (!empty($spk) && $spk->count() > 0)
+                        @foreach ($spk as $item)
+                            <div class="section-title">
+                                STR dan SIP
+                            </div>
+
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
+                                {{-- Nama Jabatan --}}
+                                <!-- <div class="education-degree">{{ $item->jenis ?? '-' }} -->
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->masa_berlaku)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
                     {{-- Sertificat --}}
                      @if (!empty($sertifikat) && $sertifikat->count() > 0)
                         @foreach ($sertifikat as $item)

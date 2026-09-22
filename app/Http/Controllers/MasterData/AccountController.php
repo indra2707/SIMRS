@@ -186,6 +186,8 @@ class AccountController extends Controller
         $skjabatan = DB::table('tbl_sk_jabatan')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $kontrak = DB::table('tbl_kontrak')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $sertifikat = DB::table('tbl_sertifikat')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $str = DB::table('tbl_str_sip')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $spk = DB::table('tbl_spk_rkk')->where('id_pegawai', $id)->orderByDesc('id')->get();
         
         // Render Blade menjadi HTML
         $html = view('master-data.account.print', [
@@ -194,6 +196,8 @@ class AccountController extends Controller
         'skjabatan' => $skjabatan, 
         'kontrak' => $kontrak,
         'sertifikat' => $sertifikat,
+        'str' => $str,
+        'spk' => $spk,
         ])->render();
 
         // Buat PDF menggunakan Dompdf
