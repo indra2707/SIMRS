@@ -432,12 +432,12 @@
                         </tr>
 
                          <tr>
-                            <td class="info-label">No BPJS Kesehatan</td>
+                            <td class="info-label">BPJS Kes</td>
                             <td class="info-value">{{ $pegawai->nomor_bpjskesehatan ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td class="info-label">No BPJS Ketenaga Kerjaan</td>
+                            <td class="info-label">BPJSTK</td>
                             <td class="info-value">{{ $pegawai->nomor_bpjstk ?? '-' }}</td>
                         </tr>
 
