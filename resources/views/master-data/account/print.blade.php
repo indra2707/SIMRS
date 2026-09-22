@@ -584,7 +584,7 @@
                                 </div>
                                 {{-- Tahun Lulus --}}
                                 <div class="education-year">
-                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->masa_berlaku)->format('d/m/Y') }}
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
                                     s.d @endif
                                     @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
                                     @endif
@@ -608,7 +608,7 @@
                                 </div>
                                 {{-- Tahun Lulus --}}
                                 <div class="education-year">
-                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->masa_berlaku)->format('d/m/Y') }}
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
                                     s.d @endif
                                     @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
                                     @endif
