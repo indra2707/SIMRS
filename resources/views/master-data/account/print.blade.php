@@ -351,14 +351,14 @@
                             <img src="data:image/jpeg;base64,{{ $foto }}" class="photo">
                         @else
                             <div style="
-                                                                                    width:85px;
-                                                                                    height:105px;
-                                                                                    border:1px solid #ccc;
-                                                                                    text-align:center;
-                                                                                    padding-top:35px;
-                                                                                    box-sizing:border-box;
-                                                                                    color:#999;
-                                                                                ">
+                                                                                                        width:85px;
+                                                                                                        height:105px;
+                                                                                                        border:1px solid #ccc;
+                                                                                                        text-align:center;
+                                                                                                        padding-top:35px;
+                                                                                                        box-sizing:border-box;
+                                                                                                        color:#999;
+                                                                                                    ">
                                 FOTO
                             </div>
                         @endif
@@ -430,6 +430,21 @@
                             <td class="info-label">Status</td>
                             <td class="info-value">{{ $pegawai->status_pernikahan ?? '-' }}</td>
                         </tr>
+
+                         <tr>
+                            <td class="info-label">No BPJS Kesehatan</td>
+                            <td class="info-value">{{ $pegawai->nomor_bpjskesehatan ?? '-' }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label">No BPJS Ketenaga Kerjaan</td>
+                            <td class="info-value">{{ $pegawai->nomor_bpjstk ?? '-' }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label">NPWP</td>
+                            <td class="info-value">{{ $pegawai->nomor_npwp ?? '-' }}</td>
+                        </tr>
                     </table>
 
 
@@ -495,11 +510,11 @@
                 <td class="right-column">
                     {{-- EDUCATION --}}
                     @if (!empty($ijazah) && $ijazah->count() > 0)
-                        @foreach ($ijazah as $item)
-                            <div class="section-title">
-                                Pendidikan
-                            </div>
+                        <div class="section-title">
+                            Pendidikan
+                        </div>
 
+                        @foreach ($ijazah as $item)
                             <div class="education-item">
                                 {{-- Institusi --}}
                                 <div class="education-school">{{ $item->institusi ?? '-' }} </div>
@@ -521,12 +536,11 @@
 
                     {{-- Kontrak --}}
                     @if (!empty($kontrak) && $kontrak->count() > 0)
-                        @foreach ($kontrak as $item)
-                        
-                            <div class="section-title">
-                                Pengalaman Kerja
-                            </div>
+                        <div class="section-title">
+                            Pengalaman Kerja
+                        </div>
 
+                        @foreach ($kontrak as $item)
                             <div class="education-item">
                                 {{-- Nomor Kontrak --}}
                                 <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
@@ -546,11 +560,11 @@
 
                     {{-- SK Jabatan --}}
                     @if (!empty($skjabatan) && $skjabatan->count() > 0)
-                        @foreach ($skjabatan as $item)
-                            <div class="section-title">
-                                Jabatan
-                            </div>
+                        <div class="section-title">
+                            Jabatan
+                        </div>
 
+                        @foreach ($skjabatan as $item)
                             <div class="education-item">
                                 {{-- Nomor SK --}}
                                 <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
@@ -569,13 +583,13 @@
                     @endif
 
 
-                     {{-- STR dan SIP --}}
+                    {{-- STR dan SIP --}}
                     @if (!empty($str) && $str->count() > 0)
-                        @foreach ($str as $item)
-                            <div class="section-title">
-                                STR dan SIP
-                            </div>
+                        <div class="section-title">
+                            STR dan SIP
+                        </div>
 
+                        @foreach ($str as $item)
                             <div class="education-item">
                                 {{-- Nomor SK --}}
                                 <div class="education-school">{{ $item->nomor ?? '-' }} </div>
@@ -595,54 +609,54 @@
 
                     {{-- SPK dan RKK --}}
                     @if (!empty($spk) && $spk->count() > 0)
+                        <div class="section-title">
+                            SPK dan RKK
+                        </div>
+
                         @foreach ($spk as $item)
-                            <div class="section-title">
-                               SPK dan RKK
-                            </div>
-
-                            <div class="education-item">
-                                {{-- Nomor SK --}}
-                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
-                                {{-- Nama Jabatan --}}
-                                <!-- <div class="education-degree">{{ $item->jenis ?? '-' }} -->
-                                </div>
-                                {{-- Tahun Lulus --}}
-                                <div class="education-year">
-                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
-                                    s.d @endif
-                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
-                                    @endif
-                                </div>
+                                            <div class="education-item">
+                                                {{-- Nomor SK --}}
+                                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
+                                                {{-- Nama Jabatan --}}
+                                                <!-- <div class="education-degree">{{ $item->jenis ?? '-' }} -->
+                                            </div>
+                                            {{-- Tahun Lulus --}}
+                                            <div class="education-year">
+                                                @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                                s.d @endif
+                                                @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                                @endif
+                                            </div>
                             </div>
                         @endforeach
                     @endif
 
-                    {{-- Sertificat --}}
-                     @if (!empty($sertifikat) && $sertifikat->count() > 0)
-                        @foreach ($sertifikat as $item)
-                   
-                            <div class="section-title">
-                                Sertifikat
-                            </div>
-                    
-                            <div class="education-item">
-                                {{-- Nomor SK --}}
-                                <div class="education-school">{{ $item->nama ?? '-' }} </div>
-                                {{-- Nama Jabatan --}}
-                                <div class="education-degree">{{ $item->jenis ?? '-' }} - {{ $item->penyelenggara ?? '-' }} </div>
-                                {{-- Tahun  --}}
-                                <div class="education-year">{{ $item->tahun ?? '-' }} </div>
-                            </div>
-                        @endforeach
-                    @endif
+    {{-- Sertificat --}}
+    @if (!empty($sertifikat) && $sertifikat->count() > 0)
+        @foreach ($sertifikat as $item)
 
-                </td>
-            </tr>
-        </table>
+            <div class="section-title">
+                Sertifikat
+            </div>
+
+            <div class="education-item">
+                {{-- Nomor SK --}}
+                <div class="education-school">{{ $item->nama ?? '-' }} </div>
+                {{-- Nama Jabatan --}}
+                <div class="education-degree">{{ $item->jenis ?? '-' }} - {{ $item->penyelenggara ?? '-' }} </div>
+                {{-- Tahun --}}
+                <div class="education-year">{{ $item->tahun ?? '-' }} </div>
+            </div>
+        @endforeach
+    @endif
+
+    </td>
+    </tr>
+    </table>
 
 
-        <!-- SIGNATURE -->
-        <!-- <div class="signature">
+    <!-- SIGNATURE -->
+    <!-- <div class="signature">
             Makassar,
             {{ now()->format('d/m/Y') }}
 
