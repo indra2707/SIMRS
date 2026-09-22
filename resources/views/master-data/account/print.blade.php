@@ -351,14 +351,14 @@
                             <img src="data:image/jpeg;base64,{{ $foto }}" class="photo">
                         @else
                             <div style="
-                                                                                                        width:85px;
-                                                                                                        height:105px;
-                                                                                                        border:1px solid #ccc;
-                                                                                                        text-align:center;
-                                                                                                        padding-top:35px;
-                                                                                                        box-sizing:border-box;
-                                                                                                        color:#999;
-                                                                                                    ">
+                                                                                                            width:85px;
+                                                                                                            height:105px;
+                                                                                                            border:1px solid #ccc;
+                                                                                                            text-align:center;
+                                                                                                            padding-top:35px;
+                                                                                                            box-sizing:border-box;
+                                                                                                            color:#999;
+                                                                                                        ">
                                 FOTO
                             </div>
                         @endif
@@ -431,7 +431,7 @@
                             <td class="info-value">{{ $pegawai->status_pernikahan ?? '-' }}</td>
                         </tr>
 
-                         <tr>
+                        <tr>
                             <td class="info-label">BPJS Kes</td>
                             <td class="info-value">{{ $pegawai->nomor_bpjskesehatan ?? '-' }}</td>
                         </tr>
@@ -633,12 +633,11 @@
 
     {{-- Sertificat --}}
     @if (!empty($sertifikat) && $sertifikat->count() > 0)
+        <div class="section-title">
+            Sertifikat
+        </div>
+
         @foreach ($sertifikat as $item)
-
-            <div class="section-title">
-                Sertifikat
-            </div>
-
             <div class="education-item">
                 {{-- Nomor SK --}}
                 <div class="education-school">{{ $item->nama ?? '-' }} </div>

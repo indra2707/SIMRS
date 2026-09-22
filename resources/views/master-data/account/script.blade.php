@@ -31,9 +31,17 @@
             $('#agama').val(data.agama ?? '').trigger('change');
             $('#golongan_darah').val(data.golongan_darah ?? '').trigger('change');
             $('#status_pernikahan').val(data.status_pernikahan ?? '').trigger('change');
-            $('#hubungan_kontak_darurat')
-                .val(data.hubungan_kontak_darurat ?? '')
-                .trigger('change');
+            $('#hubungan_kontak_darurat').val(data.hubungan_kontak_darurat ?? '').trigger('change');
+
+             InitSelect2($("select[name='id_bank']"), {
+                url: "{{ route('get-select-bank') }}",
+                initialValue: data.id_bank,
+                initialText: data.nama_bank
+            });
+
+            $('input[name="nomor_rekening"]').val(data.nomor_rekening || '');
+            $('input[name="nama_rekening"]').val(data.nama_rekening || '');
+
 
             $('#nama_pekerja3').text(data.nama_pekerja ?? '-');
             $('#rolle').text(role);

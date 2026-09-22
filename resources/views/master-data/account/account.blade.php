@@ -269,9 +269,31 @@
                                         <label class="form-label">Upload Foto</label>
                                         <input class="form-control" type="file" id="foto" name="foto"
                                             accept=".jpg,.jpeg,.png">
-                                        <small class="text-muted">
+                                        <!-- <small class="text-muted">
                                             Format yang diperbolehkan: JPG, JPEG, PNG. Maksimal 2 MB.
-                                        </small>
+                                        </small> -->
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Bank</label>
+                                        <select class="form-select select2" name="id_bank"
+                                            data-placeholder="---- Pilih Salah Satu ----" required>
+                                            <option></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nomor Rekening</label>
+                                        <input type="number" class="form-control" name="nomor_rekening"
+                                            placeholder="Nomor Rekening...">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="mb-3">
+                                        <label class="form-label">Nama Rekening</label>
+                                        <input class="form-control" name="nama_rekening" placeholder="Nama Rekening...">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
