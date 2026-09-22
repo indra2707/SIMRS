@@ -320,7 +320,17 @@
                     @endif
 
 
-                      <!-- Dokumen -->
+                    <!-- Dokumen -->
+                     @if (
+                            in_array('Ijazah', $aksesMenu) ||
+                            in_array('Kontrak', $aksesMenu) ||
+                            in_array('SK Jabatan', $aksesMenu) ||
+                            in_array('STR', $aksesMenu)||
+                            in_array('Sertifikat', $aksesMenu) ||
+                            in_array('MCU', $aksesMenu) ||
+                            in_array('Lainnya', $aksesMenu)||
+                            in_array('SPK', $aksesMenu)
+                        )
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <a class="sidebar-link sidebar-title" href="#">
                             <svg class="stroke-icon">
@@ -332,16 +342,33 @@
                             <span>Dokumen</span>
                         </a>
                         <ul class="sidebar-submenu">
+                            @if (in_array('Ijazah', $aksesMenu))
                             <li><a href="{{ route('master-data.ijazah') }}">Ijazah</a></li>
+                            @endif
+                            @if (in_array('Kontrak', $aksesMenu))
                             <li><a href="{{ route('master-data.kontrak') }}">Kontrak Kerja</a></li>
+                            @endif
+                            @if (in_array('SK Jabatan', $aksesMenu))
                             <li><a href="{{ route('master-data.jabatan')}}">SK Jabatan</a></li>
+                            @endif
+                            @if (in_array('STR', $aksesMenu))
                             <li><a href="{{ route('master-data.str-sip')}}">STR dan SIP</a></li>
+                            @endif
+                            @if (in_array('SPK', $aksesMenu))
                             <li><a href="{{ route('master-data.spk-rkk')}}">SPK dan RKK</a></li>
+                            @endif
+                            @if (in_array('Sertifikat', $aksesMenu))
                             <li><a href="{{ route('master-data.sertifikat')}}">Sertifikat</a></li>
+                            @endif
+                            @if (in_array('MCU', $aksesMenu))
                             <li><a href="{{ route('master-data.mcu')}}">Hasil MCU</a></li>
+                            @endif
+                            @if (in_array('Lainnya', $aksesMenu))
                             <li><a href="{{ route('master-data.dokumen-lainnya')}}">Dokumen Lainnya</a></li>
+                            @endif
                         </ul>
                     </li>
+                    @endif
 
                     @if (
                             in_array('Permintaan', $aksesMenu) ||

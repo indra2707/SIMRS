@@ -313,6 +313,23 @@
                                     </ul>
                                 </li>
 
+
+                                 <li>
+                                    <label class="caret">
+                                        <input type="checkbox" class="parent"><b> Dokumen</b>
+                                    </label>
+                                    <ul class="nested">
+                                        <li><label><input type="checkbox" name="permissions[]" value="Ijazah"> Ijazah</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Kontrak"> Kontrak</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="SK Jabatan"> SK Jabatan </label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="STR"> STR dan SIP</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="SPK"> SPK dan RKK</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Sertifikat"> Sertifikat</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="MCU"> Hasil MCU</label></li>
+                                        <li><label><input type="checkbox" name="permissions[]" value="Lainnya"> Dokumen Lainnya</label></li>
+                                    </ul>
+                                </li>
+
                                 <li>
                                     <label class="caret">
                                         <input type="checkbox" class="parent"><b> Logistik</b>

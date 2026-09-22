@@ -494,11 +494,12 @@
                 <!-- RIGHT COLUMN -->
                 <td class="right-column">
                     {{-- EDUCATION --}}
-                    <div class="section-title">
-                        Pendidikan
-                    </div>
                     @if (!empty($ijazah) && $ijazah->count() > 0)
                         @foreach ($ijazah as $item)
+                            <div class="section-title">
+                                Pendidikan
+                            </div>
+
                             <div class="education-item">
                                 {{-- Institusi --}}
                                 <div class="education-school">{{ $item->institusi ?? '-' }} </div>
@@ -515,17 +516,17 @@
                                 </div>
                             </div>
                         @endforeach
-                    @else
-                        <div class="empty-data"> Belum ada data pendidikan. </div>
                     @endif
 
-                    {{-- Kontrak --}}
-                    <div class="section-title">
-                        Pengalaman Kerja
-                    </div>
 
+                    {{-- Kontrak --}}
                     @if (!empty($kontrak) && $kontrak->count() > 0)
                         @foreach ($kontrak as $item)
+                        
+                            <div class="section-title">
+                                Pengalaman Kerja
+                            </div>
+
                             <div class="education-item">
                                 {{-- Nomor Kontrak --}}
                                 <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
@@ -541,17 +542,15 @@
                                 </div>
                             </div>
                         @endforeach
-                    @else
-                        <div class="empty-data"> Belum ada data Pengalaman Kerja. </div>
                     @endif
 
                     {{-- SK Jabatan --}}
-                    <div class="section-title">
-                        Jabatan
-                    </div>
-
                     @if (!empty($skjabatan) && $skjabatan->count() > 0)
                         @foreach ($skjabatan as $item)
+                            <div class="section-title">
+                                Jabatan
+                            </div>
+
                             <div class="education-item">
                                 {{-- Nomor SK --}}
                                 <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
@@ -567,18 +566,18 @@
                                 </div>
                             </div>
                         @endforeach
-                    @else
-                        <div class="empty-data"> Belum ada data jabatan. </div>
                     @endif
 
 
+                   
                     {{-- Sertificat --}}
-                    <div class="section-title">
-                        Sertifikat
-                    </div>
-
                      @if (!empty($sertifikat) && $sertifikat->count() > 0)
                         @foreach ($sertifikat as $item)
+                   
+                            <div class="section-title">
+                                Sertifikat
+                            </div>
+                    
                             <div class="education-item">
                                 {{-- Nomor SK --}}
                                 <div class="education-school">{{ $item->nama ?? '-' }} </div>
@@ -588,8 +587,6 @@
                                 <div class="education-year">{{ $item->tahun ?? '-' }} </div>
                             </div>
                         @endforeach
-                    @else
-                        <div class="empty-data"> Belum ada data Sertifikat. </div>
                     @endif
 
                 </td>
