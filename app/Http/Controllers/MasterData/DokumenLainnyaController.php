@@ -87,6 +87,7 @@ class DokumenLainnyaController extends Controller
             ->select(
                 'tbl_dokumen_lainnya.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role

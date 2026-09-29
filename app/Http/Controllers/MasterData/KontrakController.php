@@ -59,6 +59,7 @@ class KontrakController extends Controller
             ->select(
                 'tbl_kontrak.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role

@@ -58,6 +58,7 @@ class SpkRkkController extends Controller
             ->select(
                 'tbl_spk_rkk.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role

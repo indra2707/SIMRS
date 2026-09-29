@@ -57,6 +57,7 @@ class HasilMcuController extends Controller
             ->select(
                 'tbl_mcu.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role

@@ -59,6 +59,7 @@ class StrSipController extends Controller
             ->select(
                 'tbl_str_sip.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role

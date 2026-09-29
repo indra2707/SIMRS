@@ -86,6 +86,7 @@ class SkJabatanController extends Controller
             ->select(
                 'tbl_sk_jabatan.*',
                 'pegawai.nama_pekerja',
+                'pegawai.fungsi',
             );
 
         // Filter berdasarkan nama_role
