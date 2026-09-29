@@ -37,6 +37,8 @@ class PegawaiController extends Controller
             $totalPegawai = DB::table('pegawai')->count();
             Log::info("Total pegawai di database: {$totalPegawai}");
 
+            $namaRole = session('nama_role');
+
             $query = DB::table('pegawai')
                 ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
                 ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -52,8 +54,19 @@ class PegawaiController extends Controller
                     'tbl_bank.nama_bank as nama_bank',
                     'tbl_unit.nama as nama_unit'
                 )
-                ->orderBy('pegawai.id', 'desc')
-                ->get();
+                ->orderBy('pegawai.id', 'desc');
+
+            // Filter berdasarkan nama_role
+            if ($namaRole == 'Komite Keperawatan') {
+                $query->where('pegawai.fungsi', 'Perawat');
+            } elseif ($namaRole == 'Komite Medik') {
+                $query->where('pegawai.fungsi', 'Medis');
+            } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
+                $query->where('pegawai.fungsi', 'Nakes Lain');
+            }
+
+            // Jika role bukan ketiga role di atas, tampilkan semua data
+            $query = $query->get();
 
             Log::info("Data hasil LEFT JOIN: " . $query->count());
 
@@ -763,12 +776,12 @@ class PegawaiController extends Controller
             ];
 
             // Generate Excel menggunakan class anonymous
-            return Excel::download(new class($headers, $example) implements
+            return Excel::download(
+                new class ($headers, $example) implements
                 \Maatwebsite\Excel\Concerns\FromArray,
                 \Maatwebsite\Excel\Concerns\WithHeadings,
                 \Maatwebsite\Excel\Concerns\WithStyles,
-                \Maatwebsite\Excel\Concerns\ShouldAutoSize
-            {
+                \Maatwebsite\Excel\Concerns\ShouldAutoSize {
                 protected $headers;
                 protected $example;
 
@@ -791,16 +804,18 @@ class PegawaiController extends Controller
                 public function styles(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $sheet)
                 {
                     return [
-                        1 => [
-                            'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
-                            'fill' => [
-                                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-                                'startColor' => ['rgb' => '4472C4']
+                    1 => [
+                        'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
+                        'fill' => [
+                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                            'startColor' => ['rgb' => '4472C4']
                             ]
                         ],
                     ];
                 }
-            }, 'Template_Import_Pegawai.xlsx');
+                },
+                'Template_Import_Pegawai.xlsx'
+            );
         } catch (\Exception $e) {
             Log::error('Download template error: ' . $e->getMessage());
 
