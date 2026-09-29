@@ -176,6 +176,7 @@
                 },
                 {
                     field: 'masa_berlaku_str',
+                    visible: false,
                     sortable: true,
                     formatter: function (value, row, index) {
                         if (value == 0) {

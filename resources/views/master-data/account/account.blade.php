@@ -298,9 +298,9 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div>
-                                        <label class="form-label">Alamat</label>
+                                        <label class="form-label">Alamat Domisili</label>
                                         <textarea class="form-control" rows="4" id="alamat_domisili2" name="alamat_domisili"
-                                            placeholder="Alamat ..."></textarea>
+                                            placeholder="Alamat Domisili ..."></textarea>
                                     </div>
                                 </div>
                             </div>
