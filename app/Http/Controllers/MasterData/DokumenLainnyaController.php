@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\Session;
 class DokumenLainnyaController extends Controller
 {
     private const MAP_JENIS_KE_PEGAWAI = [
-        'KTP'                    => 'nik',
-        'NPWP'                   => 'nomor_npwp',
-        'BPJS Kesehatan'         => 'nomor_bpjskesehatan',
-        'BPJS Ketenagakerjaan'   => 'nomor_bpjstk',
+        'KTP' => 'nik',
+        'NPWP' => 'nomor_npwp',
+        'BPJS Kesehatan' => 'nomor_bpjskesehatan',
+        'BPJS Ketenagakerjaan' => 'nomor_bpjstk',
         // 'KK' => null,
     ];
 
@@ -81,13 +81,25 @@ class DokumenLainnyaController extends Controller
 
     public function viewssdm()
     {
+        $namaRole = session('nama_role');
         $query = DB::table('tbl_dokumen_lainnya')
             ->join('pegawai', 'tbl_dokumen_lainnya.id_pegawai', '=', 'pegawai.id')
             ->select(
                 'tbl_dokumen_lainnya.*',
                 'pegawai.nama_pekerja',
-            )
-            ->get();
+            );
+
+        // Filter berdasarkan nama_role
+        if ($namaRole == 'Komite Keperawatan') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Perawat');
+        } elseif ($namaRole == 'Komite Medik') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Medis');
+        } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Nakes Lain');
+        }
+
+        // Jika role bukan ketiga role di atas, tampilkan semua data
+        $query = $query->get();
 
         $data = [];
         foreach ($query as $key => $value) {
@@ -114,8 +126,8 @@ class DokumenLainnyaController extends Controller
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
-        $jenis     = $request->jenis_dokumen_lainnya;
-        $nomor     = $request->nomor_dokumen_lainnya;
+        $jenis = $request->jenis_dokumen_lainnya;
+        $nomor = $request->nomor_dokumen_lainnya;
 
         $sudahAda = DokumenLainnya::where('id_pegawai', $idPegawai)
             ->where('jenis', $jenis)
@@ -133,10 +145,10 @@ class DokumenLainnyaController extends Controller
             $query = DB::transaction(function () use ($idPegawai, $jenis, $nomor, $fileName) {
                 $dokumen = DokumenLainnya::create([
                     'id_pegawai' => $idPegawai,
-                    'nomor'      => $nomor,
-                    'jenis'      => $jenis,
-                    'catatan'    => request('catatan_dokumen_lainnya'),
-                    'lampiran'   => $fileName,
+                    'nomor' => $nomor,
+                    'jenis' => $jenis,
+                    'catatan' => request('catatan_dokumen_lainnya'),
+                    'lampiran' => $fileName,
                 ]);
 
                 $this->syncNomorKePegawai($idPegawai, $jenis, $nomor);
@@ -196,8 +208,8 @@ class DokumenLainnyaController extends Controller
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
-        $jenis     = $request->jenis_dokumen_lainnya;
-        $nomor     = $request->nomor_dokumen_lainnya;
+        $jenis = $request->jenis_dokumen_lainnya;
+        $nomor = $request->nomor_dokumen_lainnya;
 
         $sudahAda = DokumenLainnya::where('id_pegawai', $idPegawai)
             ->where('jenis', $jenis)
@@ -216,10 +228,10 @@ class DokumenLainnyaController extends Controller
             DB::transaction(function () use ($dokumen, $idPegawai, $jenis, $nomor, $fileName) {
                 $dokumen->update([
                     'id_pegawai' => $idPegawai,
-                    'nomor'      => $nomor,
-                    'jenis'      => $jenis,
-                    'catatan'    => request('catatan_dokumen_lainnya'),
-                    'lampiran'   => $fileName,
+                    'nomor' => $nomor,
+                    'jenis' => $jenis,
+                    'catatan' => request('catatan_dokumen_lainnya'),
+                    'lampiran' => $fileName,
                 ]);
 
                 $this->syncNomorKePegawai($idPegawai, $jenis, $nomor);

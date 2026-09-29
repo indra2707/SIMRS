@@ -50,17 +50,55 @@ class SkJabatanController extends Controller
 
 
     // Views SK Jabatan
+    // public function viewssdm()
+    // {
+
+    //     $query = DB::table('tbl_sk_jabatan')
+    //         ->join('pegawai', 'tbl_sk_jabatan.id_pegawai', '=', 'pegawai.id')
+    //         ->select(
+    //             'tbl_sk_jabatan.*',
+    //             'pegawai.nama_pekerja',
+    //         )
+    //         ->get();
+
+    //     $data = [];
+    //     foreach ($query as $key => $value) {
+    //         $data[] = [
+    //             'id_jabatan' => $value->id,
+    //             'nama_pegawai' => $value->nama_pekerja,
+    //             'nomor_sk' => $value->nomor_sk,
+    //             'nama_jabatan' => $value->nama_jabatan,
+    //             'tanggal_mulai_jabatan' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
+    //             'tanggal_berakhir_jabatan' => Carbon::parse($value->tanggal_berakhir)->format('d/m/Y'),
+    //             'lampiran_jabatan' => $value->lampiran,
+    //             'id_pegawai' => $value->id_pegawai,
+    //         ];
+    //     }
+    //     return response()->json($data, 200);
+    // }
+
     public function viewssdm()
     {
+        $namaRole = session('nama_role');
 
         $query = DB::table('tbl_sk_jabatan')
             ->join('pegawai', 'tbl_sk_jabatan.id_pegawai', '=', 'pegawai.id')
             ->select(
                 'tbl_sk_jabatan.*',
                 'pegawai.nama_pekerja',
-            )
-            ->get();
+            );
 
+        // Filter berdasarkan nama_role
+        if ($namaRole == 'Komite Keperawatan') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Perawat');
+        } elseif ($namaRole == 'Komite Medik') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Medis');
+        } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Nakes Lain');
+        }
+
+        // Jika role bukan ketiga role di atas, tampilkan semua data
+        $query = $query->get();
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
@@ -68,12 +106,17 @@ class SkJabatanController extends Controller
                 'nama_pegawai' => $value->nama_pekerja,
                 'nomor_sk' => $value->nomor_sk,
                 'nama_jabatan' => $value->nama_jabatan,
-                'tanggal_mulai_jabatan' => Carbon::parse($value->tanggal_mulai)->format('d/m/Y'),
-                'tanggal_berakhir_jabatan' => Carbon::parse($value->tanggal_berakhir)->format('d/m/Y'),
+                'tanggal_mulai_jabatan' => !empty($value->tanggal_mulai)
+                    ? Carbon::parse($value->tanggal_mulai)->format('d/m/Y')
+                    : '-',
+                'tanggal_berakhir_jabatan' => !empty($value->tanggal_berakhir)
+                    ? Carbon::parse($value->tanggal_berakhir)->format('d/m/Y')
+                    : '-',
                 'lampiran_jabatan' => $value->lampiran,
                 'id_pegawai' => $value->id_pegawai,
             ];
         }
+
         return response()->json($data, 200);
     }
 

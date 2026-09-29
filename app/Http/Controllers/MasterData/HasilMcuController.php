@@ -51,13 +51,25 @@ class HasilMcuController extends Controller
     // Views Hasil MCU
     public function viewssdm()
     {
+        $namaRole = session('nama_role');
         $query = DB::table('tbl_mcu')
             ->join('pegawai', 'tbl_mcu.id_pegawai', '=', 'pegawai.id')
             ->select(
                 'tbl_mcu.*',
                 'pegawai.nama_pekerja',
-            )
-            ->get();
+            );
+
+        // Filter berdasarkan nama_role
+        if ($namaRole == 'Komite Keperawatan') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Perawat');
+        } elseif ($namaRole == 'Komite Medik') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Medis');
+        } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Nakes Lain');
+        }
+
+        // Jika role bukan ketiga role di atas, tampilkan semua data
+        $query = $query->get();
 
         $data = [];
         foreach ($query as $key => $value) {

@@ -51,14 +51,26 @@ class SpkRkkController extends Controller
     // Views SPK dan RKK SDM
     public function viewssdm()
     {
+        $namaRole = session('nama_role');
+
         $query = DB::table('tbl_spk_rkk')
             ->join('pegawai', 'tbl_spk_rkk.id_pegawai', '=', 'pegawai.id')
             ->select(
                 'tbl_spk_rkk.*',
                 'pegawai.nama_pekerja',
-            )
-            ->get();
+            );
 
+        // Filter berdasarkan nama_role
+        if ($namaRole == 'Komite Keperawatan') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Perawat');
+        } elseif ($namaRole == 'Komite Medik') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Medis');
+        } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
+            $query->where('tbl_sk_jabatan.fungsi', 'Nakes Lain');
+        }
+
+        // Jika role bukan ketiga role di atas, tampilkan semua data
+        $query = $query->get();
         $data = [];
         foreach ($query as $key => $value) {
             $data[] = [
