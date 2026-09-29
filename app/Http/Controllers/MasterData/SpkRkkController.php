@@ -63,13 +63,12 @@ class SpkRkkController extends Controller
 
         // Filter berdasarkan nama_role
         if ($namaRole == 'Komite Keperawatan') {
-            $query->where('tbl_sk_jabatan.fungsi', 'Perawat');
+            $query->where('pegawai.fungsi', 'Perawat');
         } elseif ($namaRole == 'Komite Medik') {
-            $query->where('tbl_sk_jabatan.fungsi', 'Medis');
+            $query->where('pegawai.fungsi', 'Medis');
         } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
-            $query->where('tbl_sk_jabatan.fungsi', 'Nakes Lain');
+            $query->where('pegawai.fungsi', 'Nakes Lain');
         }
-
         // Jika role bukan ketiga role di atas, tampilkan semua data
         $query = $query->get();
         $data = [];
@@ -155,7 +154,7 @@ class SpkRkkController extends Controller
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
-        
+
         $kontrak->update([
             'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_spk,
