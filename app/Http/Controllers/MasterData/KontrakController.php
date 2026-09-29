@@ -64,11 +64,11 @@ class KontrakController extends Controller
 
         // Filter berdasarkan nama_role
         if ($namaRole == 'Komite Keperawatan') {
-            $query->where('tbl_kontrak.fungsi', 'Perawat');
+            $query->where('pegawai.fungsi', 'Perawat');
         } elseif ($namaRole == 'Komite Medik') {
-            $query->where('tbl_kontrak.fungsi', 'Medis');
+            $query->where('pegawai.fungsi', 'Medis');
         } elseif ($namaRole == 'Komite Tenaga Kesehatan Lain') {
-            $query->where('tbl_kontrak.fungsi', 'Nakes Lain');
+            $query->where('pegawai.fungsi', 'Nakes Lain');
         }
 
         // Jika role bukan ketiga role di atas, tampilkan semua data
