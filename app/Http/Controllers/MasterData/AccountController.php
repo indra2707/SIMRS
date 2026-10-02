@@ -7,7 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
-
+use iio\libmergepdf\Merger;
 
 class AccountController extends Controller
 {
@@ -105,35 +105,22 @@ class AccountController extends Controller
 
         // Upload foto
         if ($request->hasFile('foto')) {
-
             $file = $request->file('foto');
-
-            // Folder
             $folder = public_path('uploads/images/foto-pegawai');
 
-            // Buat folder jika belum ada
             if (!file_exists($folder)) {
                 mkdir($folder, 0755, true);
             }
 
-            // Hapus foto lama
             if (!empty($pegawai->foto)) {
-
                 $fotoLama = $folder . '/' . $pegawai->foto;
-
                 if (file_exists($fotoLama)) {
                     unlink($fotoLama);
                 }
             }
 
-            // Nama file
-            $namaFile = 'pegawai_' . $id . '_' . time() . '.' .
-                $file->getClientOriginalExtension();
-
-            // Simpan file
+            $namaFile = 'pegawai_' . $id . '_' . time() . '.' . $file->getClientOriginalExtension();
             $file->move($folder, $namaFile);
-
-            // Simpan nama file ke database
             $data['foto'] = $namaFile;
         }
 
@@ -157,8 +144,7 @@ class AccountController extends Controller
         ], 400);
     }
 
-
-    // Print PDF
+    // Print PDF & Merge Dokumen
     public function printPdf($id)
     {
         // Ambil data pegawai
@@ -185,7 +171,7 @@ class AccountController extends Controller
             abort(404, 'Data pegawai tidak ditemukan.');
         }
 
-        // Ambil seluruh data ijazah berdasarkan ID pegawai
+        // Ambil data lampiran
         $ijazah = DB::table('tbl_ijazah')->where('id_pegawai', $id)->orderByDesc('tahun_lulus')->get();
         $skjabatan = DB::table('tbl_sk_jabatan')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $kontrak = DB::table('tbl_kontrak')->where('id_pegawai', $id)->orderByDesc('id')->get();
@@ -193,34 +179,67 @@ class AccountController extends Controller
         $str = DB::table('tbl_str_sip')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $spk = DB::table('tbl_spk_rkk')->where('id_pegawai', $id)->orderByDesc('id')->get();
 
-        // Render Blade menjadi HTML
         $html = view('master-data.account.print', [
-        'pegawai' => $pegawai, 
-        'ijazah' => $ijazah, 
-        'skjabatan' => $skjabatan, 
-        'kontrak' => $kontrak,
-        'sertifikat' => $sertifikat,
-        'str' => $str,
-        'spk' => $spk,
+            'pegawai' => $pegawai,
+            'ijazah' => $ijazah,
+            'skjabatan' => $skjabatan,
+            'kontrak' => $kontrak,
+            'sertifikat' => $sertifikat,
+            'str' => $str,
+            'spk' => $spk,
         ])->render();
 
         // Buat PDF menggunakan Dompdf
         $dompdf = new Dompdf();
-
         $dompdf->loadHtml($html);
-
-        // Ukuran kertas
         $dompdf->setPaper('A4', 'portrait');
-
-        // Render PDF
         $dompdf->render();
 
-        // Nama file
-        $namaFile = 'CV_' . $pegawai->nama_pekerja . '.pdf';
+        $pdfOutput = $dompdf->output();
 
-        // Tampilkan PDF di browser
-        return $dompdf->stream($namaFile, [
-            'Attachment' => false
+        // Inisialisasi Merger Baru
+        $merger = new Merger();
+
+        $merger->addRaw($pdfOutput);
+
+
+        // Lampiran Ijazah
+        foreach ($ijazah as $item) {
+            if (!empty($item->file_ijazah)) {
+                $path = public_path('uploads/pdf/ijazah/' . $item->file_ijazah);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        // Lampiran SK Jabatan
+        foreach ($skjabatan as $item) {
+            if (!empty($item->file_sk)) {
+                $path = public_path('uploads/pdf/sk/' . $item->file_sk);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        // Lampiran Sertifikat
+        foreach ($sertifikat as $item) {
+            if (!empty($item->file_sertifikat)) {
+                $path = public_path('uploads/pdf/sertifikat/' . $item->file_sertifikat);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        $mergedPdf = $merger->merge();
+
+        $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
+
+        return response($mergedPdf, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
     }
 }

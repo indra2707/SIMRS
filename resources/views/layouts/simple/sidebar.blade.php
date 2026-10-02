@@ -429,7 +429,8 @@
                             <li><a href="{{ route('surat.aproval') }}">Hirarki Approval</a></li>
                             <li><a href="{{ route('surat.list-surat') }}">Memorandum</a></li>
                             <li><a href="{{ route('surat.aproval-memorandum')}}">Approval Memorandum</a></li>
-                            <li><a href="{{ route('surat.disposisi')}}">Disposisi</a></li>
+                            <li><a href="{{ route('surat.disposisi.index')}}">Disposisi</a></li>
+                            <li><a href="{{ route('disposisi-master.index')}}">Disposisi-master</a></li>
                         </ul>
                     </li>
 

@@ -62,8 +62,6 @@ use App\Http\Controllers\Sdm\SpdsController;
 use App\Http\Controllers\Surat\AprovalController;
 use App\Http\Controllers\Surat\AprovalDetailController;
 use App\Http\Controllers\Surat\AprovalMemorandumController;
-use App\Http\Controllers\Surat\DisposisiController as DisposisiSuratController;
-use App\Http\Controllers\Surat\DisposisiJabatanController;
 use App\Http\Controllers\Surat\SuratController;
 use App\Http\Controllers\Tarif\HargaTindakanController;
 use App\Http\Controllers\Tarif\SKTarifController;
@@ -72,6 +70,12 @@ use App\Http\Controllers\User\HelpDeskController;
 use App\Http\Controllers\User\RollsController;
 use App\Http\Controllers\User\UsersController;
 use App\Http\Controllers\User\UserspekerjaController;
+
+
+use App\Http\Controllers\Surat\DisposisiSuratController;
+use App\Http\Controllers\Surat\DisposisiMasterController;
+use App\Http\Controllers\Surat\DisposisiMasterDetailController;
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -595,43 +599,30 @@ Route::group(['middleware' => 'loggedin'], function () {
 
         Route::post('/aproval-memorandum/reject/{id}', [AprovalMemorandumController::class, 'reject'])->name('surat.aproval-memorandum.reject');
 
-        Route::get('disposisi-jabatan', [DisposisiJabatanController::class, 'index'])
-            ->name('surat.disposisi-jabatan');
+        // Transaksi disposisi
+        Route::get('surat/disposisi', [DisposisiSuratController::class, 'index'])->name('surat.disposisi.index');
+        Route::get('surat/disposisi/view-surat-siap', [DisposisiSuratController::class, 'suratSiapDisposisi'])->name('surat.disposisi.view-surat-siap');
+        Route::get('surat/disposisi/view', [DisposisiSuratController::class, 'views'])->name('surat.disposisi.view');
+        Route::get('surat/disposisi/template-tujuan', [DisposisiSuratController::class, 'templateTujuan'])->name('surat.disposisi.template-tujuan');
+        Route::get('surat/disposisi/pegawai/list', [DisposisiSuratController::class, 'listPegawaiTujuan'])->name('surat.disposisi.pegawai-list');
+        Route::post('surat/disposisi', [DisposisiSuratController::class, 'store'])->name('surat.disposisi.store');
+        Route::get('surat/disposisi/{id}', [DisposisiSuratController::class, 'show'])->name('surat.disposisi.show');
+        Route::post('surat/disposisi/{id}/selesai', [DisposisiSuratController::class, 'selesai'])->name('surat.disposisi.selesai');
+        Route::delete('surat/disposisi/{id}', [DisposisiSuratController::class, 'destroy'])->name('surat.disposisi.destroy');
 
-        Route::get('disposisi-jabatan/view', [DisposisiJabatanController::class, 'views'])
-            ->name('surat.disposisi-jabatan.view');
+        // Master lembar (admin) -- ditambah ->name() supaya bisa dipakai route() di view
+        Route::get('disposisi-master', [DisposisiMasterController::class, 'index'])->name('disposisi-master.index');
+        Route::get('disposisi-master/views', [DisposisiMasterController::class, 'views'])->name('disposisi-master.views');
+        Route::post('disposisi-master', [DisposisiMasterController::class, 'store'])->name('disposisi-master.store');
+        Route::put('disposisi-master/{id}', [DisposisiMasterController::class, 'update'])->name('disposisi-master.update');
+        Route::delete('disposisi-master/{id}', [DisposisiMasterController::class, 'destroy'])->name('disposisi-master.destroy');
+        Route::post('disposisi-master/{id}/status', [DisposisiMasterController::class, 'updateStatus'])->name('disposisi-master.status');
 
-        Route::post('disposisi-jabatan', [DisposisiJabatanController::class, 'store'])
-            ->name('surat.disposisi-jabatan.create');
-
-        Route::put('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'update'])
-            ->name('surat.disposisi-jabatan.update');
-
-        Route::delete('disposisi-jabatan/{id}', [DisposisiJabatanController::class, 'destroy'])
-            ->name('surat.disposisi-jabatan.delete');
-
-
-        // ----- Disposisi Surat -----
-        Route::get('disposisi', [DisposisiSuratController::class, 'index'])
-            ->name('surat.disposisi');
-
-        Route::get('disposisi/view', [DisposisiSuratController::class, 'views'])
-            ->name('surat.disposisi.view');
-
-        Route::get('disposisi/jabatan-by-aproval', [DisposisiSuratController::class, 'jabatanByAproval'])
-            ->name('surat.disposisi.jabatan-by-aproval');
-
-        Route::post('disposisi', [DisposisiSuratController::class, 'store'])
-            ->name('surat.disposisi.create');
-
-        Route::post('disposisi/{id}/dibaca', [DisposisiSuratController::class, 'tandaiDibaca'])
-            ->name('surat.disposisi.dibaca');
-
-        Route::post('disposisi/{id}/paraf', [DisposisiSuratController::class, 'paraf'])
-            ->name('surat.disposisi.paraf');
-
-        Route::delete('disposisi/{id}', [DisposisiSuratController::class, 'destroy'])
-            ->name('surat.disposisi.delete');
+        Route::get('disposisi-master-detail/views', [DisposisiMasterDetailController::class, 'views'])->name('disposisi-master-detail.views');
+        Route::post('disposisi-master-detail', [DisposisiMasterDetailController::class, 'store'])->name('disposisi-master-detail.store');
+        Route::post('disposisi-master-detail/bulk', [DisposisiMasterDetailController::class, 'storeBulk'])->name('disposisi-master-detail.store-bulk');
+        Route::put('disposisi-master-detail/{id}', [DisposisiMasterDetailController::class, 'update'])->name('disposisi-master-detail.update');
+        Route::delete('disposisi-master-detail/{id}', [DisposisiMasterDetailController::class, 'destroy'])->name('disposisi-master-detail.destroy');
     });
 
 

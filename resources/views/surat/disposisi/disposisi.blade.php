@@ -21,6 +21,15 @@
             cursor: pointer;
         }
 
+        .badge-tingkat {
+            font-size: 11px;
+        }
+
+        .badge-checklist {
+            font-size: 10px;
+            margin-right: 2px;
+        }
+
         .isi-surat-readonly {
             white-space: pre-line;
             background: #f8f9fa;
@@ -29,32 +38,18 @@
             border: 1px solid #eee;
         }
 
-        .catatan-pengirim-box {
-            background: #fff8e1;
-            border: 1px solid #ffe082;
-            border-radius: 6px;
-            padding: 10px 12px;
+        .tabel-tujuan-disposisi th,
+        .tabel-tujuan-disposisi td {
+            vertical-align: middle;
+            text-align: center;
         }
 
-        .badge-tindakan {
-            font-size: 11px;
-            margin-right: 3px;
+        .tabel-tujuan-disposisi td.nama-tujuan-col {
+            text-align: left;
         }
 
-        .badge-tingkat-R {
-            background: #dc3545;
-        }
-
-        .badge-tingkat-P {
-            background: #fd7e14;
-        }
-
-        .badge-tingkat-S {
-            background: #0d6efd;
-        }
-
-        .badge-tingkat-B {
-            background: #6c757d;
+        .lembar-kosong-warning {
+            display: none;
         }
     </style>
 @endsection
@@ -75,27 +70,64 @@
                 <div class="card">
                     <div class="card-body">
 
-                        {{-- Table View --}}
-                        <div class="col-sm-12 col-lg-12 col-xl-12">
-                            <div class="table-responsive signal-table">
-                                <table id="table_disposisi" class="table table-hover" data-buttons-class="primary"
-                                    data-toggle="table">
-                                    <thead class="text-bold text-white text-uppercase text-center">
-                                        <tr>
-                                            <th class="f-light">#</th>
-                                            <th class="f-light">No Agenda</th>
-                                            <th class="f-light">No Surat</th>
-                                            <th class="f-light">Tanggal</th>
-                                            <th class="f-light">Perihal</th>
-                                            <th class="f-light">Dari</th>
-                                            <th class="f-light">Tingkat</th>
-                                            <th class="f-light">Tindakan Diminta</th>
-                                            <th class="f-light">Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                        <ul class="nav nav-tabs mb-3" id="tab-disposisi" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="tab-surat-siap-btn" data-bs-toggle="tab"
+                                    data-bs-target="#tab-surat-siap" type="button" role="tab">
+                                    Surat Siap Didisposisikan
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tab-disposisi-masuk-btn" data-bs-toggle="tab"
+                                    data-bs-target="#tab-disposisi-masuk" type="button" role="tab">
+                                    Disposisi Masuk
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="tab-disposisi-content">
+
+                            {{-- TAB 1: Surat Siap Didisposisikan --}}
+                            <div class="tab-pane fade show active" id="tab-surat-siap" role="tabpanel">
+                                <div class="table-responsive signal-table">
+                                    <table id="table_surat_siap" class="table table-hover"
+                                        data-buttons-class="primary" data-toggle="table">
+                                        <thead class="text-bold text-white text-uppercase text-center">
+                                            <tr>
+                                                <th class="f-light">#</th>
+                                                <th class="f-light">No Surat</th>
+                                                <th class="f-light">Tanggal</th>
+                                                <th class="f-light">Perihal</th>
+                                                <th class="f-light">Pembuat</th>
+                                                <th class="f-light">Status Surat</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
+
+                            {{-- TAB 2: Disposisi Masuk --}}
+                            <div class="tab-pane fade" id="tab-disposisi-masuk" role="tabpanel">
+                                <div class="table-responsive signal-table">
+                                    <table id="table_disposisi_masuk" class="table table-hover"
+                                        data-buttons-class="primary" data-toggle="table">
+                                        <thead class="text-bold text-white text-uppercase text-center">
+                                            <tr>
+                                                <th class="f-light">#</th>
+                                                <th class="f-light">No Surat</th>
+                                                <th class="f-light">Perihal</th>
+                                                <th class="f-light">Dari</th>
+                                                <th class="f-light">Tingkat</th>
+                                                <th class="f-light">Checklist</th>
+                                                <th class="f-light">Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -103,66 +135,44 @@
         </div>
     </div>
 
-    {{-- Modal Detail Disposisi (read-only) --}}
-    <div class="modal fade" id="modal-detail-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+    {{-- Modal Detail Surat (read-only, dari tab Surat Siap Didisposisikan) --}}
+    <div class="modal fade" id="modal-detail-surat-disposisi" tabindex="-1" aria-hidden="true"
+        data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Detail Disposisi</h5>
+                    <h5 class="modal-title">Detail Surat</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <table class="table table-borderless mb-3">
                         <tr>
-                            <th width="150">No Agenda</th>
+                            <th width="150">Tanggal</th>
                             <td>:</td>
-                            <td class="detail-disp-no-agenda"></td>
-                        </tr>
-                        <tr>
-                            <th>Tanggal</th>
-                            <td>:</td>
-                            <td class="detail-disp-tanggal"></td>
+                            <td class="detail-surat-tanggal"></td>
                         </tr>
                         <tr>
                             <th>No Surat</th>
                             <td>:</td>
-                            <td class="detail-disp-no-surat"></td>
+                            <td class="detail-surat-no-surat"></td>
                         </tr>
                         <tr>
                             <th>Perihal</th>
                             <td>:</td>
-                            <td class="detail-disp-perihal"></td>
+                            <td class="detail-surat-perihal"></td>
                         </tr>
                         <tr>
-                            <th>Dari</th>
+                            <th>Pembuat</th>
                             <td>:</td>
-                            <td class="detail-disp-pengirim"></td>
-                        </tr>
-                        <tr>
-                            <th>Jabatan Saya</th>
-                            <td>:</td>
-                            <td class="detail-disp-jabatan"></td>
-                        </tr>
-                        <tr>
-                            <th>Tingkat Surat</th>
-                            <td>:</td>
-                            <td class="detail-disp-tingkat"></td>
-                        </tr>
-                        <tr>
-                            <th>Tindakan Diminta</th>
-                            <td>:</td>
-                            <td class="detail-disp-tindakan"></td>
+                            <td class="detail-surat-pembuat"></td>
                         </tr>
                     </table>
 
-                    <label class="fw-bold mb-2">Catatan / Instruksi</label>
-                    <div class="catatan-pengirim-box mb-3 detail-disp-catatan"></div>
-
                     <label class="fw-bold mb-2">Isi Surat</label>
-                    <div class="isi-surat-readonly mb-3 detail-disp-isi-surat"></div>
+                    <div class="isi-surat-readonly mb-3 detail-surat-isi-surat"></div>
 
                     <label class="fw-bold mb-2">Lampiran</label>
-                    <div class="d-flex flex-wrap gap-2 detail-disp-lampiran"></div>
+                    <div class="d-flex flex-wrap gap-2 detail-surat-lampiran"></div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
@@ -171,32 +181,160 @@
         </div>
     </div>
 
-    {{-- Modal Paraf / Tandai Selesai --}}
-    <div class="modal fade" id="modal-paraf-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
+    {{-- Modal Buat / Teruskan Disposisi --}}
+    <div class="modal fade" id="modal-buat-disposisi" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Paraf / Tandai Ditindaklanjuti</h5>
+                    <h5 class="modal-title judul-modal-disposisi">Buat Disposisi</h5>
                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="row g-2 form-paraf-disposisi" autocomplete="off">
-                        <input type="hidden" name="id_detail">
+                    <form class="row g-2 form-buat-disposisi" autocomplete="off">
+                        <input type="hidden" name="id_surat">
+                        <input type="hidden" name="id_parent" value="">
 
-                        <label for="catatan_tindak_lanjut" class="col-form-label col-sm-12">
-                            Catatan Tindak Lanjut (opsional)
+                        <label class="col-form-label col-sm-12 mb-2">
+                            No Surat: <span class="fw-bold disposisi-form-no-surat"></span><br>
+                            Perihal: <span class="disposisi-form-perihal"></span><br>
+                            Lembar: <span class="badge bg-primary disposisi-form-nama-master">-</span>
+                        </label>
+
+                        <div class="alert alert-warning lembar-kosong-warning" role="alert">
+                            Anda belum memiliki lembar disposisi (template tujuan). Silakan hubungi admin untuk
+                            mengaturnya terlebih dahulu.
+                        </div>
+
+                        <div class="col-sm-6">
+                            <label class="col-form-label">Tingkat Surat</label><br>
+                            <div class="btn-group" role="group">
+                                <input type="radio" class="btn-check" name="tingkat_surat" id="tingkat_b" value="B"
+                                    checked>
+                                <label class="btn btn-outline-secondary btn-sm" for="tingkat_b">Biasa</label>
+
+                                <input type="radio" class="btn-check" name="tingkat_surat" id="tingkat_s" value="S">
+                                <label class="btn btn-outline-primary btn-sm" for="tingkat_s">Segera</label>
+
+                                <input type="radio" class="btn-check" name="tingkat_surat" id="tingkat_p" value="P">
+                                <label class="btn btn-outline-warning btn-sm" for="tingkat_p">Penting</label>
+
+                                <input type="radio" class="btn-check" name="tingkat_surat" id="tingkat_r" value="R">
+                                <label class="btn btn-outline-danger btn-sm" for="tingkat_r">Rahasia</label>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 text-sm-end">
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-pilih-semua-tujuan">
+                                Pilih Semua Tujuan
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-batal-pilih-tujuan">
+                                Batal Pilih Semua
+                            </button>
+                        </div>
+
+                        <div class="col-sm-12 mt-2">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm tabel-tujuan-disposisi">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th width="40">#</th>
+                                            <th class="nama-tujuan-col">Diteruskan Kepada</th>
+                                            <th width="60">Pilih</th>
+                                            <th width="70">Action</th>
+                                            <th width="90">Tanggapan</th>
+                                            <th width="60">Info</th>
+                                            <th width="60">File</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="baris-tujuan-disposisi">
+                                        {{-- diisi via JS dari templateTujuan() --}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <label for="catatan_disposisi" class="col-form-label col-sm-12">
+                            Catatan / Note
                         </label>
                         <div class="col-sm-12">
-                            <textarea class="form-control" name="catatan_tindak_lanjut" id="catatan_tindak_lanjut"
-                                rows="4" placeholder="Contoh: sudah dikoordinasikan dengan tim terkait..."></textarea>
+                            <textarea class="form-control" name="catatan" id="catatan_disposisi" rows="3"
+                                placeholder="Opsional..."></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Batal</button>
-                    <button class="btn btn-success btn-submit-paraf-disposisi" type="button">
-                        <span class="fa fa-check"></span> Paraf / Selesai
+                    <button class="btn btn-success btn-simpan-disposisi" type="button">
+                        <span class="fa fa-paper-plane"></span> <span class="teks-btn-simpan-disposisi">Kirim
+                            Disposisi</span>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Detail Disposisi Masuk --}}
+    <div class="modal fade" id="modal-detail-disposisi-masuk" tabindex="-1" aria-hidden="true"
+        data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detail Disposisi</h5>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" class="detail-masuk-id-disposisi">
+                    <table class="table table-borderless mb-3">
+                        <tr>
+                            <th width="150">No Surat</th>
+                            <td>:</td>
+                            <td class="detail-masuk-no-surat"></td>
+                        </tr>
+                        <tr>
+                            <th>Perihal</th>
+                            <td>:</td>
+                            <td class="detail-masuk-perihal"></td>
+                        </tr>
+                        <tr>
+                            <th>Dari</th>
+                            <td>:</td>
+                            <td class="detail-masuk-pengirim"></td>
+                        </tr>
+                        <tr>
+                            <th>Tingkat Surat</th>
+                            <td>:</td>
+                            <td class="detail-masuk-tingkat"></td>
+                        </tr>
+                        <tr>
+                            <th>Checklist</th>
+                            <td>:</td>
+                            <td class="detail-masuk-checklist"></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>:</td>
+                            <td class="detail-masuk-status"></td>
+                        </tr>
+                        <tr>
+                            <th>Catatan</th>
+                            <td>:</td>
+                            <td class="detail-masuk-catatan"></td>
+                        </tr>
+                    </table>
+
+                    <label class="fw-bold mb-2">Lampiran</label>
+                    <div class="d-flex flex-wrap gap-2 detail-masuk-lampiran"></div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button class="btn btn-outline-success btn-teruskan-dari-detail" type="button">
+                        <span class="fa fa-share"></span> Teruskan ke Bawahan
+                    </button>
+                    <div>
+                        <button class="btn btn-primary btn-tandai-selesai-masuk" type="button">
+                            <span class="fa fa-check-circle"></span> Tandai Selesai
+                        </button>
+                        <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
+                    </div>
                 </div>
             </div>
         </div>
