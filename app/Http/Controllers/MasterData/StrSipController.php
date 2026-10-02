@@ -130,7 +130,7 @@ class StrSipController extends Controller
 
 
     // Edit STR dan SIP
-    public function update(Request $request, $id)
+   public function update(Request $request, $id)
     {
         $kontrak = StrSip::find($id);
 
@@ -141,7 +141,7 @@ class StrSipController extends Controller
             ], 404);
         }
 
-        $fileName = $kontrak->lampiran; // default file lama
+        $fileName = $kontrak->lampiran; 
 
         if ($request->hasFile('lampiran-str')) {
 
@@ -160,13 +160,14 @@ class StrSipController extends Controller
         }
 
         $idPegawai = $request->id_pegawai ?: Session::get('id_pegawai');
+
         $kontrak->update([
             'id_pegawai' => $idPegawai,
             'nomor' => $request->nomor_str,
             'jenis' => $request->jenis_str,
             'masa_berlaku' => $request->has('masa_berlaku_str') ? '1' : '0',
             'tanggal_mulai' => Carbon::createFromFormat('d/m/Y', $request->tanggal_mulai_str)->format('Y-m-d'),
-            'tanggal_berakhir' => !empty($request->tanggal_berakhir_str) ? Carbon::parse($request->tanggal_berakhir_str)->format('Y-m-d') : null,
+            'tanggal_berakhir' => !empty($request->tanggal_berakhir_str) ? Carbon::createFromFormat('d/m/Y', $request->tanggal_berakhir_str)->format('Y-m-d') : null,
             'lampiran' => $fileName,
         ]);
 
