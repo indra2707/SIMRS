@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
 use iio\libmergepdf\Merger;
+use iio\libmergepdf\Driver\TcpdiDriver;
 
 class AccountController extends Controller
 {
@@ -196,7 +197,7 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = new Merger();
+        $merger = new Merger(new TcpdiDriver()); 
 
         $merger->addRaw($pdfOutput);
         foreach ($ijazah as $item) {
