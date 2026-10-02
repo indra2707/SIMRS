@@ -119,57 +119,26 @@
            TWO COLUMN
         ========================= */
 
-        .main-content {
+        .main-table {
             width: 100%;
-            margin-top: 10px;
+            border-collapse: collapse;
         }
 
-        .content-column {
-            width: 100%;
+        .left-column {
+            width: 34%;
+            vertical-align: top;
+            padding-right: 15px;
+            border-right: 1px solid #ddd;
         }
 
-        .section-block {
-            width: 100%;
-            margin-bottom: 14px;
-            page-break-inside: avoid;
-        }
-
-        .section-title {
-            font-size: 12px;
-            font-weight: bold;
-            color: #334155;
-            text-transform: uppercase;
-            border-bottom: 1px solid #8ea4ca;
-            padding-bottom: 5px;
-            margin-top: 15px;
-            margin-bottom: 9px;
-            page-break-after: avoid;
-        }
-
-        .education-item,
-        .experience,
-        .detail-item {
-            page-break-inside: avoid;
-        }
-
-        .education-item {
-            margin-bottom: 12px;
-        }
-
-        .experience {
-            margin-bottom: 12px;
-        }
-
-        .detail-item {
-            margin-bottom: 5px;
-        }
-
-        .page-break {
-            page-break-before: always;
+        .right-column {
+            width: 66%;
+            vertical-align: top;
+            padding-left: 18px;
         }
 
         /* =========================
-        PERSONAL INFORMATION
+           PERSONAL INFORMATION
         ========================= */
 
         .info-table {
@@ -382,14 +351,14 @@
                             <img src="data:image/jpeg;base64,{{ $foto }}" class="photo">
                         @else
                             <div style="
-                                                                                                                        width:85px;
-                                                                                                                        height:105px;
-                                                                                                                        border:1px solid #ccc;
-                                                                                                                        text-align:center;
-                                                                                                                        padding-top:35px;
-                                                                                                                        box-sizing:border-box;
-                                                                                                                        color:#999;
-                                                                                                                    ">
+                                                                                                            width:85px;
+                                                                                                            height:105px;
+                                                                                                            border:1px solid #ccc;
+                                                                                                            text-align:center;
+                                                                                                            padding-top:35px;
+                                                                                                            box-sizing:border-box;
+                                                                                                            color:#999;
+                                                                                                        ">
                                 FOTO
                             </div>
                         @endif
@@ -424,438 +393,269 @@
 
 
         <!-- MAIN CONTENT -->
-        <!-- MAIN CONTENT -->
-        <div class="main-content">
+        <table class="main-table">
 
-            <div class="content-column">
-
-                {{-- ================= DATA PRIBADI ================= --}}
-                <div class="section-block">
+            <tr>
+                <!-- LEFT COLUMN -->
+                <td class="left-column">
+                    {{-- PERSONAL DATA --}}
                     <div class="section-title">
                         Data Pribadi
                     </div>
 
-                    <table width="100%" cellpadding="0" cellspacing="0">
+                    <table class="info-table">
                         <tr>
-                            <td width="30%">Nama</td>
-                            <td width="3%">:</td>
-                            <td width="67%">
-                                {{ $pegawai->nama_pekerja ?? '-' }}
+                            <td class="info-label">NIK</td>
+                            <td class="info-value">{{ $pegawai->nik ?? '-' }}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label">No. Pekerja </td>
+                            <td class="info-value">{{ $pegawai->nomor_pekerja ?? '-' }} </td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label">Tgl. Lahir</td>
+                            <td class="info-value">
+                                {{ !empty($pegawai->tanggal_lahir) ? \Carbon\Carbon::parse($pegawai->tanggal_lahir)->format('d/m/Y') : '-' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td>NIP / Nomor Pekerja</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->nomor_pekerja ?? '-' }}
-                            </td>
+                            <td class="info-label">Jenis Kelamin</td>
+                            <td class="info-value">{{ $pegawai->jenis_kelamin ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>NIK</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->nik ?? '-' }}
-                            </td>
+                            <td class="info-label">Status</td>
+                            <td class="info-value">{{ $pegawai->status_pernikahan ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>Tempat, Tanggal Lahir</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->tempat_lahir ?? '-' }},
-                                {{ !empty($pegawai->tanggal_lahir)
-    ? \Carbon\Carbon::parse($pegawai->tanggal_lahir)->format('d-m-Y')
-    : '-' }}
-                            </td>
+                            <td class="info-label">BPJS Kes</td>
+                            <td class="info-value">{{ $pegawai->nomor_bpjskesehatan ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>Jenis Kelamin</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->jenis_kelamin ?? '-' }}
-                            </td>
+                            <td class="info-label">BPJSTK</td>
+                            <td class="info-value">{{ $pegawai->nomor_bpjstk ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>Agama</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->agama ?? '-' }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Status Perkawinan</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->status_perkawinan ?? '-' }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Alamat</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->alamat ?? '-' }}
-                            </td>
+                            <td class="info-label">NPWP</td>
+                            <td class="info-value">{{ $pegawai->nomor_npwp ?? '-' }}</td>
                         </tr>
                     </table>
-                </div>
 
 
-                {{-- ================= ORGANISASI ================= --}}
-                <div class="section-block">
+                    {{-- ORGANIZATION --}}
                     <div class="section-title">
                         Organisasi
                     </div>
 
-                    <table width="100%" cellpadding="0" cellspacing="0">
+                    <table class="info-table">
                         <tr>
-                            <td width="30%">Rumah Sakit</td>
-                            <td width="3%">:</td>
-                            <td width="67%">
-                                {{ $pegawai->nama_rumah_sakit ?? '-' }}
+                            <td class="info-label"> Rumah Sakit</td>
+                            <td class="info-value">{{ $pegawai->nama_rumah_sakit ?? '-' }}
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Unit</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->nama_unit ?? '-' }}
-                            </td>
+                            <td class="info-label"> Unit</td>
+                            <td class="info-value">{{ $pegawai->nama_unit ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>Jabatan</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->nama_jabatan ?? '-' }}
-                            </td>
+                            <td class="info-label"> Jabatan</td>
+                            <td class="info-value"> {{ $pegawai->nama_jabatan ?? '-' }} </td>
                         </tr>
 
                         <tr>
-                            <td>Fungsi</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->nama_fungsi ?? '-' }}
-                            </td>
+                            <td class="info-label"> Fungsi </td>
+                            <td class="info-value"> {{ $pegawai->nama_fungsi ?? '-' }} </td>
+                        </tr>
+
+                        <tr>
+                            <td class="info-label"> No. SK</td>
+                            <td class="info-value">{{ $pegawai->no_sk_struktur ?? '-' }}</td>
                         </tr>
                     </table>
-                </div>
 
 
-                {{-- ================= KONTAK DARURAT ================= --}}
-                <div class="section-block">
+                    {{-- CONTACT DARURAT --}}
                     <div class="section-title">
                         Kontak Darurat
                     </div>
 
-                    <table width="100%" cellpadding="0" cellspacing="0">
+                    <table class="info-table">
                         <tr>
-                            <td width="30%">Nama</td>
-                            <td width="3%">:</td>
-                            <td width="67%">
-                                {{ $pegawai->nama_kontak_darurat ?? '-' }}
-                            </td>
+                            <td class="info-label"> Nama </td>
+                            <td class="info-value"> {{ $pegawai->nama_kontak_darurat ?? '-' }} </td>
                         </tr>
 
                         <tr>
-                            <td>Hubungan</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->hubungan_kontak_darurat ?? '-' }}
-                            </td>
+                            <td class="info-label"> Nomor </td>
+                            <td class="info-value"> {{ $pegawai->nomor_kontak_darurat ?? '-' }}</td>
                         </tr>
 
                         <tr>
-                            <td>No. Telepon</td>
-                            <td>:</td>
-                            <td>
-                                {{ $pegawai->telepon_kontak_darurat ?? '-' }}
-                            </td>
+                            <td class="info-label">Hubungan</td>
+                            <td class="info-value"> {{ $pegawai->hubungan_kontak_darurat ?? '-' }}</td>
                         </tr>
                     </table>
-                </div>
+                </td>
 
 
-                {{-- ================= PENDIDIKAN ================= --}}
-                <div class="section-block">
-                    <div class="section-title">
-                        Pendidikan
-                    </div>
-
-                    @forelse($ijazah as $item)
-
-                        <div class="education-item">
-
-                            <div class="education-degree">
-                                {{ $item->jenjang ?? '-' }}
-                            </div>
-
-                            <div>
-                                {{ $item->nama_institusi ?? '-' }}
-                            </div>
-
-                            @if(!empty($item->jurusan))
-                                <div>
-                                    Jurusan: {{ $item->jurusan }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tahun_lulus))
-                                <div>
-                                    Tahun Lulus: {{ $item->tahun_lulus }}
-                                </div>
-                            @endif
-
+                <!-- RIGHT COLUMN -->
+                <td class="right-column">
+                    {{-- EDUCATION --}}
+                    @if (!empty($ijazah) && $ijazah->count() > 0)
+                        <div class="section-title">
+                            Pendidikan
                         </div>
 
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-                </div>
-
-
-                {{-- ================= PENGALAMAN KERJA ================= --}}
-                <div class="section-block">
-
-                    <div class="section-title">
-                        Pengalaman Kerja
-                    </div>
-
-                    @forelse($skjabatan as $item)
-
-                        <div class="experience">
-
-                            <strong>
-                                {{ $item->nama_jabatan ?? '-' }}
-                            </strong>
-
-                            @if(!empty($item->unit))
-                                <div>
-                                    {{ $item->unit }}
+                        @foreach ($ijazah as $item)
+                            <div class="education-item">
+                                {{-- Institusi --}}
+                                <div class="education-school">{{ $item->institusi ?? '-' }} </div>
+                                {{-- Pendidikan & Program Studi --}}
+                                <div class="education-degree">
+                                    {{ $item->pendidikan ?? '-' }} @if (!empty($item->prodi)) <span> - {{ $item->prodi }}
+                                    </span> @endif
                                 </div>
-                            @endif
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    Tahun Lulus :
+                                    @if (!empty($item->tahun_lulus)){{ \Carbon\Carbon::parse($item->tahun_lulus)->format('Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
 
-                            @if(!empty($item->tanggal_mulai) || !empty($item->tanggal_berakhir))
 
-                                            <div>
-                                                Periode:
-                                                {{ !empty($item->tanggal_mulai)
-                                ? \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y')
-                                : '-' }}
+                    {{-- Kontrak --}}
+                    @if (!empty($kontrak) && $kontrak->count() > 0)
+                        <div class="section-title">
+                            Pengalaman Kerja
+                        </div>
 
-                                                s/d
+                        @foreach ($kontrak as $item)
+                            <div class="education-item">
+                                {{-- Nomor Kontrak --}}
+                                <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
+                                {{-- Nama Status --}}
+                                <div class="education-degree">{{ $item->nomor_kontrak ?? '-' }} - {{ $item->status ?? '-' }}
+                                </div>
+                                {{-- Tahun --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
 
-                                                {{ !empty($item->tanggal_berakhir)
-                                ? \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d-m-Y')
-                                : 'Sekarang' }}
+                    {{-- SK Jabatan --}}
+                    @if (!empty($skjabatan) && $skjabatan->count() > 0)
+                        <div class="section-title">
+                            Jabatan
+                        </div>
+
+                        @foreach ($skjabatan as $item)
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">RSOJ Pertamina Royal Biringkanaya </div>
+                                {{-- Nama Jabatan --}}
+                                <div class="education-degree">{{ $item->nomor_sk ?? '-' }} - {{ $item->nama_jabatan ?? '-' }}
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
+
+                    {{-- STR dan SIP --}}
+                    @if (!empty($str) && $str->count() > 0)
+                        <div class="section-title">
+                            STR dan SIP
+                        </div>
+
+                        @foreach ($str as $item)
+                            <div class="education-item">
+                                {{-- Nomor SK --}}
+                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
+                                {{-- Nama Jabatan --}}
+                                <div class="education-degree">{{ $item->jenis ?? '-' }}
+                                </div>
+                                {{-- Tahun Lulus --}}
+                                <div class="education-year">
+                                    @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                    s.d @endif
+                                    @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+
+                    {{-- SPK dan RKK --}}
+                    @if (!empty($spk) && $spk->count() > 0)
+                        <div class="section-title">
+                            SPK dan RKK
+                        </div>
+
+                        @foreach ($spk as $item)
+                                            <div class="education-item">
+                                                {{-- Nomor SK --}}
+                                                <div class="education-school">{{ $item->nomor ?? '-' }} </div>
+                                                {{-- Nama Jabatan --}}
+                                                <!-- <div class="education-degree">{{ $item->jenis ?? '-' }} -->
                                             </div>
+                                            {{-- Tahun Lulus --}}
+                                            <div class="education-year">
+                                                @if (!empty($item->tanggal_mulai)){{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d/m/Y') }}
+                                                s.d @endif
+                                                @if (!empty($item->tanggal_berakhir)){{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d/m/Y') }}
+                                                @endif
+                                            </div>
+                            </div>
+                        @endforeach
+                    @endif
 
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-
-                </div>
-
-
-                {{-- ================= JABATAN ================= --}}
-                <div class="section-block">
-
-                    <div class="section-title">
-                        Jabatan
-                    </div>
-
-                    @forelse($skjabatan as $item)
-
-                        <div class="education-item">
-
-                            <strong>
-                                {{ $item->nama_jabatan ?? '-' }}
-                            </strong>
-
-                            @if(!empty($item->nomor_sk))
-                                <div>
-                                    No. SK: {{ $item->nomor_sk }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_mulai))
-                                <div>
-                                    Mulai:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_berakhir))
-                                <div>
-                                    Berakhir:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-
-                </div>
-
-
-                {{-- ================= STR DAN SIP ================= --}}
-                <div class="section-block">
-
-                    <div class="section-title">
-                        STR dan SIP
-                    </div>
-
-                    @forelse($str as $item)
-
-                        <div class="education-item">
-
-                            <strong>
-                                {{ $item->jenis ?? 'STR / SIP' }}
-                            </strong>
-
-                            @if(!empty($item->nomor))
-                                <div>
-                                    Nomor: {{ $item->nomor }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_terbit))
-                                <div>
-                                    Tanggal Terbit:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_terbit)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_berakhir))
-                                <div>
-                                    Berlaku Sampai:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-
-                </div>
-
-
-                {{-- ================= SPK DAN RKK ================= --}}
-                <div class="section-block">
-
-                    <div class="section-title">
-                        SPK dan RKK
-                    </div>
-
-                    @forelse($spk as $item)
-
-                        <div class="education-item">
-
-                            <strong>
-                                {{ $item->jenis ?? 'SPK / RKK' }}
-                            </strong>
-
-                            @if(!empty($item->nomor))
-                                <div>
-                                    Nomor: {{ $item->nomor }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_terbit))
-                                <div>
-                                    Tanggal Terbit:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_terbit)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tanggal_berakhir))
-                                <div>
-                                    Berlaku Sampai:
-                                    {{ \Carbon\Carbon::parse($item->tanggal_berakhir)->format('d-m-Y') }}
-                                </div>
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-
-                </div>
-
-
-                {{-- ================= SERTIFIKAT ================= --}}
-                <div class="section-block">
-
-                    <div class="section-title">
-                        Sertifikat
-                    </div>
-
-                    @forelse($sertifikat as $item)
-
-                        <div class="education-item">
-
-                            <strong>
-                                {{ $item->nama_sertifikat ?? '-' }}
-                            </strong>
-
-                            @if(!empty($item->penyelenggara))
-                                <div>
-                                    Penyelenggara:
-                                    {{ $item->penyelenggara }}
-                                </div>
-                            @endif
-
-                            @if(!empty($item->tahun_sertifikat))
-                                <div>
-                                    Tahun:
-                                    {{ $item->tahun_sertifikat }}
-                                </div>
-                            @endif
-
-                        </div>
-
-                    @empty
-
-                        <div>-</div>
-
-                    @endforelse
-
-                </div>
-
-            </div>
-
+    {{-- Sertificat --}}
+    @if (!empty($sertifikat) && $sertifikat->count() > 0)
+        <div class="section-title">
+            Sertifikat
         </div>
-        <!-- END MAIN CONTENT -->
+
+        @foreach ($sertifikat as $item)
+            <div class="education-item">
+                {{-- Nomor SK --}}
+                <div class="education-school">{{ $item->nama ?? '-' }} </div>
+                {{-- Nama Jabatan --}}
+                <div class="education-degree">{{ $item->jenis ?? '-' }} - {{ $item->penyelenggara ?? '-' }} </div>
+                {{-- Tahun --}}
+                <div class="education-year">{{ $item->tahun ?? '-' }} </div>
+            </div>
+        @endforeach
+    @endif
+
+    </td>
+    </tr>
+    </table>
 
 
-        <!-- SIGNATURE -->
-        <!-- <div class="signature">
+    <!-- SIGNATURE -->
+    <!-- <div class="signature">
             Makassar,
             {{ now()->format('d/m/Y') }}
 
