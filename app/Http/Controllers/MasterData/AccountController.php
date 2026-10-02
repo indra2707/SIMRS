@@ -144,10 +144,8 @@ class AccountController extends Controller
         ], 400);
     }
 
-    // Print PDF & Merge Dokumen
     public function printPdf($id)
     {
-        // Ambil data pegawai
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
             ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -166,18 +164,18 @@ class AccountController extends Controller
             ->where('pegawai.id', $id)
             ->first();
 
-        // Validasi data
         if (!$pegawai) {
             abort(404, 'Data pegawai tidak ditemukan.');
         }
 
-        // Ambil data lampiran
         $ijazah = DB::table('tbl_ijazah')->where('id_pegawai', $id)->orderByDesc('tahun_lulus')->get();
         $skjabatan = DB::table('tbl_sk_jabatan')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $kontrak = DB::table('tbl_kontrak')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $sertifikat = DB::table('tbl_sertifikat')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $str = DB::table('tbl_str_sip')->where('id_pegawai', $id)->orderByDesc('id')->get();
         $spk = DB::table('tbl_spk_rkk')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $mcu = DB::table('tbl_mcu')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $dokumenLainnya = DB::table('tbl_dokumen_lainnya')->where('id_pegawai', $id)->orderByDesc('id')->get();
 
         $html = view('master-data.account.print', [
             'pegawai' => $pegawai,
@@ -187,9 +185,10 @@ class AccountController extends Controller
             'sertifikat' => $sertifikat,
             'str' => $str,
             'spk' => $spk,
+            'mcu' => $mcu,
+            'dokumenLainnya' => $dokumenLainnya
         ])->render();
 
-        // Buat PDF menggunakan Dompdf
         $dompdf = new Dompdf();
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
@@ -197,36 +196,78 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        // Inisialisasi Merger Baru
         $merger = new Merger();
 
         $merger->addRaw($pdfOutput);
-
-
-        // Lampiran Ijazah
         foreach ($ijazah as $item) {
-            if (!empty($item->file_ijazah)) {
-                $path = public_path('uploads/pdf/ijazah/' . $item->file_ijazah);
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/ijazah/' . $item->lampiran);
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
             }
         }
 
-        // Lampiran SK Jabatan
         foreach ($skjabatan as $item) {
-            if (!empty($item->file_sk)) {
-                $path = public_path('uploads/pdf/sk/' . $item->file_sk);
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/jabatan/' . $item->lampiran);
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
             }
         }
 
-        // Lampiran Sertifikat
+        foreach ($kontrak as $item) {
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/kontrak/' . $item->lampiran);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        foreach ($str as $item) {
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/str/' . $item->lampiran);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        foreach ($spk as $item) {
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/legal/' . $item->lampiran);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
         foreach ($sertifikat as $item) {
-            if (!empty($item->file_sertifikat)) {
-                $path = public_path('uploads/pdf/sertifikat/' . $item->file_sertifikat);
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/images/' . $item->lampiran);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        foreach ($mcu as $item) {
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/mcu/' . $item->lampiran);
+                if (file_exists($path)) {
+                    $merger->addFile($path);
+                }
+            }
+        }
+
+        foreach ($dokumenLainnya as $item) {
+            if (!empty($item->lampiran)) {
+                $path = public_path('uploads/legal/' . $item->lampiran);
+                if (!file_exists($path)) {
+                    $path = public_path('uploads/surat/' . $item->lampiran);
+                }
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
@@ -242,4 +283,5 @@ class AccountController extends Controller
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
     }
+
 }
