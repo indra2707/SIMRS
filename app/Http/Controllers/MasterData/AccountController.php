@@ -160,71 +160,6 @@ class AccountController extends Controller
 
 
     // Print PDF
-    // public function printPdf($id)
-    // {
-    //     // Ambil data pegawai
-    //     $pegawai = DB::table('pegawai')
-    //         ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
-    //         ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
-    //         ->leftJoin('tbl_fungsi', 'tbl_fungsi.id', '=', 'pegawai.id_sub_fungsi')
-    //         ->leftJoin('tbl_bank', 'tbl_bank.id', '=', 'pegawai.id_bank')
-    //         ->leftJoin('tbl_unit', 'tbl_unit.id', '=', 'pegawai.id_unit')
-    //         ->select(
-    //             'pegawai.*',
-    //             'tbl_sk_struktur.no_sk as no_sk_struktur',
-    //             'tbl_jabatan.nama_jabatan as nama_jabatan',
-    //             'tbl_jabatan.unit as nama_rumah_sakit',
-    //             'tbl_fungsi.nama_fungsi as nama_fungsi',
-    //             'tbl_bank.nama_bank as nama_bank',
-    //             'tbl_unit.nama as nama_unit'
-    //         )
-    //         ->where('pegawai.id', $id)
-    //         ->first();
-
-    //     // Validasi data
-    //     if (!$pegawai) {
-    //         abort(404, 'Data pegawai tidak ditemukan.');
-    //     }
-
-    //     // Ambil seluruh data ijazah berdasarkan ID pegawai
-    //     $ijazah = DB::table('tbl_ijazah')->where('id_pegawai', $id)->orderByDesc('tahun_lulus')->get();
-    //     $skjabatan = DB::table('tbl_sk_jabatan')->where('id_pegawai', $id)->orderByDesc('id')->get();
-    //     $kontrak = DB::table('tbl_kontrak')->where('id_pegawai', $id)->orderByDesc('id')->get();
-    //     $sertifikat = DB::table('tbl_sertifikat')->where('id_pegawai', $id)->orderByDesc('id')->get();
-    //     $str = DB::table('tbl_str_sip')->where('id_pegawai', $id)->orderByDesc('id')->get();
-    //     $spk = DB::table('tbl_spk_rkk')->where('id_pegawai', $id)->orderByDesc('id')->get();
-
-    //     // Render Blade menjadi HTML
-    //     $html = view('master-data.account.print', [
-    //     'pegawai' => $pegawai, 
-    //     'ijazah' => $ijazah, 
-    //     'skjabatan' => $skjabatan, 
-    //     'kontrak' => $kontrak,
-    //     'sertifikat' => $sertifikat,
-    //     'str' => $str,
-    //     'spk' => $spk,
-    //     ])->render();
-
-    //     // Buat PDF menggunakan Dompdf
-    //     $dompdf = new Dompdf();
-
-    //     $dompdf->loadHtml($html);
-
-    //     // Ukuran kertas
-    //     $dompdf->setPaper('A4', 'portrait');
-
-    //     // Render PDF
-    //     $dompdf->render();
-
-    //     // Nama file
-    //     $namaFile = 'CV_' . $pegawai->nama_pekerja . '.pdf';
-
-    //     // Tampilkan PDF di browser
-    //     return $dompdf->stream($namaFile, [
-    //         'Attachment' => false
-    //     ]);
-    // }
-
     public function printPdf($id)
     {
         // Ambil data pegawai
@@ -251,153 +186,218 @@ class AccountController extends Controller
             abort(404, 'Data pegawai tidak ditemukan.');
         }
 
-        // Ambil data ijazah
-        $ijazah = DB::table('tbl_ijazah')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('tahun_lulus')
-            ->get();
+        // Ambil seluruh data ijazah berdasarkan ID pegawai
+        $ijazah = DB::table('tbl_ijazah')->where('id_pegawai', $id)->orderByDesc('tahun_lulus')->get();
+        $skjabatan = DB::table('tbl_sk_jabatan')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $kontrak = DB::table('tbl_kontrak')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $sertifikat = DB::table('tbl_sertifikat')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $str = DB::table('tbl_str_sip')->where('id_pegawai', $id)->orderByDesc('id')->get();
+        $spk = DB::table('tbl_spk_rkk')->where('id_pegawai', $id)->orderByDesc('id')->get();
 
-        // Ambil data SK Jabatan
-        $skjabatan = DB::table('tbl_sk_jabatan')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('id')
-            ->get();
-
-        // Ambil data kontrak
-        $kontrak = DB::table('tbl_kontrak')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('id')
-            ->get();
-
-        // Ambil data sertifikat
-        $sertifikat = DB::table('tbl_sertifikat')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('id')
-            ->get();
-
-        // Ambil data STR/SIP
-        $str = DB::table('tbl_str_sip')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('id')
-            ->get();
-
-        // Ambil data SPK/RKK
-        $spk = DB::table('tbl_spk_rkk')
-            ->where('id_pegawai', $id)
-            ->orderByDesc('id')
-            ->get();
-
-
-        // 1. RENDER CV UTAMA
+        // Render Blade menjadi HTML
         $html = view('master-data.account.print', [
-            'pegawai' => $pegawai,
-            'ijazah' => $ijazah,
-            'skjabatan' => $skjabatan,
-            'kontrak' => $kontrak,
-            'sertifikat' => $sertifikat,
-            'str' => $str,
-            'spk' => $spk,
+        'pegawai' => $pegawai, 
+        'ijazah' => $ijazah, 
+        'skjabatan' => $skjabatan, 
+        'kontrak' => $kontrak,
+        'sertifikat' => $sertifikat,
+        'str' => $str,
+        'spk' => $spk,
         ])->render();
 
-
-
-        // 2. BUAT PDF CV
+        // Buat PDF menggunakan Dompdf
         $dompdf = new Dompdf();
+
         $dompdf->loadHtml($html);
+
+        // Ukuran kertas
         $dompdf->setPaper('A4', 'portrait');
+
+        // Render PDF
         $dompdf->render();
-        $cvPdf = $dompdf->output();
 
-
-        // 3. SIMPAN PDF CV SEMENTARA
-        $tempDir = storage_path('app/temp_cv');
-        if (!file_exists($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $tempCv = $tempDir . '/CV_' . $id . '.pdf';
-        file_put_contents($tempCv, $cvPdf);
-
-
-        // 4. MERGE PDF
-        $merger = new Merger();
-        // Tambahkan CV utama
-        $merger->addFile($tempCv);
-
-
-
-        // LAMPIRAN IJAZAH
-        foreach ($ijazah as $item) {
-
-            if (empty($item->lampiran)) {
-                continue;
-            }
-
-            $lampiranPath = public_path(
-                'uploads/ijazah/' . $item->lampiran
-            );
-
-            // Pastikan file ada
-            if (!file_exists($lampiranPath)) {
-                continue;
-            }
-
-            // Hanya PDF
-            if (
-                strtolower(
-                    pathinfo($lampiranPath, PATHINFO_EXTENSION)
-                ) !== 'pdf'
-            ) {
-                continue;
-            }
-
-            $merger->addFile($lampiranPath);
-        }
-
-
-        foreach ($str as $item) {
-
-            if (empty($item->lampiran)) {
-                continue;
-            }
-
-            $lampiranPath = public_path(
-                'uploads/str/' . $item->lampiran
-            );
-
-            // Pastikan file ada
-            if (!file_exists($lampiranPath)) {
-                continue;
-            }
-
-            // Hanya PDF
-            if (
-                strtolower(
-                    pathinfo($lampiranPath, PATHINFO_EXTENSION)
-                ) !== 'pdf'
-            ) {
-                continue;
-            }
-
-            $merger->addFile($lampiranPath);
-        }
-
-        // 6. HASIL PDF GABUNGAN
-        $finalPdf = $merger->merge();
-
-        // 7. HAPUS FILE SEMENTARA
-        if (file_exists($tempCv)) {
-            unlink($tempCv);
-        }
-
-        // 8. TAMPILKAN DI BROWSER
+        // Nama file
         $namaFile = 'CV_' . $pegawai->nama_pekerja . '.pdf';
-        return response($finalPdf)
-            ->header('Content-Type', 'application/pdf')
-            ->header(
-                'Content-Disposition',
-                'inline; filename="' . $namaFile . '"'
-            );
+
+        // Tampilkan PDF di browser
+        return $dompdf->stream($namaFile, [
+            'Attachment' => false
+        ]);
     }
+
+    // public function printPdf($id)
+    // {
+    //     // Ambil data pegawai
+    //     $pegawai = DB::table('pegawai')
+    //         ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
+    //         ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
+    //         ->leftJoin('tbl_fungsi', 'tbl_fungsi.id', '=', 'pegawai.id_sub_fungsi')
+    //         ->leftJoin('tbl_bank', 'tbl_bank.id', '=', 'pegawai.id_bank')
+    //         ->leftJoin('tbl_unit', 'tbl_unit.id', '=', 'pegawai.id_unit')
+    //         ->select(
+    //             'pegawai.*',
+    //             'tbl_sk_struktur.no_sk as no_sk_struktur',
+    //             'tbl_jabatan.nama_jabatan as nama_jabatan',
+    //             'tbl_jabatan.unit as nama_rumah_sakit',
+    //             'tbl_fungsi.nama_fungsi as nama_fungsi',
+    //             'tbl_bank.nama_bank as nama_bank',
+    //             'tbl_unit.nama as nama_unit'
+    //         )
+    //         ->where('pegawai.id', $id)
+    //         ->first();
+
+    //     // Validasi data
+    //     if (!$pegawai) {
+    //         abort(404, 'Data pegawai tidak ditemukan.');
+    //     }
+
+    //     // Ambil data ijazah
+    //     $ijazah = DB::table('tbl_ijazah')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('tahun_lulus')
+    //         ->get();
+
+    //     // Ambil data SK Jabatan
+    //     $skjabatan = DB::table('tbl_sk_jabatan')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('id')
+    //         ->get();
+
+    //     // Ambil data kontrak
+    //     $kontrak = DB::table('tbl_kontrak')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('id')
+    //         ->get();
+
+    //     // Ambil data sertifikat
+    //     $sertifikat = DB::table('tbl_sertifikat')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('id')
+    //         ->get();
+
+    //     // Ambil data STR/SIP
+    //     $str = DB::table('tbl_str_sip')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('id')
+    //         ->get();
+
+    //     // Ambil data SPK/RKK
+    //     $spk = DB::table('tbl_spk_rkk')
+    //         ->where('id_pegawai', $id)
+    //         ->orderByDesc('id')
+    //         ->get();
+
+
+    //     // 1. RENDER CV UTAMA
+    //     $html = view('master-data.account.print', [
+    //         'pegawai' => $pegawai,
+    //         'ijazah' => $ijazah,
+    //         'skjabatan' => $skjabatan,
+    //         'kontrak' => $kontrak,
+    //         'sertifikat' => $sertifikat,
+    //         'str' => $str,
+    //         'spk' => $spk,
+    //     ])->render();
+
+
+
+    //     // 2. BUAT PDF CV
+    //     $dompdf = new Dompdf();
+    //     $dompdf->loadHtml($html);
+    //     $dompdf->setPaper('A4', 'portrait');
+    //     $dompdf->render();
+    //     $cvPdf = $dompdf->output();
+
+
+    //     // 3. SIMPAN PDF CV SEMENTARA
+    //     $tempDir = storage_path('app/temp_cv');
+    //     if (!file_exists($tempDir)) {
+    //         mkdir($tempDir, 0755, true);
+    //     }
+
+    //     $tempCv = $tempDir . '/CV_' . $id . '.pdf';
+    //     file_put_contents($tempCv, $cvPdf);
+
+
+    //     // 4. MERGE PDF
+    //     $merger = new Merger();
+    //     // Tambahkan CV utama
+    //     $merger->addFile($tempCv);
+
+
+
+    //     // LAMPIRAN IJAZAH
+    //     foreach ($ijazah as $item) {
+
+    //         if (empty($item->lampiran)) {
+    //             continue;
+    //         }
+
+    //         $lampiranPath = public_path(
+    //             'uploads/ijazah/' . $item->lampiran
+    //         );
+
+    //         // Pastikan file ada
+    //         if (!file_exists($lampiranPath)) {
+    //             continue;
+    //         }
+
+    //         // Hanya PDF
+    //         if (
+    //             strtolower(
+    //                 pathinfo($lampiranPath, PATHINFO_EXTENSION)
+    //             ) !== 'pdf'
+    //         ) {
+    //             continue;
+    //         }
+
+    //         $merger->addFile($lampiranPath);
+    //     }
+
+
+    //     foreach ($str as $item) {
+
+    //         if (empty($item->lampiran)) {
+    //             continue;
+    //         }
+
+    //         $lampiranPath = public_path(
+    //             'uploads/str/' . $item->lampiran
+    //         );
+
+    //         // Pastikan file ada
+    //         if (!file_exists($lampiranPath)) {
+    //             continue;
+    //         }
+
+    //         // Hanya PDF
+    //         if (
+    //             strtolower(
+    //                 pathinfo($lampiranPath, PATHINFO_EXTENSION)
+    //             ) !== 'pdf'
+    //         ) {
+    //             continue;
+    //         }
+
+    //         $merger->addFile($lampiranPath);
+    //     }
+
+    //     // 6. HASIL PDF GABUNGAN
+    //     $finalPdf = $merger->merge();
+
+    //     // 7. HAPUS FILE SEMENTARA
+    //     if (file_exists($tempCv)) {
+    //         unlink($tempCv);
+    //     }
+
+    //     // 8. TAMPILKAN DI BROWSER
+    //     $namaFile = 'CV_' . $pegawai->nama_pekerja . '.pdf';
+    //     return response($finalPdf)
+    //         ->header('Content-Type', 'application/pdf')
+    //         ->header(
+    //             'Content-Disposition',
+    //             'inline; filename="' . $namaFile . '"'
+    //         );
+    // }
 
 }
