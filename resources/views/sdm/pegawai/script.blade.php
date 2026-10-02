@@ -523,6 +523,13 @@
                 },
 
                 // ========== FUNCTION & GRADE ==========
+                 {
+                    field: 'nama_unit',
+                    title: 'Unit',
+                    sortable: true,
+                    width: 120,
+                    visible: false
+                },
                 {
                     field: 'fungsi',
                     title: 'Fungsi',
@@ -1111,8 +1118,9 @@
             '<i class="icon-more-alt"></i>',
             '</button>',
             '<div class="dropdown-menu dropdown-menu-end" aria-labelledby="setings-menu" style="">',
-            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a></a>',
-            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a></a>',
+            '<a class="dropdown-item btn-print" href="javascript:void(0)"><i class="fa fa-print text-success"></i> Print CV</a>',
+            '<a class="dropdown-item btn-edit" href="javascript:void(0)"><i class="fa fa-edit text-primary"></i> Edit</a>',
+            '<a class="dropdown-item btn-delete" href="javascript:void(0)"><i class="fa fa-trash text-danger"></i> Hapus</a>',
             '</div>',
             '</div>',
         ].join("");
@@ -1332,6 +1340,11 @@
                     });
                 }
             });
+        },
+        'click .btn-print': function (e, value, row, index) {
+            var url = "{{ route('master-data.account.printpdf', ':id') }}";
+            url = url.replace(':id', row.id);
+            window.open(url, '_blank');
         }
     };
 
