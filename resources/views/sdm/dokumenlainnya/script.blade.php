@@ -149,6 +149,10 @@
                     },
                 },
                 {
+                    field: 'nama_pekerja',
+                    sortable: true,
+                },
+                {
                     // width: '50%',
                     field: 'jenis_dokumen_lainnya',
                     sortable: true,
