@@ -1230,7 +1230,7 @@
                         <div class="mb-2 row">
                             <label class="col-sm-2 col-form-label" for="catatan_dokumen">Catatan</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="catatan_dokumen" name="catatan_dokumen_lainnya" rows="3" required
+                                <textarea class="form-control" id="catatan_dokumen" name="catatan_dokumen_lainnya" rows="3"
                                     placeholder="Catatan..."></textarea>
                             </div>
                         </div>
