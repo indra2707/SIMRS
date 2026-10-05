@@ -458,6 +458,7 @@
                             <div class="col-sm-10">
                                 <select class="form-select select2" id="pendidikan" name="pendidikan" required>
                                     <option value=""></option>
+                                    <option value="SMA/SMK">SMA/SMK</option>
                                     <option value="D3">D3</option>
                                     <option value="D4">D4</option>
                                     <option value="S1">S1</option>
