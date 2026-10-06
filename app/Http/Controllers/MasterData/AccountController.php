@@ -238,7 +238,7 @@ class AccountController extends Controller
 
         foreach ($spk as $item) {
             if (!empty($item->lampiran)) {
-                $path = public_path('uploads/legal/' . $item->lampiran);
+                $path = public_path('uploads/spk/' . $item->lampiran);
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
@@ -247,7 +247,7 @@ class AccountController extends Controller
 
         foreach ($sertifikat as $item) {
             if (!empty($item->lampiran)) {
-                $path = public_path('uploads/images/' . $item->lampiran);
+                $path = public_path('uploads/sertifikat/' . $item->lampiran);
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
@@ -265,10 +265,7 @@ class AccountController extends Controller
 
         foreach ($dokumenLainnya as $item) {
             if (!empty($item->lampiran)) {
-                $path = public_path('uploads/legal/' . $item->lampiran);
-                if (!file_exists($path)) {
-                    $path = public_path('uploads/surat/' . $item->lampiran);
-                }
+                $path = public_path('uploads/dokumen_lainnya/' . $item->lampiran);
                 if (file_exists($path)) {
                     $merger->addFile($path);
                 }
