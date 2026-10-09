@@ -250,3 +250,4 @@ class AccountController extends Controller
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
 }
+}
