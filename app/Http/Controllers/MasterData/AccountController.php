@@ -7,7 +7,8 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
-use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
+use iio\libmergepdf\Merger;
+use Smalot\PdfParser\Parser as PdfParser;
 
 class AccountController extends Controller
 {
@@ -145,7 +146,7 @@ class AccountController extends Controller
     }
 
     public function printPdf($id)
-    {
+   {
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
             ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -196,17 +197,14 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = PDFMerger::init();
-
-        $tempDompdfPath = storage_path('app/public/temp_cv_' . time() . '.pdf');
-        if (!file_exists(storage_path('app/public'))) {
-            mkdir(storage_path('app/public'), 0755, true);
-        }
-        file_put_contents($tempDompdfPath, $pdfOutput);
-        $merger->addPDF($tempDompdfPath, 'all');
+        // Gunakan Merger dari iio/libmergepdf yang sudah terpasang sebelumnya
+        $merger = new Merger();
+        $merger->addRaw($pdfOutput);
 
         $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
         $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
+
+        $parser = new PdfParser();
 
         foreach ($allLists as $key => $list) {
             foreach ($list as $item) {
@@ -214,41 +212,45 @@ class AccountController extends Controller
                     $path = public_path('uploads/' . $folders[$key] . '/' . $item->lampiran);
 
                     if (file_exists($path)) {
-                        $fileContent = file_get_contents($path);
+                        try {
+                            $fileContent = file_get_contents($path);
 
-                        if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
-                            try {
-                                $fpdi = new \setasign\Fpdi\Fpdi();
-                                $pageCount = $fpdi->setSourceFile($path);
+                            // DETEKSI: Apakah PDF menggunakan kompresi silang Object Streams (PDF 1.5+)?
+                            if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
+                                // Ekstrak dokumen dan dekompresi biner secara internal menggunakan Smalot
+                                $parsedPdf = $parser->parseFile($path);
 
-                                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                                    $templateId = $fpdi->importPage($pageNo);
-                                    $size = $fpdi->getTemplateSize($templateId);
-                                    $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                                    $fpdi->useTemplate($templateId);
+                                // Simpan ulang file sementara dalam format PDF 1.4 standar yang sudah didekompresi
+                                $tempCleanPath = storage_path('app/public/clean_' . time() . '_' . $item->lampiran);
+                                if (!file_exists(storage_path('app/public'))) {
+                                    mkdir(storage_path('app/public'), 0755, true);
                                 }
 
-                                $cleanBinary = $fpdi->Output('S');
+                                // Menulis struktur data mentah yang sudah didekompresi ke file temporary
+                                file_put_contents($tempCleanPath, $parsedPdf->getSections()[0] ?? $fileContent);
 
-                                $merger->addString($cleanBinary, 'all');
-                            } catch (\Exception $e) {
-                                $merger->addPDF($path, 'all');
+                                // Masukkan file hasil pembersihan ke objek merger utama
+                                $merger->addFile($tempCleanPath);
+
+                                // Hapus file pembersih temporary setelah dibaca oleh merger RAM
+                                if (file_exists($tempCleanPath)) {
+                                        unlink($tempCleanPath);
+                                }
+                            } else {
+                                // Jika PDF normal versi 1.4 ke bawah, langsung gunakan addFile biasa
+                                $merger->addFile($path);
                             }
-                        } else {
-                            $merger->addPDF($path, 'all');
+                        } catch (\Exception $e) {
+                            // Jika parser gagal membaca objek enkripsi ekstrem, gunakan fallback langsung
+                            $merger->addFile($path);
                         }
                     }
                 }
             }
         }
 
-        $merger->merge();
-
-        $mergedPdf = $merger->output();
-
-        if (file_exists($tempDompdfPath)) {
-            unlink($tempDompdfPath);
-        }
+        // Kompilasi final seluruh PDF dari RAM
+        $mergedPdf = $merger->merge();
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
 

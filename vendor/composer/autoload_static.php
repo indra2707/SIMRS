@@ -49,10 +49,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         array (
             'voku\\' => 5,
         ),
-        's' => 
-        array (
-            'setasign\\Fpdi\\' => 14,
-        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -60,7 +56,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'W' => 
         array (
             'Whoops\\' => 7,
-            'Webklex\\PDFMerger\\' => 18,
         ),
         'T' => 
         array (
@@ -231,10 +226,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         array (
             0 => __DIR__ . '/..' . '/voku/portable-ascii/src/voku',
         ),
-        'setasign\\Fpdi\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/setasign/fpdi/src',
-        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
@@ -242,10 +233,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Whoops\\' => 
         array (
             0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
-        ),
-        'Webklex\\PDFMerger\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -727,6 +714,13 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
     );
 
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'Smalot\\PdfParser\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/smalot/pdfparser/src',
+            ),
+        ),
         'H' => 
         array (
             'HTMLPurifier' => 
@@ -1523,7 +1517,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Evenement\\EventEmitter' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitter.php',
         'Evenement\\EventEmitterInterface' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitterInterface.php',
         'Evenement\\EventEmitterTrait' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitterTrait.php',
-        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
         'Facade\\IgnitionContracts\\BaseSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/BaseSolution.php',
         'Facade\\IgnitionContracts\\HasSolutionsForThrowable' => __DIR__ . '/..' . '/facade/ignition-contracts/src/HasSolutionsForThrowable.php',
         'Facade\\IgnitionContracts\\ProvidesSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/ProvidesSolution.php',
@@ -7610,6 +7603,52 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'SimpleSoftwareIO\\QrCode\\Image' => __DIR__ . '/..' . '/simplesoftwareio/simple-qrcode/src/Image.php',
         'SimpleSoftwareIO\\QrCode\\ImageMerge' => __DIR__ . '/..' . '/simplesoftwareio/simple-qrcode/src/ImageMerge.php',
         'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider' => __DIR__ . '/..' . '/simplesoftwareio/simple-qrcode/src/QrCodeServiceProvider.php',
+        'Smalot\\PdfParser\\Config' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Config.php',
+        'Smalot\\PdfParser\\Document' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Document.php',
+        'Smalot\\PdfParser\\Element' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element.php',
+        'Smalot\\PdfParser\\Element\\ElementArray' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementArray.php',
+        'Smalot\\PdfParser\\Element\\ElementBoolean' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementBoolean.php',
+        'Smalot\\PdfParser\\Element\\ElementDate' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementDate.php',
+        'Smalot\\PdfParser\\Element\\ElementHexa' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementHexa.php',
+        'Smalot\\PdfParser\\Element\\ElementMissing' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementMissing.php',
+        'Smalot\\PdfParser\\Element\\ElementName' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementName.php',
+        'Smalot\\PdfParser\\Element\\ElementNull' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementNull.php',
+        'Smalot\\PdfParser\\Element\\ElementNumeric' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementNumeric.php',
+        'Smalot\\PdfParser\\Element\\ElementString' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementString.php',
+        'Smalot\\PdfParser\\Element\\ElementStruct' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementStruct.php',
+        'Smalot\\PdfParser\\Element\\ElementXRef' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Element/ElementXRef.php',
+        'Smalot\\PdfParser\\Encoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding.php',
+        'Smalot\\PdfParser\\Encoding\\AbstractEncoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/AbstractEncoding.php',
+        'Smalot\\PdfParser\\Encoding\\EncodingLocator' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/EncodingLocator.php',
+        'Smalot\\PdfParser\\Encoding\\ISOLatin1Encoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/ISOLatin1Encoding.php',
+        'Smalot\\PdfParser\\Encoding\\ISOLatin9Encoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/ISOLatin9Encoding.php',
+        'Smalot\\PdfParser\\Encoding\\MacRomanEncoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/MacRomanEncoding.php',
+        'Smalot\\PdfParser\\Encoding\\PDFDocEncoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/PDFDocEncoding.php',
+        'Smalot\\PdfParser\\Encoding\\PostScriptGlyphs' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/PostScriptGlyphs.php',
+        'Smalot\\PdfParser\\Encoding\\StandardEncoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/StandardEncoding.php',
+        'Smalot\\PdfParser\\Encoding\\WinAnsiEncoding' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Encoding/WinAnsiEncoding.php',
+        'Smalot\\PdfParser\\Exception\\EmptyPdfException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/EmptyPdfException.php',
+        'Smalot\\PdfParser\\Exception\\EncodingNotFoundException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/EncodingNotFoundException.php',
+        'Smalot\\PdfParser\\Exception\\InvalidDictionaryObjectException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/InvalidDictionaryObjectException.php',
+        'Smalot\\PdfParser\\Exception\\MissingCatalogException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/MissingCatalogException.php',
+        'Smalot\\PdfParser\\Exception\\MissingPdfHeaderException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/MissingPdfHeaderException.php',
+        'Smalot\\PdfParser\\Exception\\NotImplementedException' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Exception/NotImplementedException.php',
+        'Smalot\\PdfParser\\Font' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font.php',
+        'Smalot\\PdfParser\\Font\\FontCIDFontType0' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontCIDFontType0.php',
+        'Smalot\\PdfParser\\Font\\FontCIDFontType2' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontCIDFontType2.php',
+        'Smalot\\PdfParser\\Font\\FontTrueType' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontTrueType.php',
+        'Smalot\\PdfParser\\Font\\FontType0' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontType0.php',
+        'Smalot\\PdfParser\\Font\\FontType1' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontType1.php',
+        'Smalot\\PdfParser\\Font\\FontType3' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Font/FontType3.php',
+        'Smalot\\PdfParser\\Header' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Header.php',
+        'Smalot\\PdfParser\\PDFObject' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/PDFObject.php',
+        'Smalot\\PdfParser\\Page' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Page.php',
+        'Smalot\\PdfParser\\Pages' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Pages.php',
+        'Smalot\\PdfParser\\Parser' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/Parser.php',
+        'Smalot\\PdfParser\\RawData\\FilterHelper' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/RawData/FilterHelper.php',
+        'Smalot\\PdfParser\\RawData\\RawDataParser' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/RawData/RawDataParser.php',
+        'Smalot\\PdfParser\\XObject\\Form' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/XObject/Form.php',
+        'Smalot\\PdfParser\\XObject\\Image' => __DIR__ . '/..' . '/smalot/pdfparser/src/Smalot/PdfParser/XObject/Image.php',
         'Spatie\\Backtrace\\Arguments\\ArgumentReducers' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ArgumentReducers.php',
         'Spatie\\Backtrace\\Arguments\\ProvidedArgument' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ProvidedArgument.php',
         'Spatie\\Backtrace\\Arguments\\ReduceArgumentPayloadAction' => __DIR__ . '/..' . '/spatie/backtrace/src/Arguments/ReduceArgumentPayloadAction.php',
@@ -8906,9 +8945,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
-        'Webklex\\PDFMerger\\Facades\\PDFMergerFacade' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/Facades/PDFMergerFacade.php',
-        'Webklex\\PDFMerger\\PDFMerger' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/PDFMerger.php',
-        'Webklex\\PDFMerger\\Providers\\PDFMergerServiceProvider' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/Providers/PDFMergerServiceProvider.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',
         'Whoops\\Exception\\Frame' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Frame.php',
@@ -8957,57 +8993,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'ZipStream\\Zip64\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zip64/ExtendedInformationExtraField.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
         'ZipStream\\Zs\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zs/ExtendedInformationExtraField.php',
-        'setasign\\Fpdi\\FpdfTpl' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTpl.php',
-        'setasign\\Fpdi\\FpdfTplTrait' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTplTrait.php',
-        'setasign\\Fpdi\\FpdfTrait' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTrait.php',
-        'setasign\\Fpdi\\Fpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/Fpdi.php',
-        'setasign\\Fpdi\\FpdiException' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdiException.php',
-        'setasign\\Fpdi\\FpdiTrait' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdiTrait.php',
-        'setasign\\Fpdi\\GraphicsState' => __DIR__ . '/..' . '/setasign/fpdi/src/GraphicsState.php',
-        'setasign\\Fpdi\\Math\\Matrix' => __DIR__ . '/..' . '/setasign/fpdi/src/Math/Matrix.php',
-        'setasign\\Fpdi\\Math\\Vector' => __DIR__ . '/..' . '/setasign/fpdi/src/Math/Vector.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\AbstractReader' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/AbstractReader.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\CrossReference' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/CrossReference.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\CrossReferenceException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/CrossReferenceException.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\FixedReader' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/FixedReader.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\LineReader' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/LineReader.php',
-        'setasign\\Fpdi\\PdfParser\\CrossReference\\ReaderInterface' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/CrossReference/ReaderInterface.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\Ascii85' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/Ascii85.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\Ascii85Exception' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/Ascii85Exception.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\AsciiHex' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/AsciiHex.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\FilterException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/FilterException.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\FilterInterface' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/FilterInterface.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\Flate' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/Flate.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\FlateException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/FlateException.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\Lzw' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/Lzw.php',
-        'setasign\\Fpdi\\PdfParser\\Filter\\LzwException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Filter/LzwException.php',
-        'setasign\\Fpdi\\PdfParser\\PdfParser' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/PdfParser.php',
-        'setasign\\Fpdi\\PdfParser\\PdfParserException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/PdfParserException.php',
-        'setasign\\Fpdi\\PdfParser\\StreamReader' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/StreamReader.php',
-        'setasign\\Fpdi\\PdfParser\\Tokenizer' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Tokenizer.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfArray' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfArray.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfBoolean' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfBoolean.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfDictionary' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfDictionary.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfHexString' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfHexString.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfIndirectObject' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfIndirectObject.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfIndirectObjectReference' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfIndirectObjectReference.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfName' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfName.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfNull' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfNull.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfNumeric' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfNumeric.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfStream' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfStream.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfString' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfString.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfToken' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfToken.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfType' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfType.php',
-        'setasign\\Fpdi\\PdfParser\\Type\\PdfTypeException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfParser/Type/PdfTypeException.php',
-        'setasign\\Fpdi\\PdfReader\\DataStructure\\Rectangle' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfReader/DataStructure/Rectangle.php',
-        'setasign\\Fpdi\\PdfReader\\Page' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfReader/Page.php',
-        'setasign\\Fpdi\\PdfReader\\PageBoundaries' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfReader/PageBoundaries.php',
-        'setasign\\Fpdi\\PdfReader\\PdfReader' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfReader/PdfReader.php',
-        'setasign\\Fpdi\\PdfReader\\PdfReaderException' => __DIR__ . '/..' . '/setasign/fpdi/src/PdfReader/PdfReaderException.php',
-        'setasign\\Fpdi\\TcpdfFpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/TcpdfFpdi.php',
-        'setasign\\Fpdi\\Tcpdf\\Fpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/Tcpdf/Fpdi.php',
-        'setasign\\Fpdi\\Tfpdf\\FpdfTpl' => __DIR__ . '/..' . '/setasign/fpdi/src/Tfpdf/FpdfTpl.php',
-        'setasign\\Fpdi\\Tfpdf\\Fpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/Tfpdf/Fpdi.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
     );
 
