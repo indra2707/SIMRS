@@ -35,8 +35,7 @@ class ChatController extends Controller
                 ], 404);
             }
 
-            // ✅ TIDAK ADA AUTHORIZATION CHECK - biarkan simple
-            // User frontend sudah difilter, jadi hanya lihat helpdesk mereka sendiri
+           
 
             // Load messages dengan relasi user
             $messages = Message::with('user')

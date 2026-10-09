@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
 use iio\libmergepdf\Merger;
-use iio\libmergepdf\Driver\TcpdiDriver;
+// hapus Driver\TcpdiDriver karena menyebabkan error array offset pada PHP modern
 
 class AccountController extends Controller
 {
@@ -197,9 +197,11 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = new Merger(new TcpdiDriver()); 
+        // Menggunakan Driver Default bawaan library iio/libmergepdf agar kompatibel dengan PHP 8
+        $merger = new Merger();
 
         $merger->addRaw($pdfOutput);
+
         foreach ($ijazah as $item) {
             if (!empty($item->lampiran)) {
                 $path = public_path('uploads/ijazah/' . $item->lampiran);
@@ -275,11 +277,10 @@ class AccountController extends Controller
         $mergedPdf = $merger->merge();
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
-
         return response($mergedPdf, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
     }
-
 }
+    
