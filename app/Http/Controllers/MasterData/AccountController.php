@@ -197,7 +197,6 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        // Menggunakan library awal iio/libmergepdf Anda
         $merger = new Merger();
         $merger->addRaw($pdfOutput);
 
@@ -213,52 +212,25 @@ class AccountController extends Controller
                         try {
                             $fileContent = file_get_contents($path);
 
-                            // DETEKSI: Apakah PDF menggunakan kompresi Object Streams (PDF 1.5+)?
                             if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
 
-                                // CARA BARU: Dekompresi biner menggunakan Parser internal Smalot secara presisi
-                                $parser = new \Smalot\PdfParser\Parser();
-                                $parsedPdf = $parser->parseFile($path);
+                                $fpdi = new \setasign\Fpdi\Fpdi();
+                                $pageCount = $fpdi->setSourceFile($path);
 
-                                // Buat file flat terdekompresi sementara di lokal storage
-                                $tempCleanPath = storage_path('app/public/clean_' . time() . '_' . $item->lampiran);
-                                if (!file_exists(storage_path('app/public'))) {
-                                    mkdir(storage_path('app/public'), 0755, true);
+                                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                                    $templateId = $fpdi->importPage($pageNo);
+                                    $size = $fpdi->getTemplateSize($templateId);
+                                    $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                                    $fpdi->useTemplate($templateId);
                                 }
 
-                                // Mengambil data dictionary terdekompresi, jika gagal gunakan file asli dengan fail-safe
-                                $contentClean = '';
-                                foreach ($parsedPdf->getPages() as $page) {
-                                    $contentClean .= $page->getContent();
-                                }
+                                $cleanBinary = $fpdi->Output('S');
 
-                                // Jika text konten berhasil diurai, kita buat dokumen 1.4 dasar baru
-                                if (!empty($contentClean)) {
-                                    // Gunakan FPDF/FPDI murni untuk menyusun ulang biner dasar halaman
-                                    $fpdi = new \setasign\Fpdi\Fpdi();
-                                    $pageCount = $fpdi->setSourceFile($path);
-                                    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                                        $templateId = $fpdi->importPage($pageNo);
-                                        $size = $fpdi->getTemplateSize($templateId);
-                                        $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                                        $fpdi->useTemplate($templateId);
-                                    }
-                                    $cleanBinary = $fpdi->Output('S');
-                                    file_put_contents($tempCleanPath, $cleanBinary);
-                                } else {
-                                    file_put_contents($tempCleanPath, $fileContent);
-                                }
-
-                                $merger->addFile($tempCleanPath);
-
-                                if (file_exists($tempCleanPath)) {
-                                    unlink($tempCleanPath);
-                                }
+                                $merger->addRaw($cleanBinary);
                             } else {
                                 $merger->addFile($path);
                             }
                         } catch (\Exception $e) {
-                            // Fallback jika terjadi error enkripsi ekstrim
                             $merger->addFile($path);
                         }
                     }
