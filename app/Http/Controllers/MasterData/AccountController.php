@@ -197,8 +197,23 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = new Merger();
-        $merger->addRaw($pdfOutput);
+        $tempDompdfPath = storage_path('app/public/temp_main_cv_' . time() . '.pdf');
+        if (!file_exists(storage_path('app/public'))) {
+            mkdir(storage_path('app/public'), 0755, true);
+        }
+        file_put_contents($tempDompdfPath, $pdfOutput);
+
+        $pdf = new \setasign\Fpdi\Tcpdf\Fpdi();
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        $pageCount = $pdf->setSourceFile($tempDompdfPath);
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $templateId = $pdf->importPage($pageNo);
+            $size = $pdf->getTemplateSize($templateId);
+            $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+            $pdf->useTemplate($templateId);
+        }
 
         $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
         $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
@@ -210,38 +225,28 @@ class AccountController extends Controller
 
                     if (file_exists($path)) {
                         try {
-                            $fileContent = file_get_contents($path);
+                            $pageCount = $pdf->setSourceFile($path);
 
-                            if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
+                            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                                $templateId = $pdf->importPage($pageNo);
+                                $size = $pdf->getTemplateSize($templateId);
 
-                                if (class_exists('\FPDF')) {
-                                    $fpdi = new \setasign\Fpdi\Fpdi('P', 'mm', 'A4');
-                                    $pageCount = $fpdi->setSourceFile($path);
-
-                                    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                                        $templateId = $fpdi->importPage($pageNo);
-                                        $size = $fpdi->getTemplateSize($templateId);
-                                        $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                                        $fpdi->useTemplate($templateId);
-                                    }
-
-                                    $cleanBinary = $fpdi->Output('S');
-                                    $merger->addRaw($cleanBinary);
-                                } else {
-                                    $merger->addFile($path);
-                                }
-                            } else {
-                                $merger->addFile($path);
+                                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                                $pdf->useTemplate($templateId);
                             }
                         } catch (\Exception $e) {
-                            $merger->addFile($path);
+                            continue;
                         }
                     }
                 }
             }
         }
 
-        $mergedPdf = $merger->merge();
+        $mergedPdf = $pdf->Output('', 'S');
+
+        if (file_exists($tempDompdfPath)) {
+            unlink($tempDompdfPath);
+        }
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
 
@@ -249,5 +254,5 @@ class AccountController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
-}
+    }
 }
