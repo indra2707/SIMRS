@@ -197,85 +197,56 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-       $merger = new Merger(new Fpdi2Driver()); 
-
+        $merger = new Merger();
         $merger->addRaw($pdfOutput);
 
-        foreach ($ijazah as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/ijazah/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
+        // Kumpulan semua dokumen lampiran ke dalam satu array untuk diproses terpusat
+        $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
+        $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
+
+        foreach ($allLists as $key => $list) {
+            foreach ($list as $item) {
+                if (!empty($item->lampiran)) {
+                    $path = public_path('uploads/' . $folders[$key] . '/' . $item->lampiran);
+
+                    if (file_exists($path)) {
+                        // DETEKSI OTOMATIS: Apakah file PDF menggunakan versi 1.5+ atau kompresi silang?
+                        $fileContent = file_get_contents($path);
+
+                        if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
+                            // JIKA YA: Lakukan downgrading/pembersihan versi PDF secara runtime menggunakan FPDI bawaan vendor Anda
+                            try {
+                                $pdfClean = new \setasign\Fpdi\Fpdi();
+                                $pageCount = $pdfClean->setSourceFile($path);
+
+                                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                                    $templateId = $pdfClean->importPage($pageNo);
+                                    $size = $pdfClean->getTemplateSize($templateId);
+                                    $pdfClean->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                                    $pdfClean->useTemplate($templateId);
+                                }
+
+                                // Simpan output PDF versi 1.4 baru ke memori dan tambahkan sebagai Raw string ke merger
+                                $cleanOutput = $pdfClean->Output('S');
+                                $merger->addRaw($cleanOutput);
+                            } catch (\Exception $e) {
+                                // Jika metode FPDI murni gagal mem-parsing, kembalikan ke method addFile standar
+                                $merger->addFile($path);
+                            }
+                        } else {
+                            // JIKA TIDAK (PDF versi lama/normal): Masukkan langsung tanpa konversi
+                            $merger->addFile($path);
+                        }
+                    }
                 }
             }
         }
 
-        foreach ($skjabatan as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/jabatan/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($kontrak as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/kontrak/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($str as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/str/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($spk as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/spk/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($sertifikat as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/sertifikat/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($mcu as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/mcu/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($dokumenLainnya as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/dokumen_lainnya/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
+        // Proses penggabungan akhir dari memori RAM
         $mergedPdf = $merger->merge();
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
+
         return response($mergedPdf, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
