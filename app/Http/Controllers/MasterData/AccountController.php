@@ -7,8 +7,7 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
-use iio\libmergepdf\Merger;
-use iio\libmergepdf\Driver\Fpdi2Driver;
+use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class AccountController extends Controller
 {
@@ -145,7 +144,7 @@ class AccountController extends Controller
         ], 400);
     }
 
-       public function printPdf($id)
+      public function printPdf($id)
     {
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
@@ -197,9 +196,21 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = new Merger();
-        $merger->addRaw($pdfOutput);
+        // 1. Inisialisasi PDFMerger dari Webklex
+        $merger = PDFMerger::init();
 
+        // 2. Simpan output Dompdf ke file temporary karena Webklex memproses via file path
+        $tempDompdfPath = storage_path('app/public/temp_cv_' . time() . '.pdf');
+
+        // Pastikan direktori storage/app/public tersedia
+        if (!file_exists(storage_path('app/public'))) {
+            mkdir(storage_path('app/public'), 0755, true);
+        }
+
+        file_put_contents($tempDompdfPath, $pdfOutput);
+        $merger->addPDF($tempDompdfPath, 'all');
+
+        // 3. Gabungkan seluruh kategori dokumen lampiran secara berurutan
         $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
         $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
 
@@ -207,40 +218,28 @@ class AccountController extends Controller
             foreach ($list as $item) {
                 if (!empty($item->lampiran)) {
                     $path = public_path('uploads/' . $folders[$key] . '/' . $item->lampiran);
-
                     if (file_exists($path)) {
-                        try {
-                            $fileContent = file_get_contents($path);
-
-                            if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
-
-                                $pdfClean = new \setasign\Fpdi\Fpdi();
-                                $pageCount = $pdfClean->setSourceFile($path);
-
-                                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                                    $templateId = $pdfClean->importPage($pageNo);
-                                    $size = $pdfClean->getTemplateSize($templateId);
-                                    $pdfClean->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                                    $pdfClean->useTemplate($templateId);
-                                }
-
-                                $cleanOutput = $pdfClean->Output('S');
-                                $merger->addRaw($cleanOutput);
-                            } else {
-                                $merger->addFile($path);
-                            }
-                        } catch (\Exception $e) {
-                            $merger->addFile($path);
-                        }
+                        // Menggunakan metode ->addPDF('jalur_file', 'halaman') bawaan Webklex
+                        $merger->addPDF($path, 'all');
                     }
                 }
             }
         }
 
-        $mergedPdf = $merger->merge();
+        // 4. Lakukan proses merge/penggabungan berkas
+        $merger->merge();
+
+        // 5. Ambil raw string binary PDF hasil penggabungan
+        $mergedPdf = $merger->output();
+
+        // 6. Bersihkan file temporary Dompdf agar tidak memenuhi penyimpanan server
+        if (file_exists($tempDompdfPath)) {
+            unlink($tempDompdfPath);
+        }
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
 
+        // 7. Stream langsung dokumen ke browser user
         return response($mergedPdf, 200, [
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',

@@ -45,7 +45,7 @@ trait FpdfTplTrait
      * @param string $orientation "L" for landscape, "P" for portrait.
      * @throws \BadMethodCallException
      */
-    public function setPageFormat($size, $orientation = 'P')
+    public function setPageFormat($size, $orientation)
     {
         if ($this->currentTemplateId !== null) {
             throw new \BadMethodCallException('The page format cannot be changed when writing to a template.');

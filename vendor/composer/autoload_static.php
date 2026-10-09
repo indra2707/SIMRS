@@ -53,10 +53,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         array (
             'setasign\\Fpdi\\' => 14,
         ),
-        'i' => 
-        array (
-            'iio\\libmergepdf\\' => 16,
-        ),
         'Z' => 
         array (
             'ZipStream\\' => 10,
@@ -64,6 +60,7 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'W' => 
         array (
             'Whoops\\' => 7,
+            'Webklex\\PDFMerger\\' => 18,
         ),
         'T' => 
         array (
@@ -238,10 +235,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         array (
             0 => __DIR__ . '/..' . '/setasign/fpdi/src',
         ),
-        'iio\\libmergepdf\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/iio/libmergepdf/src',
-        ),
         'ZipStream\\' => 
         array (
             0 => __DIR__ . '/..' . '/maennchen/zipstream-php/src',
@@ -249,6 +242,10 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Whoops\\' => 
         array (
             0 => __DIR__ . '/..' . '/filp/whoops/src/Whoops',
+        ),
+        'Webklex\\PDFMerger\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger',
         ),
         'TijsVerkoyen\\CssToInlineStyles\\' => 
         array (
@@ -1168,7 +1165,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'DASPRiD\\Enum\\NullValue' => __DIR__ . '/..' . '/dasprid/enum/src/NullValue.php',
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
-        'Datamatrix' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/datamatrix.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',
         'DateInvalidOperationException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateInvalidOperationException.php',
@@ -1527,8 +1523,7 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Evenement\\EventEmitter' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitter.php',
         'Evenement\\EventEmitterInterface' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitterInterface.php',
         'Evenement\\EventEmitterTrait' => __DIR__ . '/..' . '/evenement/evenement/src/EventEmitterTrait.php',
-        'FPDF' => __DIR__ . '/..' . '/iio/libmergepdf/tcpdi/tcpdi.php',
-        'FPDF_TPL' => __DIR__ . '/..' . '/iio/libmergepdf/tcpdi/fpdf_tpl.php',
+        'FPDF' => __DIR__ . '/..' . '/setasign/fpdf/fpdf.php',
         'Facade\\IgnitionContracts\\BaseSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/BaseSolution.php',
         'Facade\\IgnitionContracts\\HasSolutionsForThrowable' => __DIR__ . '/..' . '/facade/ignition-contracts/src/HasSolutionsForThrowable.php',
         'Facade\\IgnitionContracts\\ProvidesSolution' => __DIR__ . '/..' . '/facade/ignition-contracts/src/ProvidesSolution.php',
@@ -4683,7 +4678,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
-        'PDF417' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/pdf417.php',
         'PHPUnit\\Event\\Application\\Finished' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/Finished.php',
         'PHPUnit\\Event\\Application\\FinishedSubscriber' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/FinishedSubscriber.php',
         'PHPUnit\\Event\\Application\\Started' => __DIR__ . '/..' . '/phpunit/phpunit/src/Event/Events/Application/Started.php',
@@ -7032,7 +7026,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Pusher\\PusherInstance' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/PusherInstance.php',
         'Pusher\\PusherInterface' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/PusherInterface.php',
         'Pusher\\Webhook' => __DIR__ . '/..' . '/pusher/pusher-php-server/src/Webhook.php',
-        'QRcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/barcodes/qrcode.php',
         'Ramsey\\Collection\\AbstractArray' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractArray.php',
         'Ramsey\\Collection\\AbstractCollection' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractCollection.php',
         'Ramsey\\Collection\\AbstractSet' => __DIR__ . '/..' . '/ramsey/collection/src/AbstractSet.php',
@@ -8858,16 +8851,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'Symfony\\Polyfill\\Php83\\Php83' => __DIR__ . '/..' . '/symfony/polyfill-php83/Php83.php',
         'Symfony\\Polyfill\\Uuid\\Uuid' => __DIR__ . '/..' . '/symfony/polyfill-uuid/Uuid.php',
-        'TCPDF' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf.php',
-        'TCPDF2DBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_2d.php',
-        'TCPDFBarcode' => __DIR__ . '/..' . '/tecnickcom/tcpdf/tcpdf_barcodes_1d.php',
-        'TCPDF_COLORS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_colors.php',
-        'TCPDF_FILTERS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_filters.php',
-        'TCPDF_FONTS' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_fonts.php',
-        'TCPDF_FONT_DATA' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_font_data.php',
-        'TCPDF_IMAGES' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_images.php',
-        'TCPDF_STATIC' => __DIR__ . '/..' . '/tecnickcom/tcpdf/include/tcpdf_static.php',
-        'TCPDI' => __DIR__ . '/..' . '/iio/libmergepdf/tcpdi/tcpdi.php',
         'Termwind\\Actions\\StyleToMethod' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Actions/StyleToMethod.php',
         'Termwind\\Components\\Anchor' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/Anchor.php',
         'Termwind\\Components\\BreakLine' => __DIR__ . '/..' . '/nunomaduro/termwind/src/Components/BreakLine.php',
@@ -8923,6 +8906,9 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'TijsVerkoyen\\CssToInlineStyles\\Css\\Rule\\Rule' => __DIR__ . '/..' . '/tijsverkoyen/css-to-inline-styles/src/Css/Rule/Rule.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
+        'Webklex\\PDFMerger\\Facades\\PDFMergerFacade' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/Facades/PDFMergerFacade.php',
+        'Webklex\\PDFMerger\\PDFMerger' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/PDFMerger.php',
+        'Webklex\\PDFMerger\\Providers\\PDFMergerServiceProvider' => __DIR__ . '/..' . '/webklex/laravel-pdfmerger/src/PDFMerger/Providers/PDFMergerServiceProvider.php',
         'Whoops\\Exception\\ErrorException' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/ErrorException.php',
         'Whoops\\Exception\\Formatter' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Formatter.php',
         'Whoops\\Exception\\Frame' => __DIR__ . '/..' . '/filp/whoops/src/Whoops/Exception/Frame.php',
@@ -8971,17 +8957,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'ZipStream\\Zip64\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zip64/ExtendedInformationExtraField.php',
         'ZipStream\\ZipStream' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/ZipStream.php',
         'ZipStream\\Zs\\ExtendedInformationExtraField' => __DIR__ . '/..' . '/maennchen/zipstream-php/src/Zs/ExtendedInformationExtraField.php',
-        'iio\\libmergepdf\\Driver\\DefaultDriver' => __DIR__ . '/..' . '/iio/libmergepdf/src/Driver/DefaultDriver.php',
-        'iio\\libmergepdf\\Driver\\DriverInterface' => __DIR__ . '/..' . '/iio/libmergepdf/src/Driver/DriverInterface.php',
-        'iio\\libmergepdf\\Driver\\Fpdi2Driver' => __DIR__ . '/..' . '/iio/libmergepdf/src/Driver/Fpdi2Driver.php',
-        'iio\\libmergepdf\\Driver\\TcpdiDriver' => __DIR__ . '/..' . '/iio/libmergepdf/src/Driver/TcpdiDriver.php',
-        'iio\\libmergepdf\\Exception' => __DIR__ . '/..' . '/iio/libmergepdf/src/Exception.php',
-        'iio\\libmergepdf\\Merger' => __DIR__ . '/..' . '/iio/libmergepdf/src/Merger.php',
-        'iio\\libmergepdf\\Pages' => __DIR__ . '/..' . '/iio/libmergepdf/src/Pages.php',
-        'iio\\libmergepdf\\PagesInterface' => __DIR__ . '/..' . '/iio/libmergepdf/src/PagesInterface.php',
-        'iio\\libmergepdf\\Source\\FileSource' => __DIR__ . '/..' . '/iio/libmergepdf/src/Source/FileSource.php',
-        'iio\\libmergepdf\\Source\\RawSource' => __DIR__ . '/..' . '/iio/libmergepdf/src/Source/RawSource.php',
-        'iio\\libmergepdf\\Source\\SourceInterface' => __DIR__ . '/..' . '/iio/libmergepdf/src/Source/SourceInterface.php',
         'setasign\\Fpdi\\FpdfTpl' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTpl.php',
         'setasign\\Fpdi\\FpdfTplTrait' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTplTrait.php',
         'setasign\\Fpdi\\FpdfTrait' => __DIR__ . '/..' . '/setasign/fpdi/src/FpdfTrait.php',
@@ -9033,7 +9008,6 @@ class ComposerStaticInitc6758ed124acff4bfdcd5533cd4b8f42
         'setasign\\Fpdi\\Tcpdf\\Fpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/Tcpdf/Fpdi.php',
         'setasign\\Fpdi\\Tfpdf\\FpdfTpl' => __DIR__ . '/..' . '/setasign/fpdi/src/Tfpdf/FpdfTpl.php',
         'setasign\\Fpdi\\Tfpdf\\Fpdi' => __DIR__ . '/..' . '/setasign/fpdi/src/Tfpdf/Fpdi.php',
-        'tcpdi_parser' => __DIR__ . '/..' . '/iio/libmergepdf/tcpdi/tcpdi_parser.php',
         'voku\\helper\\ASCII' => __DIR__ . '/..' . '/voku/portable-ascii/src/voku/helper/ASCII.php',
     );
 
