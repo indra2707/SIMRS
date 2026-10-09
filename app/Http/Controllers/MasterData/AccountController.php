@@ -145,7 +145,7 @@ class AccountController extends Controller
         ], 400);
     }
 
-    public function printPdf($id)
+       public function printPdf($id)
     {
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
@@ -200,7 +200,6 @@ class AccountController extends Controller
         $merger = new Merger();
         $merger->addRaw($pdfOutput);
 
-        // Kumpulan semua dokumen lampiran ke dalam satu array untuk diproses terpusat
         $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
         $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
 
@@ -210,12 +209,11 @@ class AccountController extends Controller
                     $path = public_path('uploads/' . $folders[$key] . '/' . $item->lampiran);
 
                     if (file_exists($path)) {
-                        // DETEKSI OTOMATIS: Apakah file PDF menggunakan versi 1.5+ atau kompresi silang?
-                        $fileContent = file_get_contents($path);
+                        try {
+                            $fileContent = file_get_contents($path);
 
-                        if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
-                            // JIKA YA: Lakukan downgrading/pembersihan versi PDF secara runtime menggunakan FPDI bawaan vendor Anda
-                            try {
+                            if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
+
                                 $pdfClean = new \setasign\Fpdi\Fpdi();
                                 $pageCount = $pdfClean->setSourceFile($path);
 
@@ -226,15 +224,12 @@ class AccountController extends Controller
                                     $pdfClean->useTemplate($templateId);
                                 }
 
-                                // Simpan output PDF versi 1.4 baru ke memori dan tambahkan sebagai Raw string ke merger
                                 $cleanOutput = $pdfClean->Output('S');
                                 $merger->addRaw($cleanOutput);
-                            } catch (\Exception $e) {
-                                // Jika metode FPDI murni gagal mem-parsing, kembalikan ke method addFile standar
+                            } else {
                                 $merger->addFile($path);
                             }
-                        } else {
-                            // JIKA TIDAK (PDF versi lama/normal): Masukkan langsung tanpa konversi
+                        } catch (\Exception $e) {
                             $merger->addFile($path);
                         }
                     }
@@ -242,7 +237,6 @@ class AccountController extends Controller
             }
         }
 
-        // Proses penggabungan akhir dari memori RAM
         $mergedPdf = $merger->merge();
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
@@ -252,4 +246,5 @@ class AccountController extends Controller
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
     }
+
 }
