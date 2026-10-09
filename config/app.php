@@ -158,7 +158,7 @@ return [
     */
 
     'providers' => [
-
+     Webklex\PDFMerger\Providers\PDFMergerServiceProvider::class,
         /*
          * Laravel Framework Service Providers...
          */
@@ -213,7 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
-
+'PDFMerger' => Webklex\PDFMerger\Facades\PDFMergerFacade::class,
     ])->toArray(),
 
 ];
