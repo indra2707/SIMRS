@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '5cd3b5c71ce279df6e27cda4c0d5a42c2c491c63',
+        'reference' => 'c58a9cb7628be4d0352d4f86927e2c3acb26276e',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -292,6 +292,15 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'iio/libmergepdf' => array(
+            'pretty_version' => '4.0.4',
+            'version' => '4.0.4.0',
+            'reference' => '6613b978c08d00d559796ab510614243e4dd5dfb',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../iio/libmergepdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'illuminate/auth' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -508,7 +517,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '5cd3b5c71ce279df6e27cda4c0d5a42c2c491c63',
+            'reference' => 'c58a9cb7628be4d0352d4f86927e2c3acb26276e',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1259,6 +1268,15 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'setasign/fpdi' => array(
+            'pretty_version' => 'v2.6.8',
+            'version' => '2.6.8.0',
+            'reference' => '881945be29a4996ad3d008eb18ddc01fa3df890c',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../setasign/fpdi',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'simplesoftwareio/simple-qrcode' => array(
             'pretty_version' => '4.2.0',
             'version' => '4.2.0.0',
@@ -1594,6 +1612,15 @@
             'install_path' => __DIR__ . '/../symfony/yaml',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'tecnickcom/tcpdf' => array(
+            'pretty_version' => '6.11.4',
+            'version' => '6.11.4.0',
+            'reference' => 'fbbaf14cfae8fe646f154f7c530d15ec25764040',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../tecnickcom/tcpdf',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'theseer/tokenizer' => array(
             'pretty_version' => '1.2.3',
