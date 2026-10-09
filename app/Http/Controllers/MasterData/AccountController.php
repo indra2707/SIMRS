@@ -146,7 +146,7 @@ class AccountController extends Controller
     }
 
     public function printPdf($id)
-    {
+   {
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
             ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -214,19 +214,22 @@ class AccountController extends Controller
 
                             if (strpos($fileContent, '/ObjStm') !== false || strpos($fileContent, '/XRef') !== false) {
 
-                                $fpdi = new \setasign\Fpdi\Fpdi();
-                                $pageCount = $fpdi->setSourceFile($path);
+                                if (class_exists('\FPDF')) {
+                                    $fpdi = new \setasign\Fpdi\Fpdi('P', 'mm', 'A4');
+                                    $pageCount = $fpdi->setSourceFile($path);
 
-                                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-                                    $templateId = $fpdi->importPage($pageNo);
-                                    $size = $fpdi->getTemplateSize($templateId);
-                                    $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
-                                    $fpdi->useTemplate($templateId);
+                                    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                                        $templateId = $fpdi->importPage($pageNo);
+                                        $size = $fpdi->getTemplateSize($templateId);
+                                        $fpdi->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                                        $fpdi->useTemplate($templateId);
+                                    }
+
+                                    $cleanBinary = $fpdi->Output('S');
+                                    $merger->addRaw($cleanBinary);
+                                } else {
+                                    $merger->addFile($path);
                                 }
-
-                                $cleanBinary = $fpdi->Output('S');
-
-                                $merger->addRaw($cleanBinary);
                             } else {
                                 $merger->addFile($path);
                             }
@@ -246,5 +249,4 @@ class AccountController extends Controller
             'Content-Type' => 'application/pdf',
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
-    }
 }
