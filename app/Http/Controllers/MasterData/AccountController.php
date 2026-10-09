@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
 use iio\libmergepdf\Merger;
-// hapus Driver\TcpdiDriver karena menyebabkan error array offset pada PHP modern
+use iio\libmergepdf\Driver\Fpdi2Driver;
 
 class AccountController extends Controller
 {
@@ -197,8 +197,7 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        // Menggunakan Driver Default bawaan library iio/libmergepdf agar kompatibel dengan PHP 8
-        $merger = new Merger();
+       $merger = new Merger(new Fpdi2Driver()); 
 
         $merger->addRaw($pdfOutput);
 
@@ -283,4 +282,3 @@ class AccountController extends Controller
         ]);
     }
 }
-    
