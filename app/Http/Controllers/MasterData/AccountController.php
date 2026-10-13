@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Dompdf\Dompdf;
 use iio\libmergepdf\Merger;
-use iio\libmergepdf\Driver\TcpdiDriver;
+use Smalot\PdfParser\Parser as PdfParser;
 
 class AccountController extends Controller
 {
@@ -146,7 +146,7 @@ class AccountController extends Controller
     }
 
     public function printPdf($id)
-    {
+   {
         $pegawai = DB::table('pegawai')
             ->leftJoin('tbl_sk_struktur', 'tbl_sk_struktur.id', '=', 'pegawai.id_sk_struktur')
             ->leftJoin('tbl_jabatan', 'tbl_jabatan.id', '=', 'pegawai.id_jabatan')
@@ -197,82 +197,56 @@ class AccountController extends Controller
 
         $pdfOutput = $dompdf->output();
 
-        $merger = new Merger(new TcpdiDriver()); 
+        $tempDompdfPath = storage_path('app/public/temp_main_cv_' . time() . '.pdf');
+        if (!file_exists(storage_path('app/public'))) {
+            mkdir(storage_path('app/public'), 0755, true);
+        }
+        file_put_contents($tempDompdfPath, $pdfOutput);
 
-        $merger->addRaw($pdfOutput);
-        foreach ($ijazah as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/ijazah/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
+        $pdf = new \setasign\Fpdi\Tcpdf\Fpdi();
+        $pdf->setPrintHeader(false);
+        $pdf->setPrintFooter(false);
+
+        $pageCount = $pdf->setSourceFile($tempDompdfPath);
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+            $templateId = $pdf->importPage($pageNo);
+            $size = $pdf->getTemplateSize($templateId);
+            $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+            $pdf->useTemplate($templateId);
+        }
+
+        $allLists = [$ijazah, $skjabatan, $kontrak, $str, $spk, $sertifikat, $mcu, $dokumenLainnya];
+        $folders = ['ijazah', 'jabatan', 'kontrak', 'str', 'spk', 'sertifikat', 'mcu', 'dokumen_lainnya'];
+
+        foreach ($allLists as $key => $list) {
+            foreach ($list as $item) {
+                if (!empty($item->lampiran)) {
+                    $path = public_path('uploads/' . $folders[$key] . '/' . $item->lampiran);
+
+                    if (file_exists($path)) {
+                        try {
+                            $pageCount = $pdf->setSourceFile($path);
+
+                            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                                $templateId = $pdf->importPage($pageNo);
+                                $size = $pdf->getTemplateSize($templateId);
+
+                                $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+                                $pdf->useTemplate($templateId);
+                            }
+                        } catch (\Exception $e) {
+                            continue;
+                        }
+                    }
                 }
             }
         }
 
-        foreach ($skjabatan as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/jabatan/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
+        $mergedPdf = $pdf->Output('', 'S');
 
-        foreach ($kontrak as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/kontrak/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
+        if (file_exists($tempDompdfPath)) {
+            unlink($tempDompdfPath);
         }
-
-        foreach ($str as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/str/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($spk as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/spk/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($sertifikat as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/sertifikat/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($mcu as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/mcu/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        foreach ($dokumenLainnya as $item) {
-            if (!empty($item->lampiran)) {
-                $path = public_path('uploads/dokumen_lainnya/' . $item->lampiran);
-                if (file_exists($path)) {
-                    $merger->addFile($path);
-                }
-            }
-        }
-
-        $mergedPdf = $merger->merge();
 
         $namaFile = 'CV_Lengkap_' . $pegawai->nama_pekerja . '.pdf';
 
@@ -281,5 +255,4 @@ class AccountController extends Controller
             'Content-Disposition' => 'inline; filename="' . $namaFile . '"',
         ]);
     }
-
 }
