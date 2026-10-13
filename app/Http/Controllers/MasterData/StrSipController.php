@@ -98,7 +98,7 @@ class StrSipController extends Controller
         if ($request->hasFile('lampiran-str')) {
             $file = $request->file('lampiran-str');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/str'), $fileName);
         }
 
@@ -155,7 +155,7 @@ class StrSipController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-str');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/str'), $fileName);
         }
 

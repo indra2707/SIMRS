@@ -114,7 +114,7 @@ class DokumenController extends Controller
         if ($request->hasFile('lampiran')) {
             $file = $request->file('lampiran');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/ijazah'), $fileName);
         }
 
@@ -172,7 +172,7 @@ class DokumenController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/ijazah'), $fileName);
         }
 

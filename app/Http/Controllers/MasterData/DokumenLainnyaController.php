@@ -122,7 +122,7 @@ class DokumenLainnyaController extends Controller
         $fileName = null;
         if ($request->hasFile('lampiran-dokumen-lainnya')) {
             $file = $request->file('lampiran-dokumen-lainnya');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/dokumen_lainnya'), $fileName);
         }
 
@@ -204,7 +204,7 @@ class DokumenLainnyaController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-dokumen-lainnya');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/dokumen_lainnya'), $fileName);
         }
 

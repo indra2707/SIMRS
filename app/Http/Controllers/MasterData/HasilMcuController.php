@@ -94,7 +94,7 @@ class HasilMcuController extends Controller
         if ($request->hasFile('lampiran-mcu')) {
             $file = $request->file('lampiran-mcu');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/mcu'), $fileName);
         }
 
@@ -150,7 +150,7 @@ class HasilMcuController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-mcu');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/mcu'), $fileName);
         }
 

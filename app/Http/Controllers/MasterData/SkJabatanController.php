@@ -128,7 +128,7 @@ class SkJabatanController extends Controller
         if ($request->hasFile('lampiran-jabatan')) {
             $file = $request->file('lampiran-jabatan');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/jabatan'), $fileName);
         }
 
@@ -185,7 +185,7 @@ class SkJabatanController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-jabatan');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/jabatan'), $fileName);
         }
 

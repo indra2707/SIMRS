@@ -93,7 +93,7 @@ class SpkRkkController extends Controller
         if ($request->hasFile('lampiran-spk')) {
             $file = $request->file('lampiran-spk');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/spk'), $fileName);
         }
 
@@ -149,7 +149,7 @@ class SpkRkkController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-spk');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/spk'), $fileName);
         }
 

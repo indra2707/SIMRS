@@ -101,7 +101,7 @@ class KontrakController extends Controller
         if ($request->hasFile('lampiran-kontrak')) {
             $file = $request->file('lampiran-kontrak');
 
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/kontrak'), $fileName);
         }
 
@@ -159,7 +159,7 @@ class KontrakController extends Controller
 
             // upload file baru
             $file = $request->file('lampiran-kontrak');
-            $fileName = time() . '_' . $file->getClientOriginalName();
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('uploads/kontrak'), $fileName);
         }
 
