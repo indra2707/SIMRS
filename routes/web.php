@@ -13,6 +13,7 @@ use App\Http\Controllers\Logistik\AdminChatController as LogistikAdminChatContro
 use App\Http\Controllers\Logistik\DisposisiController;
 use App\Http\Controllers\Logistik\PermintaanController;
 use App\Http\Controllers\Logistik\TembusanController;
+use App\Http\Controllers\Logistik\PerpustakaanController;
 use App\Http\Controllers\Logistik\UserChatController as LogistikUserChatController;
 use App\http\Controllers\MasterData\AccountController;
 use App\Http\Controllers\MasterData\AsetController;
@@ -534,6 +535,12 @@ Route::group(['middleware' => 'loggedin'], function () {
         // Disposisi
         Route::get('/disposisi', [DisposisiController::class, 'index'])->name('logistik.disposisi');
         Route::get('/disposisi/view', [DisposisiController::class, 'views'])->name('logistik.disposisi.view');
+
+        //Perpustakaan
+        Route::get('/perpustakaan', [PerpustakaanController::class, 'index'])->name('logistik.perpustakaan');
+        Route::post('/perpustakaan/store', [PerpustakaanController::class, 'store'])->name('logistik.perpustakaan.create');
+        Route::get('/perpustakaan/search', [PerpustakaanController::class, 'search'])->name('logistik.perpustakaan.search');
+        Route::put('/perpustakaan/update/{id}', [PerpustakaanController::class, 'update'])->name('logistik.perpustakaan.update');
     });
 
 
