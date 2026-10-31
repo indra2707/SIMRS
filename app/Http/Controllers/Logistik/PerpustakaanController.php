@@ -20,6 +20,24 @@ class PerpustakaanController extends Controller
         return view('logistik.perpustakaan.perpustakaan', $data);
     }
 
+    // View
+    public function views()
+    {
+        $query = Perpustakaan::all();
+        $data = [];
+        foreach ($query as $key => $value) {
+            $data[] = [
+                'id' => $value->id,
+                'judul' => $value->judul,
+                'kategori' => $value->kategori,
+                'lampiran' => $value->lampiran,
+                'status' => $value->status,
+            ];
+        }
+        return response()->json($data, 200);
+    }
+
+
     // Store
     public function store(Request $request)
     {
@@ -55,26 +73,5 @@ class PerpustakaanController extends Controller
         ], 400);
     }
 
-
-    // Search
-    public function search(Request $request)
-    {
-        $query = trim($request->input('query', ''));
-
-        $results = Perpustakaan::query()
-            ->when($query !== '', function ($q) use ($query) {
-                $q->where('judul', 'LIKE', '%' . $query . '%');
-            })
-            ->orderBy('judul', 'asc')
-            ->get();
-
-        return response()->json([
-            'success' => true,
-            'data' => $results,
-            'message' => $results->isNotEmpty()
-                ? 'Data berhasil ditemukan.'
-                : 'Data tidak ditemukan.',
-        ], 200);
-    }
 
 }

@@ -22,6 +22,52 @@
             display: flex;
             align-items: center;
         }
+
+        /* Toolbar Search dibuat selebar tabel */
+        .bootstrap-table .fixed-table-toolbar {
+            width: 100%;
+            margin-bottom: 15px !important;
+            padding: 0 !important;
+        }
+
+        /* Search container */
+        .bootstrap-table .fixed-table-toolbar .search {
+            width: 100% !important;
+            float: none !important;
+            margin: 0 0 15px 0 !important;
+        }
+
+        /* Input Search */
+        .bootstrap-table .fixed-table-toolbar .search input {
+            width: 100% !important;
+            height: 45px !important;
+            box-sizing: border-box;
+            border-radius: 4px !important;
+            padding: 10px 15px !important;
+        }
+
+        /* Jarak antara search dan tabel */
+        .bootstrap-table .fixed-table-container {
+            margin-top: 10px !important;
+        }
+
+        /* Hilangkan border */
+        .bootstrap-table .fixed-table-container {
+            border: none !important;
+        }
+
+        #tablePerpustakaan,
+        #tablePerpustakaan tbody,
+        #tablePerpustakaan tr,
+        #tablePerpustakaan td {
+            border: none !important;
+        }
+
+        /* Jarak antar data */
+        #tablePerpustakaan tbody td {
+            padding: 12px 20px !important;
+            vertical-align: middle;
+        }
     </style>
 
 @endsection
@@ -51,17 +97,15 @@
                                 </button>
                             </div>
                         </div><br><br>
+                        {{-- Table --}}
+                        <div class="col-sm-12 col-lg-12 col-xl-12">
+                            <div class="table-responsive signal-table">
+                                <table id="table_perpustakaan" class="table table-hover" data-buttons-class="primary"
+                                    data-toggle="table">
 
-                        <!-- Pencarian -->
-                        <div class="d-flex align-items-center gap-2 mb-3">
-                            <input type="text" id="search" class="form-control" placeholder="Cari...">
+                                </table>
+                            </div>
                         </div>
-
-                        <!-- Hasil Pencarian -->
-                        <div id="searchResult">
-                            <!-- Hasil akan ditampilkan di sini -->
-                        </div>
-
                     </div>
                 </div>
             </div>

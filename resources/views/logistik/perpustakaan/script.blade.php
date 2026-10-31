@@ -1,5 +1,8 @@
 <script type="text/javascript">
 
+    // Tabel
+    var $tablePerpustakaan = $('#table_perpustakaan');
+
     // With Placeholder
     $(".select2").select2({
         placeholder: "---- Pilih Salah Satu ----",
@@ -149,7 +152,7 @@
                         if (xhr.status == 200 && res.success) {
                             Alert('success', res.message);
                             $('#modal-perpustakaan').modal('hide');
-                            // $tableStr.bootstrapTable('refresh');
+                            $tablePerpustakaan.bootstrapTable('refresh');
                         } else {
                             $.notify({
                                 icon: 'fa fa-warning',
@@ -165,77 +168,109 @@
         });
     });
 
+    $(function () {
+        initTablePerpustakaan();
+    });
 
-    //cari data
-    $(document).ready(function () {
-        $('#search').on('keyup', function () {
-            let search = $(this).val().trim();
-            // Jika input kosong
-            if (search === '') {
-                $('#searchResult').html('');
-                return;
-            }
-
-            $.ajax({
-                url: "{{ route('logistik.perpustakaan.search') }}",
-                type: "GET",
-                data: {
-                    query: search
-                },
-
-                success: function (response) {
-                    let html = '';
-                    if (response.success && response.data.length > 0) {
-                        $.each(response.data, function (index, item) {
-  
-                            html += `
-                                <div style="margin-bottom: 12px;">
-
-                                    <p style="font-size: 30px; margin-bottom: 2px; line-height: 1.2;">
-                                        <b>
-                                            <a href="/uploads/perpustakaan/${encodeURIComponent(item.lampiran)}"
-                                               target="_blank"
-                                               class="text-primary text-decoration-none">
-                                                ${item.judul.toUpperCase()}
-                                            </a>
-                                        </b>
-                                    </p>
-
-                                    <div class="d-flex align-items-center flex-wrap gap-4 text-muted"
-                                         style="line-height: 1.2;">
-                                        <span style="font-size: 14px;">
-                                            <i class="fa fa-folder me-1"></i>
-                                            <strong>Kategori:</strong> ${item.kategori ?? '-'}
-                                        </span>
+    // Initialize Table
+    function initTablePerpustakaan() {
+        $tablePerpustakaan.bootstrapTable('destroy').bootstrapTable({
+            height: 620,
+            locale: 'en-US',
+            search: true,
+            showHeader: false,
+            pagination: true,
+            pageSize: 50,
+            pageList: [10, 20, 35, 50, 100, 'all'],
+            stickyHeader: false,
+            fixedColumns: false,
+            fullscreen: true,
+            minimumCountColumns: 2,
+            icons: iconsFunction(),
+            loadingTemplate: loadingTemplate,
+            exportTypes: ['json', 'csv', 'txt', 'excel'],
+            url: "{{ route('logistik.perpustakaan.view') }}",
+            columns: [
+                [
+                    {
+                        field: 'judul',
+                        sortable: true,
+                        formatter: function (value, row, index) {
+                            let url = `/uploads/perpustakaan/${encodeURIComponent(row.lampiran)}`;
+                            return `
+                                <div>
+                                    <div style="
+                                        font-size: 22px;
+                                        font-weight: 600;
+                                        text-transform: uppercase;
+                                        line-height: 1.3;
+                                    ">
+                                        <a href="${url}"
+                                           target="_blank"
+                                           style="
+                                               color: #212529;
+                                               text-decoration: none;
+                                               cursor: pointer;
+                                           ">
+                                            ${value ?? ''}
+                                        </a>
                                     </div>
 
-                             </div>
+                                    <div style="
+                                        font-size: 13px;
+                                        color: #888;
+                                        margin-top: 4px;
+                                    ">
+                                        Kategori : ${row.kategori ?? ''}
+                                    </div>
+                                </div>
                             `;
-                        });
-
-                    } else {
-                        // Swal.fire({
-                        //     icon: 'warning',
-                        //     title: 'Data Tidak Ditemukan',
-                        //     text: 'Data yang Anda cari tidak ditemukan.',
-                        //     confirmButtonText: 'OK'
-                        // });
+                        }
                     }
-
-                    $('#searchResult').html(html);
-                },
-
-                error: function (xhr) {
-                    console.log(xhr.responseText);
-                    $('#searchResult').html(`
-                    <div class="alert alert-danger">
-                        Terjadi kesalahan saat mencari data.
-                    </div>
-                `);
+                ]
+            ],
+            error: function (xhr, status, error) {
+                if (xhr.status == 400) {
+                    var errors = xhr.responseJSON.errors;
+                    $.notify({
+                        icon: 'fa fa-check',
+                        title: error,
+                        message: xhr.responseJSON.message
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
+                } else if (xhr.status == 500) {
+                    $.notify({
+                        icon: 'icon-info-alt',
+                        title: 'error',
+                        message: "Silahkan hubungi IT Rumah Sakit!"
+                    }, {
+                        type: 'danger',
+                        allow_dismiss: true,
+                        delay: 2000,
+                        showProgressbar: true,
+                        timer: 300,
+                        z_index: 1127,
+                        animate: {
+                            enter: 'animated fadeInDown',
+                            exit: 'animated fadeOutUp'
+                        },
+                    });
                 }
-            });
-
+            },
+            responseHandler: function (data) {
+                return data;
+            }
         });
-    });
-    
+    }
+
 </script>

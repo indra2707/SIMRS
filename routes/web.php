@@ -538,8 +538,8 @@ Route::group(['middleware' => 'loggedin'], function () {
 
         //Perpustakaan
         Route::get('/perpustakaan', [PerpustakaanController::class, 'index'])->name('logistik.perpustakaan');
+        Route::get('/perpustakaan/view', [PerpustakaanController::class, 'views'])->name('logistik.perpustakaan.view');
         Route::post('/perpustakaan/store', [PerpustakaanController::class, 'store'])->name('logistik.perpustakaan.create');
-        Route::get('/perpustakaan/search', [PerpustakaanController::class, 'search'])->name('logistik.perpustakaan.search');
         Route::put('/perpustakaan/update/{id}', [PerpustakaanController::class, 'update'])->name('logistik.perpustakaan.update');
     });
 
