@@ -198,6 +198,14 @@
                         formatter: function (value, row, index) {
                             let url = `/uploads/perpustakaan/${encodeURIComponent(row.lampiran)}`;
                             return `
+                                <div style="display: flex; align-items: center; gap: 15px;">
+
+                                <a href="${url}"
+                                target="_blank"
+                                style="color: #dc3545; font-size: 38px; text-decoration: none;">
+                                    <i class="fa fa-file-pdf-o"></i>
+                                </a>
+
                                 <div>
                                     <div style="
                                         font-size: 22px;
@@ -206,12 +214,12 @@
                                         line-height: 1.3;
                                     ">
                                         <a href="${url}"
-                                           target="_blank"
-                                           style="
-                                               color: #212529;
-                                               text-decoration: none;
-                                               cursor: pointer;
-                                           ">
+                                        target="_blank"
+                                        style="
+                                            color: #212529;
+                                            text-decoration: none;
+                                            cursor: pointer;
+                                        ">
                                             ${value ?? ''}
                                         </a>
                                     </div>
@@ -219,12 +227,13 @@
                                     <div style="
                                         font-size: 13px;
                                         color: #888;
-                                        margin-top: 4px;
+                                        margin-top: 0px;
                                     ">
                                         Kategori : ${row.kategori ?? ''}
                                     </div>
                                 </div>
-                            `;
+                             </div>
+                             `;
                         }
                     }
                 ]
