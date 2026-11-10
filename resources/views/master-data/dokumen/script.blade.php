@@ -1223,8 +1223,8 @@
     // Handle events button actions
     window.operateEventsJabatan = {
         'click .btn-pdf-jabatan': function (e, value, row, index) {
-            if (row.lampiran) {
-                var fileUrl = '{{ url("uploads/jabatan") }}/' + row.lampiran;
+            if (row.lampiran_jabatan) {
+                var fileUrl = '{{ url("uploads/jabatan") }}/' + row.lampiran_jabatan;
                 window.open(fileUrl, '_blank');
             } else {
                 Alert('error', 'File tidak ditemukan');
